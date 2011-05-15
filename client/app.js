@@ -13,9 +13,10 @@ Ext.application ({
 	
 	// Controllers list
 	controllers: [
-		'North' ,
-		'West' ,
-		'Center' ,
-		'East'
+		'regions.North' ,
+		'regions.West' ,
+		'regions.Center' ,
+		'regions.East' ,
+		'Send'
 	]
 });

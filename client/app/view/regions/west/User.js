@@ -18,5 +18,12 @@ Ext.define ('SC.view.regions.west.User' , {
 	animCollapse: true ,
 	bodyPadding: 2 ,
 	anchor: '100%' ,
-	layout: 'anchor'
+	layout: 'anchor' ,
+	
+	// Body
+	items: [{
+		xtype: 'button' ,
+		id: 'buttonNewPost' ,
+		text: 'New Post'
+	}]
 });

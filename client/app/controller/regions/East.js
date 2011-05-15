@@ -1,20 +1,20 @@
-// @file 	Center.js
+// @file 	East.js
 //
 // @author 	Vincenzo Ferrari <ferrari@cs.unibo.it>
 //		Riccardo Statuto <statuto@cs.unibo.it>
 //		Stefano Sgarlata <sgarlat@cs.unibo.it>
 //		Clemente Vitale  <cvitale@cs.unibo.it>
 //
-// @note	Controller of view of center region of Viewport
+// @note	Controller of view of east region of Viewport
 
-Ext.define ('SC.controller.Center' , {
+Ext.define ('SC.controller.regions.East' , {
 	extend: 'Ext.app.Controller' ,
 	
 	// Views
-	views: ['regions.Center'] ,
+	views: ['regions.East'] ,
 	
 	// Configuration
 	init: function () {
-		console.log ('Controller Center started.');
+		console.log ('Controller East started.');
 	}
 });

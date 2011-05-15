@@ -7,7 +7,7 @@
 //
 // @note	Controller of view of north region of Viewport
 
-Ext.define ('SC.controller.North' , {
+Ext.define ('SC.controller.regions.North' , {
 	extend: 'Ext.app.Controller' ,
 	
 	// Views

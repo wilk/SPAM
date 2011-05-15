@@ -1,4 +1,12 @@
-// Viewport
+// @file 	Viewport.js
+//
+// @author 	Vincenzo Ferrari <ferrari@cs.unibo.it>
+//		Riccardo Statuto <statuto@cs.unibo.it>
+//		Stefano Sgarlata <sgarlat@cs.unibo.it>
+//		Clemente Vitale  <cvitale@cs.unibo.it>
+//
+// @note	The Viewport
+
 Ext.define ('SC.view.Viewport' , {
 	extend: 'Ext.container.Viewport' ,
 	
@@ -10,8 +18,10 @@ Ext.define ('SC.view.Viewport' , {
 		'SC.view.regions.Center' ,
 	] ,
 	
+	// Configuration
 	layout: 'border' ,
 	
+	// Body
 	items: [{
 		xtype: 'northregion'
 	} , {

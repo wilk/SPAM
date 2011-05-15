@@ -7,11 +7,22 @@
 	<script type="text/javascript" src="ext/ext-all-debug.js"> </script>
 	<script type="text/javascript" src="app.js"> </script>
 	<script type="text/javascript">
+		// Import any class of ExtJS 4
 		Ext.require (['*']);
+		
+		// Set loading configuration
 		Ext.Loader.setConfig ({
 			enabled : true
 		});
+		
+		// When the page is loaded
+		Ext.onReady (function () {
+			// Thesaurus request
+			// Recent posts
+			// Geo Location
+		});
 	</script>
+	<!-- TODO: make style.css file for these rules -->
 	<style type="text/css">
 		#header {
 			background: #7F99BE url(ext/resources/images/layout-browser-hd-bg.gif) repeat-x center;

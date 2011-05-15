@@ -1,11 +1,22 @@
+// @file 	TagCloud.js
+//
+// @author 	Vincenzo Ferrari <ferrari@cs.unibo.it>
+//		Riccardo Statuto <statuto@cs.unibo.it>
+//		Stefano Sgarlata <sgarlat@cs.unibo.it>
+//		Clemente Vitale  <cvitale@cs.unibo.it>
+//
+// @note	Tag cloud panel
+
 Ext.define ('SC.view.regions.east.TagCloud' , {
 	extend: 'Ext.panel.Panel' ,
 	alias: 'widget.tagcloud' ,
+	
+	// Configuration
 	title: 'Tag Cloud' ,
-	html: 'Tag Cloud Panel',
-	width: 150 ,
-	height: 150 ,
+	autoWidth: true ,
 	collapsible: true ,
-	closable: true ,
-	animCollapse: true
+	animCollapse: true ,
+	bodyPadding: 2 ,
+	anchor: '100%' ,
+	layout: 'anchor'
 });

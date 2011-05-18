@@ -16,6 +16,8 @@ Ext.define ('SC.view.regions.North' , {
 	height: 30 ,
 	region: 'north' ,
 	html: '<h1>SPAM :: Social Production of Audiovisual Microblogs</h1>' ,
+	
+	// Body
 	items: [{
 		// Login textfield
 		xtype: 'textfield' ,

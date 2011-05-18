@@ -17,6 +17,7 @@ Ext.application ({
 		'regions.West' ,
 		'regions.Center' ,
 		'regions.East' ,
-		'Send'
+		'Send' ,
+		'regions.center.Post'
 	]
 });

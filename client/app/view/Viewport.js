@@ -10,13 +10,13 @@
 Ext.define ('SC.view.Viewport' , {
 	extend: 'Ext.container.Viewport' ,
 	
-	// Region views
+	// Region and other views
 	requires: [
 		'SC.view.regions.North' ,
 		'SC.view.regions.West' ,
 		'SC.view.regions.East' ,
 		'SC.view.regions.Center' ,
-		'SC.view.Send'
+		'SC.view.Send' ,
 	] ,
 	
 	// Configuration

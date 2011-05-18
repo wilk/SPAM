@@ -15,6 +15,9 @@ Ext.define ('SC.controller.Send' , {
 	// Views
 	views: ['Send'] ,
 	
+	// Models
+	models: ['Post'] ,
+	
 	// Configuration
 	init: function () {
 		this.control ({
@@ -22,6 +25,10 @@ Ext.define ('SC.controller.Send' , {
 			'#txtAreaSend': {
 				// On every keypress do something
 				keypress: this.checkChars
+			} , 
+			// Controlling send button
+			'#buttonSend': {
+				click: this.sendPost
 			}
 		});
 	
@@ -29,6 +36,7 @@ Ext.define ('SC.controller.Send' , {
 	} ,
 	
 	// TODO: on keypress, increase or decrease sendCharCounter
+	// HINT: use regular expression
 	checkChars : function (txtarea, e) {
 //		if (e.isSpecialKey () && (txtareaSendChars < 140) &&  ((e.getKey () == e.BACKSPACE) || (e.getKey () == e.DELETE)))
 //			Ext.getCmp('sendCharCounter').setText (++txtareaSendChars);
@@ -36,5 +44,23 @@ Ext.define ('SC.controller.Send' , {
 //		else if (!(e.SpecialKey))
 //			Ext.getCmp('sendCharCounter').setText (--txtareaSendChars);
 //		txtareaSendChars++;
+	} ,
+	
+	// @brief
+	sendPost : function () {
+		// TODO: injection xml code
+		// TODO: AJAX request with proxy.rest
+		
+		var artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">';
+		var artFooter = '</article>';
+		
+		var artBody = Ext.getCmp('txtAreaSend').getValue ();
+		article = artHeader + artBody + artFooter;
+		alert ('Hai scritto le seguenti minchiate: \n' + article);
+		
+//		var win = Ext.getCmp ('windowNewPost');
+//		var winPost = Ext.getCmp ('windowPost');
+//		winPost.show ();
+//		win.close ();
 	}
 });

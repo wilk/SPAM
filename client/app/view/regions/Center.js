@@ -11,9 +11,14 @@ Ext.define ('SC.view.regions.Center' , {
 	extend: 'Ext.container.Container' ,
 	alias: 'widget.centerregion' ,
 	
+	// Views
+	requires: ['SC.view.regions.center.Post'] ,
+	
 	// Configuration
 	region: 'center' ,
-//	items: [{
+	items: [{
+		xtype: 'post'
+	}]
 //		xtype: 'panel' ,
 //		autoHeight: true ,
 //		autoWidth: true ,

@@ -41,7 +41,7 @@ Ext.define ('SC.view.Send' , {
 	dockedItems: [{
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
-//		ui: 'footer' ,
+		ui: 'footer' ,
 		// Items right-justified
 		items: [{
 			// Chars counter label
@@ -51,7 +51,8 @@ Ext.define ('SC.view.Send' , {
 			margin: '0 0 0 5'
 		} , '->' , {
 			// Button send
-			text: 'Send'
+			text: 'Send' ,
+			id: 'buttonSend'
 		}]
 	}]
 });

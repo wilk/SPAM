@@ -78,42 +78,52 @@ $route['*']['/gen_site'] = array('MainController', 'gen_site', 'authName'=>'DooP
 
 //generate Models automatically
 $route['*']['/gen_model'] = array('MainController', 'gen_model', 'authName'=>'DooPHP Admin', 'auth'=>$admin, 'authFail'=>'Unauthorized!');
+
+/////////INIZIO ROUTING SPAM//////////
 //Crea nuovo post
 $route['post']['/post']= array('PostController', 'createPost');
 //Ricevi post
 $route['get']['/post/:serverID/:userID/:postID']= array('PostController', 'sendPost');
 //Path con post metodo non supportato
 $route['*']['/post']= array ('ErrorController', 'notSupport');
+
 //Login utente
 $route['post']['/login']= array ('LoginController', 'authUser');
 //Path con login metodo non supportato
 $route['*']['/login']= array ('ErrorController', 'notSupport');
+
 //"Retweetta" un post
 $route['post']['/retweet/:serverID/:userID/:postID']= array ('RetweetController', 'createRetweet');
 //Path con retweet metodo non supportato
 $route['*']['/retweet/:serverID/:userID/:postID']= array ('ErrorController', 'notSupport');
+
 //Rispondi al post
 $route['post']['/replyto/:serverID/:userID/:postID']=array ('ReplyController', 'createReply');
 //Path con replyto metodo non supportato
 $route['*']['/replyto/:serverID/:userID/:postID']=array ('ErrorController', 'notSupport');
 //Ricerca un post
+
 $route['get']['/search/:limit/:type/:serverID/:userID/:postID']= array ('SearchController', 'searchMain');
 //Path con search metodo non supportato
 $route['*']['/search/:limit/:type/:serverID/:userID/:postID']= array ('ErrorController', 'notSupport');
+
 //Imposta setlike
 $route['post']['/setlike/:value/:serverID/:userID/:postID']= array ('LikeController', 'setLike');
 //Path con setlike metodo non supportato
 $route['*']['/setlike/:value/:serverID/:userID/:postID']= array ('ErrorController', 'notSupport');
+
 //Richiesta lista server federati
 $route['get']['/servers']= array ('ServersController', 'sendServersList');
 //Sovrascrivi lista server federati
 $route['post']['/servers']=array ('ServersController', 'rewriteServersList');
 //Path con servers metodo non supportato
 $route['*']['/servers']= array ('ErrorController', 'notSupport');
+
 //Setta sei seguire o meno un utente
 $route['post']['/setfollow/:value/:serverID/:userID']=array ('FollowController', 'setFollow');
 //Path setfollow metodo non supportato
 $route['*']['/setfollow/:value/:serverID/:userID']=array('ErrorController','notSupport');
+
 //Aggiunge termine al tesauro
 $route['post']['/addterm/:parent/:newTerm']=array ('TesauroController', 'addTerm');
 //Path addterm metodo non supportato
@@ -122,15 +132,17 @@ $route['*']['/addterm/:parent/:newTerm']= array ('ErrorController', 'notSupport'
 $route['post']['/term/:term']=array ('TesauroController', 'removeTerm');
 //Path term metodo non supportato
 $route['*']['/term/:term']=array ('ErrorController', 'notSupport');
-//Restituisce tesaouro esteso
+//Restituisce tesauro esteso
 $route['get']['/thesaurus']=array ('TesauroController', 'sendThesaurus');
 //Path thesaurus metodo non supportato
 $route['*']['/thesaurus']= array ('ErrorController', 'notSupport');
+
 //Propaga setlike
 $route['post']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID']=array ('LikeController', 'propagateLike');
 //Path propagatelike metodo non supportato
 $route['*']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID']=array ('ErrorController','notSupport');
-//Inoltra notifica di risposta ad un postù
+
+//Inoltra notifica di risposta ad un post
 $route['post']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('PostController', 'hasReply');
 //Path hasreply metodo non supportato
 $route['*']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('ErrorController','notSupport');

@@ -18,5 +18,13 @@ class PostController extends DooController{
         $request->connect_to("http://spam2.localhost:8888/post/server02/user4/post6")->get();
         return ($request->resultCode());
     }
+    
+    /*il retweet crea un messaggio sul server quando il client gli passa
+     *un <article> esattamente come accade in createPost;
+     *al momento lascio cmq il suo metodo*/
+    public function createRetweet(){;}
+    
+    /*questa mi sa che dovrebbe essere private*/
+    public function hasReply(){;}
 }
 ?>

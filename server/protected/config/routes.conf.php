@@ -123,7 +123,7 @@ $route['post']['/term/:term']=array ('TesauroController', 'removeTerm');
 //Path term metodo non supportato
 $route['*']['/term/:term']=array ('ErrorController', 'notSupport');
 //Restituisce tesaouro esteso
-$route['get']['/thesaurus']=array ('TesaouroController', 'sendThesaurus');
+$route['get']['/thesaurus']=array ('TesauroController', 'sendThesaurus');
 //Path thesaurus metodo non supportato
 $route['*']['/thesaurus']= array ('ErrorController', 'notSupport');
 //Propaga setlike

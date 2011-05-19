@@ -80,20 +80,20 @@ $route['*']['/gen_site'] = array('MainController', 'gen_site', 'authName'=>'DooP
 $route['*']['/gen_model'] = array('MainController', 'gen_model', 'authName'=>'DooPHP Admin', 'auth'=>$admin, 'authFail'=>'Unauthorized!');
 
 /////////INIZIO ROUTING SPAM//////////
-//Crea nuovo post
-$route['post']['/post']= array('PostController', 'createPost');
-//Ricevi post
-$route['get']['/post/:serverID/:userID/:postID']= array('PostController', 'sendPost');
-//Path con post metodo non supportato
-$route['*']['/post']= array ('ErrorController', 'notSupport');
 
 //Login utente
 $route['post']['/login']= array ('LoginController', 'authUser');
 //Path con login metodo non supportato
 $route['*']['/login']= array ('ErrorController', 'notSupport');
 
+//Crea nuovo post
+$route['post']['/post']= array('PostController', 'createPost');
+//Ricevi post
+$route['get']['/post/:serverID/:userID/:postID']= array('PostController', 'sendPost');
+//Path con post metodo non supportato
+$route['*']['/post']= array ('ErrorController', 'notSupport');
 //"Retweetta" un post
-$route['post']['/retweet/:serverID/:userID/:postID']= array ('RetweetController', 'createRetweet');
+$route['post']['/retweet/:serverID/:userID/:postID']= array ('PostController', 'createRetweet');
 //Path con retweet metodo non supportato
 $route['*']['/retweet/:serverID/:userID/:postID']= array ('ErrorController', 'notSupport');
 

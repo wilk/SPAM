@@ -6,7 +6,7 @@ class PostController extends DooController{
         echo ('Sto cazzo stai per creare un post!!');
     }
     
-    public function recivePost() {
+    public function sendPost() {
         /*Salvo il valore serverID dell'URI e lo stampo*/
         $server=$this->params['serverID'];
         echo ($server);

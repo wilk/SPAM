@@ -11,15 +11,18 @@ Ext.define ('SC.controller.regions.North' , {
 	extend: 'Ext.app.Controller' ,
 	
 	// Views
-	views: ['regions.North'] ,
+	views: ['regions.North' , 'regions.west.User'] ,
 	
 	// Configuration
 	init: function () {
 		this.control ({
-			// If an event is raised from loginButton, it's controlled
+			// Login button
 			'#loginButton' : {
-				// Click event
 				click : this.userAuth
+			} ,
+			// New post button
+			'#newPostButton' : {
+				click : this.sendNewPost
 			}
 		});
 
@@ -27,19 +30,63 @@ Ext.define ('SC.controller.regions.North' , {
 	} ,
 	
 	// Login handler
-	userAuth : function () {
-		var txtUser = Ext.getCmp('txtUsername').getValue ();
+	userAuth : function (button) {
+		var fieldUser = Ext.getCmp('userField');
+		var pUser = Ext.getCmp ('userPanel');
+		var bNewPost = Ext.getCmp ('newPostButton');
 		
-		// AJAX request to login
-		Ext.Ajax.request ({
-			url: 'login' ,
-			params: [txtUser] ,
-			success: function (response) {
-				Ext.Msg.alert ('Success' , 'You are now logged in! ' + response.responseText);
-			} ,
-			failure: function (error) {
-				Ext.Msg.alert ('Error' , 'Something goes wrong.\n' + error.responseText);
+		// Check if user wants to login
+		if (fieldUser.isVisible ()) {
+			
+			// Check if the form is filled or not
+			if (fieldUser.isValid ()) {
+		
+				var txtUser = fieldUser.getValue ();
+		
+				// AJAX request to login
+				Ext.Ajax.request ({
+					url: 'login' ,
+					params: [{
+						'username': txtUser
+					}] ,
+					success: function (response) {
+//						Ext.Msg.alert ('Success' , 'You are now logged in! ' + response.responseText);
+						button.setText ('Logout');
+						
+						fieldUser.setVisible (false);
+					
+						pUser.setTitle ('User :: ' + txtUser);
+						pUser.setVisible (true);
+						
+						bNewPost.setVisible (true);
+					} ,
+					failure: function (error) {
+						// Error 404 handled
+						if (error.status == 404)
+							Ext.Msg.alert ('Error ' + error.status , error.responseText);
+					}
+				});
 			}
-		});
+			else {
+				Ext.Msg.alert ('Error' , 'To login: fill the box with your username.');
+			}
+		}
+		// Check if user wants to logout
+		else {
+			bNewPost.setVisible (false);
+			
+			fieldUser.reset ();
+			fieldUser.setVisible (true);
+			
+			pUser.setVisible (false);
+			
+			button.setText ('Login');
+		}
+	} ,
+	
+	// New post handler
+	sendNewPost : function () {
+		var postWindow = Ext.getCmp ('windowNewPost');
+		postWindow.show ();
 	}
 });

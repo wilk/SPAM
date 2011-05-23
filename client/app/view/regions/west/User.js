@@ -12,18 +12,29 @@ Ext.define ('SC.view.regions.west.User' , {
 	alias: 'widget.user' ,
 	
 	// Configuration
-	title: 'User' ,
+	id: 'userPanel' ,
 	autoWidth: true ,
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 2 ,
 	anchor: '100%' ,
 	layout: 'anchor' ,
+	hidden: true
 	
 	// Body
-	items: [{
-		xtype: 'button' ,
-		id: 'buttonNewPost' ,
-		text: 'New Post'
-	}]
+//	items: [{
+//		xtype: 'button' ,
+//		id: 'buttonNewPost' ,
+//		text: 'New Post'
+//	}]
+
+//	dockedItems: [{
+//		xtype: 'toolbar' ,
+//		dock: 'bottom' ,
+//		items: [{
+//			text: 'New Article' ,
+//			id: 'buttonNewPost'
+//		}]
+//	}]
+
 });

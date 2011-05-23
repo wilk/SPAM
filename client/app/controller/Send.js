@@ -18,6 +18,9 @@ Ext.define ('SC.controller.Send' , {
 	// Models
 	models: ['Post'] ,
 	
+	// Stores
+	stores: ['Post'] ,
+	
 	// Configuration
 	init: function () {
 		this.control ({
@@ -55,7 +58,7 @@ Ext.define ('SC.controller.Send' , {
 		var artFooter = '</article>';
 		
 		var artBody = Ext.getCmp('txtAreaSend').getValue ();
-		article = artHeader + artBody + artFooter;
+		var article = artHeader + artBody + artFooter;
 		alert ('Hai scritto le seguenti minchiate: \n' + article);
 		
 //		var win = Ext.getCmp ('windowNewPost');

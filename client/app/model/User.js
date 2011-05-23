@@ -9,17 +9,17 @@
 
 Ext.define ('SC.model.User' , {
 	extend: 'Ext.data.Model' ,
-	alias: 'user' ,
+//	alias: 'user' ,
 	
 	// Fields
-	fields: ['id'] ,
+	fields: ['id']
 	
 	// Models that it has
-	hasMany: ['Post' , 'Reply' , 'Retweet'] ,
+//	hasMany: ['Post' , 'Reply' , 'Retweet']
 	
 	// REST Proxy for REST requests
-	proxy: {
-		type: 'rest' ,
-		url: '/users'
-	}
+//	proxy: {
+//		type: 'rest' ,
+//		url: '/users'
+//	}
 });

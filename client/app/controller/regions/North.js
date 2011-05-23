@@ -28,6 +28,18 @@ Ext.define ('SC.controller.regions.North' , {
 	
 	// Login handler
 	userAuth : function () {
-		alert ('Login button clicked');
+		var txtUser = Ext.getCmp('txtUsername').getValue ();
+		
+		// AJAX request to login
+		Ext.Ajax.request ({
+			url: 'login' ,
+			params: [txtUser] ,
+			success: function (response) {
+				Ext.Msg.alert ('Success' , 'You are now logged in! ' + response.responseText);
+			} ,
+			failure: function (error) {
+				Ext.Msg.alert ('Error' , 'Something goes wrong.\n' + error.responseText);
+			}
+		});
 	}
 });

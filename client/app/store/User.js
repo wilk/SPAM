@@ -9,7 +9,11 @@
 
 Ext.define ('SC.store.User' , {
 	extend: 'Ext.data.Store' ,
-	alias: 'user' ,
 	
-	model: 'User'
+	model: 'User' ,
+	
+	proxy: {
+		type: 'rest' ,
+		url: 'http://ltw1102.web.cs.unibo.it/login'
+	}
 });

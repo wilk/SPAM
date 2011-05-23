@@ -9,7 +9,15 @@
 
 Ext.define ('SC.store.Post' , {
 	extend: 'Ext.data.Store' ,
-	alias: 'post' ,
+//	alias: 'post' ,
 	
-	model: 'Post'
+	model: 'Post' ,
+	
+	// REST Proxy for REST requests
+	proxy: {
+		type: 'rest' ,
+		url: 'http://ltw1102.web.cs.unibo.it/post'
+	} ,
+	
+	autoLoad: true
 });

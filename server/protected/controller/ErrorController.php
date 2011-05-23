@@ -16,6 +16,10 @@ class ErrorController extends DooController{
 <p>Give some helpful comments other than 404 :(
 Also check out the links page for a list of URLs available in this demo.</p>';
     }
+    
+    public function notSupport(){
+        return 405;
+    }
 	
 
 }

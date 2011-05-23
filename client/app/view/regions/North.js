@@ -21,6 +21,7 @@ Ext.define ('SC.view.regions.North' , {
 	items: [{
 		// Login textfield
 		xtype: 'textfield' ,
+		id: 'txtUsername' ,
 		style: {
 			position: 'absolute' ,
 			right: '60px' ,

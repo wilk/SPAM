@@ -15,18 +15,9 @@ Ext.define ('SC.controller.regions.West' , {
 	
 	// Configuration
 	init: function () {
-		this.control ({
-			'#buttonNewPost': {
-				click: this.showNewPost
-			}
-		});
+//		this.control ({
+//		});
 	
 		console.log ('Controller West started.');
-	} ,
-	
-	// Show window to send new posts
-	showNewPost : function () {
-		var winPost = Ext.getCmp ('windowNewPost');
-		winPost.show ();
 	}
 });

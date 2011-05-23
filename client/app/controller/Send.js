@@ -15,23 +15,24 @@ Ext.define ('SC.controller.Send' , {
 	// Views
 	views: ['Send'] ,
 	
-	// Models
-	models: ['Post'] ,
-	
-	// Stores
-	stores: ['Post'] ,
-	
 	// Configuration
 	init: function () {
 		this.control ({
+			'send': {
+				show: this.resetPost
+			} ,
 			// Controlling txtArea of window for sending new posts
 			'#txtAreaSend': {
 				// On every keypress do something
 				keypress: this.checkChars
 			} , 
-			// Controlling send button
+			// Send button
 			'#buttonSend': {
 				click: this.sendPost
+			} ,
+			// Reset button
+			'#buttonReset': {
+				click: this.resetPost
 			}
 		});
 	
@@ -51,19 +52,42 @@ Ext.define ('SC.controller.Send' , {
 	
 	// @brief
 	sendPost : function () {
-		// TODO: injection xml code
-		// TODO: AJAX request with proxy.rest
+		var taSend = Ext.getCmp ('txtAreaSend');
 		
-		var artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">';
-		var artFooter = '</article>';
+		// Check if text area is filled
+		if (taSend.isValid ()) {
 		
-		var artBody = Ext.getCmp('txtAreaSend').getValue ();
-		var article = artHeader + artBody + artFooter;
-		alert ('Hai scritto le seguenti minchiate: \n' + article);
+			var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
+				artFooter = '</article>' ,
+				artBody = Ext.getCmp('txtAreaSend').getValue () ,
+				// XML Injection
+				article = artHeader + artBody + artFooter ,
+				win = Ext.getCmp ('windowNewPost');
 		
-//		var win = Ext.getCmp ('windowNewPost');
-//		var winPost = Ext.getCmp ('windowPost');
-//		winPost.show ();
-//		win.close ();
+			// AJAX Request
+			Ext.Ajax.request ({
+				url: 'post' ,
+				params: [{
+					'articolo': article
+				}] ,
+				success: function (response) {
+					win.close ();
+				} ,
+				failure: function (error) {
+					// Error 404 handled
+					if (error.status == 404)
+						Ext.Msg.alert ('Error ' + error.status , error.responseText);
+				
+				}
+			});
+		}
+		else {
+			Ext.Msg.alert ('Error' , 'Fill the text area before sending new posts.');
+		}
+	} ,
+	
+	// Reset text area of the new post
+	resetPost: function () {
+		Ext.getCmp ('txtAreaSend').reset ();
 	}
 });

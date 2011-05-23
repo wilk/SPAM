@@ -19,9 +19,21 @@ Ext.define ('SC.view.regions.North' , {
 	
 	// Body
 	items: [{
+		// New Post button
+		xtype: 'button' ,
+		id: 'newPostButton' ,
+		text: 'New Article' ,
+		hidden: true ,
+		style: {
+			position: 'absolute' ,
+			right: '60px' ,
+			top: '5px' ,
+			bottom: '5px'
+		}
+	} , {
 		// Login textfield
 		xtype: 'textfield' ,
-		id: 'txtUsername' ,
+		id: 'userField' ,
 		style: {
 			position: 'absolute' ,
 			right: '60px' ,

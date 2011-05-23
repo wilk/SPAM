@@ -20,21 +20,4 @@ Ext.define ('SC.view.regions.west.User' , {
 	anchor: '100%' ,
 	layout: 'anchor' ,
 	hidden: true
-	
-	// Body
-//	items: [{
-//		xtype: 'button' ,
-//		id: 'buttonNewPost' ,
-//		text: 'New Post'
-//	}]
-
-//	dockedItems: [{
-//		xtype: 'toolbar' ,
-//		dock: 'bottom' ,
-//		items: [{
-//			text: 'New Article' ,
-//			id: 'buttonNewPost'
-//		}]
-//	}]
-
 });

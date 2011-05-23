@@ -50,6 +50,10 @@ Ext.define ('SC.view.Send' , {
 			id: 'sendCharCounter' ,
 			margin: '0 0 0 5'
 		} , '->' , {
+			// Button reset
+			text: 'Reset' ,
+			id: 'buttonReset'
+		} , {
 			// Button send
 			text: 'Send' ,
 			id: 'buttonSend'

@@ -31,9 +31,9 @@ Ext.define ('SC.controller.regions.North' , {
 	
 	// Login handler
 	userAuth : function (button) {
-		var fieldUser = Ext.getCmp('userField');
-		var pUser = Ext.getCmp ('userPanel');
-		var bNewPost = Ext.getCmp ('newPostButton');
+		var 	fieldUser = Ext.getCmp ('userField') ,
+			pUser = Ext.getCmp ('userPanel') ,
+			bNewPost = Ext.getCmp ('newPostButton');
 		
 		// Check if user wants to login
 		if (fieldUser.isVisible ()) {
@@ -50,7 +50,6 @@ Ext.define ('SC.controller.regions.North' , {
 						'username': txtUser
 					}] ,
 					success: function (response) {
-//						Ext.Msg.alert ('Success' , 'You are now logged in! ' + response.responseText);
 						button.setText ('Logout');
 						
 						fieldUser.setVisible (false);

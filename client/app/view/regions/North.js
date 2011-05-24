@@ -41,7 +41,8 @@ Ext.define ('SC.view.regions.North' , {
 			bottom: '5px'
 		} ,
 		emptyText: 'username' ,
-		allowBlank: false
+		allowBlank: false ,
+		enableKeyEvents: true
 	} , {
 		// Login button
 		xtype: 'button' ,

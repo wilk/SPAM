@@ -8,8 +8,11 @@
 // @note	Recent posts panel
 
 Ext.define ('SC.view.regions.east.RecentPost' , {
-	extend: 'Ext.panel.Panel' ,
+//	extend: 'Ext.panel.Panel' ,
+	extend: 'Ext.grid.Panel' ,
 	alias: 'widget.recentpost' ,
+	
+	store: 'regions.east.RecentPost' ,
 	
 	// Configuration
 	title: 'Recent Post' ,
@@ -18,5 +21,12 @@ Ext.define ('SC.view.regions.east.RecentPost' , {
 	animCollapse: true ,
 	bodyPadding: 2 ,
 	anchor: '100%' ,
-	layout: 'anchor'
+	layout: 'anchor' ,
+	
+	// Body
+	columns: [{
+		header: 'Articles' ,
+		dataIndex: 'id' ,
+		flex: 1
+	}]
 });

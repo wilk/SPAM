@@ -52,6 +52,8 @@ Ext.define ('SC.controller.Send' , {
 	
 	// @brief
 	sendPost : function () {
+		// TODO: parsing text to finding hashtag
+		// TODO: hashtag autocomplete
 		var taSend = Ext.getCmp ('txtAreaSend');
 		
 		// Check if text area is filled
@@ -68,15 +70,13 @@ Ext.define ('SC.controller.Send' , {
 			Ext.Ajax.request ({
 				url: 'post' ,
 				params: [{
-					'articolo': article
+					articolo: article
 				}] ,
 				success: function (response) {
 					win.close ();
 				} ,
 				failure: function (error) {
-					// Error 404 handled
-					if (error.status == 404)
-						Ext.Msg.alert ('Error ' + error.status , error.responseText);
+					Ext.Msg.alert ('Error ' + error.status , error.responseText);
 				
 				}
 			});

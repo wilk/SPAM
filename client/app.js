@@ -17,6 +17,7 @@ Ext.application ({
 		'regions.West' ,
 		'regions.Center' ,
 		'regions.East' ,
+		'regions.east.RecentPost' ,
 		'Send' ,
 		'regions.center.Post'
 	]

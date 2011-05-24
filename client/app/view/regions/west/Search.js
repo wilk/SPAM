@@ -25,5 +25,15 @@ Ext.define ('SC.view.regions.west.Search' , {
 		xtype: 'textfield' ,
 		emptyText: 'search' ,
 		anchor: '100%'
+	}] ,
+	
+	// Dockbar
+	dockedItems: [{
+		xtype: 'toolbar' ,
+		dock: 'bottom' ,
+		items: [{
+			text: 'Advanced' ,
+			id: 'advancedButton'
+		}]
 	}]
 });

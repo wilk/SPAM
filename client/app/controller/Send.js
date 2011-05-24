@@ -7,7 +7,7 @@
 //
 // @note	Controller of view of sending new posts
 
-//var txtareaSendChars = 140;
+var MAXCHARS = 140;
 
 Ext.define ('SC.controller.Send' , {
 	extend: 'Ext.app.Controller' ,
@@ -18,6 +18,7 @@ Ext.define ('SC.controller.Send' , {
 	// Configuration
 	init: function () {
 		this.control ({
+			// Reset field when it's showed
 			'send': {
 				show: this.resetPost
 			} ,
@@ -39,25 +40,30 @@ Ext.define ('SC.controller.Send' , {
 		console.log ('Controller Send started.');
 	} ,
 	
-	// TODO: on keypress, increase or decrease sendCharCounter
-	// HINT: use regular expression
+	// @brief Check if text area lenght is positive or negative (140 chars)
+	//	  and update label with the right color
 	checkChars : function (txtarea, e) {
-//		if (e.isSpecialKey () && (txtareaSendChars < 140) &&  ((e.getKey () == e.BACKSPACE) || (e.getKey () == e.DELETE)))
-//			Ext.getCmp('sendCharCounter').setText (++txtareaSendChars);
-////		else if (!(e.isSpecialKey ()) && !(e.isNavKeyPress))
-//		else if (!(e.SpecialKey))
-//			Ext.getCmp('sendCharCounter').setText (--txtareaSendChars);
-//		txtareaSendChars++;
+		var 	counterLabel = Ext.getCmp ('sendCharCounter') ,
+			// Get the lenght
+			numChar = txtarea.getValue().length ,
+			// And the difference
+			diffCount = MAXCHARS - numChar;
+		
+		// If it's negative, color it with red, otherwise with black
+		if (diffCount < 0)
+			counterLabel.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
+		else
+			counterLabel.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 	} ,
 	
 	// @brief
 	sendPost : function () {
 		// TODO: parsing text to finding hashtag
 		// TODO: hashtag autocomplete
-		var taSend = Ext.getCmp ('txtAreaSend');
+		var 	taSend = Ext.getCmp ('txtAreaSend');
 		
-		// Check if text area is filled
-		if (taSend.isValid ()) {
+		// Check if text area is filled and if it has at most 140 chars
+		if (taSend.isValid () && (taSend.getValue().length <= MAXCHARS)) {
 		
 			var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
 				artFooter = '</article>' ,
@@ -69,9 +75,7 @@ Ext.define ('SC.controller.Send' , {
 			// AJAX Request
 			Ext.Ajax.request ({
 				url: 'post' ,
-				params: [{
-					articolo: article
-				}] ,
+				params: { articolo: article } ,
 				success: function (response) {
 					win.close ();
 				} ,
@@ -82,12 +86,14 @@ Ext.define ('SC.controller.Send' , {
 			});
 		}
 		else {
-			Ext.Msg.alert ('Error' , 'Fill the text area before sending new posts.');
+			Ext.Msg.alert ('Error' , 'New post is blank or it has got to many chars (140 max).');
 		}
 	} ,
 	
 	// Reset text area of the new post
 	resetPost: function () {
 		Ext.getCmp ('txtAreaSend').reset ();
+		
+		Ext.getCmp ('sendCharCounter').setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
 	}
 });

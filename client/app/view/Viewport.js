@@ -17,6 +17,7 @@ Ext.define ('SC.view.Viewport' , {
 		'SC.view.regions.East' ,
 		'SC.view.regions.Center' ,
 		'SC.view.Send' ,
+		'SC.view.AdvancedSearch'
 	] ,
 	
 	// Configuration
@@ -33,5 +34,7 @@ Ext.define ('SC.view.Viewport' , {
 		xtype: 'centerregion'
 	} , {
 		xtype: 'send'
+	} , {
+		xtype: 'asearch'
 	}]
 });

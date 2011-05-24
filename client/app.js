@@ -18,6 +18,7 @@ Ext.application ({
 		'regions.Center' ,
 		'regions.East' ,
 		'Send' ,
-		'regions.center.Post'
+		'regions.center.Post',
+		'regions.east.Server'
 	]
 });

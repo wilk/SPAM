@@ -70,7 +70,7 @@ Ext.define ('SC.controller.Send' , {
 			Ext.Ajax.request ({
 				url: 'post' ,
 				params: [{
-					'articolo': article
+					articolo: article
 				}] ,
 				success: function (response) {
 					win.close ();

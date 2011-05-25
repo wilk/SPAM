@@ -27,7 +27,7 @@ class LoginController extends DooController {
         $this->load()->helper('DooRestClient');
         $request = new DooRestClient;
         $usersList = simplexml_load_file('users.xml');
-        $usersList->user = $user;
+        $usersList->addChild('user', $user);
         @file_put_contents("users.xml", $usersList->saveXML());
         mkdir("data/" . $user, 0777);
         $request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/server.xml")->get();

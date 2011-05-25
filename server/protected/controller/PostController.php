@@ -1,6 +1,19 @@
 <?php
 
 class PostController extends DooController {
+    
+    public function beforeRun($resource, $action){
+		session_start();
+		
+		//if not login, group = anonymous
+		$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
+		
+		//check against the ACL rules
+		if($rs = $this->acl()->process($role, $resource, $action )){
+			//echo $role .' is not allowed for '. $resource . ' '. $action;
+			return $rs;
+		}
+	}
 
     public function createPost() {
         /*Recupero nella variabile $content tutto quello che mi viene passato tramite POST
@@ -21,7 +34,7 @@ class PostController extends DooController {
          */
         $this->load()->helper('DooRestClient');
         $request = new DooRestClient;
-        $request->connect_to("http://spam2.localhost:8888/post/server02/user4/post6")->get();
+        $request->connect_to("http://www.google.it")->get();
         return ($request->resultCode());
     }
 

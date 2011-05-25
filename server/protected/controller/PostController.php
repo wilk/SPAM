@@ -20,7 +20,7 @@ class PostController extends DooController {
          * crearo il file contenente il post
          * Scansiono il contenuto per organizzare una sua futura ricerca
          */
-        $content= $_POST['articolo'];
+        $content= $_POST['article'];
         @file_put_contents("data/".$_SESSION['user']['username']."/post1.txt", $content);
         //TODO: Creare funzioni salvataggio file e scansione contenuto;
         return 201;

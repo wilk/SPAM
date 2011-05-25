@@ -1,6 +1,7 @@
 <?php
 include './protected/config/common.conf.php';
 include './protected/config/routes.conf.php';
+include './protected/config/acl.conf.php';
 //include './protected/config/db.conf.php';
 
 #Just include this for production mode
@@ -16,6 +17,8 @@ Doo::conf()->set($config);
 # remove this if you wish to see the normal PHP error view.
 include $config['BASE_PATH'].'diagnostic/debug.php';
 
+Doo::acl()->rules = $acl;
+Doo::acl()->defaultFailedRoute = '/error';
 # database usage
 //Doo::useDbReplicate();	#for db replication master-slave usage
 //Doo::db()->setMap($dbmap);

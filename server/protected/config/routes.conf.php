@@ -86,6 +86,11 @@ $route['post']['/login']= array ('LoginController', 'authUser');
 //Path con login metodo non supportato
 $route['*']['/login']= array ('ErrorController', 'notSupport');
 
+//Logout utente
+$route['post']['/logout']= array ('LoginController', 'logout');
+//Path con logout metodo non supportato
+$route['*']['/logout']= array ('ErrorController', 'notSupport');
+
 //Crea nuovo post
 $route['post']['/post']= array('PostController', 'createPost');
 //Ricevi post

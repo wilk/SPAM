@@ -37,10 +37,27 @@ class LoginController extends DooController {
 
     private function startSession($user) {
         session_start();
+        if (isset($_SESSION['user']))
+            unset($_SESSION['user']);
         $_SESSION['user'] = array(
             'username' => $user,
             'group' => 'logged',
         );
+    }
+
+    public function logout() {
+        session_start();
+        //Elimino i dati dalla sessione
+        unset($_SESSION['user']);
+        //Se c'è un cookie lo elimino
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]
+            );
+        }
+        //termino la sessione
+        session_destroy();
+        return 200;
     }
 
 }

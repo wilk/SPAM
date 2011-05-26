@@ -98,14 +98,14 @@ $route['get']['/post/:serverID/:userID/:postID']= array('PostController', 'sendP
 //Path con post metodo non supportato
 $route['*']['/post']= array ('ErrorController', 'notSupport');
 //"Retweetta" un post
-$route['post']['/retweet/:serverID/:userID/:postID']= array ('PostController', 'createRetweet');
+$route['post']['/respam']= array ('PostController', 'createRespam');
 //Path con retweet metodo non supportato
-$route['*']['/retweet/:serverID/:userID/:postID']= array ('ErrorController', 'notSupport');
+$route['*']['/respam']= array ('ErrorController', 'notSupport');
 
 //Rispondi al post
-$route['post']['/replyto/:serverID/:userID/:postID']=array ('ReplyController', 'createReply');
+$route['post']['/replyto']=array ('ReplyController', 'createReply');
 //Path con replyto metodo non supportato
-$route['*']['/replyto/:serverID/:userID/:postID']=array ('ErrorController', 'notSupport');
+$route['*']['/replyto']=array ('ErrorController', 'notSupport');
 //Ricerca un post
 
 $route['get']['/search/:limit/:type/:serverID/:userID/:postID']= array ('SearchController', 'searchMain');
@@ -130,13 +130,13 @@ $route['post']['/setfollow/:value/:serverID/:userID']=array ('FollowController',
 $route['*']['/setfollow/:value/:serverID/:userID']=array('ErrorController','notSupport');
 
 //Aggiunge termine al tesauro
-$route['post']['/addterm/:parent/:newTerm']=array ('TesauroController', 'addTerm');
+$route['post']['/addterm']=array ('TesauroController', 'addTerm');
 //Path addterm metodo non supportato
-$route['*']['/addterm/:parent/:newTerm']= array ('ErrorController', 'notSupport');
+$route['*']['/addterm']= array ('ErrorController', 'notSupport');
 //Rimuove termine dal tesauro
-$route['post']['/term/:term']=array ('TesauroController', 'removeTerm');
+$route['post']['/remterm']=array ('TesauroController', 'removeTerm');
 //Path term metodo non supportato
-$route['*']['/term/:term']=array ('ErrorController', 'notSupport');
+$route['*']['/remterm']=array ('ErrorController', 'notSupport');
 //Restituisce tesauro esteso
 $route['get']['/thesaurus']=array ('TesauroController', 'sendThesaurus');
 //Path thesaurus metodo non supportato

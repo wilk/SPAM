@@ -5,12 +5,10 @@ class TestController extends DooController{
     public function getHead(){
         $url =html_entity_decode($_POST['url']);
         $url = quoted_printable_decode($url);
-        echo $url;
-        return 200;
-//        $this->load()->helper('DooRestClient');
-//        $request = new DooRestClient;
-//        $request->connect_to($url)->get();
-//        echo $request->resultContentType();
+        $this->load()->helper('DooRestClient');
+        $request = new DooRestClient;
+        $request->connect_to($url)->get();
+        echo $request->resultContentType();
 //        $ch = curl_init();
 //        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 //        curl_setopt ($ch, CURLOPT_URL, $url);

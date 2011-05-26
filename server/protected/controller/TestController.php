@@ -3,7 +3,7 @@
 class TestController extends DooController{
     
     public function getHead(){
-        $url = $_POST['url'];
+        $url =html_entity_decode($_POST['url']);
         $this->load()->helper('DooRestClient');
         $request = new DooRestClient;
         $request->connect_to($url)->get();

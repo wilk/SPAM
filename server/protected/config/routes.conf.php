@@ -146,4 +146,7 @@ $route['*']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:
 $route['post']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('PostController', 'hasReply');
 //Path hasreply metodo non supportato
 $route['*']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('ErrorController','notSupport');
+
+//SEZIONE TEST
+$route['post']['/extresource'] = array ('TestController', 'getHead');
 ?>

@@ -67,7 +67,7 @@ Ext.define ('SC.controller.Send' , {
 		
 			var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
 				artFooter = '</article>' ,
-				artBody = Ext.getCmp('txtAreaSend').getValue () ,
+				artBody = taSend.getValue () ,
 				// XML Injection
 				article = artHeader + artBody + artFooter ,
 				win = Ext.getCmp ('windowNewPost');
@@ -75,13 +75,12 @@ Ext.define ('SC.controller.Send' , {
 			// AJAX Request
 			Ext.Ajax.request ({
 				url: 'post' ,
-				params: { articolo: article } ,
+				params: { article: article } ,
 				success: function (response) {
 					win.close ();
 				} ,
 				failure: function (error) {
 					Ext.Msg.alert ('Error ' + error.status , error.responseText);
-				
 				}
 			});
 		}

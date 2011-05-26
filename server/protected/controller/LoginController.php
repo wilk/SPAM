@@ -5,10 +5,11 @@ class LoginController extends DooController {
     public function authUser() {
         $user = strtolower($_POST['username']);
         if ($this->firstTime($user)) {
-            //$this->addUser($user);
+            $this->addUser($user);
+            $this->startSession($user);
             return 201;
         } else {
-            //TODO: Crea Sessione con utente
+            $this->startSession($user);
             return 200;
         }
     }
@@ -25,14 +26,21 @@ class LoginController extends DooController {
     private function addUser($user) {
         $this->load()->helper('DooRestClient');
         $request = new DooRestClient;
-        $request->connect_to("/users.xml")->get();
-        $usersList= $request->xml_result();
-        $usersList->user = $user;
+        $usersList = simplexml_load_file('users.xml');
+        $usersList->addChild('user', $user);
         @file_put_contents("users.xml", $usersList->saveXML());
-        mkdir("data/".$user, 0777); 
+        mkdir("data/" . $user, 0777);
         $request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/server.xml")->get();
         $serverList = $request->xml_result();
-        @file_put_contents('data/'.$user ."/servers.xml", $serverList->saveXML());
+        @file_put_contents('data/' . $user . "/servers.xml", $serverList->saveXML());
+    }
+
+    private function startSession($user) {
+        session_start();
+        $_SESSION['user'] = array(
+            'username' => $user,
+            'group' => 'logged',
+        );
     }
 
 }

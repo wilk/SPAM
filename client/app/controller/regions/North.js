@@ -84,13 +84,23 @@ function userLogin (button) {
 	}
 	// Check if user wants to logout
 	else {
-		bNewPost.setVisible (false);
+		// AJAX request to logout
+		Ext.Ajax.request ({
+			method: 'POST' ,
+			url: 'logout' ,
+			success: function (response) {
+				bNewPost.setVisible (false);
 		
-		fieldUser.reset ();
-		fieldUser.setVisible (true);
+				fieldUser.reset ();
+				fieldUser.setVisible (true);
 			
-		pUser.setVisible (false);
+				pUser.setVisible (false);
 			
-		button.setText ('Login');
+				button.setText ('Login');
+			} ,
+			failure: function (error) {
+				Ext.Msg.alert ('Error ' + error.status , error.responseText);
+			}
+		});
 	}	
 }

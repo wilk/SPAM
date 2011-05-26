@@ -15,6 +15,7 @@ Ext.application ({
 	controllers: [
 		'regions.North' ,
 		'regions.West' ,
+		'regions.west.Search' ,
 		'regions.Center' ,
 		'regions.East' ,
 		'regions.east.RecentPost',

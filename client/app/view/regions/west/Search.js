@@ -22,8 +22,51 @@ Ext.define ('SC.view.regions.west.Search' , {
 	
 	// Body
 	items: [{
+		xtype: 'combo' ,
+		id: 'comboSearch' ,
+		anchor: '100%' ,
+		// User can only choose
+		editable: false ,
+		// Different types of search
+		store: [
+			'Author' ,
+			'Following' ,
+			'Recent' ,
+			'Related' ,
+			'Fulltext' ,
+			'Affinity'
+		] ,
+//		queryMode: 'local' ,
+		value: 'Fulltext' ,
+		allowBlank: false
+		
+//		typeAhead: true
+	} , {
+		xtype: 'numberfield' ,
+		id: 'numberSearch' ,
+		value: 1 ,
+		minValue: 1 ,
+		allowBlank: false
+	} , {
 		xtype: 'textfield' ,
-		emptyText: 'search' ,
-		anchor: '100%'
+		id: 'textSearch' ,
+		emptyText: 'Term to search' ,
+		anchor: '100%' ,
+		enableKeyEvents: true ,
+		allowBlank: false
+	}] ,
+	
+	// Dockbar
+	dockedItems: [{
+		xtype: 'toolbar' ,
+		dock: 'bottom' ,
+//		ui: 'footer' ,
+		items: ['->' , {
+			text: 'Reset' ,
+			id: 'resetSearch'
+		} , {
+			text: 'Submit' ,
+			id: 'submitSearch'
+		}]
 	}]
 });

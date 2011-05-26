@@ -16,7 +16,7 @@ Ext.define ('SC.view.Viewport' , {
 		'SC.view.regions.West' ,
 		'SC.view.regions.East' ,
 		'SC.view.regions.Center' ,
-		'SC.view.Send' ,
+		'SC.view.Send'
 	] ,
 	
 	// Configuration

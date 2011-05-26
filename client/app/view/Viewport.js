@@ -33,5 +33,5 @@ Ext.define ('SC.view.Viewport' , {
 		xtype: 'centerregion'
 	} , {
 		xtype: 'send'
-	}]
+	},{xtype:'serveredit'}]
 });

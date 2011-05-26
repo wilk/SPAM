@@ -17,9 +17,10 @@ Ext.application ({
 		'regions.West' ,
 		'regions.Center' ,
 		'regions.East' ,
-		'regions.east.RecentPost' ,
+		'regions.east.RecentPost',
 		'Send' ,
 		'regions.center.Post',
-		'regions.east.Server'
+		'regions.east.Server',
+		'regions.center.ServerEdit'
 	]
 });

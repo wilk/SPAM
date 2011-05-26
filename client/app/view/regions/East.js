@@ -15,8 +15,7 @@ Ext.define ('SC.view.regions.East' , {
 	requires: [
 		'SC.view.regions.east.RecentPost' ,
 		'SC.view.regions.east.TagCloud',
-		'SC.view.regions.east.FederatedServer'
-	] ,
+		'SC.view.regions.east.FederatedServer'],
 	
 	// Configuration
 	title: 'Menu' ,

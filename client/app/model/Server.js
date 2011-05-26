@@ -1,6 +1,6 @@
 Ext.define('SC.model.Server',{
 	extend: 'Ext.data.Model',
-	fields:	['serverID']
+	fields:	[{name:'serverID',mapping:'@serverID'}]
 //	proxy: {
 //		type: 'ajax',
 //		url: 'app/data/server.xml',

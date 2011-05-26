@@ -148,5 +148,5 @@ $route['post']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array 
 $route['*']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('ErrorController','notSupport');
 
 //SEZIONE TEST
-$route['post']['/extresource'] = array ('TestController', 'getHead');
+$route['post']['/extrasource'] = array ('TestController', 'getHead');
 ?>

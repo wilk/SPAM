@@ -43,7 +43,7 @@ class PostController extends DooController {
      * un <article> esattamente come accade in createPost;
      * al momento lascio cmq il suo metodo */
 
-    public function createRetweet() {
+    public function createRespam() {
 ;
     }
 

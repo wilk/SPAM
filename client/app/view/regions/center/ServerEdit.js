@@ -10,7 +10,16 @@ Ext.define('SC.view.regions.center.ServerEdit',{
 	modal:true,
 	items:[{
 		xtype:'grid',
-		columns:[{header:'Server name',dataIndex:'serverID'}],
+		columns:[{header:'Server name',dataIndex:'serverID',editor:{
+									xtype:'textfield',
+									allowBlank:false
+									}
+		}],
+		plugins:[Ext.create('Ext.grid.plugin.RowEditing',{
+			listeners:{edit:{element:'el',
+					fn:function(){console.log('edit');}
+				}}
+		})],
 		store:'Servers',
 		forceFit:true,
 	}],

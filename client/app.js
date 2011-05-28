@@ -20,6 +20,8 @@ Ext.application ({
 		'regions.East' ,
 		'regions.east.RecentPost' ,
 		'Send' ,
+		'SendResource' ,
+		'SelectPost' ,
 		'regions.center.Post'
 	]
 });

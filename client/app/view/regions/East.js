@@ -14,7 +14,7 @@ Ext.define ('SC.view.regions.East' , {
 	// Panel views
 	requires: [
 		'SC.view.regions.east.RecentPost' ,
-		'SC.view.regions.east.TagCloud'
+		'SC.view.regions.east.GeoLocation'
 	] ,
 	
 	// Configuration
@@ -30,6 +30,6 @@ Ext.define ('SC.view.regions.East' , {
 	items: [{
 		xtype: 'recentpost'
 	} , {
-		xtype: 'tagcloud'
+		xtype: 'geolocation'
 	}]
 });

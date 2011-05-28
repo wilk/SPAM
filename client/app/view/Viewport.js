@@ -16,7 +16,9 @@ Ext.define ('SC.view.Viewport' , {
 		'SC.view.regions.West' ,
 		'SC.view.regions.East' ,
 		'SC.view.regions.Center' ,
-		'SC.view.Send'
+		'SC.view.Send' ,
+		'SC.view.SelectPost' ,
+		'SC.view.SendResource'
 	] ,
 	
 	// Configuration
@@ -33,5 +35,9 @@ Ext.define ('SC.view.Viewport' , {
 		xtype: 'centerregion'
 	} , {
 		xtype: 'send'
+	} , {
+		xtype: 'selectpost'
+	} , {
+		xtype: 'sendresource'
 	}]
 });

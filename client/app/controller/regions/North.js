@@ -39,8 +39,8 @@ Ext.define ('SC.controller.regions.North' , {
 	
 	// New post handler
 	sendNewPost : function () {
-		var postWindow = Ext.getCmp ('windowNewPost');
-		postWindow.show ();
+		var selectPostWindow = Ext.getCmp ('windowSelectPost');
+		selectPostWindow.show ();
 	}
 });
 

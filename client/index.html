@@ -16,6 +16,17 @@
 			enabled : true
 		});
 		
+		// Geolocation
+		Ext.Function.defer (function () {
+			var latlng = new google.maps.LatLng(44.49733, 11.356403);
+			var myOptions = {
+				zoom: 0,
+				center: latlng,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			var map = new google.maps.Map(document.getElementById("geoloc"), myOptions);
+		} , 2500);
+		
 		// TODO: use another way to setup cookies
 		// After 1,5 sec, check cookies and use them if exists
 		Ext.Function.defer (function () {

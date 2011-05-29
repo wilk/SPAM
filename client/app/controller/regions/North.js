@@ -39,8 +39,8 @@ Ext.define ('SC.controller.regions.North' , {
 	
 	// New post handler
 	sendNewPost : function () {
-		var postWindow = Ext.getCmp ('windowNewPost');
-		postWindow.show ();
+		var selectPostWindow = Ext.getCmp ('windowSelectPost');
+		selectPostWindow.show ();
 	}
 });
 
@@ -64,13 +64,20 @@ function userLogin (button) {
 				url: 'login' ,
 				params: { username: txtUser } ,
 				success: function (response) {
+					// If server sets his cookies
+					var userCookie = Ext.util.Cookies.get ('PHPSESSID');
+					
+					if (userCookie != null)					
+						// Client sets its
+						Ext.util.Cookies.set ('SPAMlogin' , txtUser);
+					
 					button.setText ('Logout');
-						
+					
 					fieldUser.setVisible (false);
-				
+					
 					pUser.setTitle ('User :: ' + txtUser);
 					pUser.setVisible (true);
-						
+					
 					bNewPost.setVisible (true);
 				} ,
 				failure: function (error) {

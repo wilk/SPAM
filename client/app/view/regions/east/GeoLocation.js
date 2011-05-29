@@ -1,4 +1,4 @@
-// @file 	TagCloud.js
+// @file 	GeoLocation.js
 //
 // @author 	Vincenzo Ferrari <ferrari@cs.unibo.it>
 //		Riccardo Statuto <statuto@cs.unibo.it>
@@ -7,12 +7,12 @@
 //
 // @note	Tag cloud panel
 
-Ext.define ('SC.view.regions.east.TagCloud' , {
+Ext.define ('SC.view.regions.east.GeoLocation' , {
 	extend: 'Ext.panel.Panel' ,
-	alias: 'widget.tagcloud' ,
+	alias: 'widget.geolocation' ,
 	
 	// Configuration
-	title: 'Tag Cloud' ,
+	title: 'Geo Location' ,
 	autoWidth: true ,
 	collapsible: true ,
 	animCollapse: true ,

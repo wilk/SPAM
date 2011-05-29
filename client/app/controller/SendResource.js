@@ -1,84 +1,86 @@
-// @file 	Send.js
+// @file 	SendResource.js
 //
 // @author 	Vincenzo Ferrari <ferrari@cs.unibo.it>
 //		Riccardo Statuto <statuto@cs.unibo.it>
 //		Stefano Sgarlata <sgarlat@cs.unibo.it>
 //		Clemente Vitale  <cvitale@cs.unibo.it>
 //
-// @note	Controller of view of sending new posts
+// @note	Controller of send resource view
 
 var MAXCHARS = 140;
 
 var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
 	artFooter = '</article>';
 
-Ext.define ('SC.controller.Send' , {
+var 	winRes, txtResUrl, txtResDes, lblResCount;
+
+// Type of resource
+var btnGhost;
+
+Ext.define ('SC.controller.SendResource' , {
 	extend: 'Ext.app.Controller' ,
 	
 	// Views
-	views: ['Send'] ,
+	views: ['SendResource'] ,
 	
 	// Configuration
 	init: function () {
 		this.control ({
 			// Reset field when it's showed
-			'send': {
-				show: this.resetPost
+			'sendresource': {
+				show: this.initFields
 			} ,
 			// Controlling txtArea of window for sending new posts
-			'#txtAreaSend': {
+			'#txtResourceDescription': {
 				// On every keypress do something
 				keypress: this.checkChars
 			} , 
 			// Send button
-			'#buttonSend': {
+			'#btnResSend': {
 				click: this.sendPost
 			} ,
 			// Reset button
-			'#buttonReset': {
-				click: this.resetPost
+			'#btnResReset': {
+				click: resetFields
 			}
 		});
 	
-		console.log ('Controller Send started.');
+		console.log ('Controller SendResource started.');
 	} ,
 	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
 	checkChars : function (txtarea, e) {
-		var 	counterLabel = Ext.getCmp ('sendCharCounter') ,
 			// Get the lenght
-			numChar = txtarea.getValue().length ,
+		var	numChar = txtarea.getValue().length ,
 			// And the difference
 			diffCount = MAXCHARS - numChar;
 		
 		// If it's negative, color it with red, otherwise with black
 		if (diffCount < 0)
-			counterLabel.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
+			lblResCount.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
 		else
-			counterLabel.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
+			lblResCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 	} ,
 	
 	// @brief
 	sendPost : function () {
 		// TODO: parsing text to finding hashtag
 		// TODO: hashtag autocomplete
-		var 	taSend = Ext.getCmp ('txtAreaSend');
-		
 		// Check if text area is filled and if it has at most 140 chars
-		if (taSend.isValid () && (taSend.getValue().length <= MAXCHARS)) {
+		if (txtResUrl.isValid () && (txtResDes.getValue().length <= MAXCHARS)) {
 		
-			var 	artBody = taSend.getValue () ,
+			var 	artBody = txtResDes.getValue () ,
+				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />' ,
 				// XML Injection
-				article = artHeader + artBody + artFooter ,
-				win = Ext.getCmp ('windowNewPost');
+				article = artHeader + artBody + artResource + artFooter;
 		
 			// AJAX Request
 			Ext.Ajax.request ({
 				url: 'post' ,
 				params: { article: article } ,
 				success: function (response) {
-					win.close ();
+					winRes.close ();
 				} ,
 				failure: function (error) {
 					Ext.Msg.alert ('Error ' + error.status , error.responseText);
@@ -90,10 +92,22 @@ Ext.define ('SC.controller.Send' , {
 		}
 	} ,
 	
-	// Reset text area of the new post
-	resetPost: function () {
-		Ext.getCmp ('txtAreaSend').reset ();
+	// @brief initialize fields and local variables
+	initFields: function (win) {
+		winRes = win;
+		txtResUrl = winRes.down ('#txtResourceUrl');
+		txtResDes = winRes.down ('#txtResourceDescription');
+		lblResCount = winRes.down ('#lblResCounter');
 		
-		Ext.getCmp ('sendCharCounter').setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
+		btnGhost = Ext.getCmp ('resBtnGhost');
+		
+		resetFields ();
 	}
 });
+
+// @brief Reset fields
+function resetFields () {
+	txtResUrl.reset ();
+	txtResDes.reset ();
+	lblResCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
+}

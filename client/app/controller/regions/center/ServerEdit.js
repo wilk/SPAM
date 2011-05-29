@@ -4,10 +4,6 @@ Ext.define('SC.controller.regions.center.ServerEdit',{
 		'regions.east.FederatedServer'],
 	stores:['Servers'],
 	models:['Server'],
-//	refs:[{
-//		ref:'edited',
-//		selector:'editorgrid'
-//	}],
 	init:function(){
 		this.control({
 			'#buttonServerEdit':{
@@ -15,10 +11,7 @@ Ext.define('SC.controller.regions.center.ServerEdit',{
 			},
 			'#buttonServerSave':{
 				click:this.buttonServerSaveClicked
-			},
-//			'button':{click:function(){console.log('editededeeded');
-//						  }
-//			}
+			}
 		});
 	},
 	buttonServerEditClicked:function(){
@@ -27,7 +20,13 @@ Ext.define('SC.controller.regions.center.ServerEdit',{
 	},
 	buttonServerSaveClicked:function(){
 		var store=this.getServersStore();
-		store.sync();
+		if(Ext.isEmpty(Ext.getCmp('newserver').getValue())!=true){
+			store.add({serverID:Ext.getCmp('newserver').getValue()});
+			store.sync();
+		}
+		if(Ext.isEmpty(store.getUpdatedRecords())!=true){
+			store.sync();
+		}
 		console.log('save servers click');
 	}
 });

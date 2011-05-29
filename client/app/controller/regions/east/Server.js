@@ -6,11 +6,9 @@ Ext.define('SC.controller.regions.east.Server',{
 	init:function(){
 		var store=this.getServersStore();
 		store.load();
-//		this.control({
-//			'#buttonServerEdit':{
-//				click:this.buttonServerEditClicked
-//			}
-//		});
+		store.getProxy().on('exception',function(conn,response){
+							console.log('server list not available');
+						});
 		console.log ('Controller federated server started.');
 	}
 });

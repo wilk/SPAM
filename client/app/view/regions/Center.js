@@ -20,10 +20,4 @@ Ext.define ('SC.view.regions.Center' , {
 	items: [{
 		xtype: 'post'
 	}]
-//		xtype: 'panel' ,
-//		autoHeight: true ,
-//		autoWidth: true ,
-//		title: 'Center' ,
-//		html: 'center'
-//	}]
 });

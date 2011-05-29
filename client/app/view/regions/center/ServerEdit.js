@@ -3,8 +3,8 @@ Ext.define('SC.view.regions.center.ServerEdit',{
 	alias:'widget.serveredit',
 	id:'serveredit',
 	title:'Server list editor',
-	height:150,
 	width:300,
+	layout:'fit',
 	closeAction:'hide',
 	autoScroll:true,
 	modal:true,
@@ -15,11 +15,7 @@ Ext.define('SC.view.regions.center.ServerEdit',{
 									allowBlank:false
 									}
 		}],
-		plugins:[Ext.create('Ext.grid.plugin.RowEditing',{
-			listeners:{edit:{element:'el',
-					fn:function(){console.log('edit');}
-				}}
-		})],
+		plugins:[Ext.create('Ext.grid.plugin.RowEditing')],
 		store:'Servers',
 		forceFit:true,
 	}],
@@ -30,7 +26,8 @@ Ext.define('SC.view.regions.center.ServerEdit',{
 			xtype:'textfield',
 			allowBlank:false,
 			emptyText:"type here the new server's name",
-			id:'newserver'
+			id:'newserver',
+			width:240
 		},'->',{
 			text:'save',
 			id:'buttonServerSave'

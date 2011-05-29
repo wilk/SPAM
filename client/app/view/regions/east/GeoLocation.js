@@ -13,6 +13,7 @@ Ext.define ('SC.view.regions.east.GeoLocation' , {
 	
 	// Configuration
 	title: 'Geo Location' ,
+	id: 'geoLocPanel' ,
 	html: '<div id="geoloc" style="width:100%; height:100%"></div>' ,
 	autoWidth: true ,
 	height: '500' ,

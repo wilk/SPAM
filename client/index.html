@@ -8,6 +8,9 @@
 	<script type="text/javascript" src="ext/ext-all-debug.js"> </script>
 	<script type="text/javascript" src="app.js"> </script>
 	<script type="text/javascript">
+		// Global variable for checking geolocation supports
+		var browserGeoSupportFlag = new Boolean ();
+		
 		// Import any class of ExtJS 4
 		Ext.require (['*']);
 		
@@ -18,14 +21,21 @@
 		
 		// Geolocation
 		Ext.Function.defer (function () {
-			var latlng = new google.maps.LatLng(44.49733, 11.356403);
-			var myOptions = {
-				zoom: 0,
-				center: latlng,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-			var map = new google.maps.Map(document.getElementById("geoloc"), myOptions);
-		} , 2500);
+			// If browser supports geolocation, setup default
+			if (browserGeoSupportFlag) {
+				var latlng = new google.maps.LatLng(0, 0);
+				var myOptions = {
+					zoom: 0,
+					center: latlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				var map = new google.maps.Map(document.getElementById("geoloc"), myOptions);
+			}
+			// Otherwise, do not show geo location panel
+			else {
+				Ext.getCmp('geoLocPanel').setVisible (false);
+			}
+		} , 500);
 		
 		// TODO: use another way to setup cookies
 		// After 1,5 sec, check cookies and use them if exists
@@ -51,7 +61,10 @@
 		} , 1500);
 		
 		// When the page is loaded
-		Ext.onReady (function () {
+		Ext.onReady (function () {	
+			// Check if user agent support geolocation
+			browserGeoSupportFlag = (navigator.geolocation) ? true : false;
+		
 			// Thesaurus request
 			// Recent posts
 			// Geo Location

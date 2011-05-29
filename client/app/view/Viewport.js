@@ -35,13 +35,11 @@ Ext.define ('SC.view.Viewport' , {
 		xtype: 'centerregion'
 	} , {
 		xtype: 'send'
-<<<<<<< HEAD
-	},{xtype:'serveredit'}]
-=======
+	} , {
+		xtype:'serveredit'
 	} , {
 		xtype: 'selectpost'
 	} , {
 		xtype: 'sendresource'
 	}]
->>>>>>> f7a2e813019e6ee336d1e8f59e536758abfa2a5b
 });

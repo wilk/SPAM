@@ -14,14 +14,9 @@ Ext.define ('SC.view.regions.East' , {
 	// Panel views
 	requires: [
 		'SC.view.regions.east.RecentPost' ,
-<<<<<<< HEAD
-		'SC.view.regions.east.TagCloud',
-		'SC.view.regions.east.FederatedServer'],
-=======
+		'SC.view.regions.east.FederatedServer',
 		'SC.view.regions.east.GeoLocation'
 	] ,
->>>>>>> f7a2e813019e6ee336d1e8f59e536758abfa2a5b
-	
 	// Configuration
 	title: 'Menu' ,
 	region: 'east' ,
@@ -35,12 +30,8 @@ Ext.define ('SC.view.regions.East' , {
 	items: [{
 		xtype: 'recentpost'
 	} , {
-<<<<<<< HEAD
-		xtype: 'tagcloud'
-	},{
-		xtype:'fedServer'}]
-=======
+		xtype:'fedServer'
+	} , {
 		xtype: 'geolocation'
 	}]
->>>>>>> f7a2e813019e6ee336d1e8f59e536758abfa2a5b
 });

@@ -14,7 +14,8 @@ Ext.define ('SC.view.regions.East' , {
 	// Panel views
 	requires: [
 		'SC.view.regions.east.RecentPost' ,
-		'SC.view.regions.east.GeoLocation'
+		'SC.view.regions.east.GeoLocation',
+		'SC.view.regions.east.FederatedServer'
 	] ,
 	
 	// Configuration
@@ -31,5 +32,7 @@ Ext.define ('SC.view.regions.East' , {
 		xtype: 'recentpost'
 	} , {
 		xtype: 'geolocation'
+	},{
+		xtype:'fedserver'
 	}]
 });

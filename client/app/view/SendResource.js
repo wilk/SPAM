@@ -54,12 +54,17 @@ Ext.define ('SC.view.SendResource' , {
 		ui: 'footer' ,
 		// Items right-justified
 		items: [{
+			// Geolocation
+			xtype: 'checkbox' ,
+			id: 'chkResGeoLoc' ,
+			boxLabel: 'Use Geolocation'
+		} , '->' , {
 			// Chars counter label
 			xtype: 'label' ,
 			text: '140', 
 			id: 'lblResCounter' ,
-			margin: '0 0 0 5'
-		} , '->' , {
+			margin: '0 5 0 0'
+		} , {
 			// Button reset
 			text: 'Reset' ,
 			id: 'btnResReset'

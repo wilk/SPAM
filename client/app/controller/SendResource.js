@@ -12,7 +12,7 @@ var MAXCHARS = 140;
 var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
 	artFooter = '</article>';
 
-var 	winRes, txtResUrl, txtResDes, lblResCount;
+var 	winRes, txtResUrl, txtResDes, lblResCount , chkBoxGeoLoc;
 
 // Type of resource
 var btnGhost;
@@ -74,6 +74,11 @@ Ext.define ('SC.controller.SendResource' , {
 				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />' ,
 				// XML Injection
 				article = artHeader + artBody + artResource + artFooter;
+			
+			// Check geolocation
+			if (chkBoxGeoLoc.getValue ()) {
+				// TODO: insert geolocation into article body
+			}
 		
 			// AJAX Request
 			Ext.Ajax.request ({
@@ -98,6 +103,7 @@ Ext.define ('SC.controller.SendResource' , {
 		txtResUrl = winRes.down ('#txtResourceUrl');
 		txtResDes = winRes.down ('#txtResourceDescription');
 		lblResCount = winRes.down ('#lblResCounter');
+		chkBoxGeoLoc = winRes.down ('#chkResGeoLoc');
 		
 		btnGhost = Ext.getCmp ('resBtnGhost');
 		

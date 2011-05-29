@@ -73,6 +73,11 @@ Ext.define ('SC.controller.Send' , {
 				article = artHeader + artBody + artFooter ,
 				win = Ext.getCmp ('windowNewPost');
 		
+			// Check geolocation
+			if (Ext.getCmp('chkSendGeoLoc').getValue ()) {
+				// TODO: insert geolocation into article body
+			}
+			
 			// AJAX Request
 			Ext.Ajax.request ({
 				url: 'post' ,

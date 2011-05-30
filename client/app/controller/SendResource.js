@@ -12,7 +12,9 @@ var MAXCHARS = 140;
 var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
 	artFooter = '</article>';
 
-var 	winRes, txtResUrl, txtResDes, lblResCount;
+var 	winRes, txtResUrl, txtResDes, lblResCount , chkBoxGeoLoc;
+
+var geoLocSpan;
 
 // Type of resource
 var btnGhost;
@@ -41,7 +43,7 @@ Ext.define ('SC.controller.SendResource' , {
 			} ,
 			// Reset button
 			'#btnResReset': {
-				click: resetFields
+				click: this.resetFields
 			}
 		});
 	
@@ -73,7 +75,29 @@ Ext.define ('SC.controller.SendResource' , {
 			var 	artBody = txtResDes.getValue () ,
 				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />' ,
 				// XML Injection
-				article = artHeader + artBody + artResource + artFooter;
+				article = artHeader + '\n' + artBody + '\n' + artResource + '\n';
+			
+			// Check geolocation
+			if (chkBoxGeoLoc.getValue () && browserGeoSupportFlag) {
+				try {
+					navigator.geolocation.getCurrentPosition (function (position) {
+						// If geolocation was retrieved successfully, setup geolocation span
+						geoLocSpan = '<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.latitude + '" />';
+					} , function () {
+						// TODO: better error message
+						// otherwise, setup with 0,0 position
+						geoLocSpan = '<span id="geolocationspan" long="0" lat="0" />';
+					});
+				
+					article += geoLocSpan + '\n';
+				}
+				catch (err) {
+					Ext.Msg.alert ('Error' , 'An error occurred during setup geolocation: the article will be sent without geolocation.');
+				}
+			}
+			
+			// Complete article building
+			article += artFooter;
 		
 			// AJAX Request
 			Ext.Ajax.request ({
@@ -98,10 +122,11 @@ Ext.define ('SC.controller.SendResource' , {
 		txtResUrl = winRes.down ('#txtResourceUrl');
 		txtResDes = winRes.down ('#txtResourceDescription');
 		lblResCount = winRes.down ('#lblResCounter');
+		chkBoxGeoLoc = winRes.down ('#chkResGeoLoc');
 		
 		btnGhost = Ext.getCmp ('resBtnGhost');
 		
-		resetFields ();
+		this.resetFields ();
 	}
 });
 
@@ -109,5 +134,6 @@ Ext.define ('SC.controller.SendResource' , {
 function resetFields () {
 	txtResUrl.reset ();
 	txtResDes.reset ();
+	chkBoxGeoLoc.reset ();
 	lblResCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
 }

@@ -44,12 +44,17 @@ Ext.define ('SC.view.Send' , {
 		ui: 'footer' ,
 		// Items right-justified
 		items: [{
+			// Geolocation
+			xtype: 'checkbox' ,
+			id: 'chkSendGeoLoc' ,
+			boxLabel: 'Use Geolocation'
+		} , '->' , {
 			// Chars counter label
 			xtype: 'label' ,
 			text: '140', 
 			id: 'sendCharCounter' ,
-			margin: '0 0 0 5'
-		} , '->' , {
+			margin: '0 5 0 0'
+		} , {
 			// Button reset
 			text: 'Reset' ,
 			id: 'buttonReset'

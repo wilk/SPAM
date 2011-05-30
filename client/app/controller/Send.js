@@ -12,6 +12,10 @@ var MAXCHARS = 140;
 var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
 	artFooter = '</article>';
 
+var txtSendArea , lblSendCount , chkBoxGeoLoc;
+
+var geoLocSpan;
+
 Ext.define ('SC.controller.Send' , {
 	extend: 'Ext.app.Controller' ,
 	
@@ -23,7 +27,7 @@ Ext.define ('SC.controller.Send' , {
 		this.control ({
 			// Reset field when it's showed
 			'send': {
-				show: this.resetPost
+				show: this.initFields
 			} ,
 			// Controlling txtArea of window for sending new posts
 			'#txtAreaSend': {
@@ -36,7 +40,7 @@ Ext.define ('SC.controller.Send' , {
 			} ,
 			// Reset button
 			'#buttonReset': {
-				click: this.resetPost
+				click: this.resetFields
 			}
 		});
 	
@@ -46,33 +50,53 @@ Ext.define ('SC.controller.Send' , {
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
 	checkChars : function (txtarea, e) {
-		var 	counterLabel = Ext.getCmp ('sendCharCounter') ,
-			// Get the lenght
+		var 	// Get the lenght
 			numChar = txtarea.getValue().length ,
 			// And the difference
 			diffCount = MAXCHARS - numChar;
 		
 		// If it's negative, color it with red, otherwise with black
 		if (diffCount < 0)
-			counterLabel.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
+			lblSendCount.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
 		else
-			counterLabel.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
+			lblSendCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 	} ,
 	
 	// @brief
 	sendPost : function () {
 		// TODO: parsing text to finding hashtag
 		// TODO: hashtag autocomplete
-		var 	taSend = Ext.getCmp ('txtAreaSend');
 		
 		// Check if text area is filled and if it has at most 140 chars
-		if (taSend.isValid () && (taSend.getValue().length <= MAXCHARS)) {
+		if (txtSendArea.isValid () && (txtSendArea.getValue().length <= MAXCHARS)) {
 		
-			var 	artBody = taSend.getValue () ,
+			var 	artBody = txtSendArea.getValue () ,
 				// XML Injection
-				article = artHeader + artBody + artFooter ,
+				article = artHeader + '\n' + artBody + '\n',
 				win = Ext.getCmp ('windowNewPost');
 		
+			// Check geolocation
+			if (chkBoxGeoLoc.getValue () && browserGeoSupportFlag) {
+				try {
+					navigator.geolocation.getCurrentPosition (function (position) {
+						// If geolocation was retrieved successfully, setup geolocation span
+						geoLocSpan = '<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.latitude + '" />';
+					} , function () {
+						// TODO: better error message
+						// otherwise, setup with 0,0 position
+						geoLocSpan = '<span id="geolocationspan" long="0" lat="0" />';
+					});
+				
+					article += geoLocSpan + '\n';
+				}
+				catch (err) {
+					Ext.Msg.alert ('Error' , 'An error occurred during setup geolocation: the article will be sent without geolocation.');
+				}
+			}
+			
+			// Complete article building
+			article += artFooter;
+			
 			// AJAX Request
 			Ext.Ajax.request ({
 				url: 'post' ,
@@ -90,10 +114,20 @@ Ext.define ('SC.controller.Send' , {
 		}
 	} ,
 	
-	// Reset text area of the new post
-	resetPost: function () {
-		Ext.getCmp ('txtAreaSend').reset ();
+	// @brief initialize fields and local variables
+	initFields: function (win) {
+		txtSendArea = win.down ('#txtAreaSend');
+		lblSendCount = win.down ('#sendCharCounter');
+		chkBoxGeoLoc = win.down ('#chkSendGeoLoc');
 		
-		Ext.getCmp ('sendCharCounter').setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
+		this.resetFields ();
+	} ,
+	
+	// Reset text area of the new post
+	resetFields: function () {
+		txtSendArea.reset ();
+		chkBoxGeoLoc.reset ();
+		
+		lblSendCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
 	}
 });

@@ -1,10 +1,14 @@
 <?php
 
+include 'protected/model/UserModel.php';
+
 class LoginController extends DooController {
 
     public function authUser() {
-        $user = strtolower($_POST['username']);
-        if ($this->firstTime($user)) {
+        $user = strtolower($_POST['username']); //perchè??? cmq...
+        $utente = new UserModel($user);
+        $utente->firstTime();
+/*        if ($this->firstTime($user)) {
             $this->addUser($user);
             $this->startSession($user);
             return 201;
@@ -12,8 +16,8 @@ class LoginController extends DooController {
             $this->startSession($user);
             return 200;
         }
-    }
-
+*/    }
+/*    
     private function firstTime($user) {
         $usersList = simplexml_load_file("users.xml");
         foreach ($usersList->user as $myUser) {
@@ -34,7 +38,7 @@ class LoginController extends DooController {
         $serverList = $request->xml_result();
         @file_put_contents('data/' . $user . "/servers.xml", $serverList->saveXML());
     }
-
+*/
     private function startSession($user) {
         session_start();
         if (isset($_SESSION['user']))

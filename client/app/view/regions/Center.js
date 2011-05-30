@@ -12,17 +12,12 @@ Ext.define ('SC.view.regions.Center' , {
 	alias: 'widget.centerregion' ,
 	
 	// Views
-	requires: ['SC.view.regions.center.Post'] ,
+	requires: ['SC.view.regions.center.Post',
+		'SC.view.regions.center.ServerEdit'] ,
 	
 	// Configuration
 	region: 'center' ,
 	items: [{
 		xtype: 'post'
 	}]
-//		xtype: 'panel' ,
-//		autoHeight: true ,
-//		autoWidth: true ,
-//		title: 'Center' ,
-//		html: 'center'
-//	}]
 });

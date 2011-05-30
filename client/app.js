@@ -18,8 +18,11 @@ Ext.application ({
 		'regions.west.Search' ,
 		'regions.Center' ,
 		'regions.East' ,
-		'regions.east.RecentPost' ,
+		'regions.east.RecentPost',
 		'Send' ,
+		'regions.center.Post',
+		'regions.east.Server',
+		'regions.center.ServerEdit',
 		'SendResource' ,
 		'SelectPost' ,
 		'regions.center.Post'

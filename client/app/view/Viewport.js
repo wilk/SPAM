@@ -36,6 +36,8 @@ Ext.define ('SC.view.Viewport' , {
 	} , {
 		xtype: 'send'
 	} , {
+		xtype:'serveredit'
+	} , {
 		xtype: 'selectpost'
 	} , {
 		xtype: 'sendresource'

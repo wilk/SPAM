@@ -17,7 +17,6 @@ Ext.define ('SC.view.regions.East' , {
 		'SC.view.regions.east.GeoLocation',
 		'SC.view.regions.east.FederatedServer'
 	] ,
-	
 	// Configuration
 	title: 'Menu' ,
 	region: 'east' ,
@@ -30,6 +29,8 @@ Ext.define ('SC.view.regions.East' , {
 	// Body
 	items: [{
 		xtype: 'recentpost'
+	} , {
+		xtype:'fedServer'
 	} , {
 		xtype: 'geolocation'
 	},{

@@ -33,7 +33,5 @@ Ext.define ('SC.view.regions.East' , {
 		xtype:'fedServer'
 	} , {
 		xtype: 'geolocation'
-	},{
-		xtype:'fedserver'
 	}]
 });

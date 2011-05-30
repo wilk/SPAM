@@ -19,5 +19,7 @@ Ext.define ('SC.view.regions.Center' , {
 	region: 'center' ,
 	items: [{
 		xtype: 'post'
+	},{
+		xtype:'serveredit'
 	}]
 });

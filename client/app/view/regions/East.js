@@ -20,7 +20,7 @@ Ext.define ('SC.view.regions.East' , {
 	// Configuration
 	title: 'Menu' ,
 	region: 'east' ,
-	minWidth: 158 ,
+	minWidth: 200 ,
 	maxWidth: 300 ,
 	collapsible: true ,
 	split: true ,

@@ -66,7 +66,7 @@ function userLogin (button) {
 				success: function (response) {
 					// If server sets his cookies
 					var userCookie = Ext.util.Cookies.get ('PHPSESSID');
-					
+
 					if (userCookie != null)					
 						// Client sets its
 						Ext.util.Cookies.set ('SPAMlogin' , txtUser);

@@ -16,15 +16,16 @@ Ext.application ({
 		'regions.North' ,
 		'regions.West' ,
 		'regions.west.Search' ,
-		'regions.Center' ,
+		'regions.west.Thesaurus' ,
 		'regions.East' ,
-		'regions.east.RecentPost',
+		'regions.east.Server' ,
+		'regions.east.RecentPost' ,
+		'regions.east.GeoLocation' ,
+		'regions.Center' ,
+		'regions.center.Post' ,
+		'regions.center.ServerEdit' ,
 		'Send' ,
-		'regions.center.Post',
-		'regions.east.Server',
-		'regions.center.ServerEdit',
 		'SendResource' ,
-		'SelectPost' ,
-		'regions.center.Post'
+		'SelectPost'
 	]
 });

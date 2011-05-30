@@ -15,18 +15,25 @@ Ext.define ('SC.controller.regions.North' , {
 	
 	// Configuration
 	init: function () {
+		// Local vars declaration
+		var fieldUser , pUser , bNewPost, btnLogin;
+		
 		this.control ({
+			// Init login with cookie
+			'northregion' : {
+				afterrender : this.initLogin
+			} ,
 			// Login text field
 			'#userField' : {
 				// Login at enter key press
 				keypress : function (field , event) {
 					if (event.getKey () == event.ENTER)
-						userLogin (Ext.getCmp ('loginButton'));
+						this.userLogin ();
 				}
 			} ,
 			// Login button
 			'#loginButton' : {
-				click : userLogin
+				click : this.userLogin
 			} ,
 			// New post button
 			'#newPostButton' : {
@@ -41,73 +48,103 @@ Ext.define ('SC.controller.regions.North' , {
 	sendNewPost : function () {
 		var selectPostWindow = Ext.getCmp ('windowSelectPost');
 		selectPostWindow.show ();
-	}
-});
-
-// @brief Permit user login
-// @param button : the login button
-function userLogin (button) {
-	var 	fieldUser = Ext.getCmp ('userField') ,
-		pUser = Ext.getCmp ('userPanel') ,
-		bNewPost = Ext.getCmp ('newPostButton');
+	} ,
+	
+	// @brief Initialize variables and login
+	initLogin : function (northPanel) {
+		// Variables initialization
+		fieldUser = northPanel.down ('textfield');
+		pUser = Ext.getCmp ('userPanel');
+		bNewPost = northPanel.down ('#newPostButton');
+		btnLogin = northPanel.down ('#loginButton');
 		
-	// Check if user wants to login
-	if (fieldUser.isVisible ()) {
+		// If there is server cookie
+		if (Ext.util.Cookies.get ('PHPSESSID') != null)
+		{
+			// And if there is client cookie
+			var userCookie = Ext.util.Cookies.get ('SPAMlogin');
+		
+			if (userCookie != null) {
+				// Set login
+				this.setLoginField (userCookie);
+			}
+		}
+	} ,
+	
+	// @brief Login and logout user
+	userLogin : function () {
+		// Check if user wants to login
+		if (fieldUser.isVisible ()) {
 			
-		// Check if the form is filled or not
-		if (fieldUser.isValid ()) {
+			// Check if the form is filled or not
+			if (fieldUser.isValid ()) {
 		
-			var txtUser = fieldUser.getValue ();
+				var txtUser = fieldUser.getValue ();
 		
-			// AJAX request to login
-			Ext.Ajax.request ({
-				url: 'login' ,
-				params: { username: txtUser } ,
-				success: function (response) {
-					// If server sets his cookies
-					var userCookie = Ext.util.Cookies.get ('PHPSESSID');
+				// AJAX request to login
+				Ext.Ajax.request ({
+					url: 'login' ,
+					params: { username: txtUser } ,
+					success: function (response) {
+						// If server sets his cookies
+						var userCookie = Ext.util.Cookies.get ('PHPSESSID');
 
-					if (userCookie != null)					
-						// Client sets its
-						Ext.util.Cookies.set ('SPAMlogin' , txtUser);
-					
-					button.setText ('Logout');
-					
-					fieldUser.setVisible (false);
-					
-					pUser.setTitle ('User :: ' + txtUser);
-					pUser.setVisible (true);
-					
-					bNewPost.setVisible (true);
+						if (userCookie != null)					
+							// Client sets its
+							Ext.util.Cookies.set ('SPAMlogin' , txtUser);
+						
+						// Setup login fields
+						btnLogin.setText ('Logout');
+						
+						fieldUser.setVisible (false);
+						
+						pUser.setTitle ('User :: ' + txtUser);
+						pUser.setVisible (true);
+	
+						bNewPost.setVisible (true);
+					} ,
+					failure: function (error) {
+						Ext.Msg.alert ('Error ' + error.status , error.responseText);
+					}
+				});
+			}
+			else {
+				Ext.Msg.alert ('Error' , 'To login: fill the box with your username.');
+			}
+		}
+		// Check if user wants to logout
+		else {
+			// AJAX request to logout
+			Ext.Ajax.request ({
+				method: 'POST' ,
+				url: 'logout' ,
+				success: function () {
+					btnLogin.setText ('Login');
+		
+					fieldUser.reset ();
+					fieldUser.setVisible (true);
+	
+					pUser.setVisible (false);
+		
+					bNewPost.setVisible (false);
 				} ,
 				failure: function (error) {
 					Ext.Msg.alert ('Error ' + error.status , error.responseText);
 				}
 			});
 		}
-		else {
-			Ext.Msg.alert ('Error' , 'To login: fill the box with your username.');
-		}
-	}
-	// Check if user wants to logout
-	else {
-		// AJAX request to logout
-		Ext.Ajax.request ({
-			method: 'POST' ,
-			url: 'logout' ,
-			success: function (response) {
-				bNewPost.setVisible (false);
-		
-				fieldUser.reset ();
-				fieldUser.setVisible (true);
-			
-				pUser.setVisible (false);
-			
-				button.setText ('Login');
-			} ,
-			failure: function (error) {
-				Ext.Msg.alert ('Error ' + error.status , error.responseText);
-			}
-		});
-	}	
-}
+	} ,
+	
+	// @brief Setup login field
+	// @param user : username
+	setLoginField: function (user) {
+		btnLogin.setText ('Logout');
+
+		fieldUser.setVisible (false);
+	
+		pUser.setTitle ('User :: ' + user);
+		pUser.setVisible (true);
+	
+		bNewPost.setVisible (true);
+	} 
+});

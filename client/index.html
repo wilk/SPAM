@@ -19,47 +19,6 @@
 			enabled : true
 		});
 		
-		// Geolocation
-		Ext.Function.defer (function () {
-			// If browser supports geolocation, setup default
-			if (browserGeoSupportFlag) {
-				var latlng = new google.maps.LatLng(0, 0);
-				var myOptions = {
-					zoom: 0,
-					center: latlng,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-				var map = new google.maps.Map(document.getElementById("geoloc"), myOptions);
-			}
-			// Otherwise, do not show geo location panel
-			else {
-				Ext.getCmp('geoLocPanel').setVisible (false);
-			}
-		} , 500);
-		
-		// TODO: use another way to setup cookies
-		// After 1,5 sec, check cookies and use them if exists
-		Ext.Function.defer (function () {
-			// If there is server cookie
-			if (Ext.util.Cookies.get ('PHPSESSID') != null)
-			{
-				// And if there is client cookie
-				var userCookie = Ext.util.Cookies.get ('SPAMlogin');
-			
-				if (userCookie != null) {
-					// Set login
-					Ext.getCmp('loginButton').setText ('Logout');
-
-					Ext.getCmp ('userField').setVisible (false);
-		
-					Ext.getCmp('userPanel').setTitle ('User :: ' + userCookie);
-					Ext.getCmp('userPanel').setVisible (true);
-		
-					Ext.getCmp('newPostButton').setVisible (true);
-				}
-			}
-		} , 1500);
-		
 		// When the page is loaded
 		Ext.onReady (function () {	
 			// Check if user agent support geolocation

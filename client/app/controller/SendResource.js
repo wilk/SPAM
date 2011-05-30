@@ -127,13 +127,13 @@ Ext.define ('SC.controller.SendResource' , {
 		btnGhost = Ext.getCmp ('resBtnGhost');
 		
 		this.resetFields ();
+	} ,
+	
+	// @brief Reset fields
+	resetFields: function () {
+		txtResUrl.reset ();
+		txtResDes.reset ();
+		chkBoxGeoLoc.reset ();
+		lblResCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
 	}
 });
-
-// @brief Reset fields
-function resetFields () {
-	txtResUrl.reset ();
-	txtResDes.reset ();
-	chkBoxGeoLoc.reset ();
-	lblResCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
-}

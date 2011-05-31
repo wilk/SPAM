@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/">
+
+  <rdf:Description rdf:about="/ltw1102/pippo">
+    <rdf:type rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/Person"/>
+    <foaf:nick>pippo</foaf:nick>
+  </rdf:Description>
+
+</rdf:RDF>

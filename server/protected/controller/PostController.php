@@ -1,5 +1,6 @@
 <?php
 
+include_once 'protected/model/PostModel.php';
 class PostController extends DooController {
     
     public function beforeRun($resource, $action){
@@ -17,13 +18,12 @@ class PostController extends DooController {
 
     public function createPost() {
         /*Recupero nella variabile $content tutto quello che mi viene passato tramite POST
-         * crearo il file contenente il post
-         * Scansiono il contenuto per organizzare una sua futura ricerca
          */
         $content= $_POST['article'];
-        @file_put_contents("data/".$_SESSION['user']['username']."/post1.txt", $content);
-        //TODO: Creare funzioni salvataggio file e scansione contenuto;
-        return 201;
+        echo $content;
+        $articolo = new PostModel();
+        if ($articolo->parseArticle($content))
+            return 201;
     }
 
     public function sendPost() {

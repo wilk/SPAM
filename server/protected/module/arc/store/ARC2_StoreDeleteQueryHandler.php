@@ -1,28 +1,25 @@
 <?php
-/*
-homepage: http://arc.semsol.org/
-license:  http://arc.semsol.org/license
-
-class:    ARC2 RDF Store DELETE Query Handler
-author:   Benjamin Nowack
-version:  2009-06-15 (Addition: cleanValueTables method)
+/**
+ * ARC2 RDF Store DELETE Query Handler
+ *
+ * @author Benjamin Nowack <bnowack@semsol.com>
+ * @license http://arc.semsol.org/license
+ * @homepage <http://arc.semsol.org/>
+ * @package ARC2
+ * @version 2010-11-16
 */
 
 ARC2::inc('StoreQueryHandler');
 
 class ARC2_StoreDeleteQueryHandler extends ARC2_StoreQueryHandler {
 
-  function __construct($a = '', &$caller) {/* caller has to be a store */
+  function __construct($a, &$caller) {/* caller has to be a store */
     parent::__construct($a, $caller);
   }
   
-  function ARC2_StoreDeleteQueryHandler($a = '', &$caller) {
-    $this->__construct($a, $caller);
-  }
-
   function __init() {/* db_con */
     parent::__init();
-    $this->store =& $this->caller;
+    $this->store = $this->caller;
     $this->handler_type = 'delete';
   }
 
@@ -49,7 +46,7 @@ class ARC2_StoreDeleteQueryHandler extends ARC2_StoreQueryHandler {
     $t2 = ARC2::mtime();
     /* clean up */
     if ($tc && ($this->refs_deleted || (rand(1, 100) == 1))) $this->cleanTableReferences();
-    if ($tc && (rand(1, 50) == 1)) $this->store->optimizeTables();
+    if ($tc && (rand(1, 100) == 1)) $this->store->optimizeTables();
     if ($tc && (rand(1, 500) == 1)) $this->cleanValueTables();
     $t3 = ARC2::mtime();
     $index_dur = round($t3 - $t2, 4);
@@ -103,8 +100,15 @@ class ARC2_StoreDeleteQueryHandler extends ARC2_StoreQueryHandler {
         }
         else {
           $term_id = $this->getTermID($t[$term], $term);
-          $q .= $q ? ' AND ' : '';
-          $q .= 'T.' . $term . '=' . $term_id;
+          $q .= ($q ? ' AND ' : '') . 'T.' . $term . '=' . $term_id;
+          /* explicit lang/dt restricts the matching */
+          if ($term == 'o') {
+            $o_lang = $this->v1('o_lang', '', $t);
+            $o_lang_dt = $this->v1('o_datatype', $o_lang, $t);
+            if ($o_lang_dt) {
+              $q .= ($q ? ' AND ' : '') . 'T.o_lang_dt=' . $this->getTermID($o_lang_dt, 'lang_dt');
+            }
+          }
         }
       }
       if ($skip) {
@@ -136,7 +140,7 @@ class ARC2_StoreDeleteQueryHandler extends ARC2_StoreQueryHandler {
   
   function deleteConstructedGraph() {
     ARC2::inc('StoreConstructQueryHandler');
-    $h =& new ARC2_StoreConstructQueryHandler($this->a, $this->store);
+    $h = new ARC2_StoreConstructQueryHandler($this->a, $this->store);
     $sub_r = $h->runQuery($this->infos);
     $triples = ARC2::getTriplesFromIndex($sub_r);
     $tgs = $this->infos['query']['target_graphs'];
@@ -168,7 +172,7 @@ class ARC2_StoreDeleteQueryHandler extends ARC2_StoreQueryHandler {
       mysql_query($sql, $con);
     }
     /* check for unconnected graph refs */
-    if ((rand(1, 100) == 1)) {
+    if ((rand(1, 10) == 1)) {
       $sql = '
         SELECT G.g FROM '. $tbl_prefix . 'g2t G LEFT JOIN '. $tbl_prefix . 'triple T ON ( T.t = G.t )
         WHERE T.t IS NULL LIMIT 1

@@ -6,21 +6,17 @@
  * @license <http://arc.semsol.org/license>
  * @homepage <http://arc.semsol.org/>
  * @package ARC2
- * @version 2009-11-16
+ * @version 2010-11-16
 */
 
 ARC2::inc('RDFParser');
 
 class ARC2_TurtleParser extends ARC2_RDFParser {
 
-  function __construct($a = '', &$caller) {
+  function __construct($a, &$caller) {
     parent::__construct($a, $caller);
   }
   
-  function ARC2_TurtleParser($a = '', &$caller) {
-    $this->__construct($a, $caller);
-  }
-
   function __init() {/* reader */
     parent::__init();
     $this->state = 0;
@@ -29,6 +25,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
     $this->xsd = 'http://www.w3.org/2001/XMLSchema#';
     $this->nsp = array($this->xml => 'xml', $this->rdf => 'rdf', $this->xsd => 'xsd');
     $this->unparsed_code = '';
+    $this->max_parsing_loops = $this->v('turtle_max_parsing_loops', 500, $this->a);
   }
   
   /*  */
@@ -100,7 +97,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
     /* reader */
     if (!$this->v('reader')) {
       ARC2::inc('Reader');
-      $this->reader = & new ARC2_Reader($this->a, $this);
+      $this->reader = new ARC2_Reader($this->a, $this);
     }
     $this->reader->setAcceptHeader('Accept: application/x-turtle; q=0.9, */*; q=0.1');
     $this->reader->activate($path, $data);
@@ -143,7 +140,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
       } while ($proceed);
       $loops++;
       $buffer = $sub_v;
-      if ($loops > 100) {/* most probably a parser or code bug, might also be a huge object value, though */
+      if ($loops > $this->max_parsing_loops) {/* most probably a parser or code bug, might also be a huge object value, though */
         $this->addError('too many loops: ' . $loops . '. Could not parse "' . substr($buffer, 0, 200) . '..."');
         break;
       }
@@ -632,7 +629,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
     return array(0, $v);
   }
 
-  /* 70.. */
+  /* 70.. @@sync with SPARQLParser */
   
   function xIRI_REF($v) {
     //if ($r = $this->x('\<([^\<\>\"\{\}\|\^\'[:space:]]*)\>', $v)) {
@@ -811,7 +808,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
   /* 100 */
   
   function xPN_LOCAL($v) {
-    if (($sub_r = $this->x("([^\s\(\)\{\}\;\,\.]+)", $v, 's')) && !preg_match('/^\./', $sub_r[2])) {/* accelerator */
+    if (($sub_r = $this->x("([^\s\(\)\{\}\[\]\;\,\.]+)", $v, 's')) && !preg_match('/^\./', $sub_r[2])) {/* accelerator */
       return array($sub_r[1], $sub_r[2]);/* @@testing */
     }
     $r = '';
@@ -831,7 +828,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
         $proceed = 1;
       }
       elseif ($r) {
-        if (($sub_r = $this->x('(\.)', $sub_v)) && !preg_match('/^\s/s', $sub_r[2])) {
+        if (($sub_r = $this->x('(\.)', $sub_v)) && !preg_match('/^[\s\}]/s', $sub_r[2])) {
           $r .= $sub_r[1];
           $sub_v = $sub_r[2];
         }

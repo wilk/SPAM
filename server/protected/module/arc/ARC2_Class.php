@@ -6,35 +6,25 @@
  * @license <http://arc.semsol.org/license>
  * @homepage <http://arc.semsol.org/>
  * @package ARC2
- * @version 2009-12-08
-*/
+ * @version 2010-11-16
+ */
 
 class ARC2_Class {
   
-  /*  */
-
-  function __construct($a = '', &$caller) {
-    $a = is_array($a) ? $a : array();
-    $this->a = $a;
-    $this->caller = &$caller;
+  function __construct($a, &$caller) {
+    $this->a = is_array($a) ? $a : array();
+    $this->caller = $caller;
     $this->__init();
   }
   
-  function ARC2_Class($a = '', &$caller) {
-    $this->__construct($a, $caller);
-  }
-
-  function __destruct() {
-    //echo "\ndestructing " . get_class($this);
-  }
-
   function __init() {/* base, time_limit */
     if (!$_POST && isset($GLOBALS['HTTP_RAW_POST_DATA'])) parse_str($GLOBALS['HTTP_RAW_POST_DATA'], $_POST); /* php5 bug */
     $this->inc_path = ARC2::getIncPath();
     $this->ns_count = 0;
-    $this->nsp = array('http://www.w3.org/1999/02/22-rdf-syntax-ns#' => 'rdf');
-    $this->used_ns = array('http://www.w3.org/1999/02/22-rdf-syntax-ns#');
-    $this->ns = $this->v('ns', array(), $this->a);
+    $rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+    $this->nsp = array($rdf => 'rdf');
+    $this->used_ns = array($rdf);
+    $this->ns = array_merge(array('rdf' => $rdf), $this->v('ns', array(), $this->a));
 
     $this->base = $this->v('base', ARC2::getRequestURI(), $this->a);
     $this->errors = array();
@@ -46,7 +36,7 @@ class ARC2_Class {
   /*  */
   
   function v($name, $default = false, $o = false) {/* value if set */
-    if ($o === false) $o =& $this;
+    if ($o === false) $o = $this;
     if (is_array($o)) {
       return isset($o[$name]) ? $o[$name] : $default;
     }
@@ -54,7 +44,7 @@ class ARC2_Class {
   }
   
   function v1($name, $default = false, $o = false) {/* value if 1 (= not empty) */
-    if ($o === false) $o =& $this;
+    if ($o === false) $o = $this;
     if (is_array($o)) {
       return (isset($o[$name]) && $o[$name]) ? $o[$name] : $default;
     }
@@ -62,18 +52,68 @@ class ARC2_Class {
   }
   
   function m($name, $a = false, $default = false, $o = false) {/* call method */
-    if ($o === false) $o =& $this;
+    if ($o === false) $o = $this;
     return method_exists($o, $name) ? $o->$name($a) : $default;
   }
 
   /*  */
 
-  function camelCase($v, $lc_first = 0) {
+  function camelCase($v, $lc_first = 0, $keep_boundaries = 0) {
     $r = ucfirst($v);
-    while (preg_match('/^(.*)[\-\_ ](.*)$/', $r, $m)) {
+    while (preg_match('/^(.*)[^a-z0-9](.*)$/si', $r, $m)) {
+      /* don't fuse 2 upper-case chars */
+      if ($keep_boundaries && $m[1]) {
+        $boundary = substr($m[1], -1);
+        if (strtoupper($boundary) == $boundary) $m[1] .= 'CAMELCASEBOUNDARY';
+      }
       $r = $m[1] . ucfirst($m[2]);
     }
-    return $lc_first ? strtolower(substr($r, 0, 1)) . substr($r, 1) : $r;
+    $r = str_replace('CAMELCASEBOUNDARY', '_', $r);
+    if ((strlen($r) > 1) && $lc_first && !preg_match('/[A-Z]/', $r[1])) $r = strtolower($r[0]) . substr($r, 1);
+    return $r;
+  }
+
+  function deCamelCase($v, $uc_first = 0) {
+    $r = str_replace('_', ' ', $v);
+    $r = preg_replace('/([a-z0-9])([A-Z])/e', '"\\1 " . strtolower("\\2")', $r);
+    return $uc_first ? ucfirst($r) : $r;
+  }
+
+  /**
+   * Tries to extract a somewhat human-readable label from a URI.
+   */
+
+  function extractTermLabel($uri, $loops = 0) {
+    list($ns, $r) = $this->splitURI($uri);
+    /* encode apostrophe + s */
+    $r = str_replace('%27s', '_apostrophes_', $r);
+    /* normalize */
+    $r = $this->deCamelCase($this->camelCase($r, 1, 1));
+    /* decode apostrophe + s */
+    $r = str_replace(' apostrophes ', "'s ", $r);
+    /* typical RDF non-info URI */
+    if (($loops < 1) && preg_match('/^(self|it|this|me)$/i', $r)) {
+      return $this->extractTermLabel(preg_replace('/\#.+$/', '', $uri), $loops + 1);
+    }
+    /* trailing hash or slash */
+    if ($uri && !$r && ($loops < 2)) {
+      return $this->extractTermLabel(preg_replace('/[\#\/]$/', '', $uri), $loops + 1);
+    }
+    /* a de-camel-cased URL (will look like "www example com") */
+    if (preg_match('/^www (.+ [a-z]{2,4})$/', $r, $m)) {
+      return $this->getPrettyURL($uri);
+    }
+    return $r;
+  }
+
+  /**
+   * Generates a less ugly in-your-face URL.
+   */
+
+  function getPrettyURL($r) {
+    $r = rtrim($r, '/');
+    $r = preg_replace('/^https?\:\/\/(www\.)?/', '', $r);
+    return $r;
   }
 
   /*  */
@@ -117,12 +157,14 @@ class ARC2_Class {
 
   function getPName($v, $connector = ':') {
     /* is already a pname */
-    if ($ns = $this->getPNameNamespace($v)) {
+    $ns = $this->getPNameNamespace($v, $connector);
+    if ($ns) {
       if (!in_array($ns, $this->used_ns)) $this->used_ns[] = $ns;
       return $v;
     }
     /* new pname */
-    if ($parts = $this->splitURI($v)) {
+    $parts = $this->splitURI($v);
+    if ($parts) {
       /* known prefix */
       foreach ($this->ns as $prefix => $ns) {
         if ($parts[0] == $ns) {
@@ -137,8 +179,14 @@ class ARC2_Class {
     return $v;
   }
 
-  function getPNameNamespace($v) {
-    if (!preg_match('/^([a-z0-9\_\-]+)\:([a-z0-9\_\-\.\%]*)$/i', $v, $m)) return 0;
+  function getPNameNamespace($v, $connector = ':') {
+    $re = '/^([a-z0-9\_\-]+)\:([a-z0-9\_\-\.\%]+)$/i';
+    if ($connector != ':') {
+      $connectors = array('\:', '\-', '\_', '\.');
+      $chars = join('', array_diff($connectors, array($connector)));
+      $re = '/^([a-z0-9' . $chars . ']+)\\' . $connector . '([a-z0-9\_\-\.\%]+)$/i';
+    }
+    if (!preg_match($re, $v, $m)) return 0;
     if (!isset($this->ns[$m[1]])) return 0;
     return $this->ns[$m[1]];
   }
@@ -154,9 +202,11 @@ class ARC2_Class {
   }
 
   function expandPName($v, $connector = ':') {
-    $re = '/^([a-z0-9\_\-]+)\:([a-z0-9\_\-]+)$/i';
-    if ($connector == '-') {
-      $re = '/^([a-z0-9\_]+)\-([a-z0-9\_\-]+)$/i';
+    $re = '/^([a-z0-9\_\-]+)\:([a-z0-9\_\-\.\%]+)$/i';
+    if ($connector != ':') {
+      $connectors = array(':', '-', '_', '.');
+      $chars = '\\' . join('\\', array_diff($connectors, array($connector)));
+      $re = '/^([a-z0-9' . $chars . ']+)\\' . $connector . '([a-z0-9\_\-\.\%]+)$/Ui';
     }
     if (preg_match($re, $v, $m) && isset($this->ns[$m[1]])) {
       return $this->ns[$m[1]] . $m[2];
@@ -175,7 +225,7 @@ class ARC2_Class {
         foreach ($os as $i => $o) {
           if (!is_array($o)) {
             $o_val = $this->expandPName($o);
-            $o_type = preg_match('/^[a-z]+\:[^\s]+$/si', $o_val) ? 'uri' : 'literal';
+            $o_type = preg_match('/^[a-z]+\:[^\s\<\>]+$/si', $o_val) ? 'uri' : 'literal';
             $o = array('value' => $o_val, 'type' => $o_type);
           }
           $os[$i] = $o;
@@ -350,10 +400,12 @@ class ARC2_Class {
     return $ser->getSerializedArray($v);
   }
 
-  function toHTML($v, $ns = '') {
-    ARC2::inc('POSHRDFSerializer');
+  function toHTML($v, $ns = '', $label_store = '') {
+    ARC2::inc('MicroRDFSerializer');
     if (!$ns) $ns = isset($this->a['ns']) ? $this->a['ns'] : array();
-    $ser = new ARC2_POSHRDFSerializer(array_merge($this->a, array('ns' => $ns)), $this);
+    $conf = array_merge($this->a, array('ns' => $ns));
+    if ($label_store) $conf['label_store'] = $label_store;
+    $ser = new ARC2_MicroRDFSerializer($conf, $this);
     return (isset($v[0]) && isset($v[0]['s'])) ? $ser->getSerializedTriples($v) : $ser->getSerializedIndex($v);
   }
 
@@ -409,5 +461,30 @@ class ARC2_Class {
     return addslashes($str); // @@todo extend
   }
   
+  /* Microdata methods */
+
+  function getMicrodataAttrs($id, $type = '') {
+    $type = $type ? $this->expandPName($type) : $this->expandPName('owl:Thing');
+    return 'itemscope="" itemtype="' . htmlspecialchars($type) . '" itemid="' . htmlspecialchars($id) . '"';
+  }
+
+  function mdAttrs($id, $type = '') {
+    return $this->getMicrodataAttrs($id, $type);
+  }
+
+  /* central DB query hook */
+
+  function queryDB($sql, $con, $log_errors = 0) {
+    $t1 = ARC2::mtime();
+    $r = mysql_query($sql, $con);
+    $t2 = ARC2::mtime() - $t1;
+    if ($t2 > 1) {
+      //echo "\n needed " . $t2 . ' secs for ' . $sql;
+    }
+    if ($log_errors && ($er = mysql_error($con))) $this->addError($er);
+    return $r;
+  }
+
   /*  */
+
 }

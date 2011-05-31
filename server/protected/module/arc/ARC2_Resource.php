@@ -6,21 +6,17 @@
  * @license http://arc.semsol.org/license
  * @homepage <http://arc.semsol.org/>
  * @package ARC2
- * @version 2009-11-26
+ * @version 2010-11-16
 */
 
 ARC2::inc('Class');
 
 class ARC2_Resource extends ARC2_Class {
 
-  function __construct($a = '', &$caller) {
+  function __construct($a, &$caller) {
     parent::__construct($a, $caller);
   }
   
-  function ARC2_Resource($a = '', &$caller) {
-    $this->__construct($a, $caller);
-  }
-
   function __init() {
     parent::__init();
     $this->uri = '';
@@ -52,7 +48,7 @@ class ARC2_Resource extends ARC2_Class {
     if (isset($os['value'])) $os = array($os);
     /* list of values */
     foreach ($os as $i => $o) {
-      if (!is_array($o)) $os[i] = array('value' => $o, 'type' => 'literal');
+      if (!is_array($o)) $os[$i] = array('value' => $o, 'type' => 'literal');
     }
     $this->index[$s][$this->expandPName($p)] = $os;
   }
@@ -69,7 +65,7 @@ class ARC2_Resource extends ARC2_Class {
     if (in_array($uri, $this->fetched)) return 0;
     $this->index[$uri] = array();
     if ($this->store) {
-      $index = $this->store->query('DESCRIBE <' . $uri . '>', 'raw');
+      $index = $this->store->query('CONSTRUCT { <' . $uri . '> ?p ?o . } WHERE { <' . $uri . '> ?p ?o . } ', 'raw');
     }
     else {
       $index = $this->toIndex($uri);

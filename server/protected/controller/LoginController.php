@@ -3,48 +3,37 @@
 include 'protected/model/UserModel.php';
 
 class LoginController extends DooController {
-
+    
     public function authUser() {
-        $user = strtolower($_POST['username']); //perchè??? cmq...
+        $user = strtolower($_POST['username']);
         $utente = new UserModel($user);
-        $utente->firstTime();
-/*        if ($this->firstTime($user)) {
-            $this->addUser($user);
+        if ($utente->firstTime()) {
+            $utente->addUser();
             $this->startSession($user);
-            return 201;
-        } else {
-            $this->startSession($user);
-            return 200;
-        }
-*/    }
-/*    
-    private function firstTime($user) {
-        $usersList = simplexml_load_file("users.xml");
-        foreach ($usersList->user as $myUser) {
-            if ($myUser == $user)
-                return false;
-        }
-        return true;
+            return 201; } 
+        else {
+        $this->startSession($user);
+        return 200; }
     }
-
-    private function addUser($user) {
-        $this->load()->helper('DooRestClient');
-        $request = new DooRestClient;
-        $usersList = simplexml_load_file('users.xml');
-        $usersList->addChild('user', $user);
-        @file_put_contents("users.xml", $usersList->saveXML());
-        mkdir("data/" . $user, 0777);
-        $request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/server.xml")->get();
-        $serverList = $request->xml_result();
-        @file_put_contents('data/' . $user . "/servers.xml", $serverList->saveXML());
-    }
-*/
+//
+//    private function addUser($user) {
+//        $this->load()->helper('DooRestClient');
+//        $request = new DooRestClient;
+//        $usersList = simplexml_load_file('users.xml');
+//        $usersList->addChild('user', $user);
+//        @file_put_contents("users.xml", $usersList->saveXML());
+//        mkdir("data/" . $user, 0777);
+//        $request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/server.xml")->get();
+//        $serverList = $request->xml_result();
+//        @file_put_contents('data/' . $user . "/servers.xml", $serverList->saveXML());
+//    }
+//    
     private function startSession($user) {
         session_start();
         if (isset($_SESSION['user']))
             unset($_SESSION['user']);
         //imposto un cookie per far lavorare vins
-        setcookie('nick', $user, time()+3600, "/");
+        //setcookie('nick', $user, time()+3600, "/");
         $_SESSION['user'] = array(
             'username' => $user,
             'group' => 'logged',
@@ -61,7 +50,7 @@ class LoginController extends DooController {
             setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]
             );
         //brutalmente elimino il cookie del nick
-        setcookie('nick', '', time()-3600, "/");   
+        //setcookie('nick', '', time()-3600, "/");   
         }
         //termino la sessione
         session_destroy();

@@ -22,16 +22,19 @@ class UserModel {
         $parser = ARC2::getRDFParser();
         $parser->parse(self::$pathUtenti);
         $index = $parser->getSimpleIndex();
+        //print_r($index);
         //risorsa da cercare
-        $utente = '/ltw1102/' . $this->nomeUtente;
+        $utente = $this->nomeUtente;
         //se non esiste il file
         if (!$index /*|| oppure non esiste la risorsa <-- qui sto sbiellando*/) {
                     /*dove la risorsa dovrebbe essere del tipo $index[$utente]*/
-            echo 'la risorsa non esiste\n';
+            echo "la risorsa non esiste\n";
             return true;
-        }//devo specificare per forza else, non so perchè
-        else {
-            return false;
+        } else {
+            foreach ($index as $valore) {
+                if($valore == $utente) return false;
+            }
+            return true;
         }
     }
     
@@ -39,6 +42,7 @@ class UserModel {
         $parser = ARC2::getRDFParser();
         $parser->parse(self::$pathUtenti);
         $index = $parser->getSimpleIndex();
+        //print_r($index);
         $ns = array (
             'foaf' => 'http://xmlns.com/foaf/0.1/',
             'tweb' => 'http://vitali.web.cs.unibo.it/TechWeb11/'
@@ -46,7 +50,7 @@ class UserModel {
         $conf = array('ns' => $ns);
         $ser = ARC2::getRDFXMLSerializer($conf);
         //crea il soggetto della mia risorsa
-        $utente = '/ltw1102/' . $this->nomeUtente;        
+        $utente = $this->nomeUtente;        
         $index[$utente] = array(
             'rdf:type' => array(
                 'tweb:Person'
@@ -59,7 +63,7 @@ class UserModel {
         $RDFdoc = $ser->getSerializedIndex($index);
         //DEBUG
         print_r($RDFdoc);
-        //
+        ///////
         @file_put_contents(self::$pathUtenti, $RDFdoc);
     }
 }

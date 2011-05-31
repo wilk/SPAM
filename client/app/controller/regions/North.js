@@ -39,6 +39,9 @@ Ext.define ('SC.controller.regions.North' , {
 			// New post button
 			'#newPostButton' : {
 				click : this.sendNewPost
+			} ,
+			'#btnClientOption' : {
+				click : this.showOptions
 			}
 		});
 
@@ -149,5 +152,9 @@ Ext.define ('SC.controller.regions.North' , {
 		pUser.setVisible (true);
 	
 		bNewPost.setVisible (true);
-	} 
+	} ,
+	
+	showOptions: function () {
+		Ext.getCmp('windowOptions').show ();
+	}
 });

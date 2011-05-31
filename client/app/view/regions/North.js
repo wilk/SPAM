@@ -12,10 +12,13 @@ Ext.define ('SC.view.regions.North' , {
 	alias: 'widget.northregion' ,
 	
 	// Configuration
-	id: 'header' ,
 	height: 30 ,
 	region: 'north' ,
-	html: '<h1>SPAM :: Social Production of Audiovisual Microblogs</h1>' ,
+	html: '<h1 style="font-size: 16px; color: #fff; font-weight: normal; padding: 5px 10px;">SPAM :: Social Production of Audiovisual Microblogs</h1>' ,
+	style: {
+		background: '#7F99BE url(ext/resources/images/layout-browser-hd-bg.gif) repeat-x center'
+	} ,
+	bodyPadding: '5 5 5 0' ,
 	
 	// Body
 	items: [{
@@ -26,7 +29,7 @@ Ext.define ('SC.view.regions.North' , {
 		hidden: true ,
 		style: {
 			position: 'absolute' ,
-			right: '60px' ,
+			right: '125px' ,
 			top: '5px' ,
 			bottom: '5px'
 		}
@@ -36,7 +39,7 @@ Ext.define ('SC.view.regions.North' , {
 		id: 'userField' ,
 		style: {
 			position: 'absolute' ,
-			right: '60px' ,
+			right: '120px' ,
 			top: '5px' ,
 			bottom: '5px'
 		} ,
@@ -51,9 +54,19 @@ Ext.define ('SC.view.regions.North' , {
 		// Button position (right)
 		style: {
 			position: 'absolute' ,
+			right: '70px' ,
+			top: '5px' ,
+			bottom: '5px'
+		}
+	} , {
+		xtype: 'button' ,
+		id: 'btnClientOption' ,
+		text: 'Options' ,
+		style: {
+			position: 'absolute' ,
 			right: '10px' ,
 			top: '5px' ,
 			bottom: '5px'
-		} ,
+		}
 	}]
 });

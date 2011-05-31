@@ -26,7 +26,8 @@ Ext.application ({
 		'regions.center.ServerEdit' ,
 		'Send' ,
 		'SendResource' ,
-		'SelectPost',
-		'regions.west.Server'
+		'regions.west.Server',
+		'SelectPost' ,
+		'Options'
 	]
 });

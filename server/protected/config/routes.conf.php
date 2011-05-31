@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Define your URI routes here.
  *
@@ -53,105 +54,103 @@
  * $route['autoroute_force_dash'] = true;	//setting this to false or not defining it will keep auto routes accessible with the 2 URLs.
  *
  */
- 
 $route['*']['/'] = array('MainController', 'index');
 $route['*']['/error'] = array('ErrorController', 'index');
 
 
 //---------- Delete if not needed ------------
-$admin = array('admin'=>'1234');
+$admin = array('admin' => '1234');
 
 //view the logs and profiles XML, filename = db.profile, log, trace.log, profile
-$route['*']['/debug/:filename'] = array('MainController', 'debug', 'authName'=>'DooPHP Admin', 'auth'=>$admin, 'authFail'=>'Unauthorized!');
+$route['*']['/debug/:filename'] = array('MainController', 'debug', 'authName' => 'DooPHP Admin', 'auth' => $admin, 'authFail' => 'Unauthorized!');
 
 //show all urls in app
-$route['*']['/allurl'] = array('MainController', 'allurl', 'authName'=>'DooPHP Admin', 'auth'=>$admin, 'authFail'=>'Unauthorized!');
+$route['*']['/allurl'] = array('MainController', 'allurl', 'authName' => 'DooPHP Admin', 'auth' => $admin, 'authFail' => 'Unauthorized!');
 
 //generate routes file. This replace the current routes.conf.php. Use with the sitemap tool.
-$route['post']['/gen_sitemap'] = array('MainController', 'gen_sitemap', 'authName'=>'DooPHP Admin', 'auth'=>$admin, 'authFail'=>'Unauthorized!');
+$route['post']['/gen_sitemap'] = array('MainController', 'gen_sitemap', 'authName' => 'DooPHP Admin', 'auth' => $admin, 'authFail' => 'Unauthorized!');
 
 //generate routes & controllers. Use with the sitemap tool.
-$route['post']['/gen_sitemap_controller'] = array('MainController', 'gen_sitemap_controller', 'authName'=>'DooPHP Admin', 'auth'=>$admin, 'authFail'=>'Unauthorized!');
+$route['post']['/gen_sitemap_controller'] = array('MainController', 'gen_sitemap_controller', 'authName' => 'DooPHP Admin', 'auth' => $admin, 'authFail' => 'Unauthorized!');
 
 //generate Controllers automatically
-$route['*']['/gen_site'] = array('MainController', 'gen_site', 'authName'=>'DooPHP Admin', 'auth'=>$admin, 'authFail'=>'Unauthorized!');
+$route['*']['/gen_site'] = array('MainController', 'gen_site', 'authName' => 'DooPHP Admin', 'auth' => $admin, 'authFail' => 'Unauthorized!');
 
 //generate Models automatically
-$route['*']['/gen_model'] = array('MainController', 'gen_model', 'authName'=>'DooPHP Admin', 'auth'=>$admin, 'authFail'=>'Unauthorized!');
+$route['*']['/gen_model'] = array('MainController', 'gen_model', 'authName' => 'DooPHP Admin', 'auth' => $admin, 'authFail' => 'Unauthorized!');
 
 /////////INIZIO ROUTING SPAM//////////
-
 //Login utente
-$route['post']['/login']= array ('LoginController', 'authUser');
+$route['post']['/login'] = array('LoginController', 'authUser');
 //Path con login metodo non supportato
-$route['*']['/login']= array ('ErrorController', 'notSupport');
+$route['*']['/login'] = array('ErrorController', 'notSupport');
 
 //Logout utente
-$route['post']['/logout']= array ('LoginController', 'logout');
+$route['post']['/logout'] = array('LoginController', 'logout');
 //Path con logout metodo non supportato
-$route['*']['/logout']= array ('ErrorController', 'notSupport');
+$route['*']['/logout'] = array('ErrorController', 'notSupport');
 
 //Crea nuovo post
-$route['post']['/post']= array('PostController', 'createPost');
+$route['post']['/post'] = array('PostController', 'createPost');
 //Ricevi post
-$route['get']['/post/:serverID/:userID/:postID']= array('PostController', 'sendPost');
+$route['get']['/post/:serverID/:userID/:postID'] = array('PostController', 'sendPost');
 //Path con post metodo non supportato
-$route['*']['/post']= array ('ErrorController', 'notSupport');
+$route['*']['/post'] = array('ErrorController', 'notSupport');
 //"Retweetta" un post
-$route['post']['/respam']= array ('PostController', 'createRespam');
+$route['post']['/respam'] = array('PostController', 'createRespam');
 //Path con retweet metodo non supportato
-$route['*']['/respam']= array ('ErrorController', 'notSupport');
+$route['*']['/respam'] = array('ErrorController', 'notSupport');
 
 //Rispondi al post
-$route['post']['/replyto']=array ('ReplyController', 'createReply');
+$route['post']['/replyto'] = array('ReplyController', 'createReply');
 //Path con replyto metodo non supportato
-$route['*']['/replyto']=array ('ErrorController', 'notSupport');
+$route['*']['/replyto'] = array('ErrorController', 'notSupport');
 //Ricerca un post
 
-$route['get']['/search/:limit/:type/:serverID/:userID/:postID']= array ('SearchController', 'searchMain');
+$route['get']['/search/:limit/:type'] = array('SearchController', 'fakeSearch');
 //Path con search metodo non supportato
-$route['*']['/search/:limit/:type/:serverID/:userID/:postID']= array ('ErrorController', 'notSupport');
+$route['*']['/search/:limit/:type/:serverID/:userID/:postID'] = array('ErrorController', 'notSupport');
 
 //Imposta setlike
-$route['post']['/setlike/:value/:serverID/:userID/:postID']= array ('LikeController', 'setLike');
+$route['post']['/setlike/:value/:serverID/:userID/:postID'] = array('LikeController', 'setLike');
 //Path con setlike metodo non supportato
-$route['*']['/setlike/:value/:serverID/:userID/:postID']= array ('ErrorController', 'notSupport');
+$route['*']['/setlike/:value/:serverID/:userID/:postID'] = array('ErrorController', 'notSupport');
 
 //Richiesta lista server federati
-$route['get']['/servers']= array ('ServersController', 'sendServersList');
+$route['get']['/servers'] = array('ServersController', 'sendServersList');
 //Sovrascrivi lista server federati
-$route['post']['/servers']=array ('ServersController', 'rewriteServersList');
+$route['post']['/servers'] = array('ServersController', 'rewriteServersList');
 //Path con servers metodo non supportato
-$route['*']['/servers']= array ('ErrorController', 'notSupport');
+$route['*']['/servers'] = array('ErrorController', 'notSupport');
 
 //Setta sei seguire o meno un utente
-$route['post']['/setfollow/:value/:serverID/:userID']=array ('FollowController', 'setFollow');
+$route['post']['/setfollow/:value/:serverID/:userID'] = array('FollowController', 'setFollow');
 //Path setfollow metodo non supportato
-$route['*']['/setfollow/:value/:serverID/:userID']=array('ErrorController','notSupport');
+$route['*']['/setfollow/:value/:serverID/:userID'] = array('ErrorController', 'notSupport');
 
 //Aggiunge termine al tesauro
-$route['post']['/addterm']=array ('TesauroController', 'addTerm');
+$route['post']['/addterm'] = array('TesauroController', 'addTerm');
 //Path addterm metodo non supportato
-$route['*']['/addterm']= array ('ErrorController', 'notSupport');
+$route['*']['/addterm'] = array('ErrorController', 'notSupport');
 //Rimuove termine dal tesauro
-$route['post']['/remterm']=array ('TesauroController', 'removeTerm');
+$route['post']['/remterm'] = array('TesauroController', 'removeTerm');
 //Path term metodo non supportato
-$route['*']['/remterm']=array ('ErrorController', 'notSupport');
+$route['*']['/remterm'] = array('ErrorController', 'notSupport');
 //Restituisce tesauro esteso
-$route['get']['/thesaurus']=array ('TesauroController', 'sendThesaurus');
+$route['get']['/thesaurus'] = array('TesauroController', 'sendThesaurus');
 //Path thesaurus metodo non supportato
-$route['*']['/thesaurus']= array ('ErrorController', 'notSupport');
+$route['*']['/thesaurus'] = array('ErrorController', 'notSupport');
 
 //Propaga setlike
-$route['post']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID']=array ('LikeController', 'propagateLike');
+$route['post']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID'] = array('LikeController', 'propagateLike');
 //Path propagatelike metodo non supportato
-$route['*']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID']=array ('ErrorController','notSupport');
+$route['*']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID'] = array('ErrorController', 'notSupport');
 
 //Inoltra notifica di risposta ad un post
-$route['post']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('PostController', 'hasReply');
+$route['post']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID'] = array('PostController', 'hasReply');
 //Path hasreply metodo non supportato
-$route['*']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('ErrorController','notSupport');
+$route['*']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID'] = array('ErrorController', 'notSupport');
 
 //SEZIONE TEST
-$route['post']['/extrasource'] = array ('TestController', 'getHead');
+$route['post']['/extrasource'] = array('TestController', 'getHead');
 ?>

@@ -11,13 +11,14 @@ Ext.define ('SC.controller.regions.North' , {
 	extend: 'Ext.app.Controller' ,
 	
 	// Views
-	views: ['regions.North' , 'regions.west.User'] ,
-	
+	views: ['regions.North' ,
+		 'regions.west.User',
+		'regions.west.FederatedServer'
+		] ,
 	// Configuration
 	init: function () {
 		// Local vars declaration
-		var fieldUser , pUser , bNewPost, btnLogin;
-		
+		var fieldUser , pUser , bNewPost, btnLogin, fedserv;
 		this.control ({
 			// Init login with cookie
 			'northregion' : {
@@ -57,6 +58,7 @@ Ext.define ('SC.controller.regions.North' , {
 		pUser = Ext.getCmp ('userPanel');
 		bNewPost = northPanel.down ('#newPostButton');
 		btnLogin = northPanel.down ('#loginButton');
+		fedserv=Ext.getCmp('fedserver');
 		
 		// If there is server cookie
 		if (Ext.util.Cookies.get ('PHPSESSID') != null)
@@ -102,6 +104,7 @@ Ext.define ('SC.controller.regions.North' , {
 						pUser.setVisible (true);
 	
 						bNewPost.setVisible (true);
+						fedserv.setVisible(true);
 					} ,
 					failure: function (error) {
 						Ext.Msg.alert ('Error ' + error.status , error.responseText);

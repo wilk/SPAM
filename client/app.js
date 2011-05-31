@@ -18,7 +18,7 @@ Ext.application ({
 		'regions.west.Search' ,
 		'regions.west.Thesaurus' ,
 		'regions.East' ,
-		'regions.east.Server' ,
+		'regions.west.Server' ,
 		'regions.east.RecentPost' ,
 		'regions.east.GeoLocation' ,
 		'regions.Center' ,
@@ -26,6 +26,7 @@ Ext.application ({
 		'regions.center.ServerEdit' ,
 		'Send' ,
 		'SendResource' ,
-		'SelectPost'
+		'SelectPost',
+		'regions.west.Server'
 	]
 });

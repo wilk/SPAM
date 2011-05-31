@@ -1,7 +1,7 @@
 Ext.define('SC.controller.regions.center.ServerEdit',{
 	extend:'Ext.app.Controller',
 	views:['regions.center.ServerEdit',
-		'regions.east.FederatedServer'],
+		'regions.west.FederatedServer'],
 	stores:['Servers'],
 	models:['Server'],
 	init:function(){

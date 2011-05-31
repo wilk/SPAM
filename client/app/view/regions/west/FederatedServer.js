@@ -1,6 +1,7 @@
-Ext.define('SC.view.regions.east.FederatedServer',{
+Ext.define('SC.view.regions.west.FederatedServer',{
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.fedServer',
+	id:'fedserver',
 	store:'Servers',
 	//CONFIG
 	title:'Federated Servers',
@@ -9,6 +10,7 @@ Ext.define('SC.view.regions.east.FederatedServer',{
 	bodyPadding:2,
 	anchor:'100%',
 	layout:'anchor',
+	hidden:true,
 	dockedItems:[
 	{	dock:'bottom',
 		xtype:'button',

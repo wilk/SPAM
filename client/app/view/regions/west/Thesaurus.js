@@ -18,7 +18,7 @@ Ext.define ('SC.view.regions.west.Thesaurus' , {
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 2 ,
-	anchor: '100%' ,
+	anchor: '100% 100%' ,
 	layout: 'anchor' ,
 	rootVisible: true ,
 	scroll: true ,

@@ -28,13 +28,18 @@ Ext.define ('SC.controller.regions.east.GeoLocation' , {
 	initGeolocation: function (geoPanel) {
 		// If browser supports geolocation, setup default
 		if (browserGeoSupportFlag) {
-			var latlng = new google.maps.LatLng(0, 0);
-			var myOptions = {
-				zoom: 0,
-				center: latlng,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-			var map = new google.maps.Map(document.getElementById("geoloc"), myOptions);
+			try {
+				var latlng = new google.maps.LatLng(0, 0);
+				var myOptions = {
+					zoom: 0,
+					center: latlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				var map = new google.maps.Map(document.getElementById("geoloc"), myOptions);
+				}
+			catch (error) {
+				console.log (error);
+			}
 		}
 		// Otherwise, do not show geo location panel
 		else {

@@ -21,6 +21,21 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 	
 	// Configuration
 	init: function () {
+		this.control ({
+			'recentpost' : {
+				afterrender : function () {
+//					Ext.Ajax.request ({
+//						url: 'search/10/recent/' ,
+//						success: function (response) {
+//							Ext.Msg.alert (response.responseText);
+//						} ,
+//						failure: function (error) {
+//							Ext.Msg.alert ('Error ' + error.status, error);
+//						}
+//					});
+				}
+			}
+		});
 		console.log ('Controller RecentPost started.');
 	}
 });

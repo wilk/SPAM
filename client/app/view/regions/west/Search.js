@@ -46,7 +46,8 @@ Ext.define ('SC.view.regions.west.Search' , {
 		id: 'numberSearch' ,
 		value: 1 ,
 		minValue: 1 ,
-		allowBlank: false
+		allowBlank: false ,
+		anchor: '100%'
 	} , {
 		xtype: 'textfield' ,
 		id: 'textSearch' ,

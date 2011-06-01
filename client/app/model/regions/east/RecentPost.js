@@ -11,7 +11,7 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 	extend: 'Ext.data.Model' ,
 	
 	// Fields
-	fields: ['id'] ,
+	fields: ['post' , 'content' , 'affinity' , 'article'] ,
 	
 	// REST Proxy for REST requests
 	proxy: {
@@ -21,7 +21,7 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 		reader: {
 			type: 'xml' ,
 			root: 'archive' ,
-			record: 'article'
+			record: 'post'
 		}
 	}
 });

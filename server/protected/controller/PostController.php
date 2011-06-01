@@ -20,7 +20,6 @@ class PostController extends DooController {
         /*Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
         $content= $_POST['article'];
-        echo $content;
         $articolo = new PostModel();
         if ($articolo->parseArticle($content))
             return 201;

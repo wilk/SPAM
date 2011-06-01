@@ -5,10 +5,18 @@ include 'protected/model/UserModel.php';
 class LoginController extends DooController {
     
     public function authUser() {
+        $this->load()->helper('DooRestClient');
+        $request = new DooRestClient;
         $user = strtolower($_POST['username']);
         $utente = new UserModel($user);
         if ($utente->firstTime()) {
             $utente->addUser();
+            //cerco di arricchire la risorsa con i servers
+            /*$request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/server.xml")->get();
+            $serverList = $request->xml_result();
+            print_r($serverList);
+             * 
+             */
             $this->startSession($user);
             return 201; } 
         else {

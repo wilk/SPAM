@@ -22,38 +22,33 @@ class UserModel {
         $parser = ARC2::getRDFParser();
         $parser->parse(self::$pathUtenti);
         $index = $parser->getSimpleIndex();
-        //print_r($index);
-        //risorsa da cercare
-        $utente = $this->nomeUtente;
-        //se non esiste il file
-        if (!$index /*|| oppure non esiste la risorsa <-- qui sto sbiellando*/) {
-                    /*dove la risorsa dovrebbe essere del tipo $index[$utente]*/
-            echo "la risorsa non esiste\n";
-            return true;
-        } else {
-            foreach ($index as $valore) {
-                if($valore == $utente) return false;
-            }
-            return true;
-        }
+        $utente = 'spammers:'.$this->nomeUtente;
+        //se non esiste il file ritorna
+        if (!$index) { return true; } 
+        else {
+            foreach ($index as $valore => $value) 
+                { if($valore == $utente) 
+                    { echo $valore; return false; }}
+        }//nuovo utente
+         return true;
     }
     
     public function addUser(){
         $parser = ARC2::getRDFParser();
         $parser->parse(self::$pathUtenti);
         $index = $parser->getSimpleIndex();
-        //print_r($index);
         $ns = array (
             'foaf' => 'http://xmlns.com/foaf/0.1/',
-            'tweb' => 'http://vitali.web.cs.unibo.it/TechWeb11/'
+            /*'tweb' => 'http://vitali.web.cs.unibo.it/TechWeb11/',*/
+            'spammers' => 'http://ltw1102.web.cs.unibo.it/Spammers/'
         );
         $conf = array('ns' => $ns);
         $ser = ARC2::getRDFXMLSerializer($conf);
         //crea il soggetto della mia risorsa
-        $utente = $this->nomeUtente;        
+        $utente = 'spammers:'.$this->nomeUtente;        
         $index[$utente] = array(
             'rdf:type' => array(
-                'tweb:Person'
+                'foaf:Person'
             ),
             'foaf:nick' => array(
                 $this->nomeUtente
@@ -61,9 +56,6 @@ class UserModel {
         );
 
         $RDFdoc = $ser->getSerializedIndex($index);
-        //DEBUG
-        print_r($RDFdoc);
-        ///////
         @file_put_contents(self::$pathUtenti, $RDFdoc);
     }
 }

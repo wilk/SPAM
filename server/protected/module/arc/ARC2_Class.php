@@ -280,7 +280,7 @@ class ARC2_Class {
       $path = $m[2];
       $base = ($base == $root.'/') ? $base : preg_replace('/^(.*\/)[^\/]+\/$/', '\\1', $base);
     }
-       return $base . $path; 
+    return $base . $path;
   }
   
   /*  */
@@ -295,11 +295,7 @@ class ARC2_Class {
       }
       return $r;
     }
-    if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')
-    return 'file:'.str_replace('\\','/',realpath($r));
-    else if (strtoupper(substr(PHP_OS, 0, 3)) == 'LIN')
     return 'file://' . realpath($r);/* real path */
-    else return 'file://' . realpath($r);
   }
 
   /*  */

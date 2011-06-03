@@ -78,7 +78,12 @@ function submitSearch () {
 					url: 'search/' + number.getValue () + '/following' ,
 					// TODO: read the response on success
 					failure: function (error) {
-						Ext.Msg.alert ('Error ' + error.status , error.responseText);
+						Ext.Msg.show ({
+							title: 'Error ' + error.status ,
+							msg: error.responseText ,
+							buttons: Ext.Msg.OK,
+							icon: Ext.Msg.ERROR
+						});
 					}
 				});
 				break;
@@ -88,12 +93,22 @@ function submitSearch () {
 						url: 'search/' + number.getValue () + '/recent/' + text.getValue () ,
 						// TODO: read the response on success
 						failure: function (error) {
-							Ext.Msg.alert ('Error ' + error.status , error.responseText);
+							Ext.Msg.show ({
+								title: 'Error ' + error.status ,
+								msg: error.responseText ,
+								buttons: Ext.Msg.OK,
+								icon: Ext.Msg.ERROR
+							});
 						}
 					});
 				}
 				else {
-					Ext.Msg.alert ('Error' , 'You must specify the term to search.');
+					Ext.Msg.show ({
+						title: 'Error ' ,
+						msg: 'You must specify the term to search.' ,
+						buttons: Ext.Msg.OK,
+						icon: Ext.Msg.ERROR
+					});
 				}
 				break;
 			case 'Related' :
@@ -102,12 +117,22 @@ function submitSearch () {
 						url: 'search/' + number.getValue () + '/related/' + text.getValue () ,
 						// TODO: read the response on success
 						failure: function (error) {
-							Ext.Msg.alert ('Error ' + error.status , error.responseText);
+							Ext.Msg.show ({
+								title: 'Error ' + error.status ,
+								msg: error.responseText ,
+								buttons: Ext.Msg.OK,
+								icon: Ext.Msg.ERROR
+							});
 						}
 					});
 				}
 				else {
-					Ext.Msg.alert ('Error' , 'You must specify the term to search.');
+					Ext.Msg.show ({
+						title: 'Error' ,
+						msg: 'You must specify the term to search.' ,
+						buttons: Ext.Msg.OK,
+						icon: Ext.Msg.ERROR
+					});
 				}
 				break;
 			case 'Fulltext' :
@@ -116,21 +141,41 @@ function submitSearch () {
 						url: 'search/' + number.getValue () + '/fulltext/' + text.getValue () ,
 						// TODO: read the response on success
 						failure: function (error) {
-						Ext.Msg.alert ('Error ' + error.status , error.responseText);
+							Ext.Msg.show ({
+								title: 'Error ' + error.status ,
+								msg: error.responseText ,
+								buttons: Ext.Msg.OK,
+								icon: Ext.Msg.ERROR
+							});
 						}
 					});
 				}
 				else {
-					Ext.Msg.alert ('Error' , 'You must specify the term to search.');
+					Ext.Msg.show ({
+						title: 'Error' ,
+						msg: 'You must specify the term to search.' ,
+						buttons: Ext.Msg.OK,
+						icon: Ext.Msg.ERROR
+					});
 				}
 				break;
 //			case 'Affinity' :
 //				break;
 			default:
-				Ext.Msg.alert ('Error' , 'This type of search isn\'t implemented yet.');
+				Ext.Msg.show ({
+					title: 'Error' ,
+					msg: 'This search method isn\'t implemented yet.' ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
 		}
 	}
 	else {
-		Ext.Msg.alert ('Error' , 'You must specify the type of search and\n the number of post to retreive.');
+		Ext.Msg.show ({
+			title: 'Error' ,
+			msg: 'You must specify the type of search and the number of posts to retreive.' ,
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.ERROR
+		});
 	}
 }

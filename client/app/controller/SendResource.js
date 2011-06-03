@@ -73,9 +73,12 @@ Ext.define ('SC.controller.SendResource' , {
 		if (txtResUrl.isValid () && (txtResDes.getValue().length <= MAXCHARS)) {
 		
 			var 	artBody = txtResDes.getValue () ,
-				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />' ,
-				// XML Injection
-				article = artHeader + '\n' + artBody + '\n' + artResource + '\n';
+				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />';
+			
+			artBody = htInjection (artBody);
+			
+			// XML Injection
+			var article = artHeader + '\n' + artBody + '\n' + artResource + '\n';
 			
 			// Check geolocation
 			if (chkBoxGeoLoc.getValue () && browserGeoSupportFlag) {

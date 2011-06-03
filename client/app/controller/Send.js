@@ -43,7 +43,7 @@ Ext.define ('SC.controller.Send' , {
 				click: this.resetFields
 			}
 		});
-	
+		
 		console.log ('Controller Send started.');
 	} ,
 	
@@ -71,9 +71,13 @@ Ext.define ('SC.controller.Send' , {
 		if (txtSendArea.isValid () && (txtSendArea.getValue().length <= MAXCHARS)) {
 		
 			var 	artBody = txtSendArea.getValue () ,
-				// XML Injection
-				article = artHeader + '\n' + artBody + '\n',
 				win = Ext.getCmp ('windowNewPost');
+			
+			// XML Injection for hashtag
+			artBody = htInjection (artBody);
+			
+			// XML Injection
+			var article = artHeader + '\n' + artBody + '\n';
 		
 			// Check geolocation
 			if (chkSendBoxGeoLoc.getValue () && browserGeoSupportFlag) {

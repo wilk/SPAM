@@ -12,13 +12,12 @@ Ext.define ('SC.controller.regions.North' , {
 	
 	// Views
 	views: ['regions.North' ,
-		 'regions.west.User',
-		'regions.west.FederatedServer'
+		 'regions.west.User'
 		] ,
 	// Configuration
 	init: function () {
 		// Local vars declaration
-		var fieldUser , pUser , bNewPost, btnLogin, fedserv;
+		var fieldUser , pUser , bNewPost, btnLogin;
 		this.control ({
 			// Init login with cookie
 			'northregion' : {
@@ -44,7 +43,7 @@ Ext.define ('SC.controller.regions.North' , {
 				click : this.showOptions
 			}
 		});
-		
+
 		console.log ('Controller North started.');
 	} ,
 	
@@ -61,7 +60,6 @@ Ext.define ('SC.controller.regions.North' , {
 		pUser = Ext.getCmp ('userPanel');
 		bNewPost = northPanel.down ('#newPostButton');
 		btnLogin = northPanel.down ('#loginButton');
-		fedserv=Ext.getCmp('fedserver');
 		
 		// If there is server cookie
 		if (Ext.util.Cookies.get ('PHPSESSID') != null)
@@ -107,26 +105,14 @@ Ext.define ('SC.controller.regions.North' , {
 						pUser.setVisible (true);
 	
 						bNewPost.setVisible (true);
-						fedserv.setVisible(true);
 					} ,
 					failure: function (error) {
-						Ext.Msg.show ({
-							title: 'Error ' + error.status ,
-							msg: error.responseText ,
-							buttons: Ext.Msg.OK,
-							icon: Ext.Msg.ERROR
-						});
+						Ext.Msg.alert ('Error ' + error.status , error.responseText);
 					}
 				});
 			}
 			else {
-				// If fields are empty, show an error message
-				Ext.Msg.show ({
-					title: 'Error' ,
-					msg: 'Fill the username box to login.' ,
-					buttons: Ext.Msg.OK,
-					icon: Ext.Msg.ERROR
-				});
+				Ext.Msg.alert ('Error' , 'To login: fill the box with your username.');
 			}
 		}
 		// Check if user wants to logout
@@ -137,7 +123,6 @@ Ext.define ('SC.controller.regions.North' , {
 				url: 'logout' ,
 				success: function () {
 					btnLogin.setText ('Login');
-		
 					fieldUser.reset ();
 					fieldUser.setVisible (true);
 	
@@ -146,12 +131,7 @@ Ext.define ('SC.controller.regions.North' , {
 					bNewPost.setVisible (false);
 				} ,
 				failure: function (error) {
-					Ext.Msg.show ({
-							title: 'Error ' + error.status ,
-							msg: error.responseText ,
-							buttons: Ext.Msg.OK,
-							icon: Ext.Msg.ERROR
-						});
+					Ext.Msg.alert ('Error ' + error.status , error.responseText);
 				}
 			});
 		}

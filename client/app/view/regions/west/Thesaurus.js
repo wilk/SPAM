@@ -22,37 +22,38 @@ Ext.define ('SC.view.regions.west.Thesaurus' , {
 	layout: 'anchor' ,
 	rootVisible: true ,
 	scroll: true ,
-	store: {
-		root: {
-			expanded: true ,
-			text: '' ,
-			user: '' ,
-			status: '' ,
-			children: [{
-				text: 'P1' ,
-				expanded: true ,
-				children: {
-					text:'P1' ,
-					expanded: true ,
-					children: {
-						text: 'P111' ,
-						leaf: true
-					}
-				}
-			} , {
-				text: 'P2' ,
-				expanded: true ,
-				children: [{
-					text: 'P21' ,
-					leaf: true
-				} , {
-					text: 'P22' ,
-					leaf: true
-				}]
-			} , {
-				text: 'P3' ,
-				leaft: true
-			}]
-		}
-	}
+	store:'Thesaurus'
+//	store: {
+//		root: {
+//			expanded: true ,
+//			text: '' ,
+//			user: '' ,
+//			status: '' ,
+//			children: [{
+//				text: 'P1' ,
+//				expanded: true ,
+//				children: {
+//					text:'P1' ,
+//					expanded: true ,
+//					children: {
+//						text: 'P111' ,
+//						leaf: true
+//					}
+//				}
+//			} , {
+//				text: 'P2' ,
+//				expanded: true ,
+//				children: [{
+//					text: 'P21' ,
+//					leaf: true
+//				} , {
+//					text: 'P22' ,
+//					leaf: true
+//				}]
+//			} , {
+//				text: 'P3' ,
+//				leaft: true
+//			}]
+//		}
+//	}
 });

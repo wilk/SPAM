@@ -4,7 +4,7 @@ Ext.define('SC.store.Servers',{
 	proxy: {
 		
 		type: 'ajax',
-		url: 'app/data/serverAll.xml',
+		url: 'servers',
 		limitParam:'undefined',
 		pageParam:'undefined',
 		startParam:'undefined',

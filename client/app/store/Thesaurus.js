@@ -1,0 +1,21 @@
+Ext.define('SC.store.Thesaurus',{	
+	extend:'Ext.data.TreeStore',
+	proxy:{
+		type:'ajax',
+		url:'https://pastee.org/xve64',
+		limitParam:'undefined',
+		pageParam:'undefined',
+		startParam:'undefined',
+		noCache:false,
+		reader:{
+			type:'xml',
+			root:'rdf:RDF',
+			record:'rdf:Description'
+		},
+		writer:{
+			type:'xml',
+			documentRoot:'rdf:RDF',
+			record:'rdf:Description'
+		}
+	}
+});

@@ -56,6 +56,19 @@ Ext.define ('SC.view.Options' , {
 					id: 'btnOptionReset'
 				}]
 			}]
+		},
+		{
+			title:'Server',
+			items:[{
+				xtype:'grid',
+				id:'fedServer',
+				store:'Servers',
+				frame: false ,
+				border: 0 ,
+				bodyPadding: 10 ,
+				anchor: '100% 100%' ,
+				columns:[{header:'server name',dataIndex:'serverID'}]
+			}]
 		} , {
 			// Tab About Us
 			title: 'About Us'

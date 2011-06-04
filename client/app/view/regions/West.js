@@ -15,8 +15,7 @@ Ext.define ('SC.view.regions.West' , {
 	requires: [
 		'SC.view.regions.west.User' ,
 		'SC.view.regions.west.Search' ,
-		'SC.view.regions.west.Thesaurus',
-		'SC.view.regions.west.FederatedServer'
+		'SC.view.regions.west.Thesaurus'
 	] ,
 	
 	// Configuration
@@ -35,7 +34,5 @@ Ext.define ('SC.view.regions.West' , {
 		xtype: 'search'
 	} , {
 		xtype: 'thesaurus'
-	} , {
-		xtype:'fedServer'
-	} , ]
+	}]
 });

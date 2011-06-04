@@ -18,16 +18,14 @@ Ext.application ({
 		'regions.west.Search' ,
 		'regions.west.Thesaurus' ,
 		'regions.East' ,
-		'regions.west.Server' ,
 		'regions.east.RecentPost' ,
 		'regions.east.GeoLocation' ,
 		'regions.Center' ,
 		'regions.center.Post' ,
-		'regions.center.ServerEdit' ,
 		'Send' ,
 		'SendResource' ,
-		'regions.west.Server',
 		'SelectPost' ,
-		'Options'
+		'Options',
+		'Server'
 	]
 });

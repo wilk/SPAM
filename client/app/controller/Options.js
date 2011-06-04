@@ -12,7 +12,6 @@ Ext.define ('SC.controller.Options' , {
 	
 	// Views
 	views: ['Options'] ,
-	
 	// Configuration
 	init: function () {
 		var txtServerUrl;

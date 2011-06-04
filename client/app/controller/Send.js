@@ -9,7 +9,7 @@
 
 var MAXCHARS = 140;
 
-var 	artHeader = '<article>' ,
+var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
 	artFooter = '</article>';
 
 var txtSendArea , lblSendCount , chkSendBoxGeoLoc;
@@ -43,7 +43,7 @@ Ext.define ('SC.controller.Send' , {
 				click: this.resetFields
 			}
 		});
-		
+	
 		console.log ('Controller Send started.');
 	} ,
 	
@@ -71,13 +71,9 @@ Ext.define ('SC.controller.Send' , {
 		if (txtSendArea.isValid () && (txtSendArea.getValue().length <= MAXCHARS)) {
 		
 			var 	artBody = txtSendArea.getValue () ,
+				// XML Injection
+				article = artHeader + '\n' + artBody + '\n',
 				win = Ext.getCmp ('windowNewPost');
-			
-			// XML Injection for hashtag
-			artBody = htInjection (artBody);
-			
-			// XML Injection
-			var article = artHeader + '\n' + artBody + '\n';
 		
 			// Check geolocation
 			if (chkSendBoxGeoLoc.getValue () && browserGeoSupportFlag) {
@@ -94,12 +90,7 @@ Ext.define ('SC.controller.Send' , {
 					article += sendGeoLocSpan + '\n';
 				}
 				catch (err) {
-					Ext.Msg.show ({
-						title: 'Error' ,
-						msg: 'An error occurred during setup geolocation: article will be sent without geolocation.' ,
-						buttons: Ext.Msg.OK,
-						icon: Ext.Msg.ERROR
-					});
+					Ext.Msg.alert ('Error' , 'An error occurred during setup geolocation: the article will be sent without geolocation.');
 				}
 			}
 			
@@ -114,22 +105,12 @@ Ext.define ('SC.controller.Send' , {
 					win.close ();
 				} ,
 				failure: function (error) {
-					Ext.Msg.show ({
-						title: 'Error ' + error.status ,
-						msg: error.responseText ,
-						buttons: Ext.Msg.OK,
-						icon: Ext.Msg.ERROR
-					});
+					Ext.Msg.alert ('Error ' + error.status , error.responseText);
 				}
 			});
 		}
 		else {
-			Ext.Msg.show ({
-				title: 'Error' ,
-				msg: 'Fill the post fields with almost 140 chars.' ,
-				buttons: Ext.Msg.OK,
-				icon: Ext.Msg.ERROR
-			});
+			Ext.Msg.alert ('Error' , 'New post is blank or it has got to many chars (140 max).');
 		}
 	} ,
 	

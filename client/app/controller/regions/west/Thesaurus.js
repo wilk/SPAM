@@ -12,9 +12,14 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 	
 	// Views
 	views: ['regions.west.Thesaurus'] ,
-	
+	stores:['Thesaurus'],
 	// Configuration
 	init: function () {
+		var theStore=this.getThesaurusStore();
+		var theProxy=theStore.getProxy();
+		theStore.load();
+		theProxy.on('excetion',function(response,operation){console.log(response,operation);});
+		Ext.Ajax.on('requestexception',function(conn,response,operation){console.log(conn,response,operation);});
 		console.log ('Controller Thesaurus started.');
 	}
 });

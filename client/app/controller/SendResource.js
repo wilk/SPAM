@@ -9,7 +9,7 @@
 
 var MAXCHARS = 140;
 
-var 	artHeader = '<article xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:ctag="http://commontag.org/ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" typeof="sioc:Post">' ,
+var 	artHeader = '<article>' ,
 	artFooter = '</article>';
 
 var 	winRes, txtResUrl, txtResDes, lblResCount , chkBoxGeoLoc;
@@ -73,9 +73,12 @@ Ext.define ('SC.controller.SendResource' , {
 		if (txtResUrl.isValid () && (txtResDes.getValue().length <= MAXCHARS)) {
 		
 			var 	artBody = txtResDes.getValue () ,
-				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />' ,
-				// XML Injection
-				article = artHeader + '\n' + artBody + '\n' + artResource + '\n';
+				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />';
+			
+			artBody = htInjection (artBody);
+			
+			// XML Injection
+			var article = artHeader + '\n' + artBody + '\n' + artResource + '\n';
 			
 			// Check geolocation
 			if (chkBoxGeoLoc.getValue () && browserGeoSupportFlag) {
@@ -92,7 +95,12 @@ Ext.define ('SC.controller.SendResource' , {
 					article += geoLocSpan + '\n';
 				}
 				catch (err) {
-					Ext.Msg.alert ('Error' , 'An error occurred during setup geolocation: the article will be sent without geolocation.');
+					Ext.Msg.show ({
+						title: 'Error' ,
+						msg: 'An error occurred during geolocation setup: article will be sent without geolocation.' ,
+						buttons: Ext.Msg.OK,
+						icon: Ext.Msg.ERROR
+					});
 				}
 			}
 			
@@ -107,12 +115,22 @@ Ext.define ('SC.controller.SendResource' , {
 					winRes.close ();
 				} ,
 				failure: function (error) {
-					Ext.Msg.alert ('Error ' + error.status , error.responseText);
+					Ext.Msg.show ({
+						title: 'Error ' + error.status ,
+						msg: error.responseText ,
+						buttons: Ext.Msg.OK,
+						icon: Ext.Msg.ERROR
+					});
 				}
 			});
 		}
 		else {
-			Ext.Msg.alert ('Error' , 'New post is blank or it has got to many chars (140 max).');
+			Ext.Msg.show ({
+				title: 'Error' ,
+				msg: 'Fill the post fields with almost 140 chars.' ,
+				buttons: Ext.Msg.OK,
+				icon: Ext.Msg.ERROR
+			});
 		}
 	} ,
 	

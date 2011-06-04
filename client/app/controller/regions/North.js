@@ -44,7 +44,7 @@ Ext.define ('SC.controller.regions.North' , {
 				click : this.showOptions
 			}
 		});
-
+		
 		console.log ('Controller North started.');
 	} ,
 	
@@ -110,12 +110,23 @@ Ext.define ('SC.controller.regions.North' , {
 						fedserv.setVisible(true);
 					} ,
 					failure: function (error) {
-						Ext.Msg.alert ('Error ' + error.status , error.responseText);
+						Ext.Msg.show ({
+							title: 'Error ' + error.status ,
+							msg: error.responseText ,
+							buttons: Ext.Msg.OK,
+							icon: Ext.Msg.ERROR
+						});
 					}
 				});
 			}
 			else {
-				Ext.Msg.alert ('Error' , 'To login: fill the box with your username.');
+				// If fields are empty, show an error message
+				Ext.Msg.show ({
+					title: 'Error' ,
+					msg: 'Fill the username box to login.' ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
 			}
 		}
 		// Check if user wants to logout
@@ -135,7 +146,12 @@ Ext.define ('SC.controller.regions.North' , {
 					bNewPost.setVisible (false);
 				} ,
 				failure: function (error) {
-					Ext.Msg.alert ('Error ' + error.status , error.responseText);
+					Ext.Msg.show ({
+							title: 'Error ' + error.status ,
+							msg: error.responseText ,
+							buttons: Ext.Msg.OK,
+							icon: Ext.Msg.ERROR
+						});
 				}
 			});
 		}

@@ -4,6 +4,9 @@ include 'protected/model/UserModel.php';
 
 class LoginController extends DooController {
     
+    static private $_SERVERLIST =
+        "http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml";
+    
     public function authUser() {
         $this->load()->helper('DooRestClient');
         $request = new DooRestClient;
@@ -12,11 +15,12 @@ class LoginController extends DooController {
         if ($utente->firstTime()) {
             $utente->addUser();
             //cerco di arricchire la risorsa con i servers
-            /*$request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/server.xml")->get();
+            $idsServer = array();
+            $request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml")->get();
             $serverList = $request->xml_result();
-            print_r($serverList);
-             * 
-             */
+            foreach ($serverList->server as $myServer)
+                array_push($idsServer, (string) $myServer->attributes()->serverID);
+            print_r($idsServer);
             $this->startSession($user);
             return 201; } 
         else {

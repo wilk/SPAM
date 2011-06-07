@@ -10,43 +10,47 @@ include_once 'protected/module/Graphite.php';
 
 class UserModel {
     
+    private $index;
     public $nomeUtente;
+    public $usrLabel;
     private static $pathUtenti = 'data/users.rdf';
     
     function __construct($usr) {
         //TODO: effettuare controlli su $usr
         $this->nomeUtente = $usr;
+        $this->usrLabel = 'spam:/Spammers/'.$this->nomeUtente;
+        $parser = ARC2::getRDFParser();
+        $parser->parse(self::$pathUtenti);
+        $this->index = $parser->getSimpleIndex();
+    }
+    
+    function writeInUsers () {
+        $ns = array (
+            'foaf' => 'http://xmlns.com/foaf/0.1/',
+            'tweb' => 'http://vitali.web.cs.unibo.it/vocabulary/',
+            'spam' => 'http://ltw1102.web.cs.unibo.it/',
+            'sioc' => 'http://rdfs.org/sioc/ns#'
+        );
+        $conf = array('ns' => $ns);
+        $ser = ARC2::getRDFXMLSerializer($conf);
+        $RDFdoc = $ser->getSerializedIndex($this->index);
+        @file_put_contents(self::$pathUtenti, $RDFdoc);
     }
     
     public function firstTime() {
-        $parser = ARC2::getRDFParser();
-        $parser->parse(self::$pathUtenti);
-        $index = $parser->getSimpleIndex();
-        $utente = 'spammers:'.$this->nomeUtente;
         //se non esiste il file ritorna
-        if (!$index) { return true; } 
+        if (!$this->index) { return true; } 
         else {
-            foreach ($index as $valore => $value) 
-                { if($valore == $utente) 
-                    { echo $valore; return false; }}
+            foreach ($this->index as $usr => $value) 
+                { if($usr == $this->usrLabel) 
+                   return false; }
         }//nuovo utente
          return true;
     }
     
     public function addUser(){
-        $parser = ARC2::getRDFParser();
-        $parser->parse(self::$pathUtenti);
-        $index = $parser->getSimpleIndex();
-        $ns = array (
-            'foaf' => 'http://xmlns.com/foaf/0.1/',
-            /*'tweb' => 'http://vitali.web.cs.unibo.it/TechWeb11/',*/
-            'spammers' => 'http://ltw1102.web.cs.unibo.it/Spammers/'
-        );
-        $conf = array('ns' => $ns);
-        $ser = ARC2::getRDFXMLSerializer($conf);
         //crea il soggetto della mia risorsa
-        $utente = 'spammers:'.$this->nomeUtente;        
-        $index[$utente] = array(
+        $this->index[$this->usrLabel] = array(
             'rdf:type' => array(
                 'foaf:Person'
             ),
@@ -54,9 +58,24 @@ class UserModel {
                 $this->nomeUtente
             ),
         );
-
-        $RDFdoc = $ser->getSerializedIndex($index);
-        @file_put_contents(self::$pathUtenti, $RDFdoc);
+        $this->writeInUsers();
+    }
+    
+    public function getServers(){
+        return $this->index[$this->usrLabel]['tweb:server'];
+    }
+    
+    public function setSevers($a){
+        foreach($a as $server) {
+            $this->index[$this->usrLabel]['tweb:server'][] = $server;
+        }
+        $this->writeInUsers();
+    }
+    
+    public function addPost2Usr($id){
+        $this->index[$this->usrLabel]['sioc:Post'][] = $id;
+        $this->writeInUsers();
+        return 201;
     }
 }
 

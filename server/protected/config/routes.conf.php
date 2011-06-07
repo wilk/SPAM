@@ -154,4 +154,5 @@ $route['*']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('E
 
 //SEZIONE TEST
 $route['post']['/extrasource'] = array ('TestController', 'getHead');
+$route['get']['/test'] = array('TestController', 'tester');
 ?>

@@ -2,13 +2,14 @@
 
 include_once 'protected/module/arc/ARC2.php';
 include_once 'protected/module/Graphite.php';
+include_once 'protected/model/SRVModel.php';
 
 class PostModel {
     
-    private static $pathPost = "data/post.rdf";
-
-    public function parseArticle($data) {
-        $msg2 = '
+    private static $pathPost = 'data/posts.rdf';
+    private $index;
+    public $postID;
+    private $msg2 = '
             <article prefix="
                sioc: http://rdfs.org/sioc/ns#
                ctag: http://commontag.org/ns#
@@ -40,7 +41,7 @@ class PostModel {
                </div>
             </article>
             ';
-        $msg = '
+    private $msg = '
             <article
                xmlns:sioc="http://rdfs.org/sioc/ns#"
                xmlns:ctag="http://commontag.org/ns#"
@@ -64,70 +65,86 @@ class PostModel {
                   resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
                e altro html sparso (ad esempio, <a href="http://www.example.com">http://www.example.com</a>)
             </article';
-        //inizializzo il parser
+    
+    function __construct(){
+        $parser = ARC2::getRDFParser();
+        $parser->parse(self::$pathPost);
+        $this->index = $parser->getSimpleIndex();
+    }
+        
+    private function saveInPost(){
+        
+        //$index['chronos']['sioc:Post'][] = $p;
+        $ns = array (
+            'sioc' => 'http://rdfs.org/sioc/ns#',
+            'dcterms' => 'http://purl.org/dc/terms/',
+            'ctag' => 'http://commontag.org/ns#',
+            'skos' => 'http://www.w3.org/2004/02/skos/core#',
+            'tweb' => 'http://vitali.web.cs.unibo.it/vocabulary/',
+            'spam' => 'http://ltw1102.web.cs.unibo.it/'
+        );
+        $conf = array('ns' => $ns);
+        $ser = ARC2::getRDFXMLSerializer($conf);
+        $rdfxml = $ser->getSerializedIndex($this->index);
+        //print_r($rdfxml);
+        @file_put_contents(self::$pathPost, $rdfxml);
+    }
+    
+    /*per il momento funge solo dal client, dal server *potrebbe* ricevere RDF/XML*/
+    public function parseArticle($data) {
+
+        //inizializzo il parser per parserizzare HTML+RDFa
         $parser = ARC2::getSemHTMLParser();
         $base = 'http://ltw1102.web.cs.unibo.it/';
-        $parser->parse($base, $msg);
+        $parser->parse($base, $this->msg);
         $parser->extractRDF('rdfa');
         $index = $parser->getSimpleIndex();
         //DEBUG----> print_r($index);
         
         /* RDF properties */
-//        $rdfType   = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
         $siocTopic = 'http://rdfs.org/sioc/ns#topic';
-//        $cTag      = 'http://commontag.org/ns#Tag';
-//        $cLabel    = 'http://commontag.org/ns#label';
-//        $sConcept  = 'http://www.w3.org/2004/02/skos/core#Concept';
         
+        $testoHTML = html_entity_decode('questo è il mio messaggio',ENT_NOQUOTES, 'UTF-8');
+        $usrResource = 'spam:/Spammers/'.$_SESSION['user']['username'];
         /*Customize post*/
         $pre = array();
         $pre['rdf:type'][] = 'sioc:Post';
-        $pre['sioc:Post'][] = 'questo è il mio messaggio';
-        $pre['sioc:has_creator'][] = 'autore';
+        $pre['sioc:Post'][] = $testoHTML;
+        $pre['sioc:has_creator'][] = $usrResource;
         $pre['dcterms:created'][] = date(DATE_ATOM);
         $pre['tweb:countLike'][] = 0;
         $pre['tweb:countDislike'][] = 0;
-        $postID = 'riferimento Post';
-        $customized[$postID] = $pre;
+        $pre['tweb:like'] = array();
+        $pre['tweb:disklike'] = array();
+        $this->postID = $usrResource . '/' . rand();
+        $customized[$this->postID] = $pre;
         foreach ($index as $subj) {
             foreach ($subj as $k => $type){
                 if ($k == $siocTopic){
-                    $customized[$postID]['sioc:topic'] = $type;
+                    $customized[$this->postID]['sioc:topic'] = $type;
                     foreach ($type as $i) {
                         $customized[$i] = $index[$i];
                     }
                 }
             }
         }
-        
         print_r($customized);
-        $this->savePost($customized, $postID);
-        return true;
+        foreach ($customized as $k => $v) {
+            $this->index[$k] = $v;
+        }
+        $this->saveInPost();
+        return $this->postID;
+    }
+    //TODO non ci sto capendo una pizza qui...
+    public function addRespamOf($r){
+        $pID = $this->postID;
+        $where = SRVModel::getUrl($_POST['server']);
+        $where .= $_POST['server'].'/';
+        
+        $this->index[$pID]['tweb:respam_of'][] = $r;
+        return 201;
     }
     
-    private function savePost($a, $p){
-        $parser = ARC2::getRDFParser();
-        $parser->parse(self::$pathPost);
-        $index = $parser->getSimpleIndex();
-        foreach ($a as $k => $v) {
-            $index[$k] = $v;
-        }
-        //$index['chronos']['sioc:Post'][] = $p;
-        $ns = array (
-            'sioc' => "http://rdfs.org/sioc/ns#",
-            'dcterms' => 'http://purl.org/dc/terms/',
-            'ctag' => "http://commontag.org/ns#",
-            'skos' => "http://www.w3.org/2004/02/skos/core#",
-            'foaf' => 'http://xmlns.com/foaf/0.1/',
-            'tweb' => 'http://vitali.web.cs.unibo.it/TechWeb11/',
-            'spammers' => 'http://ltw1102.web.cs.unibo.it/Spammers/'
-        );
-        $conf = array('ns' => $ns);
-        $ser = ARC2::getRDFXMLSerializer($conf);
-        $rdfxml = $ser->getSerializedIndex($index);
-        print_r($rdfxml);
-        //@file_put_contents(self::$pathPost, $rdfxml);
-    }
 }
 
 ?>

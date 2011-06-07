@@ -1,7 +1,11 @@
 <?php
 
 include_once 'protected/model/PostModel.php';
+include_once 'protected/model/UserModel.php';
+
 class PostController extends DooController {
+    
+    public $articolo;
     
     public function beforeRun($resource, $action){
 		session_start();
@@ -20,9 +24,14 @@ class PostController extends DooController {
         /*Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
         $content= $_POST['article'];
-        $articolo = new PostModel();
-        if ($articolo->parseArticle($content))
-            return 201;
+        $this->articolo = new PostModel();
+        if ($pID = $this->articolo->parseArticle($content)) {
+//            echo $pID;
+//            echo $_SESSION['user']['username'];
+            $utente = new UserModel($_SESSION['user']['username']);
+            $utente->addPost2Usr($pID);
+        }
+        return 201;
     }
 
     public function sendPost() {
@@ -38,12 +47,13 @@ class PostController extends DooController {
         return ($request->resultCode());
     }
 
-    /* il retweet crea un messaggio sul server quando il client gli passa
+    /* il respam crea un messaggio sul server quando il client gli passa
      * un <article> esattamente come accade in createPost;
      * al momento lascio cmq il suo metodo */
 
     public function createRespam() {
-;
+        $this->createPost();
+        $this->articolo->addRespamOf();
     }
 
     /* questa mi sa che dovrebbe essere private */

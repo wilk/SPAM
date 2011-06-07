@@ -1,11 +1,9 @@
 <?php
 
-include 'protected/model/UserModel.php';
+include_once 'protected/model/UserModel.php';
+include_once 'protected/model/SRVModel.php';
 
 class LoginController extends DooController {
-    
-    static private $_SERVERLIST =
-        "http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml";
     
     public function authUser() {
         $this->load()->helper('DooRestClient');
@@ -15,31 +13,15 @@ class LoginController extends DooController {
         if ($utente->firstTime()) {
             $utente->addUser();
             //cerco di arricchire la risorsa con i servers
-            $idsServer = array();
-            $request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml")->get();
-            $serverList = $request->xml_result();
-            foreach ($serverList->server as $myServer)
-                array_push($idsServer, (string) $myServer->attributes()->serverID);
-            print_r($idsServer);
+//            $listaServer = SRVModel::getDefaults();
+//            $utente->setServer($listaServer);
             $this->startSession($user);
             return 201; } 
         else {
         $this->startSession($user);
         return 200; }
     }
-//
-//    private function addUser($user) {
-//        $this->load()->helper('DooRestClient');
-//        $request = new DooRestClient;
-//        $usersList = simplexml_load_file('users.xml');
-//        $usersList->addChild('user', $user);
-//        @file_put_contents("users.xml", $usersList->saveXML());
-//        mkdir("data/" . $user, 0777);
-//        $request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/server.xml")->get();
-//        $serverList = $request->xml_result();
-//        @file_put_contents('data/' . $user . "/servers.xml", $serverList->saveXML());
-//    }
-//    
+  
     private function startSession($user) {
         session_start();
         if (isset($_SESSION['user']))

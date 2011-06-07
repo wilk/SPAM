@@ -65,7 +65,7 @@ class UserModel {
         return $this->index[$this->usrLabel]['tweb:server'];
     }
     
-    public function setSevers($a){
+    public function setServers($a){
         foreach($a as $server) {
             $this->index[$this->usrLabel]['tweb:server'][] = $server;
         }

@@ -12,9 +12,9 @@ class LoginController extends DooController {
         $utente = new UserModel($user);
         if ($utente->firstTime()) {
             $utente->addUser();
-            //cerco di arricchire la risorsa con i servers
-//            $listaServer = SRVModel::getDefaults();
-//            $utente->setServer($listaServer);
+            //cerco di arricchire la risorsa con i servers            
+            $listaServer =SRVModel::getDefaults($request);       
+            $utente->setServers($listaServer);
             $this->startSession($user);
             return 201; } 
         else {
@@ -23,6 +23,7 @@ class LoginController extends DooController {
     }
   
     private function startSession($user) {
+        session_name('ltwlogin');
         session_start();
         if (isset($_SESSION['user']))
             unset($_SESSION['user']);
@@ -35,6 +36,7 @@ class LoginController extends DooController {
     }
 
     public function logout() {
+        session_name('ltwlogin');
         session_start();
         //Elimino i dati dalla sessione
         unset($_SESSION['user']);

@@ -4,26 +4,27 @@ include_once 'protected/model/PostModel.php';
 include_once 'protected/model/UserModel.php';
 
 class PostController extends DooController {
-    
+
     public $articolo;
-    
-    public function beforeRun($resource, $action){
-		session_start();
-		
-		//if not login, group = anonymous
-		$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
-		
-		//check against the ACL rules
-		if($rs = $this->acl()->process($role, $resource, $action )){
-			//echo $role .' is not allowed for '. $resource . ' '. $action;
-			return $rs;
-		}
-	}
+
+    public function beforeRun($resource, $action) {
+        session_name('ltwlogin');
+        session_start();
+
+        //if not login, group = anonymous
+        $role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
+
+        //check against the ACL rules
+        if ($rs = $this->acl()->process($role, $resource, $action)) {
+            //echo $role .' is not allowed for '. $resource . ' '. $action;
+            return $rs;
+        }
+    }
 
     public function createPost() {
-        /*Recupero nella variabile $content tutto quello che mi viene passato tramite POST
+        /* Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
-        $content= $_POST['article'];
+        $content = $_POST['article'];
         $this->articolo = new PostModel();
         if ($pID = $this->articolo->parseArticle($content)) {
 //            echo $pID;
@@ -59,7 +60,7 @@ class PostController extends DooController {
     /* questa mi sa che dovrebbe essere private */
 
     public function hasReply() {
-;
+        ;
     }
 
 }

@@ -10,21 +10,22 @@
  *
  * @author clem
  */
-class SRVModel {
+class SRVModel{
     static private $_SERVERSBASE =
         "http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml";
-    private $serverList;
+//    
+//    function __construct() {
+//        $this->load()->helper('DooRestClient');
+//        $request = new DooRestClient;
+//        $request->connect_to(self::$_SERVERSBASE)->get();
+//        $this->serverList = $request->xml_result();
+//    }
     
-    function __construct() {
-        $this->load()->helper('DooRestClient');
-        $request = new DooRestClient;
+    public static function getDefaults($request){
         $request->connect_to(self::$_SERVERSBASE)->get();
-        $this->serverList = $request->xml_result();
-    }
-    
-    public static function getDefaults(){
+        $serverList = $request->xml_result();
         $idsServer = array();
-        foreach ($this->serverList->server as $myServer)
+        foreach ($serverList->server as $myServer)
             array_push($idsServer, (string) $myServer->attributes()->serverID);
         print_r($idsServer);
         return $idsServer;

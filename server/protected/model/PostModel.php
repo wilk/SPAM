@@ -3,6 +3,7 @@
 include_once 'protected/module/arc/ARC2.php';
 include_once 'protected/module/Graphite.php';
 include_once 'protected/model/SRVModel.php';
+include_once 'protected/module/simple_html_dom.php';
 
 class PostModel {
     
@@ -64,7 +65,7 @@ class PostModel {
                   rel="skos:inScheme"
                   resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
                e altro html sparso (ad esempio, <a href="http://www.example.com">http://www.example.com</a>)
-            </article';
+            </article>';
     
     function __construct(){
         $parser = ARC2::getRDFParser();
@@ -92,7 +93,6 @@ class PostModel {
     
     /*per il momento funge solo dal client, dal server *potrebbe* ricevere RDF/XML*/
     public function parseArticle($data) {
-
         //inizializzo il parser per parserizzare HTML+RDFa
         $parser = ARC2::getSemHTMLParser();
         $base = 'http://ltw1102.web.cs.unibo.it/';
@@ -103,8 +103,8 @@ class PostModel {
         
         /* RDF properties */
         $siocTopic = 'http://rdfs.org/sioc/ns#topic';
-        
-        $testoHTML = html_entity_decode('questo è il mio messaggio',ENT_NOQUOTES, 'UTF-8');
+        $html = str_get_html($this->msg); 
+        $testoHTML = html_entity_decode($html->find('article',0)->innertext,ENT_QUOTES, 'UTF-8');
         $usrResource = 'spam:/Spammers/'.$_SESSION['user']['username'];
         /*Customize post*/
         $pre = array();
@@ -139,8 +139,7 @@ class PostModel {
     public function addRespamOf($r){
         $pID = $this->postID;
         $where = SRVModel::getUrl($_POST['server']);
-        $where .= $_POST['server'].'/';
-        
+        $where .= $_POST['server'].'/';      
         $this->index[$pID]['tweb:respam_of'][] = $r;
         return 201;
     }

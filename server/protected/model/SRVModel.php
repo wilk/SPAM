@@ -10,9 +10,11 @@
  *
  * @author clem
  */
-class SRVModel{
+class SRVModel {
+
     static private $_SERVERSBASE =
-        "http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml";
+            "http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml";
+
 //    
 //    function __construct() {
 //        $this->load()->helper('DooRestClient');
@@ -20,8 +22,8 @@ class SRVModel{
 //        $request->connect_to(self::$_SERVERSBASE)->get();
 //        $this->serverList = $request->xml_result();
 //    }
-    
-    public static function getDefaults($request){
+
+    public static function getDefaults($request) {
         $request->connect_to(self::$_SERVERSBASE)->get();
         $serverList = $request->xml_result();
         $idsServer = array();
@@ -30,19 +32,22 @@ class SRVModel{
         print_r($idsServer);
         return $idsServer;
     }
-    
+
     /* questa mi serve per ritornare l'indirizzo del server.
      * 
      * @param $s = serverID
      */
-    public static function getUrl($s){
-        while(list(, $server) = each($this->serverList->server)) {
-            if($server->attributes()->serverID == $s) {
+
+    public static function getUrl($s) {
+        $request->connect_to(self::$_SERVERSBASE)->get();
+        $serverList = $request->xml_result();
+        while (list(, $server) = each($serverList->server)) {
+            if ($server->attributes()->serverID == $s) {
                 return $server->attributes()->serverURL;
             }
-        }                
+        }
     }
-    
+
 }
 
 ?>

@@ -6,7 +6,7 @@ include_once 'protected/model/SRVModel.php';
 include_once 'protected/module/simple_html_dom.php';
 
 class PostModel {
-    
+
     private static $pathPost = 'data/posts.rdf';
     private $index;
     public $postID;
@@ -66,17 +66,17 @@ class PostModel {
                   resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
                e altro html sparso (ad esempio, <a href="http://www.example.com">http://www.example.com</a>)
             </article>';
-    
-    function __construct(){
+
+    function __construct() {
         $parser = ARC2::getRDFParser();
         $parser->parse(self::$pathPost);
         $this->index = $parser->getSimpleIndex();
     }
-        
-    private function saveInPost(){
-        
+
+    private function saveInPost() {
+
         //$index['chronos']['sioc:Post'][] = $p;
-        $ns = array (
+        $ns = array(
             'sioc' => 'http://rdfs.org/sioc/ns#',
             'dcterms' => 'http://purl.org/dc/terms/',
             'ctag' => 'http://commontag.org/ns#',
@@ -90,8 +90,9 @@ class PostModel {
         //print_r($rdfxml);
         @file_put_contents(self::$pathPost, $rdfxml);
     }
-    
-    /*per il momento funge solo dal client, dal server *potrebbe* ricevere RDF/XML*/
+
+    /* per il momento funge solo dal client, dal server *potrebbe* ricevere RDF/XML */
+
     public function parseArticle($data) {
         //inizializzo il parser per parserizzare HTML+RDFa
         $parser = ARC2::getSemHTMLParser();
@@ -100,13 +101,13 @@ class PostModel {
         $parser->extractRDF('rdfa');
         $index = $parser->getSimpleIndex();
         //DEBUG----> print_r($index);
-        
+
         /* RDF properties */
         $siocTopic = 'http://rdfs.org/sioc/ns#topic';
-        $html = str_get_html($data); 
-        $testoHTML = html_entity_decode($html->find('article',0)->innertext,ENT_QUOTES, 'UTF-8');
-        $usrResource = 'spam:/Spammers/'.$_SESSION['user']['username'];
-        /*Customize post*/
+        $html = str_get_html($data);
+        $testoHTML = html_entity_decode($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
+        $usrResource = 'spam:/Spammers/' . $_SESSION['user']['username'];
+        /* Customize post */
         $pre = array();
         $pre['rdf:type'][] = 'sioc:Post';
         $pre['sioc:Post'][] = $testoHTML;
@@ -119,8 +120,8 @@ class PostModel {
         $this->postID = $usrResource . '/' . rand();
         $customized[$this->postID] = $pre;
         foreach ($index as $subj) {
-            foreach ($subj as $k => $type){
-                if ($k == $siocTopic){
+            foreach ($subj as $k => $type) {
+                if ($k == $siocTopic) {
                     $customized[$this->postID]['sioc:topic'] = $type;
                     foreach ($type as $i) {
                         $customized[$i] = $index[$i];
@@ -135,27 +136,29 @@ class PostModel {
         $this->saveInPost();
         return $this->postID;
     }
+
     //TODO non ci sto capendo una pizza qui...
-    public function addRespamOf($r){
-        $pID = $this->postID;    
+    public function addRespamOf($r) {
+        $pID = $this->postID;
         $this->index[$pID]['tweb:respamOf'][] = $r;
         $this->saveInPost();
     }
-     public function addReplyOf($reply){
+
+    public function addReplyOf($reply) {
         $this->index[$this->postID]['sioc:reply_of'][] = $reply;
         $this->saveInPost();
         return $this->postID;
     }
-    
-    public function addHasReply($p){
+
+    public function addHasReply($p) {
         $this->index[$p]['sioc:has_reply'][] = $this->postID;
         $this->saveInPost();
     }
-    
-    public function getPost($r){
+
+    public function getPost($r) {
         return $this->index[$r];
     }
-    
+
 }
 
 ?>

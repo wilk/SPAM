@@ -103,7 +103,7 @@ $route['post']['/respam']= array ('PostController', 'createRespam');
 $route['*']['/respam']= array ('ErrorController', 'notSupport');
 
 //Rispondi al post
-$route['post']['/replyto']=array ('ReplyController', 'createReply');
+$route['post']['/replyto']=array ('PostController', 'createReply');
 //Path con replyto metodo non supportato
 $route['*']['/replyto']=array ('ErrorController', 'notSupport');
 //Ricerca un post

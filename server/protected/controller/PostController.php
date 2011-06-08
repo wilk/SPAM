@@ -2,6 +2,7 @@
 
 include_once 'protected/model/PostModel.php';
 include_once 'protected/model/UserModel.php';
+include_once 'protected/model/SRVModel.php';
 
 class PostController extends DooController {
 
@@ -21,9 +22,10 @@ class PostController extends DooController {
         }
     }
 
-    public function createPost() {
+    public function createPost($content = null) {
         /* Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
+        if (!$content)
         $content = $_POST['article'];
         $this->articolo = new PostModel();
         if ($pID = $this->articolo->parseArticle($content)) {
@@ -53,10 +55,53 @@ class PostController extends DooController {
      * al momento lascio cmq il suo metodo */
 
     public function createRespam() {
-        $this->createPost();
-        $this->articolo->addRespamOf();
+        $serverID = $_POST['serverID'];
+        $userID= $_POST['userID'];
+        $postID= $_POST['postID'];
+        if ($serverID == "Spammers"){
+            $this->articolo = new PostModel();
+            $myPost = $this->articolo->getPost('spam:/'.$serverID.'/'.$userID.'/'.$postID);
+            if ($pID = $this->articolo->parseArticle('<article>'.$myPost['sioc:Post'][0].'</article>')){
+                $utente = new UserModel($_SESSION['user']['username']);
+                $utente->addPost2Usr($pID);
+            }
+        }
+        else {
+            $this->load()->helper('DooRestClient');
+            $request = new DooRestClient;
+            $url = SRVModel::getUrl($serverID);
+            $request->connect_to($url.'/postserver/'.$userID.'/'.$postID)->get();
+            if ($request->resultCode()== '200'){
+            $content = $request->result();
+            $this->createPost($content);
+            }else return 404;
+        }
+        $this->articolo->addRespamOf('spam:/'.$serverID.'/'.$userID.'/'.$postID);
     }
-
+    
+      public function createReply(){
+        $this->createPost();
+        $sID = $_POST['serverID'];
+        $uID = $_POST['userID'];
+        $pID = $_POST['postID'];
+        $resource = 'spam:/'.$sID.'/'.$uID.'/'.$pID;
+        $risorsa=$this->articolo->addReplyOf($resource);
+        list($tag,$s, $u, $p) = split('[/]', $risorsa);
+        if ($sID == 'Spammers') {
+            $this->articolo->addHasReply($resource);
+        } else {
+            $this->load()->helper('DooRestClient');
+            $request = new DooRestClient;
+            $url = SRVModel::getUrl($sID);
+            $request->connect_to($url.'/hasreply')
+                    ->data(array('serverID'=>$s,'userID'=>$u,'postID'=>$p,'userID2Up'=>$uID,'postID2Up'=>$pID))
+                    ->post();
+            if ($request->resultCode()=='200')
+                    return 200;
+            else return 500;
+        }
+        
+    }
     /* questa mi sa che dovrebbe essere private */
 
     public function hasReply() {

@@ -96,14 +96,14 @@ class PostModel {
         //inizializzo il parser per parserizzare HTML+RDFa
         $parser = ARC2::getSemHTMLParser();
         $base = 'http://ltw1102.web.cs.unibo.it/';
-        $parser->parse($base, $this->msg);
+        $parser->parse($base, $data);
         $parser->extractRDF('rdfa');
         $index = $parser->getSimpleIndex();
         //DEBUG----> print_r($index);
         
         /* RDF properties */
         $siocTopic = 'http://rdfs.org/sioc/ns#topic';
-        $html = str_get_html($this->msg); 
+        $html = str_get_html($data); 
         $testoHTML = html_entity_decode($html->find('article',0)->innertext,ENT_QUOTES, 'UTF-8');
         $usrResource = 'spam:/Spammers/'.$_SESSION['user']['username'];
         /*Customize post*/
@@ -137,11 +137,23 @@ class PostModel {
     }
     //TODO non ci sto capendo una pizza qui...
     public function addRespamOf($r){
-        $pID = $this->postID;
-        $where = SRVModel::getUrl($_POST['server']);
-        $where .= $_POST['server'].'/';      
-        $this->index[$pID]['tweb:respam_of'][] = $r;
-        return 201;
+        $pID = $this->postID;    
+        $this->index[$pID]['tweb:respamOf'][] = $r;
+        $this->saveInPost();
+    }
+     public function addReplyOf($reply){
+        $this->index[$this->postID]['sioc:reply_of'][] = $reply;
+        $this->saveInPost();
+        return $this->postID;
+    }
+    
+    public function addHasReply($p){
+        $this->index[$p]['sioc:has_reply'][] = $this->postID;
+        $this->saveInPost();
+    }
+    
+    public function getPost($r){
+        return $this->index[$r];
     }
     
 }

@@ -148,9 +148,9 @@ $route['post']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userI
 $route['*']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID']=array ('ErrorController','notSupport');
 
 //Inoltra notifica di risposta ad un post
-$route['post']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('PostController', 'hasReply');
+$route['post']['/hasreply']=array ('PostController', 'hasReply');
 //Path hasreply metodo non supportato
-$route['*']['/hasreply/:serverID/:userID/:postID/:toUserId/:toPostID']=array ('ErrorController','notSupport');
+$route['*']['/hasreply']=array ('ErrorController','notSupport');
 
 //SEZIONE TEST
 $route['post']['/extrasource'] = array ('TestController', 'getHead');

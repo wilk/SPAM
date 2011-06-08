@@ -106,7 +106,16 @@ class PostController extends DooController {
     /* questa mi sa che dovrebbe essere private */
 
     public function hasReply() {
-        ;
+        $this->articolo = new PostModel();
+        $serverID = $_POST['serverID'];
+        $userID = $_POST['userID'];
+        $postID = $_POST['postID'];
+        $myUser = $_POST['userID2Up'];
+        $myPost = $_POST['postID2Up'];
+        $resource = 'spam:/Spammers/' . $myUser . '/' . $myPost;
+        $pathOfReply= 'spam:/'.$serverID.'/'.$userID.'/'.$postID;
+        $this->articolo->addHasReply($resource,$pathOfReply);
+        return 200;
     }
 
 }

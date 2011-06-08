@@ -150,9 +150,12 @@ class PostModel {
         return $this->postID;
     }
 
-    public function addHasReply($p) {
+    public function addHasReply($p, $path = null) {
+        if(!$path)
         $this->index[$p]['sioc:has_reply'][] = $this->postID;
+        else $this->index[$p]['sioc:has_reply'][]= $path;
         $this->saveInPost();
+        
     }
 
     public function getPost($r) {

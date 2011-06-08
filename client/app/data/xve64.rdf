@@ -1,0 +1,814 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+
+	<rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus"                                  
+                         rdf:type="skos:ConceptScheme">
+          <skos:prefLabel>Tesauro</skos:prefLabel>
+          <skos:hasTopConcept rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport" />
+          <skos:hasTopConcept rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica" />
+          <skos:hasTopConcept rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura" />
+          <skos:hasTopConcept rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>sport</skos:prefLabel>
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>musica</skos:prefLabel>
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>letteratura</skos:prefLabel>
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>informatica</skos:prefLabel>
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>calcio</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio/portiere" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio/difensore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio/centrocampista" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio/attaccante" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>pallavolo</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo/schiacciatore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo/palleggiatore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo/allenatore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo/arbitro" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>nuoto</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto/stile_libero" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto/farfalla" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto/delfino" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto/dorso" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>tennis</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/racchetta" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/pallina" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/terra_battuta" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/cemento" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/erba" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/sintetico" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>genere</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere/rock" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere/jazz" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere/classica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere/pop" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>strumenti</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/chitarra" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/tastiera" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/piano" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/batteria" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/sassofono" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/tromba" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/sintetizzatore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/basso" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>media</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/cd" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/mp3" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/vinile" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/wav" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/streaming" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>genere</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/fantascienza" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/fantasy" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/storia" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/epistolare" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/filosofia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>ruolo</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo/autore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo/editore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo/lettore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo/distributore" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>tipologia</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia/romanzo" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia/racconto" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia/poesia" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia/collana" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>dispositivi</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/fisso" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/laptop" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/notebook" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/netbook" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/smartphone" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/tablet" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>sistemi_operativi</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi/linux" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi/osx" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi/windows" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>software</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/grafica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/internet" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/programmazione" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/giochi" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/audio_video" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>hardware</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/processore" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/scheda_madre" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/scheda_video" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/scheda_audio" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/scheda_rete" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/harddisk" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/ram" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/monitor" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>linguaggi</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/ansi_c" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/cplusplus" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/csharp" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/python" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/bash" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/xml" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/html" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/perl" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/ruby" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/php" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/javascript" />
+          <skos:narrower rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/java" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio/portiere"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>portiere</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio/difensore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>difensore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio/centrocampista"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>centrocampista</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio/attaccante"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>attaccante</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/calcio" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo/schiacciatore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>schiacciatore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo/palleggiatore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>palleggiatore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo/allenatore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>allenatore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo/arbitro"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>arbitro</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/pallavolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto/stile_libero"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>stile_libero</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto/farfalla"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>farfalla</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto/delfino"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>delfino</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto/dorso"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>dorso</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/nuoto" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/racchetta"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>racchetta</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/pallina"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>pallina</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/terra_battuta"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>terra_battuta</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/cemento"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>cemento</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/erba"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>erba</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis/sintetico"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>sintetico</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere/rock"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>rock</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere/jazz"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>jazz</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere/classica"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>classica</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere/pop"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>pop</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/chitarra"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>chitarra</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/tastiera"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>tastiera</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/piano"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>piano</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/batteria"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>batteria</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/sassofono"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>sassofono</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/tromba"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>tromba</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/sintetizzatore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>sintetizzatore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti/basso"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>basso</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/cd"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>cd</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/mp3"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>mp3</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/vinile"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>vinile</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/wav"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>wav</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media/streaming"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>streaming</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/fantascienza"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>fantascienza</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/fantasy"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>fantasy</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/storia"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>storia</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/epistolare"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>epistolare</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere/filosofia"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>filosofia</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo/autore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>autore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo/editore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>editore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo/lettore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>lettore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo/distributore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>distributtore</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/ruolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia/romanzo"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>romanzo</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia/racconto"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>racconto</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia/poesia"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>poesia</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia/collana"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>collana</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/fisso"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>fisso</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/laptop"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>laptop</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/notebook"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>notebook</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/netbook"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>netbook</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/smartphone"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>smartphone</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi/tablet"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>tablet</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi/linux"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>linux</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi/osx"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>osx</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi/windows"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>windows</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/sistemi_operativi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/grafica"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>grafica</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/internet"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>internet</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/programmazione"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>programmazione</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/giochi"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>giochi</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software/audio_video"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>audio_video</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/processore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>processo</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/scheda_madre"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>scheda_madre</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/scheda_video"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>scheda_video</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/scheda_audio"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>scheda_audio</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/scheda_rete"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>scheda_rete</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/harddisk"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>harddisk</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/ram"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>ram</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware/monitor"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>monitor</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/ansi_c"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>ansi_c</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/cplusplus"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>cplusplus</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/csharp"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>csharp</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/python"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>python</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/bash"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>bash</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/xml"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>xml</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/html"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>html</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/perl"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>perl</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/ruby"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>ruby</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/php"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>php</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/javascript"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>javascript</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi/java"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus" />
+          <skos:prefLabel>java</skos:prefLabel>
+          <skos:broader rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/informatica/linguaggi" />
+        </rdf:Description>
+
+</rdf:RDF>

@@ -1,13 +1,14 @@
 Ext.define('SC.store.Servers',{
 	extend:'Ext.data.Store',
 	model:'SC.model.Server',
+	pageParam:'undefined',
 	proxy: {
 		
 		type: 'ajax',
 		url: 'servers',
-		limitParam:'undefined',
-		pageParam:'undefined',
-		startParam:'undefined',
+		limitParam:undefined,
+		pageParam:undefined,
+		startParam:undefined,
 		noCache:false,
 		reader:{
 			type:'xml',

@@ -10,7 +10,10 @@
 Ext.define ('SC.view.regions.west.Thesaurus' , {
 	extend: 'Ext.tree.Panel' ,
 	alias: 'widget.thesaurus' ,
-	
+	initComponent: function(){
+  		this.store = Ext.data.StoreManager.lookup(this.store);
+ 		this.callParent(arguments);
+	},
 	// Configuration
 	title: 'Thesaurus' ,
 	autoWidth: true ,
@@ -21,39 +24,11 @@ Ext.define ('SC.view.regions.west.Thesaurus' , {
 	anchor: '100% 100%' ,
 	layout: 'anchor' ,
 	rootVisible: true ,
-	scroll: true ,
-	store:'Thesaurus'
-//	store: {
-//		root: {
-//			expanded: true ,
-//			text: '' ,
-//			user: '' ,
-//			status: '' ,
-//			children: [{
-//				text: 'P1' ,
-//				expanded: true ,
-//				children: {
-//					text:'P1' ,
-//					expanded: true ,
-//					children: {
-//						text: 'P111' ,
-//						leaf: true
-//					}
-//				}
-//			} , {
-//				text: 'P2' ,
-//				expanded: true ,
-//				children: [{
-//					text: 'P21' ,
-//					leaf: true
-//				} , {
-//					text: 'P22' ,
-//					leaf: true
-//				}]
-//			} , {
-//				text: 'P3' ,
-//				leaft: true
-//			}]
-//		}
-//	}
+	autoScroll: true ,
+	scroll:true,
+	store:'Thesaurus',
+	root:{
+		text:'Thesaurus',
+		expanded:true
+	}
 });

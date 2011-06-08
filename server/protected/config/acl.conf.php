@@ -53,6 +53,12 @@ $acl['logged']['allow'] = array(
 $acl['anonymous']['allow']=array(
     'PostController'=>'*'
 );
+$acl['anonymous']['allow']=array(
+    'ServersController'=>'*'
+);
+$acl['logged']['allow']=array(
+    'ServersController'=>'*'
+);
 //$acl['anonymous']['deny'] = array(
 //    'PostController' => '*'
 //);

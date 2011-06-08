@@ -62,7 +62,7 @@ class UserModel {
     }
     
     public function getServers(){
-        return $this->index[$this->usrLabel]['tweb:server'];
+        return $this->index[$this->usrLabel]['http://vitali.web.cs.unibo.it/vocabulary/server'];
     }
     
     public function setServers($a){

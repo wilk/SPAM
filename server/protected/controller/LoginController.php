@@ -1,43 +1,29 @@
 <?php
 
-
+include_once 'protected/model/UserModel.php';
+include_once 'protected/model/SRVModel.php';
 
 class LoginController extends DooController {
-
-    public function authUser() {
-        $user = strtolower($_POST['username']);
-        if ($this->firstTime($user)) {
-            $this->addUser($user);
-            $this->startSession($user);
-            return 201;
-        } else {
-            $this->startSession($user);
-            return 200;
-        }
-    }
     
-    private function firstTime($user) {
-        $usersList = simplexml_load_file("users.xml");
-        foreach ($usersList->user as $myUser) {
-            if ($myUser == $user)
-                return false;
-        }
-        return true;
-    }
-
-    private function addUser($user) {
+    public function authUser() {
         $this->load()->helper('DooRestClient');
         $request = new DooRestClient;
-        $usersList = simplexml_load_file('users.xml');
-        $usersList->addChild('user', $user);
-        @file_put_contents("users.xml", $usersList->saveXML());
-        mkdir("data/" . $user, 0777);
-        $request->connect_to("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/server.xml")->get();
-        $serverList = $request->xml_result();
-        @file_put_contents('data/' . $user . "/servers.xml", $serverList->saveXML());
+        $user = strtolower($_POST['username']);
+        $utente = new UserModel($user);
+        if ($utente->firstTime()) {
+            $utente->addUser();
+            //cerco di arricchire la risorsa con i servers            
+            $listaServer =SRVModel::getDefaults($request);       
+            $utente->setServers($listaServer);
+            $this->startSession($user);
+            return 201; } 
+        else {
+        $this->startSession($user);
+        return 200; }
     }
-
+  
     private function startSession($user) {
+        session_name('ltwlogin');
         session_start();
         if (isset($_SESSION['user']))
             unset($_SESSION['user']);
@@ -50,6 +36,7 @@ class LoginController extends DooController {
     }
 
     public function logout() {
+        session_name('ltwlogin');
         session_start();
         //Elimino i dati dalla sessione
         unset($_SESSION['user']);

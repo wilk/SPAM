@@ -5,7 +5,7 @@
  * Access via Singleton, eg. Doo::conf()->BASE_PATH;
  */
 error_reporting(E_ALL | E_STRICT);
-date_default_timezone_set('Asia/Kuala_Lumpur');
+date_default_timezone_set('Europe/Rome');
 
 /**
  * for benchmark purpose, call Doo::benchmark() for time used.

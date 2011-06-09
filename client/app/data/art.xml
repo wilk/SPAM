@@ -3,70 +3,70 @@
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>0</affinity>
-      <article about="/tw12/pippo/11">
+      <article about="Wilk">
          Questo è il mio primo articolo, fucker!
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>1</affinity>
-      <article>
+      <article about="Ricky">
          Mentre questo è il secondo.
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>2</affinity>
-      <article>
+      <article about="Cle">
          E infine abbiamo il terzo!
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>3</affinity>
-      <article>
+      <article about="Ste">
          Quarto
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>4</affinity>
-      <article>
+      <article about="Wilk">
          Quinto.
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>5</affinity>
-      <article about="/tw12/pippo/11">
+      <article about="Wilk">
          Questo è il mio 10° articolo, fucker!
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>6</affinity>
-      <article>
+      <article about="Ricky">
          Mentre questo è il 11°.
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>7</affinity>
-      <article>
+      <article about="Ste">
          E infine abbiamo il 12°!
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>8</affinity>
-      <article>
+      <article about="Ste">
          13°
       </article>
    </post>
    <post>
       <content>text/html; charset=UTF8</content>
       <affinity>9</affinity>
-      <article>
+      <article about="Cle">
          14°
       </article>
    </post>

@@ -14,7 +14,12 @@ Ext.define ('SC.model.regions.center.Articles' , {
 	fields: ['content' , {
 		name: 'affinity' ,
 		type: 'int'
-	} , 'article'] ,
+	} , {
+		name: 'article'
+	} , {
+		name: 'about' ,
+		mapping: 'article @about'
+	}] ,
 	
 	// REST Proxy for REST requests
 	proxy: {

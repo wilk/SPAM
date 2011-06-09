@@ -52,6 +52,7 @@ Ext.define ('SC.controller.SendResource' , {
 	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
+	// TOFIX: pasted text!!!
 	checkChars : function (txtarea, e) {
 			// Get the lenght
 		var	numChar = txtarea.getValue().length ,
@@ -75,7 +76,7 @@ Ext.define ('SC.controller.SendResource' , {
 			var 	artBody = txtResDes.getValue () ,
 				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />';
 			
-			artBody = htInjection (artBody);
+//			artBody = htInjection (artBody);
 			
 			// XML Injection
 			var article = artHeader + '\n' + artBody + '\n' + artResource + '\n';

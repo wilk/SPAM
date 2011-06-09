@@ -16,8 +16,9 @@ function htInjection (text) {
 	var words = text.split (/\s/g);
 	for (var i in words) {
 		// If the first char of the word is '#', then it's an hashtag
+		// TOFIX: words[i] do not return only words!!!
 		if (words[i].search (/^#/) != -1) {
-			// Replace it with XML and the hashtag without punctuation
+//			 Replace it with XML and the hashtag without punctuation
 			text = text.replace (words[i] , htSharp + words[i].replace (/[\.,-\/!?$%\^&\*;:{}=\-_`~()]/g , '') + htClose);
 		}
 	}

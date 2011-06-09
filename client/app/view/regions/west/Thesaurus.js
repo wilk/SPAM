@@ -10,10 +10,10 @@
 Ext.define ('SC.view.regions.west.Thesaurus' , {
 	extend: 'Ext.tree.Panel' ,
 	alias: 'widget.thesaurus' ,
-	initComponent: function(){
-  		this.store = Ext.data.StoreManager.lookup(this.store);
- 		this.callParent(arguments);
-	},
+//	initComponent: function(){
+//  		this.store = Ext.data.StoreManager.lookup(this.store);
+// 		this.callParent(arguments);
+//	},
 	// Configuration
 	title: 'Thesaurus' ,
 	autoWidth: true ,

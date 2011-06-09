@@ -55,10 +55,11 @@ function disposeArticles (store) {
 		firstArticle = false;
 		
 		var win = Ext.create ('SC.view.regions.center.Articles' , {
-			title: 'User said: ' ,
+			title: record.get ('about') + ' said:' ,
 			html: record.get ('article') ,
 			x: x ,
 			y: y ,
+			// TODO: insert buttons in the articles view
 			dockedItems: [{
 				xtype: 'toolbar' ,
 				dock: 'bottom' ,

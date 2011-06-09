@@ -29,7 +29,6 @@ class SRVModel {
         $idsServer = array();
         foreach ($serverList->server as $myServer)
             array_push($idsServer, (string) $myServer->attributes()->serverID);
-        print_r($idsServer);
         return $idsServer;
     }
 

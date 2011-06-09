@@ -20,8 +20,14 @@ class ServersController extends DooController {
     }
 
     public function sendServersList() {
-        $user = new UserModel($_SESSION['user']['username']);
-        $xmlServer=ServersView::createXml($user->getServers());
+        if (isset($_SESSION['user']['username'])) {
+            $user = new UserModel($_SESSION['user']['username']);
+            $xmlServer = ServersView::createXml($user->getServers());
+        }
+        else{
+            $xmlServer=simplexml_load_file("http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml");
+            $xmlServer= $xmlServer->asXML();
+        }
         $this->setContentType('xml');
         print $xmlServer;
     }

@@ -67,10 +67,12 @@ function disposeArticles (store) {
 				// Items right-justified
 				items: [{
 					// Button I Like
-					text: 'Like' 
+					cls: 'x-btn-icon' ,
+					icon: 'ext/resources/images/btn-icons/like.png'
 				} , {
 					// Button I Dislike
-					text: 'Dislike'
+					cls: 'x-btn-icon' ,
+					icon: 'ext/resources/images/btn-icons/dislike.png'
 				} , '->' , {
 					// Button focus
 					text: 'Focus'

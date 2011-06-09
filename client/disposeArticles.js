@@ -73,15 +73,22 @@ function disposeArticles (store) {
 					// Button I Dislike
 					cls: 'x-btn-icon' ,
 					icon: 'ext/resources/images/btn-icons/dislike.png'
+				} , {
+					// Button follow
+					cls: 'x-btn-icon' ,
+					icon: 'ext/resources/images/btn-icons/follow.gif'
 				} , '->' , {
 					// Button focus
-					text: 'Focus'
+					cls: 'x-btn-icon' ,
+					icon: 'ext/resources/images/btn-icons/focus.png'
 				} , '->' , {
 					// Button reply
-					text: 'Reply'
+					cls: 'x-btn-icon' ,
+					icon: 'ext/resources/images/btn-icons/reply.png'
 				} , {
 					// Button retweet
-					text: 'Respam'
+					cls: 'x-btn-icon' ,
+					icon: 'ext/resources/images/btn-icons/respam.png'
 				}]
 			}]
 		});

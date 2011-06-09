@@ -6,9 +6,9 @@
 </head>
 
 <body>
-<form id="form1" name="form1" method="post" action="/login">
+<form id="form1" name="form1" method="post" action="/post">
   <label for="article"></label>
-  <textarea name="username" id="username" cols="45" rows="5"></textarea>
+  <textarea name="username" id="article" cols="45" rows="5"></textarea>
   <input type="submit" name="button" id="button" value="Invia" />
 </form>
 </body>

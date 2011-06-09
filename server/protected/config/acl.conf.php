@@ -48,16 +48,10 @@
 //								'_default'=>'/error/loginfirst',
 //							);
 $acl['logged']['allow'] = array(
-    'PostController' => '*'
+    'PostController' => '*', 'ServersController' => '*'
 );
-$acl['anonymous']['allow']=array(
-    'PostController'=>'*'
-);
-$acl['anonymous']['allow']=array(
-    'ServersController'=>'*'
-);
-$acl['logged']['allow']=array(
-    'ServersController'=>'*'
+$acl['anonymous']['allow'] = array(
+    'PostController' => '*', 'ServersController' => '*'
 );
 //$acl['anonymous']['deny'] = array(
 //    'PostController' => '*'

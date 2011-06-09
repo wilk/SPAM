@@ -103,7 +103,6 @@ class PostModel {
         $parser->extractRDF('rdfa');
         $index = $parser->getSimpleIndex();
         //DEBUG----> print_r($index);
-
         $html = str_get_html($data);
         $testoHTML = html_entity_decode($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
         $usrResource = 'spam:/Spammers/' . $_SESSION['user']['username'];
@@ -129,7 +128,7 @@ class PostModel {
                 }
             }
         }
-        print_r($customized);
+        //print_r($customized);
         foreach ($customized as $k => $v) {
             $this->index[$k] = $v;
         }

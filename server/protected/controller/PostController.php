@@ -25,10 +25,12 @@ class PostController extends DooController {
     public function createPost($content = null) {
         /* Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
+        
         if (!$content)
-            $content = $_POST['article'];
+            $mycontent = $_POST['article'];
+        else $mycontent=$content;
         $this->articolo = new PostModel();
-        if ($pID = $this->articolo->parseArticle($content)) {
+        if ($pID = $this->articolo->parseArticle($mycontent)) {
 //            echo $pID;
 //            echo $_SESSION['user']['username'];
             $utente = new UserModel($_SESSION['user']['username']);

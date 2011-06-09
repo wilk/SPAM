@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:sioc="http://rdfs.org/sioc/ns#"
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:tweb="http://vitali.web.cs.unibo.it/vocabulary/">
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/1537537500">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:Post>jnosdf</sioc:Post>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-06-08T18:20:18+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+  </rdf:Description>
+
+</rdf:RDF>

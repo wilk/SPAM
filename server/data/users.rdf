@@ -1,10 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  xmlns:foaf="http://xmlns.com/foaf/0.1/">
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:tweb="http://vitali.web.cs.unibo.it/vocabulary/"
+  xmlns:sioc="http://rdfs.org/sioc/ns#">
 
-  <rdf:Description rdf:about="/ltw1102/pippo">
-    <rdf:type rdf:resource="http://vitali.web.cs.unibo.it/TechWeb11/Person"/>
+  <rdf:Description rdf:about="spam:/Spammers/pippo">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
     <foaf:nick>pippo</foaf:nick>
+    <tweb:server>Tайбердег</tweb:server>
+    <tweb:server>RucolaIPM</tweb:server>
+    <tweb:server>TerSoft</tweb:server>
+    <tweb:server>FreeWeb</tweb:server>
+    <tweb:server>NotFound</tweb:server>
+    <tweb:server>BedCompany</tweb:server>
+    <tweb:server>VoglioLaurearmi</tweb:server>
+    <tweb:server>Spammers</tweb:server>
+    <tweb:server>TapiriSoft</tweb:server>
+    <tweb:server>ArBaKaMa</tweb:server>
+    <tweb:server>NetForce</tweb:server>
+    <tweb:server>TangoWhiskey</tweb:server>
+    <tweb:server>Capo_Oro</tweb:server>
+    <tweb:server>Twenty</tweb:server>
+    <tweb:server>TheBrainTrust</tweb:server>
+    <tweb:server>JDTeam</tweb:server>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/1537537500"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pioppo">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <foaf:nick>pioppo</foaf:nick>
+    <tweb:server>Tайбердег</tweb:server>
+    <tweb:server>RucolaIPM</tweb:server>
+    <tweb:server>TerSoft</tweb:server>
+    <tweb:server>FreeWeb</tweb:server>
+    <tweb:server>NotFound</tweb:server>
+    <tweb:server>BedCompany</tweb:server>
+    <tweb:server>VoglioLaurearmi</tweb:server>
+    <tweb:server>Spammers</tweb:server>
+    <tweb:server>TapiriSoft</tweb:server>
+    <tweb:server>ArBaKaMa</tweb:server>
+    <tweb:server>NetForce</tweb:server>
+    <tweb:server>TangoWhiskey</tweb:server>
+    <tweb:server>Capo_Oro</tweb:server>
+    <tweb:server>Twenty</tweb:server>
+    <tweb:server>ModernFamily</tweb:server>
   </rdf:Description>
 
 </rdf:RDF>

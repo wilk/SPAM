@@ -3,7 +3,7 @@
 class PostView {
     
     /*prende in input il post come array e lo ritorna in html+rdfa*/
-    public function renderPost($p){
+    public static function renderPost($p){
         $post = current($p);
         $about = key($p);
         //questa è scandalosa... ma funge!
@@ -37,6 +37,17 @@ class PostView {
         $postHTML .= '</article>';
         
         return $postHTML;
+    }
+    /* il parametro $m è un array multiplo di post*/
+    public static function renderMultiplePost($m){
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><archive></archive>');
+        foreach ($m as $post) {
+            $myPost = $xml->addChild('post');
+            $myPost->addChild('content', 'text/html; charset=UTF8');
+            $myPost->addChild('affinity', rand(3, 13));
+            $myPost->addChild($this->renderPost($post));;
+        }
+        return $xml->asXML();
     }
 }
 

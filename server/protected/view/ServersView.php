@@ -17,7 +17,7 @@ class ServersView {
         
         $xml =new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><servers></servers>');
         foreach ($server as $serverID) {
-            $thisServer=$xml->addChild('server');
+            $thisServer = $xml->addChild('server');
             $thisServer->addAttribute('serverID', $serverID);
         }
         return $xml->asXML();

@@ -103,8 +103,6 @@ class PostController extends DooController {
         }
     }
 
-    /* questa mi sa che dovrebbe essere private */
-
     public function hasReply() {
         $this->articolo = new PostModel();
         $serverID = $_POST['serverID'];

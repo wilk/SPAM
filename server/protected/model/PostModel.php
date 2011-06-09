@@ -8,6 +8,8 @@ include_once 'protected/module/simple_html_dom.php';
 class PostModel {
 
     private static $pathPost = 'data/posts.rdf';
+    /* RDF properties */
+    private static $siocTopic = 'http://rdfs.org/sioc/ns#topic';
     private $index;
     public $postID;
     private $msg2 = '
@@ -102,8 +104,6 @@ class PostModel {
         $index = $parser->getSimpleIndex();
         //DEBUG----> print_r($index);
 
-        /* RDF properties */
-        $siocTopic = 'http://rdfs.org/sioc/ns#topic';
         $html = str_get_html($data);
         $testoHTML = html_entity_decode($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
         $usrResource = 'spam:/Spammers/' . $_SESSION['user']['username'];
@@ -121,7 +121,7 @@ class PostModel {
         $customized[$this->postID] = $pre;
         foreach ($index as $subj) {
             foreach ($subj as $k => $type) {
-                if ($k == $siocTopic) {
+                if ($k == self::$siocTopic) {
                     $customized[$this->postID]['sioc:topic'] = $type;
                     foreach ($type as $i) {
                         $customized[$i] = $index[$i];
@@ -154,12 +154,20 @@ class PostModel {
         if(!$path)
         $this->index[$p]['sioc:has_reply'][] = $this->postID;
         else $this->index[$p]['sioc:has_reply'][]= $path;
-        $this->saveInPost();
-        
+        $this->saveInPost();        
     }
 
     public function getPost($r) {
         return $this->index[$r];
+    }
+    
+    public function getPostArray(){
+        $lista = array();
+        foreach ($this->index as $post) {
+            if (isset($post[self::$siocTopic]))
+                    $lista[key ($post)] = $post;
+        }
+        return $lista;
     }
 
 }

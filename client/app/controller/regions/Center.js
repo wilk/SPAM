@@ -12,9 +12,21 @@ Ext.define ('SC.controller.regions.Center' , {
 	
 	// Views
 	views: ['regions.Center'] ,
+	stores: ['regions.center.Articles'] ,
+	models: ['regions.center.Articles'] ,
 	
 	// Configuration
 	init: function () {
+		this.control ({
+			'centerregion' : {
+//				afterrender : this.setArtDisp
+				enable : this.setArtDisp
+			}
+		});
 		console.log ('Controller Center started.');
+	} ,
+	
+	setArtDisp : function (region) {
+		disposeArticles (this.getRegionsCenterArticlesStore ());
 	}
 });

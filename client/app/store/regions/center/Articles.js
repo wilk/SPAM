@@ -1,19 +1,17 @@
-// @file 	User.js
+// @file 	Articles.js
 //
 // @author 	Vincenzo Ferrari <ferrari@cs.unibo.it>
 //		Riccardo Statuto <statuto@cs.unibo.it>
 //		Stefano Sgarlata <sgarlat@cs.unibo.it>
 //		Clemente Vitale  <cvitale@cs.unibo.it>
 //
-// @note	Store of users
+// @note	Store of articles
 
-Ext.define ('SC.store.User' , {
+Ext.define ('SC.store.regions.center.Articles' , {
 	extend: 'Ext.data.Store' ,
 	
-	model: 'User' ,
+	model: 'SC.model.regions.center.Articles' ,
+	storeId: 'strArticles' ,
 	
-	proxy: {
-		type: 'rest' ,
-		url: 'http://ltw1102.web.cs.unibo.it/login'
-	}
+	autoLoad: true
 });

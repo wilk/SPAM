@@ -21,11 +21,11 @@ Ext.application ({
 		'regions.east.RecentPost' ,
 		'regions.east.GeoLocation' ,
 		'regions.Center' ,
-		'regions.center.Post' ,
+		'regions.center.Articles' ,
 		'Send' ,
 		'SendResource' ,
 		'SelectPost' ,
-		'Options',
+		'Options' ,
 		'Server'
 	]
 });

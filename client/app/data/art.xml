@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archive>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>0</affinity>
+      <article about="/tw12/pippo/11">
+         Questo è il mio primo articolo, fucker!
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>1</affinity>
+      <article>
+         Mentre questo è il secondo.
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>2</affinity>
+      <article>
+         E infine abbiamo il terzo!
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>3</affinity>
+      <article>
+         Quarto
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>4</affinity>
+      <article>
+         Quinto.
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>5</affinity>
+      <article about="/tw12/pippo/11">
+         Questo è il mio 10° articolo, fucker!
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>6</affinity>
+      <article>
+         Mentre questo è il 11°.
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>7</affinity>
+      <article>
+         E infine abbiamo il 12°!
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>8</affinity>
+      <article>
+         13°
+      </article>
+   </post>
+   <post>
+      <content>text/html; charset=UTF8</content>
+      <affinity>9</affinity>
+      <article>
+         14°
+      </article>
+   </post>
+</archive>

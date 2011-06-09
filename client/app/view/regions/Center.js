@@ -16,6 +16,7 @@ Ext.define ('SC.view.regions.Center' , {
 	
 	// Configuration
 	region: 'center' ,
+	id: 'centReg' ,
 	items: [{
 		xtype: 'post'
 	}]

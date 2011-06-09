@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:sioc="http://rdfs.org/sioc/ns#"
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:tweb="http://vitali.web.cs.unibo.it/vocabulary/">
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/14724">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:Post>
+nuovo giro nuova corsa #hasttag
+</sioc:Post>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-06-10T00:27:00+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+  </rdf:Description>
+
+</rdf:RDF>

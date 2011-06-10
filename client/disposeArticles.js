@@ -68,27 +68,33 @@ function disposeArticles (store) {
 				items: [{
 					// Button I Like
 					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/like.png'
+					icon: 'ext/resources/images/btn-icons/like.png' ,
+					tooltip: 'I Like'
 				} , {
 					// Button I Dislike
 					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/dislike.png'
+					icon: 'ext/resources/images/btn-icons/dislike.png' ,
+					tooltip: 'I Dislike'
 				} , {
 					// Button follow
 					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/follow.gif'
+					icon: 'ext/resources/images/btn-icons/follow.gif' ,
+					tooltip: 'Follow'
 				} , '->' , {
 					// Button focus
 					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/focus.png'
+					icon: 'ext/resources/images/btn-icons/focus.png' ,
+					tooltip: 'Focus'
 				} , '->' , {
 					// Button reply
 					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/reply.png'
+					icon: 'ext/resources/images/btn-icons/reply.png' ,
+					tooltip: 'Reply'
 				} , {
-					// Button retweet
+					// Button respam
 					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/respam.png'
+					icon: 'ext/resources/images/btn-icons/respam.png' ,
+					tooltip: 'Respam'
 				}]
 			}]
 		});

@@ -43,12 +43,17 @@ Ext.define ('SC.view.Options' , {
 				layout: 'anchor' ,
 				items: [{
 					// Server URL
-					xtype: 'textfield' ,
+					// TODO: insert a default value (default server ID)
+					xtype: 'combo' ,
 					id: 'tfServerUrl' ,
 					fieldLabel: 'Server URL ' ,
 					anchor: '100% 100%' ,
 					allowBlank: false ,
-					value: 'http://ltw1102.web.cs.unibo.it'
+					displayField: 'serverID',
+					labelWidth: 130,
+					store: 'Servers',
+					queryMode: 'local',
+					typeAhead: true
 				}] ,
 				// Buttons
 				buttons: [{

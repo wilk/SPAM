@@ -109,7 +109,7 @@ class PostModel {
         /* Customize post */
         $pre = array();
         $pre['rdf:type'][] = 'sioc:Post';
-        $pre['sioc:Post'][] = $testoHTML;
+        $pre['sioc:content'][] = $testoHTML;
         $pre['sioc:has_creator'][] = $usrResource;
         $pre['dcterms:created'][] = date(DATE_ATOM);
         $pre['tweb:countLike'][] = 0;

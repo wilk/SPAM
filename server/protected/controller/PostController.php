@@ -63,7 +63,7 @@ class PostController extends DooController {
         if ($serverID == "Spammers") {
             $this->articolo = new PostModel();
             $myPost = $this->articolo->getPost('spam:/' . $serverID . '/' . $userID . '/' . $postID);
-            if ($pID = $this->articolo->parseArticle('<article>' . $myPost['sioc:Post'][0] . '</article>')) {
+            if ($pID = $this->articolo->parseArticle('<article>' . $myPost['sioc:content'][0] . '</article>')) {
                 $utente = new UserModel($_SESSION['user']['username']);
                 $utente->addPost2Usr($pID);
             }

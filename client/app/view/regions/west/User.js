@@ -13,7 +13,7 @@ Ext.define ('SC.view.regions.west.User' , {
 	
 	// Configuration
 	id: 'userPanel' ,
-	autoWidth: true ,
+//	autoWidth: true ,
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 2 ,

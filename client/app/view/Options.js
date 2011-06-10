@@ -59,8 +59,10 @@ Ext.define ('SC.view.Options' , {
 		} , {
 			// Tab Server
 			title: 'Server' ,
+			autoScroll:true,
 			items: [{
 				xtype: 'grid' ,
+				forceFit:true,
 				id: 'fedServer' ,
 				store: 'Servers' ,
 				frame: false ,
@@ -76,7 +78,7 @@ Ext.define ('SC.view.Options' , {
 			// Tab About Us
 			title: 'About Us' ,
 			bodyPadding: 10 ,
-			html: '<h1>Thanks to:</h1><br />Clemente Vitale : cvitale@cs.unibo.ti<br />Riccardo Statuto : statuto@cs.unibo.it<br />Stefano Sgarlata : sgarlat@cs.unibo.it<br />Vincenzo Ferrari : ferrari@cs.unibo.it'
+			html: '<h1>Thanks to:</h1><br />Clemente Vitale : cvitale@cs.unibo.ti<br />Riccardo Statuto : statuto@cs.unibo.it<br />Stefano Sgarlata : sgarlats@cs.unibo.it<br />Vincenzo Ferrari : ferrari@cs.unibo.it'
 		} , {
 			// Tab Help
 			title: 'Help' ,

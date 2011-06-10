@@ -24,7 +24,11 @@ Ext.define ('SC.view.regions.West' , {
 	minWidth: 158 ,
 	maxWidth: 300 ,
 	collapsible: true ,
-	layout: 'anchor' ,
+	layout: {
+		type:'vbox',
+		align:'stretch'
+	},
+	autoScroll:true,
 	split: true ,
 	
 	// Body

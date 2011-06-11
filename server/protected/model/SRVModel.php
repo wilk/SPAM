@@ -37,7 +37,7 @@ class SRVModel {
      * @param $s = serverID
      */
 
-    public static function getUrl($s) {
+    public static function getUrl($request, $s) {
         $request->connect_to(self::$_SERVERSBASE)->get();
         $serverList = $request->xml_result();
         while (list(, $server) = each($serverList->server)) {

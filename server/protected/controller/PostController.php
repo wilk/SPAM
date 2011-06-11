@@ -25,10 +25,11 @@ class PostController extends DooController {
     public function createPost($content = null) {
         /* Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
-        
+
         if (!$content)
             $mycontent = $_POST['article'];
-        else $mycontent=$content;
+        else
+            $mycontent=$content;
         $this->articolo = new PostModel();
         if ($pID = $this->articolo->parseArticle($mycontent)) {
 //            echo $pID;
@@ -40,16 +41,20 @@ class PostController extends DooController {
     }
 
     public function sendPost() {
-        /* Salvo il valore serverID dell'URI e lo stampo */
         $server = $this->params['serverID'];
-        echo ($server);
-        /* Creo una connessione ed eseguo una richiesta al server;
-         * ritorno il codice ricevuto dal server;
-         */
-        $this->load()->helper('DooRestClient');
-        $request = new DooRestClient;
-        $request->connect_to("http://www.google.it")->get();
-        return ($request->resultCode());
+        $user = $this->params['userID'];
+        $post = $this->params['postID'];
+        if ($server != 'Spammers') {
+            $this->load()->helper('DooRestClient');
+            $request = new DooRestClient;
+            $url = SRVModel::getUrl($request, $server);
+            $request->connect_to($url . '/postserver/' . $user . '/' . $post)->get();
+            if ($request->resultCode() == '200') {
+                $content = $request->result();
+                $this->setContentType('html');
+                print $content;
+            }
+        }
     }
 
     /* il respam crea un messaggio sul server quando il client gli passa
@@ -70,7 +75,7 @@ class PostController extends DooController {
         } else {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
-            $url = SRVModel::getUrl($serverID);
+            $url = SRVModel::getUrl($request, $serverID);
             $request->connect_to($url . '/postserver/' . $userID . '/' . $postID)->get();
             if ($request->resultCode() == '200') {
                 $content = $request->result();
@@ -94,13 +99,11 @@ class PostController extends DooController {
         } else {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
-            $url = SRVModel::getUrl($sID);
+            $url = SRVModel::getUrl($request, $sID);
             $request->connect_to($url . '/hasreply')
                     ->data(array('serverID' => $s, 'userID' => $u, 'postID' => $p, 'userID2Up' => $uID, 'postID2Up' => $pID))
                     ->post();
-            if ($request->resultCode() == '200')
-                return 200;
-            else
+            if ($request->resultCode() != '200')
                 return 500;
         }
     }
@@ -113,9 +116,8 @@ class PostController extends DooController {
         $myUser = $_POST['userID2Up'];
         $myPost = $_POST['postID2Up'];
         $resource = 'spam:/Spammers/' . $myUser . '/' . $myPost;
-        $pathOfReply= 'spam:/'.$serverID.'/'.$userID.'/'.$postID;
-        $this->articolo->addHasReply($resource,$pathOfReply);
-        return 200;
+        $pathOfReply = 'spam:/' . $serverID . '/' . $userID . '/' . $postID;
+        $this->articolo->addHasReply($resource, $pathOfReply);
     }
 
 }

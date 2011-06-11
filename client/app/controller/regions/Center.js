@@ -27,6 +27,15 @@ Ext.define ('SC.controller.regions.Center' , {
 	} ,
 	
 	setArtDisp : function (region) {
-		disposeArticles (this.getRegionsCenterArticlesStore ());
+		// Check if there are articles to display
+		if (this.getRegionsCenterArticlesStore().count () == 0)
+			Ext.Msg.show ({
+				title: 'Error',
+				msg: 'No articles found!' ,
+				buttons: Ext.Msg.OK,
+				icon: Ext.Msg.ERROR
+			});
+		else
+			disposeArticles (this.getRegionsCenterArticlesStore ());
 	}
 });

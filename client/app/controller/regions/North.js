@@ -62,7 +62,7 @@ Ext.define ('SC.controller.regions.North' , {
 		btnLogin = northPanel.down ('#loginButton');
 		
 		// If there is server cookie
-		if (Ext.util.Cookies.get ('PHPSESSID') != null)
+		if (Ext.util.Cookies.get ('ltwlogin') != null)
 		{
 			// And if there is client cookie
 			var userCookie = Ext.util.Cookies.get ('SPAMlogin');
@@ -90,7 +90,7 @@ Ext.define ('SC.controller.regions.North' , {
 					params: { username: txtUser } ,
 					success: function (response) {
 						// If server sets his cookies
-						var userCookie = Ext.util.Cookies.get ('PHPSESSID');
+						var userCookie = Ext.util.Cookies.get ('ltwlogin');
 
 						if (userCookie != null)					
 							// Client sets its

@@ -3,7 +3,7 @@
 class PostView {
     /* prende in input il post come array e lo ritorna in html+rdfa */
 
-    public static function renderPost($p, $userID, $postID) {
+    public static function renderPost($p, $userID=null, $postID=null) {
         //Definisco template di un articolo HTML standard da inviare
         $articleTemplate = '<article prefix="
    sioc: http://rdfs.org/sioc/ns#
@@ -22,6 +22,7 @@ class PostView {
         $article_vars = array("%POSTID%", "%USERID%", "%POSTDATE%", "%POSTCONTENT%", "%USERLIKE%", "%LIKEVALUE%", "%DISLIKEVALUE%");
         //Controllo se l'utente ha un preferenza di like o dislike
         $userPref = '';
+        //TODO: La funzione stupidamente non controlla se il like/dislike è della persona che ha richiesto il post --> FIXARE
         if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/like']))
             $userPref = '<span rev="tweb:like" resource="/' . $userID . '/' . $postID;
         if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/dislike']))

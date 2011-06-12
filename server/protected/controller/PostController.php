@@ -3,6 +3,7 @@
 include_once 'protected/model/PostModel.php';
 include_once 'protected/model/UserModel.php';
 include_once 'protected/model/SRVModel.php';
+include_once 'protected/view/PostView.php';
 
 class PostController extends DooController {
 
@@ -53,8 +54,14 @@ class PostController extends DooController {
                 $content = $request->result();
                 $this->setContentType('html');
                 print $content;
+            } else {
+                return $request->resultCode();
             }
         }
+        $this->articolo = new PostModel();
+        $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
+        $htmlPost= PostView::renderPost($myPost,$user,$post);
+        print $htmlPost;
     }
 
     /* il respam crea un messaggio sul server quando il client gli passa

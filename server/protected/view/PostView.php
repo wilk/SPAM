@@ -3,40 +3,41 @@
 class PostView {
     /* prende in input il post come array e lo ritorna in html+rdfa */
 
-    public static function renderPost($p) {
-        $post = current($p);
-        $about = key($p);
-        //questa è scandalosa... ma funge!
-        $subj = substr($about, 30);
-        $creator = substr($post['http://rdfs.org/sioc/ns#has_creator'][0], 30);
-        $data = $post['http://purl.org/dc/terms/created'][0];
-
-        $postHTML =
-                '<article prefix="
-           sioc: http://rdfs.org/sioc/ns#
-           ctag: http://commontag.org/ns#
-           skos: http://www.w3.org/2004/02/skos/core#
-           dcterms: http://purl.org/dc/terms/
-           tweb: http://vitali.web.cs.unibo.it/vocabulary/"';
-
-        $postHTML .= ' about="' . $subj . '" typeof="sioc:Post" 
-                            rel="sioc:has_creator" resource="' . $creator . '" ';
-        $postHTML .= 'property="dcterms:created" content="' . $data . '">\n';
-        $postHTML .= '<div about="' . $subj . '">\n';
-        //corpo del messaggio
-        $postHTML .= $post['http://rdfs.org/sioc/ns#Post'][0];
-
-        if (isset($post['http://vitali.web.cs.unibo.it/vocabolary/countLike'][0])) {
-            $countLike = $post['http://vitali.web.cs.unibo.it/vocabolary/countLike'][0];
-            $postHTML .= '<span property="tweb:countLike" content="' . $countLike . '" />';
-        }
-        if (isset($post['http://vitali.web.cs.unibo.it/vocabolary/countDislike'][0])) {
-            $countDislike = $post['http://vitali.web.cs.unibo.it/vocabolary/countDislike'][0];
-            $postHTML .= '<span property="tweb:countLike" content="' . $countDislike . '" />';
-        }
-        $postHTML .= '</article>';
-
-        return $postHTML;
+    public static function renderPost($p, $userID, $postID) {
+        //Definisco template di un articolo HTML standard da inviare
+        $articleTemplate = '<article prefix="
+   sioc: http://rdfs.org/sioc/ns#
+   ctag: http://commontag.org/ns#
+   skos: http://www.w3.org/2004/02/skos/core#
+   dcterms: http://purl.org/dc/terms/
+   tweb: http://vitali.web.cs.unibo.it/vocabulary/"
+    about="%POSTID%" typeof="sioc:Post" rel="sioc:has_creator" resource="%USERID%"
+   property="dcterms:created" content="%POSTDATE%">
+   %POSTCONTENT%
+   %USERLIKE%
+   <span property="tweb:countLike" content="%LIKEVALUE%" />
+   <span property="tweb:countDislike" content="%DISLIKEVALUE%" />
+</article>';
+        //Identifico array delle variabili del template da sostituire
+        $article_vars = array("%POSTID%", "%USERID%", "%POSTDATE%", "%POSTCONTENT%", "%USERLIKE%", "%LIKEVALUE%", "%DISLIKEVALUE%");
+        //Controllo se l'utente ha un preferenza di like o dislike
+        $userPref = '';
+        if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/like']))
+            $userPref = '<span rev="tweb:like" resource="/' . $userID . '/' . $postID;
+        if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/dislike']))
+            $userPref = '<span rev="tweb:dislike" resource="/' . $userID . '/' . $postID;
+//Specifico array con i valori da inserire
+        $article_values = array(
+            "/Spammers/" . $userID . '/' . $postID,
+            "/" . $userID . '/' . $postID,
+            $p['http://purl.org/dc/terms/created'][0],
+            htmlentities($p['http://rdfs.org/sioc/ns#content'][0], ENT_QUOTES, 'UTF-8'),
+            $userPref,
+            $p['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0],
+            $p['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0],
+        );
+        $article_html = str_replace($article_vars, $article_values, $articleTemplate);
+        return $article_html;
     }
 
     /* il parametro $m è un array multiplo di post */

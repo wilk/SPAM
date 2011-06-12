@@ -40,10 +40,9 @@ class SRVModel {
     public static function getUrl($request, $s) {
         $request->connect_to(self::$_SERVERSBASE)->get();
         $serverList = $request->xml_result();
-        while (list(, $server) = each($serverList->server)) {
-            if ($server->attributes()->serverID == $s) {
-                return $server->attributes()->serverURL;
-            }
+        foreach ($serverList->server as $myServer) {
+            if ($myServer->attributes()->serverID == $s)
+                return $myServer->attributes()->serverURL;
         }
     }
 

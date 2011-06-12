@@ -35,6 +35,13 @@ class UserModel {
         $RDFdoc = $ser->getSerializedIndex($this->index);
         @file_put_contents(self::$pathUtenti, $RDFdoc);
     }
+    
+    public function ifUserExist(){
+        if (isset($this->index[$this->usrLabel]))
+            return TRUE;
+        else
+            return FALSE;
+    }
 
     public function firstTime() {
         //se non esiste il file ritorna
@@ -81,10 +88,9 @@ class UserModel {
     
     public function handleFollow($r, $v){
         $siocFollow = 'http://rdfs.org/sioc/ns#follows';
-        $risorsa = 'http://ltw1102.web.cs.unibo.it' . $r;
         if (isset($this->index[$this->usrLabel][$siocFollow])) {
             foreach($this->index[$this->usrLabel][$siocFollow] as $k => $seg){
-                if ($seg == $risorsa) {
+                if ($seg == $r) {
                     if ($v) return;
                     //else la devo togliere
                     unset($this->index[$this->usrLabel][$siocFollow][$k]);
@@ -94,11 +100,10 @@ class UserModel {
             }
         }//altrimenti se non esiste
         if ($v) {
-            $this->index[$this->usrLabel][$siocFollow][] = 'spam' . $r;
+            $this->index[$this->usrLabel]['sioc:follows'][] = $r;
             $this->writeInUsers();
         }return;
     }
 
 }
-
 ?>

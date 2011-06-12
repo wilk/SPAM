@@ -88,14 +88,15 @@ class UserModel {
                     if ($v) return;
                     //else la devo togliere
                     unset($this->index[$this->usrLabel][$siocFollow][$k]);
-                    break;
+                    $this->writeInUsers();
+                    return;
                 }
             }
         }//altrimenti se non esiste
-        if ($v)
+        if ($v) {
             $this->index[$this->usrLabel][$siocFollow][] = 'spam' . $r;
-        $this->writeInUsers();
-        return;
+            $this->writeInUsers();
+        }return;
     }
 
 }

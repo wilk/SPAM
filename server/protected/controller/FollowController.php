@@ -13,6 +13,7 @@ class FollowController extends DooController{
             } else {
                 $risorsa = '/' . $_POST['serverID'] . '/' . $_POST['userID'];
                 $v = $_POST['value'];
+                if (($v!=1) || ($v!=0)) return 406;
                 $utente = new UserModel($_SESSION['user']['username']);
                 $utente->handleFollow($risorsa, $v);
             }

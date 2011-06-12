@@ -150,23 +150,55 @@ class PostModel {
     }
 
     public function addHasReply($p, $path = null) {
-        if(!$path)
-        $this->index[$p]['sioc:has_reply'][] = $this->postID;
-        else $this->index[$p]['sioc:has_reply'][]= $path;
-        $this->saveInPost();        
+        if (!$path)
+            $this->index[$p]['sioc:has_reply'][] = $this->postID;
+        else
+            $this->index[$p]['sioc:has_reply'][] = $path;
+        $this->saveInPost();
     }
 
     public function getPost($r) {
         return $this->index[$r];
     }
-    
-    public function getPostArray(){
+
+    public function getPostArray() {
         $lista = array();
         foreach ($this->index as $post) {
             if (isset($post[self::$siocTopic]))
-                    $lista[key ($post)] = $post;
+                $lista[key($post)] = $post;
         }
         return $lista;
+    }
+
+    public function addLike($p, $value, $userID) {
+        switch ($value) {
+            case 0:
+                //Rimuovi tweb:like/dislike e decrementa il valore appropriato
+                if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
+                    foreach ($p['http://vitali.web.cs.unibo.it/vocabulary/like'] as $likeUser) {
+                        if ($likeUser == "spam:/Spammers/" . $userID) {
+                            unset($p[$likeUser]);
+                            $this->saveInPost();
+                            break;
+                        }
+                    }
+                }
+//                if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
+//                    foreach ($p['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $dislikeUser) {
+//                        if ($dislikeUser == "spam:/Spammers/" . $userID) {
+//                            $userPref = '<span rev="tweb:dislike" resource="/Spammers/' . $userID . '" />';
+//                            break;
+//                        }
+//                    }
+//                }
+                break;
+            case 1:
+                //Se c'è tweb:dislike rimuovilo, aggiungi tweb:like, decrementa countDislike e incrementa countLike
+                break;
+            case -1:
+                //Se c'è tweb:like rimuovilo, aggiungi tweb:dislike, decrementa countLike e incrementa countDislike
+                break;
+        }
     }
 
 }

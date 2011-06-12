@@ -112,9 +112,9 @@ $route['get']['/search/:limit/:type/:serverID/:userID/:postID'] = array('SearchC
 $route['*']['/search/:limit/:type/:serverID/:userID/:postID'] = array('ErrorController', 'notSupport');
 
 //Imposta setlike
-$route['post']['/setlike/:value/:serverID/:userID/:postID'] = array('LikeController', 'setLike');
+$route['post']['/setlike'] = array('LikeController', 'setLike');
 //Path con setlike metodo non supportato
-$route['*']['/setlike/:value/:serverID/:userID/:postID'] = array('ErrorController', 'notSupport');
+$route['*']['/setlike'] = array('ErrorController', 'notSupport');
 
 //Richiesta lista server federati
 $route['get']['/servers'] = array('ServersController', 'sendServersList');

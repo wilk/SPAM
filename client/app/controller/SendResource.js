@@ -30,7 +30,8 @@ Ext.define ('SC.controller.SendResource' , {
 		this.control ({
 			// Reset field when it's showed
 			'sendresource': {
-				show: this.initFields
+				afterrender: this.initFields ,
+				show: this.resetFields
 			} ,
 			// Controlling txtArea of window for sending new posts
 			'#txtResourceDescription': {
@@ -145,7 +146,9 @@ Ext.define ('SC.controller.SendResource' , {
 		
 		btnGhost = Ext.getCmp ('resBtnGhost');
 		
-		this.resetFields ();
+		// If browser do not support geolocation, hide the checkbox
+		if ((browserGeoSupportFlag))
+			chkBoxGeoLoc.setVisible (false);
 	} ,
 	
 	// @brief Reset fields

@@ -142,9 +142,9 @@ $route['get']['/thesaurus'] = array('TesauroController', 'sendThesaurus');
 $route['*']['/thesaurus'] = array('ErrorController', 'notSupport');
 
 //Propaga setlike
-$route['post']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID'] = array('LikeController', 'propagateLike');
+$route['post']['/propagatelike'] = array('LikeController', 'propagateLike');
 //Path propagatelike metodo non supportato
-$route['*']['/propagatelike/:fromServerID/:fromUserID/:value/:serverID/:userID/:postID'] = array('ErrorController', 'notSupport');
+$route['*']['/propagatelike'] = array('ErrorController', 'notSupport');
 
 //Inoltra notifica di risposta ad un post
 $route['post']['/hasreply'] = array('PostController', 'hasReply');

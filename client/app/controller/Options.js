@@ -12,6 +12,13 @@ Ext.define ('SC.controller.Options' , {
 	
 	// Views
 	views: ['Options'] ,
+	
+	// Stores
+	stores: ['Servers'] ,
+	
+	// Models
+	models: ['Server'] ,
+	
 	// Configuration
 	init: function () {
 		var txtServerUrl;
@@ -34,19 +41,23 @@ Ext.define ('SC.controller.Options' , {
 	// @brief Initialize variables
 	initVar : function (win) {
 		txtServerUrl = win.down ('#tfServerUrl');
+		txtServerUrl.setValue ('Spammers');
 	} ,
 	
 	// @brief Update urlServerLtw global var
 	updateUrl : function () {
-		if (txtServerUrl.isValid ())
-			urlServerLtw = txtServerUrl.getValue ();
+		if (txtServerUrl.isValid ()) {
+			// Get the associated field of serverID (e.g. Spammers -> ltw1102.web.cs.unibo.it)
+			var record = this.getServersStore().findRecord ('serverID' , txtServerUrl.getValue ());
+			urlServerLtw = record.get ('serverURL');
+		}
 		else
-			// If isn't valid, reset field
+			// If it isn't valid (blank), reset field
 			this.resetFields ();
 	} ,
 	
 	// @brief Reset fields
 	resetFields : function () {
-		txtServerUrl.reset ();
+		txtServerUrl.setValue ('Spammers');
 	}
 });

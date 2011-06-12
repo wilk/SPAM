@@ -49,11 +49,13 @@ Ext.define ('SC.view.Options' , {
 					fieldLabel: 'Server URL ' ,
 					anchor: '100% 100%' ,
 					allowBlank: false ,
-					displayField: 'serverID',
-					labelWidth: 130,
-					store: 'Servers',
-					queryMode: 'local',
-					typeAhead: true
+					editable: false ,
+//					forceSelection: true ,
+					displayField: 'serverID' ,
+					labelWidth: 130 ,
+					store: 'Servers' ,
+					queryMode: 'local'
+//					typeAhead: true ,
 				}] ,
 				// Buttons
 				buttons: [{

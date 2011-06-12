@@ -124,9 +124,9 @@ $route['post']['/servers'] = array('ServersController', 'rewriteServersList');
 $route['*']['/servers'] = array('ErrorController', 'notSupport');
 
 //Setta sei seguire o meno un utente
-$route['post']['/setfollow/:value/:serverID/:userID'] = array('FollowController', 'setFollow');
+$route['post']['/setfollow'] = array('FollowController', 'setFollow');
 //Path setfollow metodo non supportato
-$route['*']['/setfollow/:value/:serverID/:userID'] = array('ErrorController', 'notSupport');
+$route['*']['/setfollow'] = array('ErrorController', 'notSupport');
 
 //Aggiunge termine al tesauro
 $route['post']['/addterm'] = array('TesauroController', 'addTerm');

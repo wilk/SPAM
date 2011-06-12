@@ -78,6 +78,25 @@ class UserModel {
         $this->writeInUsers();
         return 201;
     }
+    
+    public function handleFollow($r, $v){
+        $siocFollow = 'http://rdfs.org/sioc/ns#follows';
+        $risorsa = 'http://ltw1102.web.cs.unibo.it' . $r;
+        if (isset($this->index[$this->usrLabel][$siocFollow])) {
+            foreach($this->index[$this->usrLabel][$siocFollow] as $k => $seg){
+                if ($seg == $risorsa) {
+                    if ($v) return;
+                    //else la devo togliere
+                    unset($this->index[$this->usrLabel][$siocFollow][$k]);
+                    break;
+                }
+            }
+        }//altrimenti se non esiste
+        if ($v)
+            $this->index[$this->usrLabel][$siocFollow][] = 'spam' . $r;
+        $this->writeInUsers();
+        return;
+    }
 
 }
 

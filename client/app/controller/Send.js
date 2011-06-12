@@ -27,7 +27,8 @@ Ext.define ('SC.controller.Send' , {
 		this.control ({
 			// Reset field when it's showed
 			'send': {
-				show: this.initFields
+				afterrender: this.initFields ,
+				show: this.resetFields
 			} ,
 			// Controlling txtArea of window for sending new posts
 			'#txtAreaSend': {
@@ -140,10 +141,12 @@ Ext.define ('SC.controller.Send' , {
 		lblSendCount = win.down ('#sendCharCounter');
 		chkSendBoxGeoLoc = win.down ('#chkSendGeoLoc');
 		
-		this.resetFields ();
+		// If browser do not support geolocation, hide the checkbox
+		if ((browserGeoSupportFlag))
+			chkSendBoxGeoLoc.setVisible (false);
 	} ,
 	
-	// Reset text area of the new post
+	// @brief Reset text area of the new post
 	resetFields: function () {
 		txtSendArea.reset ();
 		chkSendBoxGeoLoc.reset ();

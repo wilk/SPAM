@@ -170,35 +170,57 @@ class PostModel {
         return $lista;
     }
 
-    public function addLike($p, $value, $userID) {
+    public function addLike($p, $value, $userID,$serverID="Spammers") {
         switch ($value) {
             case 0:
-                //Rimuovi tweb:like/dislike e decrementa il valore appropriato
-                if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
-                    foreach ($p['http://vitali.web.cs.unibo.it/vocabulary/like'] as $likeUser) {
-                        if ($likeUser == "spam:/Spammers/" . $userID) {
-                            unset($p[$likeUser]);
-                            $this->saveInPost();
-                            break;
-                        }
-                    }
-                }
-//                if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
-//                    foreach ($p['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $dislikeUser) {
-//                        if ($dislikeUser == "spam:/Spammers/" . $userID) {
-//                            $userPref = '<span rev="tweb:dislike" resource="/Spammers/' . $userID . '" />';
-//                            break;
-//                        }
-//                    }
-//                }
+                $this->neutralLike($p,$serverID, $userID);
+                $this->saveInPost();
                 break;
             case 1:
                 //Se c'è tweb:dislike rimuovilo, aggiungi tweb:like, decrementa countDislike e incrementa countLike
+                $this->neutralLike($p,$serverID, $userID);
+                $this->like($p,$serverID, $userID);
+                $this->saveInPost();
                 break;
             case -1:
                 //Se c'è tweb:like rimuovilo, aggiungi tweb:dislike, decrementa countLike e incrementa countDislike
+                $this->neutralLike($p,$serverID, $userID);
+                $this->dislike($p,$serverID, $userID);
+                $this->saveInPost();
                 break;
         }
+    }
+
+    public function neutralLike($p,$serverID, $userID) {
+        //Rimuovi tweb:like/dislike e decrementa il valore appropriato
+        if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
+            foreach ($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'] as $key => $likeUser) {
+                if ($likeUser == "spam:/".$serverID."/" . $userID) {
+                    unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'][$key]);
+                    $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]--;
+                    return;
+                }
+            }
+        }
+        if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
+            foreach ($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $key => $dislikeUser) {
+                if ($dislikeUser == "spam:/".$serverID."/". $userID) {
+                    unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'][$key]);
+                    $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]--;
+                    return;
+                }
+            }
+        }
+    }
+
+    public function like($p,$serverID, $userID) {
+        $this->index[$p]['tweb:like'][] = "spam:/".$serverID."/" . $userID;
+        $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]++;
+    }
+
+    public function dislike($p,$serverID, $userID) {
+        $this->index[$p]['tweb:dislike'][] = "spam:/".$serverID."/" . $userID;
+        $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]++;
     }
 
 }

@@ -5,6 +5,8 @@ class PostView {
 
     public static function renderPost($p, $userID=null, $postID=null) {
         //Definisco template di un articolo HTML standard da inviare
+        print_r($p);
+        print "\n\r";
         $articleTemplate = '<article prefix="
    sioc: http://rdfs.org/sioc/ns#
    ctag: http://commontag.org/ns#
@@ -22,11 +24,22 @@ class PostView {
         $article_vars = array("%POSTID%", "%USERID%", "%POSTDATE%", "%POSTCONTENT%", "%USERLIKE%", "%LIKEVALUE%", "%DISLIKEVALUE%");
         //Controllo se l'utente ha un preferenza di like o dislike
         $userPref = '';
-        //TODO: La funzione stupidamente non controlla se il like/dislike è della persona che ha richiesto il post --> FIXARE
-        if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/like']))
-            $userPref = '<span rev="tweb:like" resource="/' . $userID . '/' . $postID;
-        if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/dislike']))
-            $userPref = '<span rev="tweb:dislike" resource="/' . $userID . '/' . $postID;
+        if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
+            foreach ($p['http://vitali.web.cs.unibo.it/vocabulary/like'] as $likeUser) {
+                if ($likeUser == "spam:/Spammers/" . $userID) {
+                    $userPref = '<span rev="tweb:like" resource="/Spammers/' . $userID . '" />';
+                    break;
+                }
+            }
+        }
+        if (isset($p['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
+            foreach ($p['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $dislikeUser) {
+                if ($dislikeUser == "spam:/Spammers/" . $userID) {
+                    $userPref = '<span rev="tweb:dislike" resource="/Spammers/' . $userID . '" />';
+                    break;
+                }
+            }
+        }
 //Specifico array con i valori da inserire
         $article_values = array(
             "/Spammers/" . $userID . '/' . $postID,

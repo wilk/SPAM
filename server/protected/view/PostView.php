@@ -5,8 +5,6 @@ class PostView {
 
     public static function renderPost($p, $userID=null, $postID=null) {
         //Definisco template di un articolo HTML standard da inviare
-        print_r($p);
-        print "\n\r";
         $articleTemplate = '<article prefix="
    sioc: http://rdfs.org/sioc/ns#
    ctag: http://commontag.org/ns#
@@ -43,7 +41,7 @@ class PostView {
 //Specifico array con i valori da inserire
         $article_values = array(
             "/Spammers/" . $userID . '/' . $postID,
-            "/" . $userID . '/' . $postID,
+            "/Spammers/" . $userID,
             $p['http://purl.org/dc/terms/created'][0],
             htmlentities($p['http://rdfs.org/sioc/ns#content'][0], ENT_QUOTES, 'UTF-8'),
             $userPref,

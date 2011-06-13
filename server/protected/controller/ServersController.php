@@ -6,6 +6,7 @@ include_once 'protected/view/ServersView.php';
 class ServersController extends DooController {
 
     public function beforeRun($resource, $action) {
+        if (isset($SESSION['user']['username']))
         session_name('ltwlogin');
         session_start();
 

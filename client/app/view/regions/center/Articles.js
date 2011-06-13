@@ -20,7 +20,7 @@ Ext.define ('SC.view.regions.center.Articles' , {
 	autoHeight: true ,
 	collapsible: true ,
 	animCollapse: true ,
-	bodyPadding: 2 ,
+	bodyPadding: 5 ,
 	layout: 'anchor' ,
 	maximizable: true ,
 	constrain: true

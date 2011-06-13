@@ -15,7 +15,11 @@ Ext.define ('SC.model.regions.center.Articles' , {
 		name: 'affinity' ,
 		type: 'int'
 	} , {
-		name: 'article'
+		name: 'article' ,
+		type: 'string'
+	} , {
+		name: 'resource' ,
+		mapping: 'article @resource'
 	} , {
 		name: 'about' ,
 		mapping: 'article @about'
@@ -25,7 +29,7 @@ Ext.define ('SC.model.regions.center.Articles' , {
 	proxy: {
 		type: 'rest' ,
 		// 10 recent posts
-		url: 'app/data/art.xml' ,
+		url: 'app/data/art3.xml' ,
 		reader: {
 			type: 'xml' ,
 			root: 'archive' ,

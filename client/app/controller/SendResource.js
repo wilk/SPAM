@@ -53,7 +53,8 @@ Ext.define ('SC.controller.SendResource' , {
 	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
-	// TOFIX: pasted text!!!
+	// TODO: pasted text!!!
+	// TODO: cancel/delete keys aren't captured by chrome
 	checkChars : function (txtarea, e) {
 			// Get the lenght
 		var	numChar = txtarea.getValue().length ,

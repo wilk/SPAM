@@ -24,12 +24,11 @@ class PostController extends DooController {
             session_name("nologin");
             session_start();
             $role = 'anonymous';
-        }
-        $role = $_SESSION['user']['group'];
+        }else
+            $role = $_SESSION['user']['group'];
 
         //if not login, group = anonymous
         //$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
-
         //check against the ACL rules
         if ($rs = $this->acl()->process($role, $resource, $action)) {
             //echo $role .' is not allowed for '. $resource . ' '. $action;
@@ -76,7 +75,7 @@ class PostController extends DooController {
         }
         $this->articolo = new PostModel();
         $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
-        $htmlPost= PostView::renderPost($myPost,$user,$post);
+        $htmlPost = PostView::renderPost($myPost, $user, $post);
         print $htmlPost;
     }
 

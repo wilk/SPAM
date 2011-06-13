@@ -21,7 +21,8 @@ class ServersController extends DooController {
             session_start();
             $role = 'anonymous';
         }
-        $role = $_SESSION['user']['group'];
+        else
+            $role = $_SESSION['user']['group'];
 
         //if not login, group = anonymous
         //$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';

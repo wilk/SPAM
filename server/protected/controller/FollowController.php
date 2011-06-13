@@ -19,12 +19,11 @@ class FollowController extends DooController {
             session_name("nologin");
             session_start();
             $role = 'anonymous';
-        }
-        $role = $_SESSION['user']['group'];
+        }else
+            $role = $_SESSION['user']['group'];
 
         //if not login, group = anonymous
         //$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
-
         //check against the ACL rules
         if ($rs = $this->acl()->process($role, $resource, $action)) {
             //echo $role .' is not allowed for '. $resource . ' '. $action;

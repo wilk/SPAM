@@ -51,9 +51,9 @@ $acl['logged']['allow'] = array(
     'PostController' => '*', 'ServersController' => '*', 'LikeController'=>'*', 'FollowController'=>'*'
 );
 $acl['anonymous']['allow'] = array(
-    'PostController' => '*', 'ServersController' => 'sendServersList','LikeController'=>'propagateLike'
+    'PostController' => '*', 'ServersController' => array('sendServersList'),'LikeController'=>array('propagateLike')
 );
 $acl['anonymous']['deny'] = array(
-    'FollowController' => '*', 'ServersController'=>'rewriteServersList','LikeController'=>'setLike'
+    'FollowController' => '*', 'ServersController'=>array('rewriteServersList'),'LikeController'=>array('setLike')
 );
 ?>

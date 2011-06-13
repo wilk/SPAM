@@ -74,6 +74,7 @@ class UserModel {
     }
 
     public function setServers($a) {
+        unset($this->index[$this->usrLabel]['http://vitali.web.cs.unibo.it/vocabulary/server']);
         foreach ($a as $server) {
             $this->index[$this->usrLabel]['tweb:server'][] = $server;
         }

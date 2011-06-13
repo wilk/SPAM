@@ -6,7 +6,6 @@ include_once 'protected/view/ServersView.php';
 class ServersController extends DooController {
 
     public function beforeRun($resource, $action) {
-        $role;
         session_name("ltwlogin");
         session_start();
         if (!(isset($_SESSION['user']['username']))) {
@@ -19,13 +18,9 @@ class ServersController extends DooController {
             session_destroy();
             session_name("nologin");
             session_start();
-            $role = 'anonymous';
         }
-        else
-            $role = $_SESSION['user']['group'];
-
         //if not login, group = anonymous
-        //$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
+        $role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
         //check against the ACL rules
         if ($rs = $this->acl()->process($role, $resource, $action)) {
             //echo $role .' is not allowed for '. $resource . ' '. $action;
@@ -46,7 +41,15 @@ class ServersController extends DooController {
     }
 
     public function rewriteServersList() {
-        ;
+        if (!isset($_POST['servers']))
+            return 406;
+        $newServersList = $_POST['servers'];
+        $ServerList= simplexml_load_string($newServersList);
+        $idsServer = array();
+        foreach ($ServerList->server as $myServer)
+            array_push($idsServer, (string) $myServer->attributes()->serverID);
+        $user = new UserModel($_SESSION['user']['username']);
+        $user->setServers($idsServer);
     }
 
 }

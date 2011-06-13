@@ -48,12 +48,12 @@
 //								'_default'=>'/error/loginfirst',
 //							);
 $acl['logged']['allow'] = array(
-    'PostController' => '*', 'ServersController' => '*', 'LikeController'=>'*'
+    'PostController' => '*', 'ServersController' => '*', 'LikeController'=>'*', 'FollowController'=>'*'
 );
 $acl['anonymous']['allow'] = array(
-    'PostController' => '*', 'ServersController' => '*','LikeController'=>'*'
+    'PostController' => '*', 'ServersController' => 'sendServersList','LikeController'=>'propagateLike'
 );
-//$acl['anonymous']['deny'] = array(
-//    'PostController' => '*'
-//);
+$acl['anonymous']['deny'] = array(
+    'FollowController' => '*', 'ServersController'=>'rewriteServersList','LikeController'=>'setLike'
+);
 ?>

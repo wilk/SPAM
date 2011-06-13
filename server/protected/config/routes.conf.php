@@ -135,10 +135,6 @@ $route['*']['/setfollow'] = array('ErrorController', 'notSupport');
 $route['post']['/addterm'] = array('TesauroController', 'addTerm');
 //Path addterm metodo non supportato
 $route['*']['/addterm'] = array('ErrorController', 'notSupport');
-//Rimuove termine dal tesauro
-$route['post']['/remterm'] = array('TesauroController', 'removeTerm');
-//Path term metodo non supportato
-$route['*']['/remterm'] = array('ErrorController', 'notSupport');
 //Restituisce tesauro esteso
 $route['get']['/thesaurus'] = array('TesauroController', 'sendThesaurus');
 //Path thesaurus metodo non supportato

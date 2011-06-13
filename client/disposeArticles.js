@@ -29,16 +29,16 @@ function disposeArticles (store) {
 	var focusY = (cntRegion.getHeight () / 2) - ARTICLE_FOCUS_WINDOW_HEIGHT;
 		
 	// Retrieve all records
-	var mod = store.getRange ();
+	var allRecord = store.getRange ();
 	
-	var artBestAffinity = mod[0].get ('affinity');
+	var artBestAffinity = allRecord[0].get ('affinity');
 	var artBestAffinityIndex = 0;
 	
 	// Check if there are two articles at least
-	if (store.count () > 1) {	
+	if (store.count () > 1) {
 		// Check the article with best affinity
 		for (var i=1; i < store.count (); i++) {
-			artBestAffinity = Math.max (mod[i].get ('affinity') , artBestAffinity);
+			artBestAffinity = Math.max (allRecord[i].get ('affinity') , artBestAffinity);
 			artBestAffinityIndex = i;
 		}
 	
@@ -50,7 +50,7 @@ function disposeArticles (store) {
 			var x, y;
 			
 			// Don't manage the focus article
-			if (winAff != artBestAffinity) {
+			if (record != allRecord[artBestAffinityIndex]) {
 		
 				var cosX = Math.cos (degree * (Math.PI/180));
 				var sinY = Math.sin (degree * (Math.PI/180));
@@ -63,49 +63,30 @@ function disposeArticles (store) {
 				if (y < 0) y = Math.abs (y);
 			
 				degree += radCounter;
-		
+				
 				var win = Ext.create ('SC.view.regions.center.Articles' , {
-					title: record.get ('about') + ' said:' ,
+					title: record.get('resource').split("/")[1] + ' said:' ,
 					html: record.get ('article') ,
 					x: x ,
 					y: y ,
+					items: [{
+						xtype: 'button' ,
+						text: record.get ('about') ,
+						tooltip: 'about' ,
+						hidden: true
+					}] ,
 					// TODO: insert buttons in the articles view
 					dockedItems: [{
 						xtype: 'toolbar' ,
 						dock: 'bottom' ,
 						ui: 'footer' ,
-						// Items right-justified
-						items: [{
-							// Button I Like
-							cls: 'x-btn-icon' ,
-							icon: 'ext/resources/images/btn-icons/like.png' ,
-							tooltip: 'I Like'
-						} , {
-							// Button I Dislike
-							cls: 'x-btn-icon' ,
-							icon: 'ext/resources/images/btn-icons/dislike.png' ,
-							tooltip: 'I Dislike'
-						} , {
-							// Button follow
-							cls: 'x-btn-icon' ,
-							icon: 'ext/resources/images/btn-icons/follow.gif' ,
-							tooltip: 'Follow'
-						} , '->' , {
+						// Only focus button
+						items: ['->' , {
 							// Button focus
 							cls: 'x-btn-icon' ,
 							icon: 'ext/resources/images/btn-icons/focus.png' ,
 							tooltip: 'Focus'
-						} , '->' , {
-							// Button reply
-							cls: 'x-btn-icon' ,
-							icon: 'ext/resources/images/btn-icons/reply.png' ,
-							tooltip: 'Reply'
-						} , {
-							// Button respam
-							cls: 'x-btn-icon' ,
-							icon: 'ext/resources/images/btn-icons/respam.png' ,
-							tooltip: 'Respam'
-						}]
+						} , '->']
 					}]
 				});
 		
@@ -118,49 +99,61 @@ function disposeArticles (store) {
 	
 	// Add focus window at last
 	var win = Ext.create ('SC.view.regions.center.Articles' , {
-			title: (mod[artBestAffinityIndex].get ('about')) + ' said:' ,
-			html: (mod[artBestAffinityIndex].get ('article')) ,
-			x: focusX ,
-			y: focusY ,
-			width: ARTICLE_FOCUS_WINDOW_WIDTH * 2 ,
-			height: ARTICLE_FOCUS_WINDOW_HEIGHT * 2 ,
-			// TODO: insert buttons in the articles view
-			dockedItems: [{
-				xtype: 'toolbar' ,
-				dock: 'bottom' ,
-				ui: 'footer' ,
-				// Items right-justified
-				items: [{
-					// Button I Like
-					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/like.png' ,
-					tooltip: 'I Like'
-				} , {
-					// Button I Dislike
-					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/dislike.png' ,
-					tooltip: 'I Dislike'
-				} , {
-					// Button follow
-					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/follow.gif' ,
-					tooltip: 'Follow'
-				} , '->' , '->' , {
-					// Button reply
-					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/reply.png' ,
-					tooltip: 'Reply'
-				} , {
-					// Button respam
-					cls: 'x-btn-icon' ,
-					icon: 'ext/resources/images/btn-icons/respam.png' ,
-					tooltip: 'Respam'
-				}]
+		// Author is /serverID/userID, so split and take only userID
+		title: allRecord[artBestAffinityIndex].get('resource').split("/")[1] + ' said:' ,
+		html: allRecord[artBestAffinityIndex].get ('article') ,
+		x: focusX ,
+		y: focusY ,
+		width: ARTICLE_FOCUS_WINDOW_WIDTH * 2 ,
+		height: ARTICLE_FOCUS_WINDOW_HEIGHT * 2 ,
+		// Body
+		items: [{
+			xtype: 'button' ,
+			text: allRecord[artBestAffinityIndex].get ('about') ,
+			tooltip: 'about' ,
+			hidden: true
+		}] ,
+		// TODO: insert buttons in the articles view
+		dockedItems: [{
+			xtype: 'toolbar' ,
+			dock: 'bottom' ,
+			ui: 'footer' ,
+			items: [{
+				// Button I Like
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/like.png' ,
+				tooltip: 'I Like'
+			} , {
+				// Button I Dislike
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/dislike.png' ,
+				tooltip: 'I Dislike'
+			} , {
+				// Button follow
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/follow.png' ,
+				tooltip: 'Follow'
+			} , {
+				// Button unfollow
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/unfollow.gif' ,
+				tooltip: 'Unfollow' ,
+				hidden: true
+			} , '->' , '->' , {
+				// Button reply
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/reply.png' ,
+				tooltip: 'Reply'
+			} , {
+				// Button respam
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/respam.png' ,
+				tooltip: 'Respam'
 			}]
-		});
-		
-		// Add win to center region
-		cntRegion.add (win);
-		win.show ();
+		}]
+	});
 	
+	// Add win to center region
+	cntRegion.add (win);
+	win.show ();
 }

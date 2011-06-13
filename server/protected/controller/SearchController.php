@@ -12,5 +12,8 @@ class SearchController extends DooController {
             $this->setContentType('xml');
             print $XMLPosts;
         }
+        public function searchRecent($term=null){
+            
+        }
 }
 ?>

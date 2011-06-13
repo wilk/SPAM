@@ -107,9 +107,12 @@ $route['post']['/replyto'] = array('PostController', 'createReply');
 $route['*']['/replyto'] = array('ErrorController', 'notSupport');
 //Ricerca un post
 
-$route['get']['/search/:limit/:type/:serverID/:userID/:postID'] = array('SearchController', 'searchMain');
+$route['get']['/search/:limit/:type'] = array('SearchController', 'searchMain');
+$route['get']['/search/:limit/:type/:var1'] = array('SearchController', 'searchMain');
+$route['get']['/search/:limit/:type/:var1/:var2'] = array('SearchController', 'searchMain');
+$route['get']['/search/:limit/:type/:var1/:var2/:var3'] = array('SearchController', 'searchMain');
 //Path con search metodo non supportato
-$route['*']['/search/:limit/:type/:serverID/:userID/:postID'] = array('ErrorController', 'notSupport');
+$route['*']['/search/:limit/:type'] = array('ErrorController', 'notSupport');
 
 //Imposta setlike
 $route['post']['/setlike'] = array('LikeController', 'setLike');

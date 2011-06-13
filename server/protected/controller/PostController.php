@@ -49,8 +49,10 @@ class PostController extends DooController {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
             $url = SRVModel::getUrl($request, $server);
-            $request->connect_to($url . '/postserver/' . $user . '/' . $post)->get();
-            if ($request->resultCode() == '200') {
+            $request->connect_to($url . '/postserver/' . $user . '/' . $post)
+                    ->accept(DooRestClient::HTML)
+                    ->get();
+            if ($request->isSuccess()) {
                 $content = $request->result();
                 $this->setContentType('html');
                 print $content;
@@ -83,8 +85,10 @@ class PostController extends DooController {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
             $url = SRVModel::getUrl($request, $serverID);
-            $request->connect_to($url . '/postserver/' . $userID . '/' . $postID)->get();
-            if ($request->resultCode() == '200') {
+            $request->connect_to($url . '/postserver/' . $userID . '/' . $postID)
+                    ->accept(DooRestClient::HTML)
+                    ->get();
+            if ($request->isSuccess()) {
                 $content = $request->result();
                 $this->createPost($content);
             }else
@@ -110,7 +114,7 @@ class PostController extends DooController {
             $request->connect_to($url . '/hasreply')
                     ->data(array('serverID' => $s, 'userID' => $u, 'postID' => $p, 'userID2Up' => $uID, 'postID2Up' => $pID))
                     ->post();
-            if ($request->resultCode() != '200')
+            if (!($request->isSuccess()))
                 return 500;
         }
     }

@@ -165,7 +165,7 @@ class PostModel {
         $lista = array();
         foreach ($this->index as $post) {
             if (isset($post[self::$siocTopic]))
-                $lista[key($post)] = $post;
+                array_push($lista,$post);
         }
         return $lista;
     }

@@ -13,6 +13,9 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	// Views
 	views: ['regions.center.Articles'] ,
 	
+	stores: ['regions.center.Articles'] ,
+	models: ['regions.center.Articles'] ,
+	
 	// Configuration
 	init: function () {
 		// TODO: after render of this window, check like/dislike and follow/unfollow value of this article
@@ -31,21 +34,23 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 			} ,
 			// Follow button
 			'articles button[tooltip="Follow"]' : {
-			click : function (button, event) {
+				click : function (button, event) {
 					this.setFollow (button, event, 1);
 				}
 			} ,
 			// Unfollow button
 			'articles button[tooltip="Unfollow"]' : {
-			click : function (button, event) {
+				click : function (button, event) {
 					this.setFollow (button, event, 0);
 				}
 			} ,
 			// Focus button
 			'articles button[tooltip="Focus"]' : {
+				click : this.focus
 			} ,
 			// Reply button
 			'articles button[tooltip="Reply"]' : {
+				click : this.reply
 			} ,
 			// Respam button
 			'articles button[tooltip="Respam"]' : {
@@ -59,7 +64,9 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	// @brief Set Like
 	// TODO: remove like and dislike (setLike 0)
 	setLike: function (button, event, val) {
-		var postData = button.up('window').down('button[tooltip="about"]').getText ();
+		var indexModel = button.up('window').down('button[tooltip="focusModelIndex"]').getText ();
+		var focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
+		var postData = focusModel.get ('resource');
 		
 		// Ajax request
 		Ext.Ajax.request ({
@@ -87,7 +94,9 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	
 	// @brief Set Follow
 	setFollow: function (button, event, val) {
-		var postData = button.up('window').down('button[tooltip="about"]').getText ();
+		var indexModel = button.up('window').down('button[tooltip="focusModelIndex"]').getText ();
+		var focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
+		var postData = focusModel.get ('resource');
 		
 		// Ajax request
 		Ext.Ajax.request ({
@@ -121,9 +130,29 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 		});
 	} ,
 	
+	// @brief Focus
+	focus: function (button, event) {
+		var index = button.up('window').down('button[tooltip="index"]').getText ();
+		var model = this.getRegionsCenterArticlesStore().getRange()[index];
+		
+		// TODO: Ajax request to retrieve the most related articles
+		// TODO: set 2 parameters to disposeArticles function: 1° the focus article; 2° the store
+		
+	} ,
+	
+	// @brief Reply
+	// TODO: all
+	reply: function (button, event) {
+		var indexModel = button.up('window').down('button[tooltip="focusModelIndex"]').getText ();
+		var focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
+		var win = button.up('window');
+	} ,
+	
 	// @brief Respam
 	respam: function (button, event) {
-		var postData = button.up('window').down('button[tooltip="about"]').getText ();
+		var indexModel = button.up('window').down('button[tooltip="focusModelIndex"]').getText ();
+		var focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
+		var postData = focusModel.get ('resource');
 		
 		// Ajax request
 		Ext.Ajax.request ({

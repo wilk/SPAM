@@ -51,6 +51,11 @@ function disposeArticles (store) {
 			
 			// Don't manage the focus article
 			if (record != allRecord[artBestAffinityIndex]) {
+			
+				// Searching model ID of this article
+				for (var i = 0; i < store.count (); i++) {
+					if (allRecord[i] == record) break;
+				}
 		
 				var cosX = Math.cos (degree * (Math.PI/180));
 				var sinY = Math.sin (degree * (Math.PI/180));
@@ -65,14 +70,15 @@ function disposeArticles (store) {
 				degree += radCounter;
 				
 				var win = Ext.create ('SC.view.regions.center.Articles' , {
-					title: record.get('resource').split("/")[1] + ' said:' ,
+					title: record.get('resource').split("/")[2] + ' said:' ,
 					html: record.get ('article') ,
 					x: x ,
 					y: y ,
 					items: [{
+						// Saves model ID of this article
 						xtype: 'button' ,
-						text: record.get ('about') ,
-						tooltip: 'about' ,
+						text: i ,
+						tooltip: 'index' ,
 						hidden: true
 					}] ,
 					// TODO: insert buttons in the articles view
@@ -100,7 +106,7 @@ function disposeArticles (store) {
 	// Add focus window at last
 	var win = Ext.create ('SC.view.regions.center.Articles' , {
 		// Author is /serverID/userID, so split and take only userID
-		title: allRecord[artBestAffinityIndex].get('resource').split("/")[1] + ' said:' ,
+		title: allRecord[artBestAffinityIndex].get('resource').split("/")[2] + ' said:' ,
 		html: allRecord[artBestAffinityIndex].get ('article') ,
 		x: focusX ,
 		y: focusY ,
@@ -108,9 +114,10 @@ function disposeArticles (store) {
 		height: ARTICLE_FOCUS_WINDOW_HEIGHT * 2 ,
 		// Body
 		items: [{
+			// Saves model ID of the focus article
 			xtype: 'button' ,
-			text: allRecord[artBestAffinityIndex].get ('about') ,
-			tooltip: 'about' ,
+			text: artBestAffinityIndex ,
+			tooltip: 'focusModelIndex' ,
 			hidden: true
 		}] ,
 		// TODO: insert buttons in the articles view

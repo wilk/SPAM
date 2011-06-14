@@ -9,26 +9,7 @@
 		dcterms: http://purl.org/dc/terms/
 		tweb: http://vitali.web.cs.unibo.it/vocabulary/"
 		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pippo"
-		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
-			Testo di un post contenente 
-			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
-			altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere" 
-			rel="skos:inScheme" resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus">portiere</span> </span>)
-			o del tesauro esteso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere/roma" 
-			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
-			o link sparsi (ad esempio, http://www.example.com),
-			e perché no un po' di audio (ad esempio, 
-			<span resource="audio" src="http://www.example.com/song.mp3" />),
-			o un po' di video (ad esempio, 
-			<span resource="video" src="http://www.example.com/video.ogv" />),
-			e immagini (ad esempio, 
-			<span resource="image" src="http://www.example.com/pic.png" />).
-			<span rev="tweb:like" resource="/tw14/pluto" />
-			<span property="tweb:countLike" content="1" />
-			<span property="tweb:countDislike" content="5" />
-		]]></article>
+		property="dcterms:created" content="2006-09-07T09:33:30Z">VGVzdG8gZGkgdW4gcG9zdCBjb250ZW5lbnRlIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9ImN0YWc6VGFnIiBwcm9wZXJ0eT0iY3RhZzpsYWJlbCIaGFzaHRhZzwvc3Bhbj48L3NwYW4LAoJCQlhbHRyaSBoYXNodGFnIGNoZSBzaSByaWZlcmlzY29ubyBhIGNvbmNldHRpIGRlbCB0ZXNhdXJvIGNvbmRpdmlzbyAoYWQgZXNlbXBpbyAKCQkJPHNwYW4gcmVsPSJzaW9jOnRvcGljIj4jPHNwYW4gdHlwZW9mPSJza29zOkNvbmNlcHQiIGFib3V0PSIvc3BvcnQvY2FsY2lvL3BvcnRpZXJlIiAKCQkJcmVsPSJza29zOmluU2NoZW1lIiByZXNvdXJjZT0iaHR0cDovL3ZpdGFsaS53ZWIuY3MudW5pYm8uaXQvVGVjaFdlYjExL3RoZXNhdXJ1cyIcG9ydGllcmU8L3NwYW4IDwvc3Bhbj4pCgkJCW8gZGVsIHRlc2F1cm8gZXN0ZXNvIChhZCBlc2VtcGlvIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9InNrb3M6Q29uY2VwdCIgYWJvdXQ9Ii9zcG9ydC9jYWxjaW8vcG9ydGllcmUvcm9tYSIgCgkJCXJlbD0ic2tvczppblNjaGVtZSIgcmVzb3VyY2U9Imh0dHA6Ly9sdHcxMS53ZWIuY3MudW5pYm8uaXQvdGhlc2F1cnVzIj5yb21hPC9zcGFuPjwvc3Bhbj4pCgkJCW8gbGluayBzcGFyc2kgKGFkIGVzZW1waW8sIGh0dHA6Ly93d3cuZXhhbXBsZS5jb20pLAoJCQllIHBlcmNow6kgbm8gdW4gcG8gZGkgYXVkaW8gKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iYXVkaW8iIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9zb25nLm1wMyIgLz4pLAoJCQlvIHVuIHBvIGRpIHZpZGVvIChhZCBlc2VtcGlvLCAKCQkJPHNwYW4gcmVzb3VyY2U9InZpZGVvIiBzcmM9Imh0dHA6Ly93d3cuZXhhbXBsZS5jb20vdmlkZW8ub2d2IiAvPiksCgkJCWUgaW1tYWdpbmkgKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iaW1hZ2UiIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9waWMucG5nIiAvPikuCgkJCTxzcGFuIHJldj0idHdlYjpsaWtlIiByZXNvdXJjZT0iL3R3MTQvcGx1dG8iIC8CgkJCTxzcGFuIHByb3BlcnR5PSJ0d2ViOmNvdW50TGlrZSIgY29udGVudD0iMSIgLz4KCQkJPHNwYW4gcHJvcGVydHk9InR3ZWI6Y291bnREaXNsaWtlIiBjb250ZW50PSI1IiAvPg==</article>
 	</post>
 	<post>
 		<content>text/html; charset=UTF-8</content>
@@ -40,26 +21,7 @@
 		dcterms: http://purl.org/dc/terms/
 		tweb: http://vitali.web.cs.unibo.it/vocabulary/"
 		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pippo"
-		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
-			Testo di un post contenente 
-			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
-			altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere" 
-			rel="skos:inScheme" resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus">portiere</span> </span>)
-			o del tesauro esteso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere/roma" 
-			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
-			o link sparsi (ad esempio, http://www.example.com),
-			e perché no un po' di audio (ad esempio, 
-			<span resource="audio" src="http://www.example.com/song.mp3" />),
-			o un po' di video (ad esempio, 
-			<span resource="video" src="http://www.example.com/video.ogv" />),
-			e immagini (ad esempio, 
-			<span resource="image" src="http://www.example.com/pic.png" />).
-			<span rev="tweb:like" resource="/tw14/pluto" />
-			<span property="tweb:countLike" content="1" />
-			<span property="tweb:countDislike" content="5" />
-		]]></article>
+		property="dcterms:created" content="2006-09-07T09:33:30Z">VGVzdG8gZGkgdW4gcG9zdCBjb250ZW5lbnRlIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9ImN0YWc6VGFnIiBwcm9wZXJ0eT0iY3RhZzpsYWJlbCIaGFzaHRhZzwvc3Bhbj48L3NwYW4LAoJCQlhbHRyaSBoYXNodGFnIGNoZSBzaSByaWZlcmlzY29ubyBhIGNvbmNldHRpIGRlbCB0ZXNhdXJvIGNvbmRpdmlzbyAoYWQgZXNlbXBpbyAKCQkJPHNwYW4gcmVsPSJzaW9jOnRvcGljIj4jPHNwYW4gdHlwZW9mPSJza29zOkNvbmNlcHQiIGFib3V0PSIvc3BvcnQvY2FsY2lvL3BvcnRpZXJlIiAKCQkJcmVsPSJza29zOmluU2NoZW1lIiByZXNvdXJjZT0iaHR0cDovL3ZpdGFsaS53ZWIuY3MudW5pYm8uaXQvVGVjaFdlYjExL3RoZXNhdXJ1cyIcG9ydGllcmU8L3NwYW4IDwvc3Bhbj4pCgkJCW8gZGVsIHRlc2F1cm8gZXN0ZXNvIChhZCBlc2VtcGlvIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9InNrb3M6Q29uY2VwdCIgYWJvdXQ9Ii9zcG9ydC9jYWxjaW8vcG9ydGllcmUvcm9tYSIgCgkJCXJlbD0ic2tvczppblNjaGVtZSIgcmVzb3VyY2U9Imh0dHA6Ly9sdHcxMS53ZWIuY3MudW5pYm8uaXQvdGhlc2F1cnVzIj5yb21hPC9zcGFuPjwvc3Bhbj4pCgkJCW8gbGluayBzcGFyc2kgKGFkIGVzZW1waW8sIGh0dHA6Ly93d3cuZXhhbXBsZS5jb20pLAoJCQllIHBlcmNow6kgbm8gdW4gcG8gZGkgYXVkaW8gKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iYXVkaW8iIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9zb25nLm1wMyIgLz4pLAoJCQlvIHVuIHBvIGRpIHZpZGVvIChhZCBlc2VtcGlvLCAKCQkJPHNwYW4gcmVzb3VyY2U9InZpZGVvIiBzcmM9Imh0dHA6Ly93d3cuZXhhbXBsZS5jb20vdmlkZW8ub2d2IiAvPiksCgkJCWUgaW1tYWdpbmkgKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iaW1hZ2UiIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9waWMucG5nIiAvPikuCgkJCTxzcGFuIHJldj0idHdlYjpsaWtlIiByZXNvdXJjZT0iL3R3MTQvcGx1dG8iIC8CgkJCTxzcGFuIHByb3BlcnR5PSJ0d2ViOmNvdW50TGlrZSIgY29udGVudD0iMSIgLz4KCQkJPHNwYW4gcHJvcGVydHk9InR3ZWI6Y291bnREaXNsaWtlIiBjb250ZW50PSI1IiAvPg==</article>
 	</post>
 	<post>
 		<content>text/html; charset=UTF-8</content>
@@ -71,26 +33,7 @@
 		dcterms: http://purl.org/dc/terms/
 		tweb: http://vitali.web.cs.unibo.it/vocabulary/"
 		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pippo"
-		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
-			Testo di un post contenente 
-			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
-			altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere" 
-			rel="skos:inScheme" resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus">portiere</span> </span>)
-			o del tesauro esteso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere/roma" 
-			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
-			o link sparsi (ad esempio, http://www.example.com),
-			e perché no un po' di audio (ad esempio, 
-			<span resource="audio" src="http://www.example.com/song.mp3" />),
-			o un po' di video (ad esempio, 
-			<span resource="video" src="http://www.example.com/video.ogv" />),
-			e immagini (ad esempio, 
-			<span resource="image" src="http://www.example.com/pic.png" />).
-			<span rev="tweb:like" resource="/tw14/pluto" />
-			<span property="tweb:countLike" content="1" />
-			<span property="tweb:countDislike" content="5" />
-		]]></article>
+		property="dcterms:created" content="2006-09-07T09:33:30Z">VGVzdG8gZGkgdW4gcG9zdCBjb250ZW5lbnRlIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9ImN0YWc6VGFnIiBwcm9wZXJ0eT0iY3RhZzpsYWJlbCIaGFzaHRhZzwvc3Bhbj48L3NwYW4LAoJCQlhbHRyaSBoYXNodGFnIGNoZSBzaSByaWZlcmlzY29ubyBhIGNvbmNldHRpIGRlbCB0ZXNhdXJvIGNvbmRpdmlzbyAoYWQgZXNlbXBpbyAKCQkJPHNwYW4gcmVsPSJzaW9jOnRvcGljIj4jPHNwYW4gdHlwZW9mPSJza29zOkNvbmNlcHQiIGFib3V0PSIvc3BvcnQvY2FsY2lvL3BvcnRpZXJlIiAKCQkJcmVsPSJza29zOmluU2NoZW1lIiByZXNvdXJjZT0iaHR0cDovL3ZpdGFsaS53ZWIuY3MudW5pYm8uaXQvVGVjaFdlYjExL3RoZXNhdXJ1cyIcG9ydGllcmU8L3NwYW4IDwvc3Bhbj4pCgkJCW8gZGVsIHRlc2F1cm8gZXN0ZXNvIChhZCBlc2VtcGlvIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9InNrb3M6Q29uY2VwdCIgYWJvdXQ9Ii9zcG9ydC9jYWxjaW8vcG9ydGllcmUvcm9tYSIgCgkJCXJlbD0ic2tvczppblNjaGVtZSIgcmVzb3VyY2U9Imh0dHA6Ly9sdHcxMS53ZWIuY3MudW5pYm8uaXQvdGhlc2F1cnVzIj5yb21hPC9zcGFuPjwvc3Bhbj4pCgkJCW8gbGluayBzcGFyc2kgKGFkIGVzZW1waW8sIGh0dHA6Ly93d3cuZXhhbXBsZS5jb20pLAoJCQllIHBlcmNow6kgbm8gdW4gcG8gZGkgYXVkaW8gKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iYXVkaW8iIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9zb25nLm1wMyIgLz4pLAoJCQlvIHVuIHBvIGRpIHZpZGVvIChhZCBlc2VtcGlvLCAKCQkJPHNwYW4gcmVzb3VyY2U9InZpZGVvIiBzcmM9Imh0dHA6Ly93d3cuZXhhbXBsZS5jb20vdmlkZW8ub2d2IiAvPiksCgkJCWUgaW1tYWdpbmkgKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iaW1hZ2UiIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9waWMucG5nIiAvPikuCgkJCTxzcGFuIHJldj0idHdlYjpsaWtlIiByZXNvdXJjZT0iL3R3MTQvcGx1dG8iIC8CgkJCTxzcGFuIHByb3BlcnR5PSJ0d2ViOmNvdW50TGlrZSIgY29udGVudD0iMSIgLz4KCQkJPHNwYW4gcHJvcGVydHk9InR3ZWI6Y291bnREaXNsaWtlIiBjb250ZW50PSI1IiAvPg==</article>
 	</post>
 	<post>
 		<content>text/html; charset=UTF-8</content>
@@ -102,26 +45,7 @@
 		dcterms: http://purl.org/dc/terms/
 		tweb: http://vitali.web.cs.unibo.it/vocabulary/"
 		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pluto"
-		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
-			Testo di un post contenente 
-			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
-			altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere" 
-			rel="skos:inScheme" resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus">portiere</span> </span>)
-			o del tesauro esteso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere/roma" 
-			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
-			o link sparsi (ad esempio, http://www.example.com),
-			e perché no un po' di audio (ad esempio, 
-			<span resource="audio" src="http://www.example.com/song.mp3" />),
-			o un po' di video (ad esempio, 
-			<span resource="video" src="http://www.example.com/video.ogv" />),
-			e immagini (ad esempio, 
-			<span resource="image" src="http://www.example.com/pic.png" />).
-			<span rev="tweb:like" resource="/tw14/pluto" />
-			<span property="tweb:countLike" content="1" />
-			<span property="tweb:countDislike" content="5" />
-		]]></article>
+		property="dcterms:created" content="2006-09-07T09:33:30Z">VGVzdG8gZGkgdW4gcG9zdCBjb250ZW5lbnRlIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9ImN0YWc6VGFnIiBwcm9wZXJ0eT0iY3RhZzpsYWJlbCIaGFzaHRhZzwvc3Bhbj48L3NwYW4LAoJCQlhbHRyaSBoYXNodGFnIGNoZSBzaSByaWZlcmlzY29ubyBhIGNvbmNldHRpIGRlbCB0ZXNhdXJvIGNvbmRpdmlzbyAoYWQgZXNlbXBpbyAKCQkJPHNwYW4gcmVsPSJzaW9jOnRvcGljIj4jPHNwYW4gdHlwZW9mPSJza29zOkNvbmNlcHQiIGFib3V0PSIvc3BvcnQvY2FsY2lvL3BvcnRpZXJlIiAKCQkJcmVsPSJza29zOmluU2NoZW1lIiByZXNvdXJjZT0iaHR0cDovL3ZpdGFsaS53ZWIuY3MudW5pYm8uaXQvVGVjaFdlYjExL3RoZXNhdXJ1cyIcG9ydGllcmU8L3NwYW4IDwvc3Bhbj4pCgkJCW8gZGVsIHRlc2F1cm8gZXN0ZXNvIChhZCBlc2VtcGlvIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9InNrb3M6Q29uY2VwdCIgYWJvdXQ9Ii9zcG9ydC9jYWxjaW8vcG9ydGllcmUvcm9tYSIgCgkJCXJlbD0ic2tvczppblNjaGVtZSIgcmVzb3VyY2U9Imh0dHA6Ly9sdHcxMS53ZWIuY3MudW5pYm8uaXQvdGhlc2F1cnVzIj5yb21hPC9zcGFuPjwvc3Bhbj4pCgkJCW8gbGluayBzcGFyc2kgKGFkIGVzZW1waW8sIGh0dHA6Ly93d3cuZXhhbXBsZS5jb20pLAoJCQllIHBlcmNow6kgbm8gdW4gcG8gZGkgYXVkaW8gKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iYXVkaW8iIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9zb25nLm1wMyIgLz4pLAoJCQlvIHVuIHBvIGRpIHZpZGVvIChhZCBlc2VtcGlvLCAKCQkJPHNwYW4gcmVzb3VyY2U9InZpZGVvIiBzcmM9Imh0dHA6Ly93d3cuZXhhbXBsZS5jb20vdmlkZW8ub2d2IiAvPiksCgkJCWUgaW1tYWdpbmkgKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iaW1hZ2UiIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9waWMucG5nIiAvPikuCgkJCTxzcGFuIHJldj0idHdlYjpsaWtlIiByZXNvdXJjZT0iL3R3MTQvcGx1dG8iIC8CgkJCTxzcGFuIHByb3BlcnR5PSJ0d2ViOmNvdW50TGlrZSIgY29udGVudD0iMSIgLz4KCQkJPHNwYW4gcHJvcGVydHk9InR3ZWI6Y291bnREaXNsaWtlIiBjb250ZW50PSI1IiAvPg==</article>
 	</post>
 	<post>
 		<content>text/html; charset=UTF-8</content>
@@ -133,25 +57,6 @@
 		dcterms: http://purl.org/dc/terms/
 		tweb: http://vitali.web.cs.unibo.it/vocabulary/"
 		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/paperino"
-		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
-			Testo di un post contenente 
-			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
-			altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere" 
-			rel="skos:inScheme" resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus">portiere</span> </span>)
-			o del tesauro esteso (ad esempio 
-			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere/roma" 
-			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
-			o link sparsi (ad esempio, http://www.example.com),
-			e perché no un po' di audio (ad esempio, 
-			<span resource="audio" src="http://www.example.com/song.mp3" />),
-			o un po' di video (ad esempio, 
-			<span resource="video" src="http://www.example.com/video.ogv" />),
-			e immagini (ad esempio, 
-			<span resource="image" src="http://www.example.com/pic.png" />).
-			<span rev="tweb:like" resource="/tw14/pluto" />
-			<span property="tweb:countLike" content="1" />
-			<span property="tweb:countDislike" content="5" />
-		]]></article>
+		property="dcterms:created" content="2006-09-07T09:33:30Z">VGVzdG8gZGkgdW4gcG9zdCBjb250ZW5lbnRlIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9ImN0YWc6VGFnIiBwcm9wZXJ0eT0iY3RhZzpsYWJlbCIaGFzaHRhZzwvc3Bhbj48L3NwYW4LAoJCQlhbHRyaSBoYXNodGFnIGNoZSBzaSByaWZlcmlzY29ubyBhIGNvbmNldHRpIGRlbCB0ZXNhdXJvIGNvbmRpdmlzbyAoYWQgZXNlbXBpbyAKCQkJPHNwYW4gcmVsPSJzaW9jOnRvcGljIj4jPHNwYW4gdHlwZW9mPSJza29zOkNvbmNlcHQiIGFib3V0PSIvc3BvcnQvY2FsY2lvL3BvcnRpZXJlIiAKCQkJcmVsPSJza29zOmluU2NoZW1lIiByZXNvdXJjZT0iaHR0cDovL3ZpdGFsaS53ZWIuY3MudW5pYm8uaXQvVGVjaFdlYjExL3RoZXNhdXJ1cyIcG9ydGllcmU8L3NwYW4IDwvc3Bhbj4pCgkJCW8gZGVsIHRlc2F1cm8gZXN0ZXNvIChhZCBlc2VtcGlvIAoJCQk8c3BhbiByZWw9InNpb2M6dG9waWMiPiM8c3BhbiB0eXBlb2Y9InNrb3M6Q29uY2VwdCIgYWJvdXQ9Ii9zcG9ydC9jYWxjaW8vcG9ydGllcmUvcm9tYSIgCgkJCXJlbD0ic2tvczppblNjaGVtZSIgcmVzb3VyY2U9Imh0dHA6Ly9sdHcxMS53ZWIuY3MudW5pYm8uaXQvdGhlc2F1cnVzIj5yb21hPC9zcGFuPjwvc3Bhbj4pCgkJCW8gbGluayBzcGFyc2kgKGFkIGVzZW1waW8sIGh0dHA6Ly93d3cuZXhhbXBsZS5jb20pLAoJCQllIHBlcmNow6kgbm8gdW4gcG8gZGkgYXVkaW8gKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iYXVkaW8iIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9zb25nLm1wMyIgLz4pLAoJCQlvIHVuIHBvIGRpIHZpZGVvIChhZCBlc2VtcGlvLCAKCQkJPHNwYW4gcmVzb3VyY2U9InZpZGVvIiBzcmM9Imh0dHA6Ly93d3cuZXhhbXBsZS5jb20vdmlkZW8ub2d2IiAvPiksCgkJCWUgaW1tYWdpbmkgKGFkIGVzZW1waW8sIAoJCQk8c3BhbiByZXNvdXJjZT0iaW1hZ2UiIHNyYz0iaHR0cDovL3d3dy5leGFtcGxlLmNvbS9waWMucG5nIiAvPikuCgkJCTxzcGFuIHJldj0idHdlYjpsaWtlIiByZXNvdXJjZT0iL3R3MTQvcGx1dG8iIC8CgkJCTxzcGFuIHByb3BlcnR5PSJ0d2ViOmNvdW50TGlrZSIgY29udGVudD0iMSIgLz4KCQkJPHNwYW4gcHJvcGVydHk9InR3ZWI6Y291bnREaXNsaWtlIiBjb250ZW50PSI1IiAvPg==</article>
 	</post>
 </archive>

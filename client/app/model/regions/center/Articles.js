@@ -16,7 +16,10 @@ Ext.define ('SC.model.regions.center.Articles' , {
 		type: 'int'
 	} , {
 		name: 'article' ,
-		type: 'string'
+		type: 'string' ,
+		convert: function (value, record) {
+			return base64_decode (value);
+		}
 	} , {
 		name: 'resource' ,
 		mapping: 'article @resource'

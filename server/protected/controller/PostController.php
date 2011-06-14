@@ -9,8 +9,7 @@ class PostController extends DooController {
 
     public $articolo;
 
-    public function beforeRun($resource, $action) {
-        $role;
+       public function beforeRun($resource, $action) {
         session_name("ltwlogin");
         session_start();
         if (!(isset($_SESSION['user']['username']))) {
@@ -23,12 +22,9 @@ class PostController extends DooController {
             session_destroy();
             session_name("nologin");
             session_start();
-            $role = 'anonymous';
-        }else
-            $role = $_SESSION['user']['group'];
-
+        }
         //if not login, group = anonymous
-        //$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
+        $role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
         //check against the ACL rules
         if ($rs = $this->acl()->process($role, $resource, $action)) {
             //echo $role .' is not allowed for '. $resource . ' '. $action;

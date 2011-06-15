@@ -48,7 +48,7 @@ Ext.define ('SC.controller.Options' , {
 	updateUrl : function () {
 		if (txtServerUrl.isValid ()) {
 			// Get the associated field of serverID (e.g. Spammers -> ltw1102.web.cs.unibo.it)
-			var record = this.getServersStore().findRecord ('serverID' , txtServerUrl.getValue ());
+			var record = Ext.StoreManager.lookup('serverStore').findRecord ('serverID' , txtServerUrl.getValue ());
 			urlServerLtw = record.get ('serverURL');
 		}
 		else

@@ -5,7 +5,7 @@
 //		Stefano Sgarlata <sgarlat@cs.unibo.it>
 //		Clemente Vitale  <cvitale@cs.unibo.it>
 //
-// @note	Functions to parsing body article to display
+// @note	Functions to parse body article to display
 
 // @brief Transform any span resource (video/audio/image) in its html code counterpart
 // @param article: body of article to display

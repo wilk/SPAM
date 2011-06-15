@@ -11,7 +11,6 @@ Ext.define ('SC.store.regions.center.Articles' , {
 	extend: 'Ext.data.Store' ,
 	
 	model: 'SC.model.regions.center.Articles' ,
-	storeId: 'strArticles' ,
 	
 	autoLoad: true
 });

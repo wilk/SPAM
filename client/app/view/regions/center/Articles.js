@@ -23,34 +23,6 @@ Ext.define ('SC.view.regions.center.Articles' , {
 	bodyPadding: 5 ,
 	layout: 'anchor' ,
 	maximizable: true ,
-	constrain: true
-	
-	// Bottom buttons
-//	dockedItems: [{
-//		xtype: 'toolbar' ,
-//		dock: 'bottom' ,
-//		ui: 'footer' ,
-//		// Items right-justified
-//		items: [{
-//			// Button I Like
-//			text: 'Like' 
-////			id: 'btnLike'
-//		} , {
-//			// Button I Dislike
-//			text: 'Dislike'
-////			id: 'btnDislike'
-//		} , '->' , {
-//			// Button focus
-//			text: 'Focus'
-////			id: 'btnFocus'
-//		} , '->' , {
-//			// Button reply
-//			text: 'Reply'
-////			id: 'btnReply'
-//		} , {
-//			// Button retweet
-//			text: 'Respam'
-////			id: 'btnRespam'
-//		}]
-//	}]
+	constrain: true ,
+	autoScroll: true
 });

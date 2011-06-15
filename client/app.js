@@ -22,6 +22,7 @@ Ext.application ({
 		'regions.east.GeoLocation' ,
 		'regions.Center' ,
 		'regions.center.Articles' ,
+		'regions.center.FocusArticle' ,
 		'Send' ,
 		'SendResource' ,
 		'SelectPost' ,

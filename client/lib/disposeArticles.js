@@ -115,68 +115,18 @@ function disposeArticles (store) {
 	var pBarValue = counterLike / (counterLike + counterDislike);
 	
 	// Add focus window at last
-	var win = Ext.create ('SC.view.regions.center.Articles' , {
+	var win = Ext.create ('SC.view.regions.center.FocusArticle' , {
 		// Author is /serverID/userID, so split and take only userID
 		title: allRecord[artBestAffinityIndex].get('resource').split("/")[2] + ' said:' ,
 		html: parseToRead (allRecord[artBestAffinityIndex].get ('article')) ,
 		x: focusX ,
-		y: focusY ,
-		width: ARTICLE_FOCUS_WINDOW_WIDTH * 2 ,
-		height: ARTICLE_FOCUS_WINDOW_HEIGHT * 2 ,
-		// Body
-		items: [{
-			// Saves model ID of the focus article
-			xtype: 'button' ,
-			text: artBestAffinityIndex ,
-			tooltip: 'focusModelIndex' ,
-			hidden: true
-		}] ,
-		// TODO: insert buttons in the articles view
-		dockedItems: [{
-			xtype: 'toolbar' ,
-			dock: 'bottom' ,
-			ui: 'footer' ,
-			items: [{
-				// Button I Like
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/like.png' ,
-				tooltip: 'I Like'
-			} , {
-				// Button I Dislike
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/dislike.png' ,
-				tooltip: 'I Dislike'
-			} , {
-				// Button follow
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/follow.png' ,
-				tooltip: 'Follow'
-			} , {
-				// Button unfollow
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/unfollow.gif' ,
-				tooltip: 'Unfollow' ,
-				hidden: true
-			} , '->' , {
-				// Progress Bar like/dislike
-				xtype: 'progressbar' ,
-				width: 100 ,
-				text: counterLike + ' like - ' + counterDislike + ' dislike' ,
-				value: pBarValue
-			
-			} , '->' , {
-				// Button reply
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/reply.png' ,
-				tooltip: 'Reply'
-			} , {
-				// Button respam
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/respam.png' ,
-				tooltip: 'Respam'
-			}]
-		}]
+		y: focusY
 	});
+	
+	// TODO: setup dinamically like and follow buttons
+	// Update dinamically invisible button that contains focusModelIndex and the like/dislike progressbar
+	win.down('button[tooltip="focusModelIndex"]').setText (artBestAffinityIndex);
+	win.down('progressbar').updateProgress (pBarValue, counterLike + ' like - ' + counterDislike + ' dislike');
 	
 	// Add win to center region
 	cntRegion.add (win);

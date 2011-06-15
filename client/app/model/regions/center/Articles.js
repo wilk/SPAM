@@ -16,10 +16,10 @@ Ext.define ('SC.model.regions.center.Articles' , {
 		type: 'int'
 	} , {
 		name: 'article' ,
-		type: 'string' ,
-		convert: function (value, record) {
-			return base64_decode (value);
-		}
+		type: 'string' 
+//		convert: function (value, record) {
+//			return base64_decode (value);
+//		}
 	} , {
 		name: 'resource' ,
 		mapping: 'article @resource'
@@ -32,7 +32,7 @@ Ext.define ('SC.model.regions.center.Articles' , {
 	proxy: {
 		type: 'rest' ,
 		// 10 recent posts
-		url: 'app/data/art3.xml' ,
+		url: 'app/data/art4.xml' ,
 		reader: {
 			type: 'xml' ,
 			root: 'archive' ,

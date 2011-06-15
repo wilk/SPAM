@@ -53,7 +53,7 @@ Ext.define ('SC.view.Options' , {
 //					forceSelection: true ,
 					displayField: 'serverID' ,
 					labelWidth: 130 ,
-					store: 'Servers' ,
+					store: 'serverStore' ,
 					queryMode: 'local'
 //					typeAhead: true ,
 				}] ,

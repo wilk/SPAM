@@ -39,9 +39,13 @@ function disposeArticles (store) {
 		// Check the article with best affinity
 		for (var i=1; i < store.count (); i++) {
 			artBestAffinity = Math.max (allRecord[i].get ('affinity') , artBestAffinity);
-			artBestAffinityIndex = i;
 		}
-	
+		
+		// Retrieve index of the article with the best affinity
+		for (var i=0; i < store.count (); i++)
+			if (artBestAffinity == allRecord[i].get ('affinity')) 
+				artBestAffinityIndex = i;
+		
 		radCounter = 360 / store.count ();
 	
 		// Create a window for any articles
@@ -103,6 +107,13 @@ function disposeArticles (store) {
 		} , this);
 	}
 	
+	// Like and Dislike counters
+	var counterLike = parseInt (findCounters (allRecord[artBestAffinityIndex].get ('article'), 'Like'));
+	var counterDislike = parseInt (findCounters (allRecord[artBestAffinityIndex].get ('article'), 'Dislike'));
+	
+	// Percent of progress bar
+	var pBarValue = counterLike / (counterLike + counterDislike);
+	
 	// Add focus window at last
 	var win = Ext.create ('SC.view.regions.center.Articles' , {
 		// Author is /serverID/userID, so split and take only userID
@@ -146,7 +157,14 @@ function disposeArticles (store) {
 				icon: 'ext/resources/images/btn-icons/unfollow.gif' ,
 				tooltip: 'Unfollow' ,
 				hidden: true
-			} , '->' , '->' , {
+			} , '->' , {
+				// Progress Bar like/dislike
+				xtype: 'progressbar' ,
+				width: 100 ,
+				text: counterLike + ' like - ' + counterDislike + ' dislike' ,
+				value: pBarValue
+			
+			} , '->' , {
 				// Button reply
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/reply.png' ,

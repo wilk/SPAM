@@ -64,14 +64,14 @@ Ext.define ('SC.view.Options' , {
 				}]
 			}]
 		} , {
-			// Tab Server
+			// Tab Server Grid
 			title: 'Server' ,
 			autoScroll:true,
 			items: [{
 				xtype: 'grid' ,
 				forceFit:true,
 				id: 'fedServer' ,
-				store: 'Servers' ,
+				store: 'serverStore' ,
 				frame: false ,
 				border: 0 ,
 				bodyPadding: 10 ,
@@ -79,6 +79,57 @@ Ext.define ('SC.view.Options' , {
 				columns: [{
 					header: 'server name' ,
 					dataIndex: 'serverID'
+				},{
+				
+//				column that contain icons for adding and deleting server items from userServer store
+					header:'Add/Delete',
+					xtype:'actioncolumn',
+					width:20,
+					
+//				settings and handler for add server action
+					items:[{
+						icon:'ext/resources/images/server-grid-actions/check.ico',
+						tooltip:'Add this server to yours list',
+						handler:function(grid,rowIndex,colIndex){
+							if(Ext.util.Cookies.get('SPAMlogin')!=null){
+								var rec=grid.getStore().getAt(rowIndex);
+								var userSt=Ext.StoreManager.lookup('userStore');
+								var record=userSt.findRecord('serverID',rec.get('serverID'));
+								if(record==null){
+									userSt.add(rec);
+								}
+								else{
+									alert('server already present');
+								}
+							}
+							else{
+								alert('please login to use this function');
+							}
+						}
+					},
+					
+//				settings and handler for delete server action
+					{
+						icon:'ext/resources/images/server-grid-actions/delete.ico',
+						tooltip:'Delete this server from yours list',
+						itemId:'DeleteServer',
+						handler:function(grid,rowIndex,colIndex){
+							if(Ext.util.Cookies.get('SPAMlogin')!=null){
+								var rec=grid.getStore().getAt(rowIndex);
+								var userSt=Ext.StoreManager.lookup('userStore');
+								var index=userSt.find('serverID',rec.get('serverID'));
+								if(index<0){
+									alert('server not present');
+								}
+								else{
+									userSt.removeAt(index);
+								}
+							}
+							else{
+								alert('please login to use this function');
+							}
+						}
+					}]
 				}]
 			}]
 		} , {

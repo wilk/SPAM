@@ -1,22 +1,39 @@
 Ext.define('SC.controller.Server',{
 	extend: 'Ext.app.Controller',
-	views:['Options'],
+	views:['Options','regions.west.User'],
 	stores:['Servers'],
 	models:['Server'],
 	init:function(){
-		var store=this.getServersStore();
-		var storeproxy=store.getProxy();
-		store.load();
-		storeproxy.on('exception',function(){console.log('server list not available');});
-		Ext.Ajax.on('requestcomplete',function(conn,resp,obj){
-											if(obj.url=='login'||obj.url=='logout'){
-												store.load();
-											}
-										});
-		this.control({
-			
-		});
+		//flags and useful variables
+		logged=false;
+		var selMode;
+				
+		//instantiate preconfigured stores with unique id
+		store=Ext.create('SC.store.Servers',{storeId:'serverStore'});
+		userStore=Ext.create('SC.store.Servers',{storeId:'userStore'});
 		
-		console.log ('Controller federated server started.');
+		//load records from server with an ajax request
+		store.load();
+		
+		//listen to ajax request's exceptions, errors or successes
+		storeproxy=store.getProxy();
+		storeproxy.on('exception',function(){console.log('server list not available');});
+		
+		//on login or logout action set a flag and load correct servers list
+		Ext.Ajax.on('requestcomplete',function(conn,resp,obj){
+											switch(obj.url){
+												case('login'):
+													logged=true;
+													userStore.load();
+													break;
+												case('logout'):
+													logged=false;
+													store.load();
+													break;
+											}
+										}
+		);
+		
+		console.log ('Controller federated server started.');		
 	}
 });

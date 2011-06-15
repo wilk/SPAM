@@ -244,3 +244,4 @@ class DooConfig{
         $this->{$key} = $value;
     }
 }
+?>

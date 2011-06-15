@@ -48,12 +48,15 @@
 //								'_default'=>'/error/loginfirst',
 //							);
 $acl['logged']['allow'] = array(
-    'PostController' => '*', 'ServersController' => '*', 'LikeController'=>'*', 'FollowController'=>'*'
+    'PostController' => '*', 'ServersController' => '*', 'LikeController'=>'*', 'FollowController'=>'*',
+    'TesauroController'=>'*'
 );
 $acl['anonymous']['allow'] = array(
-    'PostController' => '*', 'ServersController' => array('sendServersList'),'LikeController'=>array('propagateLike')
+    'PostController' => array('sendPost','hasReply'), 'ServersController' => array('sendServersList'),'LikeController'=>array('propagateLike'),
+    'TesauroController'=>array('sendThesaurus')
 );
 $acl['anonymous']['deny'] = array(
-    'FollowController' => '*', 'ServersController'=>array('rewriteServersList'),'LikeController'=>array('setLike')
+    'FollowController' => '*', 'ServersController'=>array('rewriteServersList'),'LikeController'=>array('setLike'),
+    'TesauroController'=>array('addTerm'), 'PostController' => array('createPost','createRespam','createReply')
 );
 ?>

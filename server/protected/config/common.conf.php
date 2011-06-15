@@ -104,3 +104,4 @@ $config['ERROR_404_ROUTE'] = '/error';
  * Use lower case for you own settings for future Compability with DooPHP
  */
 //$config['pagesize'] = 10;
+?>

@@ -71,7 +71,7 @@ function disposeArticles (store) {
 				
 				var win = Ext.create ('SC.view.regions.center.Articles' , {
 					title: record.get('resource').split("/")[2] + ' said:' ,
-					html: record.get ('article') ,
+					html: parseToRead (record.get ('article')) ,
 					x: x ,
 					y: y ,
 					items: [{
@@ -107,7 +107,7 @@ function disposeArticles (store) {
 	var win = Ext.create ('SC.view.regions.center.Articles' , {
 		// Author is /serverID/userID, so split and take only userID
 		title: allRecord[artBestAffinityIndex].get('resource').split("/")[2] + ' said:' ,
-		html: allRecord[artBestAffinityIndex].get ('article') ,
+		html: parseToRead (allRecord[artBestAffinityIndex].get ('article')) ,
 		x: focusX ,
 		y: focusY ,
 		width: ARTICLE_FOCUS_WINDOW_WIDTH * 2 ,

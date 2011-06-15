@@ -21,6 +21,7 @@
 			o link sparsi (ad esempio, http://www.example.com),
 			e perché no un po di audio (ad esempio, 
 			<span resource="audio" src="http://www.vorbis.com/music/Epoq-Lepidoptera.ogg" />).
+			<span id="geolocationspan" long="-73.9514422416687" lat="40.69847032728747" />
 			<span rev="tweb:like" resource="/tw14/pluto" />
 			<span property="tweb:countLike" content="16" />
 			<span property="tweb:countDislike" content="5" />

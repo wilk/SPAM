@@ -107,13 +107,6 @@ function disposeArticles (store) {
 		} , this);
 	}
 	
-	// Like and Dislike counters
-	var counterLike = parseInt (findCounters (allRecord[artBestAffinityIndex].get ('article'), 'Like'));
-	var counterDislike = parseInt (findCounters (allRecord[artBestAffinityIndex].get ('article'), 'Dislike'));
-	
-	// Percent of progress bar
-	var pBarValue = counterLike / (counterLike + counterDislike);
-	
 	// Add focus window at last
 	var win = Ext.create ('SC.view.regions.center.FocusArticle' , {
 		// Author is /serverID/userID, so split and take only userID
@@ -124,9 +117,8 @@ function disposeArticles (store) {
 	});
 	
 	// TODO: setup dinamically like and follow buttons
-	// Update dinamically invisible button that contains focusModelIndex and the like/dislike progressbar
+	// Update dinamically invisible button that contains focusModelIndex
 	win.down('button[tooltip="focusModelIndex"]').setText (artBestAffinityIndex);
-	win.down('progressbar').updateProgress (pBarValue, counterLike + ' like - ' + counterDislike + ' dislike');
 	
 	// Add win to center region
 	cntRegion.add (win);

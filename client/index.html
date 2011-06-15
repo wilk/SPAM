@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="lib/disposeArticles.js"> </script>
 <!--	<script type="text/javascript" src="lib/base64.js"> </script>-->
 	<script type="text/javascript" src="lib/parserToRead.js"> </script>
-	<script type="text/javascript" src="lib/findLike.js"> </script>
+	<script type="text/javascript" src="lib/findSpanTags.js"> </script>
 <!--	<script type="text/javascript" src="jquery-1.6.1.js"></script>-->
 	<script type="text/javascript" src="lib/parser.js"></script>
 	<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
@@ -17,6 +17,7 @@
 	<script type="text/javascript">
 		// Global variable for checking geolocation supports
 		var browserGeoSupportFlag = new Boolean ();
+		var googleMap;
 		var urlServerLtw = 'http://ltw1102.web.cs.unibo.it';
 		
 		// Import any class of ExtJS 4

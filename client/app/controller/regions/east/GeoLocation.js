@@ -35,8 +35,9 @@ Ext.define ('SC.controller.regions.east.GeoLocation' , {
 					center: latlng,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
-				var map = new google.maps.Map(document.getElementById("geoloc"), myOptions);
-				}
+				googleMap = new google.maps.Map(document.getElementById("geoloc"), myOptions);
+			}
+			// TODO: improve error handler
 			catch (error) {
 				console.log (error);
 			}

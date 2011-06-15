@@ -18,8 +18,15 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	
 	// Configuration
 	init: function () {
+		var indexModel;
+		var focusModel;
+		
 		// TODO: after render of this window, check like/dislike and follow/unfollow value of this article
 		this.control ({
+			// Window render
+			'focusarticle' : {
+				show : this.initFocusWindow
+			} ,
 			// I Like button
 			'focusarticle button[tooltip="I Like"]' : {
 				click : function (button, event) {
@@ -60,8 +67,6 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// @brief Set Like
 	// TODO: remove like and dislike (setLike 0)
 	setLike: function (button, event, val) {
-		var indexModel = button.up('window').down('button[tooltip="focusModelIndex"]').getText ();
-		var focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
 		var postData = focusModel.get ('about');
 		
 		// Ajax request
@@ -90,8 +95,6 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	
 	// @brief Set Follow
 	setFollow: function (button, event, val) {
-		var indexModel = button.up('window').down('button[tooltip="focusModelIndex"]').getText ();
-		var focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
 		var postData = focusModel.get ('resource');
 		
 		// Ajax request
@@ -129,16 +132,12 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// @brief Reply
 	// TODO: all
 	reply: function (button, event) {
-		var indexModel = button.up('window').down('button[tooltip="focusModelIndex"]').getText ();
-		var focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
 		var win = button.up('window');
 	} ,
 	
 	// @brief Respam
 	respam: function (button, event) {
-		var indexModel = button.up('window').down('button[tooltip="focusModelIndex"]').getText ();
-		var focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
-		var postData = focusModel.get ('resource');
+		var postData = focusModel.get ('about');
 		
 		// Ajax request
 		Ext.Ajax.request ({
@@ -166,5 +165,38 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				});
 			}
 		});
+	} ,
+	
+	// @brief Initialize vars and window layout, even geolocation
+	initFocusWindow: function (win) {
+		// Getting model associated with
+		indexModel = win.down('button[tooltip="focusModelIndex"]').getText ();
+		focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
+		
+		// Like and Dislike counters
+		var counterLike = parseInt (findCounters (focusModel.get ('article'), 'Like'));
+		var counterDislike = parseInt (findCounters (focusModel.get ('article'), 'Dislike'));
+		
+		// Check if counter like/dislike span tag exists
+		if ((counterLike != -1) && (counterDislike != -1)) {
+			// Percent of progress bar
+			var pBarValue = counterLike / (counterLike + counterDislike);
+			
+			// Update like/dislike progress bar
+			win.down('progressbar').updateProgress (pBarValue, counterLike + ' like - ' + counterDislike + ' dislike');
+		}
+		
+		// Check if browser can support geolocation to prevent useless operations
+		if (browserGeoSupportFlag) {
+			// Set new coords
+			var coords = findGeoLocation (focusModel.get ('article'));
+			
+			// Check if geolocation span tag exists
+			if (coords != null) {
+				var latlng = new google.maps.LatLng (coords.lat, coords.lng);
+				googleMap.setCenter (latlng);
+				googleMap.setZoom (5);
+			}
+		}
 	}
 });

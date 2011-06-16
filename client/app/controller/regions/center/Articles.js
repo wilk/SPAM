@@ -18,23 +18,40 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	
 	// Configuration
 	init: function () {
-		// TODO: after render of this window, check like/dislike and follow/unfollow value of this article
 		this.control ({
 			// Focus button
 			'articles button[tooltip="Focus"]' : {
-				click : this.focus
+				click : this.setFocus
 			} 
 		});
 	
 		console.log ('Controller Articles started.');
 	} ,
 	
-	// @brief Focus
-	focus: function (button, event) {
-		var index = button.up('window').down('button[tooltip="index"]').getText ();
-		var model = this.getRegionsCenterArticlesStore().getRange()[index];
-		
+	// @brief Set focus on this article
+	setFocus: function (button, event) {
 		// TODO: Ajax request to retrieve the most related articles
-		// TODO: set 2 parameters to disposeArticles function: 1° the focus article; 2° the store
+		// Get model, store and index of this article
+		var index = button.up('window').down('button[tooltip="index"]').getText ();
+		var store = this.getRegionsCenterArticlesStore();
+		var model = store.getRange()[index];
+		
+		var winFocus = Ext.getCmp ('winFocusArticle');
+		
+		// Kills focus window
+		if (winFocus != null)
+			winFocus.destroy ();
+		
+		var w;
+		var j = 0;
+		
+		// And then kills the other windows
+		while ((w = Ext.getCmp ('articles'+j)) != null) {
+			w.destroy ();
+			j++;
+		}
+		
+		// Redispose windows with new focus
+		disposeArticles (store, model, index);
 	} 
 });

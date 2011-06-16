@@ -8,7 +8,7 @@
 		ctag: http://commontag.org/ns#
 		skos: http://www.w3.org/2004/02/skos/core#
 		dcterms: http://purl.org/dc/terms/"
-		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pippo"
+		about="/tw12/pluto/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pluto"
 		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
 			Testo di un post contenente 
 			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
@@ -40,8 +40,8 @@
 			Questa è l'immagine di SPAM!<br />
 			<span resource="image" src="http://www.spam.com/ASSETS/0EE75B480E5B450F807117E06219CDA6/spamReg.png" />
 			<span rev="tweb:like" resource="/tw14/pluto" />
-			<span property="tweb:countLike" content="1" />
-			<span property="tweb:countDislike" content="5" />
+			<span property="tweb:countLike" content="9" />
+			<span property="tweb:countDislike" content="3" />
 		]]></article>
 	</post>
 	<post>
@@ -52,7 +52,7 @@
 		ctag: http://commontag.org/ns#
 		skos: http://www.w3.org/2004/02/skos/core#
 		dcterms: http://purl.org/dc/terms/"
-		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pippo"
+		about="/tw12/paperino/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/paperino"
 		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
 			Video dei Monty Python<br />
 			<span resource="video" src="http://www.youtube.com/embed/anwy2MPT5RE" />
@@ -69,7 +69,7 @@
 		ctag: http://commontag.org/ns#
 		skos: http://www.w3.org/2004/02/skos/core#
 		dcterms: http://purl.org/dc/terms/"
-		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pippo"
+		about="/tw12/topolino/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/topolino"
 		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
 			Testo di un post contenente 
 			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
@@ -81,8 +81,8 @@
 			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
 			o link sparsi (ad esempio, http://www.example.com).
 			<span rev="tweb:like" resource="/tw14/pluto" />
-			<span property="tweb:countLike" content="1" />
-			<span property="tweb:countDislike" content="5" />
+			<span property="tweb:countLike" content="6" />
+			<span property="tweb:countDislike" content="13" />
 		]]></article>
 	</post>
 	<post>
@@ -93,7 +93,7 @@
 		ctag: http://commontag.org/ns#
 		skos: http://www.w3.org/2004/02/skos/core#
 		dcterms: http://purl.org/dc/terms/"
-		about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pippo"
+		about="/tw12/quiquoqua/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/quiquoqua"
 		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
 			Testo di un post contenente 
 			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
@@ -111,8 +111,8 @@
 			e immagini (ad esempio, 
 			<span resource="image" src="http://www.spam.com/ASSETS/0EE75B480E5B450F807117E06219CDA6/spamReg.png" />).
 			<span rev="tweb:like" resource="/tw14/pluto" />
-			<span property="tweb:countLike" content="1" />
-			<span property="tweb:countDislike" content="5" />
+			<span property="tweb:countLike" content="10" />
+			<span property="tweb:countDislike" content="0" />
 		]]></article>
 	</post>
 </archive>

@@ -36,6 +36,6 @@ Ext.define ('SC.controller.regions.Center' , {
 				icon: Ext.Msg.ERROR
 			});
 		else
-			disposeArticles (this.getRegionsCenterArticlesStore ());
+			disposeArticles (this.getRegionsCenterArticlesStore (), null, 0);
 	}
 });

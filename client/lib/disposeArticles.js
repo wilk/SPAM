@@ -7,7 +7,11 @@
 //
 // @note	Create one window for any articles retrieved and dispose in radial form
 
-function disposeArticles (store) {
+// @brief Dispose articles into windows
+// @param store: store where articles are stored
+// @param focus: model of focus article
+// @param focusIndex: index focus article model
+function disposeArticles (store, focus, focusIndex) {
 	var ARTICLE_WINDOW_WIDTH = 150;
 	var ARTICLE_WINDOW_HEIGHT = 100;
 	var ARTICLE_FOCUS_WINDOW_WIDTH = 200;
@@ -31,22 +35,29 @@ function disposeArticles (store) {
 	// Retrieve all records
 	var allRecord = store.getRange ();
 	
-	var artBestAffinity = allRecord[0].get ('affinity');
-	var artBestAffinityIndex = 0;
-	
 	// Check if there are two articles at least
 	if (store.count () > 1) {
-		// Check the article with best affinity
-		for (var i=1; i < store.count (); i++) {
-			artBestAffinity = Math.max (allRecord[i].get ('affinity') , artBestAffinity);
+		// If focus wasn't passed by argument, find it!
+		if (focus == null) {
+			var artBestAffinity = allRecord[0].get ('affinity');
+			
+			// Check the article with best affinity
+			for (var i=1; i < store.count (); i++) {
+				artBestAffinity = Math.max (allRecord[i].get ('affinity') , artBestAffinity);
+			}
+		
+			// Retrieve index of the article with the best affinity
+			for (var i=0; i < store.count (); i++)
+				if (artBestAffinity == allRecord[i].get ('affinity')) 
+					focusIndex = i;
+				
+			focus = allRecord[focusIndex];
 		}
 		
-		// Retrieve index of the article with the best affinity
-		for (var i=0; i < store.count (); i++)
-			if (artBestAffinity == allRecord[i].get ('affinity')) 
-				artBestAffinityIndex = i;
-		
 		radCounter = 360 / store.count ();
+		
+		// Counter for generate random id of articles
+		var j=0;
 	
 		// Create a window for any articles
 		store.each (function (record) {
@@ -54,7 +65,7 @@ function disposeArticles (store) {
 			var x, y;
 			
 			// Don't manage the focus article
-			if (record != allRecord[artBestAffinityIndex]) {
+			if (record != focus) {
 			
 				// Searching model ID of this article
 				for (var i = 0; i < store.count (); i++) {
@@ -73,9 +84,11 @@ function disposeArticles (store) {
 			
 				degree += radCounter;
 				
-				var win = Ext.create ('SC.view.regions.center.Articles' , {
+				// Instances of articles view
+				var win = Ext.widget ('articles' , {
 					title: record.get('resource').split("/")[2] + ' said:' ,
 					html: parseToRead (record.get ('article')) ,
+					id: 'articles' + j ,
 					x: x ,
 					y: y ,
 					items: [{
@@ -103,22 +116,74 @@ function disposeArticles (store) {
 				// Add win to center region
 				cntRegion.add (win);
 				win.show ();
+				
+				j++;
 			}
 		} , this);
 	}
 	
 	// Add focus window at last
-	var win = Ext.create ('SC.view.regions.center.FocusArticle' , {
-		// Author is /serverID/userID, so split and take only userID
-		title: allRecord[artBestAffinityIndex].get('resource').split("/")[2] + ' said:' ,
-		html: parseToRead (allRecord[artBestAffinityIndex].get ('article')) ,
-		x: focusX ,
-		y: focusY
-	});
-	
 	// TODO: setup dinamically like and follow buttons
-	// Update dinamically invisible button that contains focusModelIndex
-	win.down('button[tooltip="focusModelIndex"]').setText (artBestAffinityIndex);
+	var win = Ext.widget ('focusarticle' , {
+		// Author is /serverID/userID, so split and take only userID
+		title: focus.get('resource').split("/")[2] + ' said:' ,
+		html: parseToRead (focus.get ('article')) ,
+		x: focusX ,
+		y: focusY ,
+		id: 'winFocusArticle' ,
+		
+		// Body
+		items: [{
+			// Saves model ID of the focus article
+			xtype: 'button' ,
+			tooltip: 'focusModelIndex' ,
+			hidden: true ,
+			text: focusIndex
+		}] ,
+	
+		// Docked Items
+		dockedItems: [{
+			xtype: 'toolbar' ,
+			dock: 'bottom' ,
+			ui: 'footer' ,
+			items: [{
+				// Button I Like
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/like.png' ,
+				tooltip: 'I Like'
+			} , {
+				// Button I Dislike
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/dislike.png' ,
+				tooltip: 'I Dislike'
+			} , {
+				// Button follow
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/follow.png' ,
+				tooltip: 'Follow'
+			} , {
+				// Button unfollow
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/unfollow.gif' ,
+				tooltip: 'Unfollow' ,
+				hidden: true
+			} , '->' , {
+				// Progress Bar like/dislike
+				xtype: 'progressbar' ,
+				width: 150
+			} , '->' , {
+				// Button reply
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/reply.png' ,
+				tooltip: 'Reply'
+			} , {
+				// Button respam
+				cls: 'x-btn-icon' ,
+				icon: 'ext/resources/images/btn-icons/respam.png' ,
+				tooltip: 'Respam'
+			}]
+		}]
+	});
 	
 	// Add win to center region
 	cntRegion.add (win);

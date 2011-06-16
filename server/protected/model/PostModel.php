@@ -93,17 +93,16 @@ class PostModel {
         @file_put_contents(self::$pathPost, $rdfxml);
     }
 
-    /* per il momento funge solo dal client, dal server *potrebbe* ricevere RDF/XML */
-
-    public function parseArticle($data) {
+    public static function parseArticle($data, $base = 'http://ltw1102.web.cs.unibo.it/') {
         //inizializzo il parser per parserizzare HTML+RDFa
         $parser = ARC2::getSemHTMLParser();
-        $base = 'http://ltw1102.web.cs.unibo.it/';
         $parser->parse($base, $data);
         $parser->extractRDF('rdfa');
-        $index = $parser->getSimpleIndex();
-
-        //DEBUG----> print_r($index);
+        return $parser->getSimpleIndex();
+    }
+    
+    public function initNewPost($data){
+        $index = self::parseArticle($data);
         $html = str_get_html($data);
         $testoHTML = html_entity_decode($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
         $usrResource = 'spam:/Spammers/' . $_SESSION['user']['username'];
@@ -157,22 +156,23 @@ class PostModel {
             $this->index[$p]['sioc:has_reply'][] = $path;
         $this->saveInPost();
     }
-
-    public function getPost($r) {
-        return $this->index[$r];
-    }
+    
     public function postExist($r) {
         if (isset($this->index[$r]))
                 return true;
         return false;
     }
 
+    public function getPost($r) {
+        return $this->index[$r];
+    }
+    
     public function getPostArray($a = null) {
         $lista = array();
         if (!$a) {//se ricevo una lista di postid
             foreach ($a as $i){
-                if (isset($this->index[$i]))
-                    array_push ($lista, $this->index[$i]);
+                if ($this->postExist($i))
+                    array_push ($lista, $this->getPost($i));
             }
         } else {//TODO altrimenti pusho i post che trovo
             foreach ($this->index as $post) {

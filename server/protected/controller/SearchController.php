@@ -3,6 +3,7 @@
 include_once 'protected/model/PostModel.php';
 include_once 'protected/model/UserModel.php';
 include_once 'protected/view/PostView.php';
+include_once 'protected/module/simple_html_dom.php';
 
 class SearchController extends DooController {
 
@@ -57,10 +58,7 @@ class SearchController extends DooController {
                 $srv = $this->params['var1'];
                 $usr = $this->params['var2'];
                 if ($srv == 'Spammers') {
-                    $user = new UserModel($usr);
-                    $postIDs = $user->getPosts($limite);
-                    $post = new PostModel();
-                    $posts = $post->getPostArray($postIDs);
+                    $posts = $this->rcvFromINTServer($usr, $limite);
                     $this->displayPosts($posts);
                 } else {
                     //richiesta esterna
@@ -84,8 +82,8 @@ class SearchController extends DooController {
                         $XMLresult = $this->receiveFromServer($srv, $method);
                         //devo parserizzare l'xml che ricevo
                     } else {
-                        $user = new UserModel($usr);
-                        $
+                        $posts = $this->rcvFromINTServer($usr, $howMany);
+                        //inserisco sti messaggi un una lista da inviare al client
                     }
                 }
                 break;
@@ -129,20 +127,36 @@ class SearchController extends DooController {
     /*questa l'ho presa da sendPost() in PostController;
      * si potrebbero accorpare
      */
-    private function receiveFromServer($server, $method){
-            $this->load()->helper('DooRestClient');
-            $request = new DooRestClient;
-            $url = SRVModel::getUrl($request, $server);
-            $request->connect_to($url . $method)
-                    ->accept(DooRestClient::HTML)
-                    ->get();
-            if ($request->isSuccess()) {
-                $content = $request->result();
-                $this->setContentType('xml');
-                return $content;
-            } else {
-                return $request->resultCode();
-            }
+    private function rcvFromEXTServer($server, $method){
+        $this->load()->helper('DooRestClient');
+        $request = new DooRestClient;
+        $url = SRVModel::getUrl($request, $server);
+        $request->connect_to($url . $method)
+                ->accept(DooRestClient::HTML)
+                ->get();
+        if ($request->isSuccess()) {
+            $content = $request->xml_result();
+            $this->parseEXTContent($content, $url);
+        } else {
+            //TODO perfezionare l'errore
+            return $request->resultCode();
+        }
+    }
+    
+    private function parseEXTContent($toParse, $server){
+        $html = str_get_html($toParse->asXML());
+//        foreach ($toParse->post as $post){
+//            $html = str_get_html($str)
+//            PostModel::parseArticle($post->article, $base)
+//        }
+    }
+
+
+    private function rcvFromINTServer($usr, $countPost){
+        $user = new UserModel($usr);
+        $post = new PostModel();
+        $postIDs = $user->getPosts($countPost);
+        return $post->getPostArray($postIDs);
     }
 
     public function searchRecent($term=null) {

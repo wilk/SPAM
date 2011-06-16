@@ -18,7 +18,7 @@ Doo::conf()->set($config);
 include $config['BASE_PATH'].'diagnostic/debug.php';
 
 Doo::acl()->rules = $acl;
-Doo::acl()->defaultFailedRoute = '/error';
+Doo::acl()->defaultFailedRoute = '/notAuth';
 # database usage
 //Doo::useDbReplicate();	#for db replication master-slave usage
 //Doo::db()->setMap($dbmap);

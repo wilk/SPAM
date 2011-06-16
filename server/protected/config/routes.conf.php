@@ -56,6 +56,7 @@
  */
 $route['*']['/'] = array('MainController', 'index');
 $route['*']['/error'] = array('ErrorController', 'index');
+$route['*']['/notAuth']=array('ErrorController', 'notAuth');
 
 
 //---------- Delete if not needed ------------

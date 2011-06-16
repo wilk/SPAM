@@ -2,13 +2,14 @@
 
 include_once 'protected/model/PostModel.php';
 include_once 'protected/model/SRVModel.php';
+include_once 'protected/controller/ErrorController.php';
 
 class LikeController extends DooController {
     /* questa si occupa di soddisfare il client */
 
     public $articolo;
 
-     public function beforeRun($resource, $action) {
+    public function beforeRun($resource, $action) {
         session_name("ltwlogin");
         session_start();
         if (!(isset($_SESSION['user']['username']))) {
@@ -39,16 +40,26 @@ class LikeController extends DooController {
         if ($serverID == "Spammers") {
             $this->articolo = new PostModel();
             $p = 'spam:/' . $serverID . '/' . $userID . '/' . $postID;
-            $this->articolo->addLike($p, $value, $_SESSION['user']['username']);
+            if ($this->articolo->postExist($p))
+                $this->articolo->addLike($p, $value, $_SESSION['user']['username']);
+            else {
+                 return ErrorController::notFound("Il post non esiste! Controlla user e post id.");
+            }
         } else {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
             $url = SRVModel::getUrl($request, $serverID);
-            $request->connect_to($url . '/propagatelike')
-                    ->data(array('serverID1' => "Spammers", 'userID1' => $_SESSION['user']['username'], 'value' => $value, 'serverID2' => $serverID, 'userID2Up' => $userID, 'postID2Up' => $postID))
-                    ->post();
-            if (!($request->isSuccess()))
-                return 500;
+            if ($url != 404) {
+                $request->connect_to($url . '/propagatelike')
+                        ->data(array('serverID1' => "Spammers", 'userID1' => $_SESSION['user']['username'], 'value' => $value, 'serverID2' => $serverID, 'userID2Up' => $userID, 'postID2Up' => $postID))
+                        ->post();
+                if (!($request->isSuccess())) {
+                    print $request->result();
+                    return $request->resultCode();
+                }
+            } else {
+               return ErrorController::notFound("Il server non esiste!");
+            }
         }
     }
 
@@ -62,7 +73,11 @@ class LikeController extends DooController {
         $value = $_POST['value'];
         $this->articolo = new PostModel();
         $p = 'spam:/Spammers' . '/' . $userID2 . '/' . $postID2;
-        $this->articolo->addLike($p, $value, $userID1, $serverID1);
+        if ($this->articolo->postExist($p))
+            $this->articolo->addLike($p, $value, $userID1, $serverID1);
+        else {
+            return ErrorController::notFound("Il post non esiste! Controlla user e post id.");
+        }
     }
 
 }

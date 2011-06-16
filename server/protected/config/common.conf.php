@@ -50,7 +50,7 @@ $config['DEBUG_ENABLED'] = TRUE;
  * Error document must be more than 512 bytes as IE sees it as a normal 404 sent if < 512b
  */
 //$config['ERROR_404_DOCUMENT'] = 'error.php';
-$config['ERROR_404_ROUTE'] = '/error';
+//$config['ERROR_404_ROUTE'] = '/error';
 
 
 /**

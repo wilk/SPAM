@@ -20,6 +20,10 @@ Also check out the links page for a list of URLs available in this demo.</p>';
         print ("Devi eseguire il login per utilizzare questa funzione!!");
         return 401;
     }
+    public static function notFound($msg){
+        print $msg;
+        return 404;
+    }
     public function notSupport(){
         return 405;
     }

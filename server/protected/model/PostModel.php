@@ -161,6 +161,11 @@ class PostModel {
     public function getPost($r) {
         return $this->index[$r];
     }
+    public function postExist($r) {
+        if (isset($this->index[$r]))
+                return true;
+        return false;
+    }
 
     public function getPostArray($a = null) {
         $lista = array();

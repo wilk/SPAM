@@ -25,7 +25,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		this.control ({
 			// Window render
 			'focusarticle' : {
-				show : this.initFocusWindow
+				show : this.initFocusWindow ,
+				destroy : this.setupDefaults
 			} ,
 			// I Like button
 			'focusarticle button[tooltip="I Like"]' : {
@@ -197,6 +198,17 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				googleMap.setCenter (latlng);
 				googleMap.setZoom (5);
 			}
+		}
+	} ,
+	
+	// @brief Setup default values
+	setupDefaults: function (win) {
+		// Check if browser can support geolocation to prevent useless operations
+		if (browserGeoSupportFlag) {
+			// Set default coords and zoom
+			var latlng = new google.maps.LatLng (0, 0);
+			googleMap.setCenter (latlng);
+			googleMap.setZoom (0);
 		}
 	}
 });

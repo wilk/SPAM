@@ -80,11 +80,27 @@ class UserModel {
         }
         $this->writeInUsers();
     }
-
+    
+    public function getPosts($c){
+        if (!isset($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#Post']))
+                return 404;
+        $postsUtente = &array_reverse($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#Post'], TRUE);
+        $size = sizeof($postsUtente);
+        if ($size < $c)
+            return $postsUtente;
+        else
+            return array_slice ($postsUtente, 0, $c, TRUE);
+    }
+    
     public function addPost2Usr($id) {
         $this->index[$this->usrLabel]['sioc:Post'][] = $id;
         $this->writeInUsers();
         return 201;
+    }
+    
+    public function getFollows(){
+        if (isset($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows']))
+            return $this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows'];
     }
     
     public function handleFollow($r, $v){

@@ -1,6 +1,7 @@
 <?php
 
 include_once 'protected/model/PostModel.php';
+include_once 'protected/model/UserModel.php';
 include_once 'protected/view/PostView.php';
 
 class SearchController extends DooController {
@@ -34,13 +35,114 @@ class SearchController extends DooController {
     }
 
     /* qui sono mazzate */
-
     public function searchMain() {
-        $post = new PostModel;
-        $lista = $post->getPostArray();
+        if (!(isset ($this->params['limit'])) || !(isset ($this->params['type'])))
+            //BAD REQUEST
+            return 400;
+        $limite = $this->params['limit'];
+        $tipo = $this->params['type'];
+        $search_Type = array(
+            'author',
+            'following', 
+            'recent', 
+            'related', 
+            'fulltext', 
+            'affinity'
+        );
+        switch ($tipo) {
+            case $search_Type[0]: //author
+                if (!(isset ($this->params['var1'])) || !(isset ($this->params['var2'])))
+                        //BAD REQUEST
+                        return 400;
+                $srv = $this->params['var1'];
+                $usr = $this->params['var2'];
+                if ($srv == 'Spammers') {
+                    $user = new UserModel($usr);
+                    $postIDs = $user->getPosts($limite);
+                    $post = new PostModel();
+                    $posts = $post->getPostArray($postIDs);
+                    $this->displayPosts($posts);
+                } else {
+                    //richiesta esterna
+                    $metodo = 'searchserver/'.$limite.'/'.$tipo.'/'.$srv.'/'.$usr;
+                    //giro direttamente la risposta sperando che il server non scazzi
+                    return $this->receiveFromServer($srv, $method);
+                }
+                break;
+            case $search_Type[1]: //following
+                $user = new UserModel($_SESSION['user']['username']);
+                $follows = $user->getFollows();
+                $size = sizeof($follows);
+                if (!$size)
+                    return 'Attualmente non ci sono utenti seguiti.';
+                //scelgo di prendere lo stesso numero di messaggi da ogni server
+                $howMany = round($limite/$size);
+                foreach ($follows as $follow){
+                    list($domain,$srv,$usr) = explode('/', $follow);
+                    if ($srv != 'Spammers') {
+                        $metodo = 'searchserver/'.$howMany.'/author'.$srv.'/'.$usr;
+                        $XMLresult = $this->receiveFromServer($srv, $method);
+                        //devo parserizzare l'xml che ricevo
+                    } else {
+                        $user = new UserModel($usr);
+                        $
+                    }
+                }
+                break;
+            case $search_Type[2]: //recent
+                if (!(isset ($this->params['var1'])))
+                        //BAD REQUEST
+                        return 400;
+
+                break;
+            case $search_Type[3]: //related
+                if (!(isset ($this->params['var1'])))
+                        //BAD REQUEST
+                        return 400;
+
+                break;
+            case $search_Type[4]: //fulltext
+                if (!(isset ($this->params['var1'])))
+                        //BAD REQUEST
+                        return 400;
+
+                break;
+            case $search_Type[5]: //affinity
+                if (!(isset ($this->params['var1'])) || 
+                        !(isset ($this->params['var2'])) ||
+                                !(isset ($this->params['var3'])))
+                        //BAD REQUEST
+                        return 400;
+
+                break;
+            default: //beh, altrimenti errore
+                return 400; //?? giust?
+                break;
+        }
+    }
+    
+    private function displayPosts($lista){
         $XMLPosts = PostView::renderMultiplePost($lista);
         $this->setContentType('xml');
         print $XMLPosts;
+    }
+    /*questa l'ho presa da sendPost() in PostController;
+     * si potrebbero accorpare
+     */
+    private function receiveFromServer($server, $method){
+            $this->load()->helper('DooRestClient');
+            $request = new DooRestClient;
+            $url = SRVModel::getUrl($request, $server);
+            $request->connect_to($url . $method)
+                    ->accept(DooRestClient::HTML)
+                    ->get();
+            if ($request->isSuccess()) {
+                $content = $request->result();
+                $this->setContentType('xml');
+                return $content;
+            } else {
+                return $request->resultCode();
+            }
     }
 
     public function searchRecent($term=null) {

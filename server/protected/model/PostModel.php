@@ -102,6 +102,7 @@ class PostModel {
         $parser->parse($base, $data);
         $parser->extractRDF('rdfa');
         $index = $parser->getSimpleIndex();
+
         //DEBUG----> print_r($index);
         $html = str_get_html($data);
         $testoHTML = html_entity_decode($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
@@ -161,11 +162,18 @@ class PostModel {
         return $this->index[$r];
     }
 
-    public function getPostArray() {
+    public function getPostArray($a = null) {
         $lista = array();
-        foreach ($this->index as $post) {
-            if (isset($post[self::$siocTopic]))
-                array_push($lista,$post);
+        if (!$a) {//se ricevo una lista di postid
+            foreach ($a as $i){
+                if (isset($this->index[$i]))
+                    array_push ($lista, $this->index[$i]);
+            }
+        } else {//TODO altrimenti pusho i post che trovo
+            foreach ($this->index as $post) {
+                if (isset($post[self::$siocTopic]))
+                    array_push($lista,$post);
+            }
         }
         return $lista;
     }

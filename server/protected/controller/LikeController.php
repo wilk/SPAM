@@ -5,7 +5,6 @@ include_once 'protected/model/SRVModel.php';
 include_once 'protected/controller/ErrorController.php';
 
 class LikeController extends DooController {
-    /* questa si occupa di soddisfare il client */
 
     public $articolo;
     /*
@@ -22,7 +21,7 @@ class LikeController extends DooController {
                 setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]
                 );
             }
-            //termino la sessione
+            //termino la sessione e creo quella per utente non loggato
             session_destroy();
             session_name("nologin");
             session_start();

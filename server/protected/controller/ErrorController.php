@@ -1,13 +1,14 @@
 <?php
+
 /**
  * ErrorController
  * Feel free to change this and customize your own error message
  *
  * @author darkredz
  */
-class ErrorController extends DooController{
+class ErrorController extends DooController {
 
-    public function index(){
+    public function index() {
         echo '<h1>ERROR 404 not found</h1>';
         echo '<p>This is handler by an internal Route as defined in common.conf.php $config[\'ERROR_404_ROUTE\']</p>
                 
@@ -16,18 +17,25 @@ class ErrorController extends DooController{
 <p>Give some helpful comments other than 404 :(
 Also check out the links page for a list of URLs available in this demo.</p>';
     }
-    public function notAuth(){
+
+    public function notAuth() {
         print ("Devi eseguire il login per utilizzare questa funzione!!");
         return 401;
     }
-    public static function notFound($msg){
+
+    public static function notFound($msg) {
         print $msg;
         return 404;
     }
-    public function notSupport(){
+
+    public function notSupport() {
         return 405;
     }
-	
-
+    
+    public static function badReq($msg){
+        print $msg;
+        return 400;
+    }
 }
+
 ?>

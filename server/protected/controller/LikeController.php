@@ -8,6 +8,10 @@ class LikeController extends DooController {
     /* questa si occupa di soddisfare il client */
 
     public $articolo;
+    /*
+     * Controllo dell'acl. Verifica se l'utente è loggato o meno
+     * 
+     */
 
     public function beforeRun($resource, $action) {
         session_name("ltwlogin");
@@ -32,7 +36,22 @@ class LikeController extends DooController {
         }
     }
 
+    /**
+     * Setta il like/unlike dell'utente
+     * Se il post non si trova sul server locale, invia la richiesta al server interessato
+     * 
+     * @return Status Code
+     */
     public function setLike() {
+        //Controllo che tutte le variabili post siano state inviate
+        if (!(isset($_POST['serverID'])))
+            return ErrorController::badReq('Il serverID deve essere specificato!!');
+        if (!(isset($_POST['userID'])))
+            return ErrorController::badReq('Il userID deve essere specificato!!');
+        if (!(isset($_POST['postID'])))
+            return ErrorController::badReq('Il postID deve essere specificato!!');
+        if (!(isset($_POST['value'])))
+            return ErrorController::badReq('Il value deve essere specificato!!');
         $serverID = $_POST['serverID'];
         $userID = $_POST['userID'];
         $postID = $_POST['postID'];
@@ -43,7 +62,7 @@ class LikeController extends DooController {
             if ($this->articolo->postExist($p))
                 $this->articolo->addLike($p, $value, $_SESSION['user']['username']);
             else {
-                 return ErrorController::notFound("Il post non esiste! Controlla user e post id.");
+                return ErrorController::notFound("Il post non esiste! Controlla user e post id.");
             }
         } else {
             $this->load()->helper('DooRestClient');
@@ -51,21 +70,40 @@ class LikeController extends DooController {
             $url = SRVModel::getUrl($request, $serverID);
             if ($url != 404) {
                 $request->connect_to($url . '/propagatelike')
-                        ->data(array('serverID1' => "Spammers", 'userID1' => $_SESSION['user']['username'], 'value' => $value, 'serverID2' => $serverID, 'userID2Up' => $userID, 'postID2Up' => $postID))
+                        ->data(array('serverID1' => "Spammers", 'userID1' => $_SESSION['user']['username'],
+                            'value' => $value,
+                            'serverID2' => $serverID, 'userID2Up' => $userID, 'postID2Up' => $postID))
                         ->post();
                 if (!($request->isSuccess())) {
                     print $request->result();
                     return $request->resultCode();
                 }
             } else {
-               return ErrorController::notFound("Il server non esiste!");
+                return ErrorController::notFound("Il server non esiste!");
             }
         }
     }
 
-    /* informa della preferenza il server che possiede il messaggio */
-
+    /**
+     * Propaga il setLike generato su un server esterno
+     * 
+     * @return Status code
+     */
     public function propagateLike() {
+        if (!(isset($_POST['serverID1'])))
+            return ErrorController::badReq('Il serverID1 deve essere specificato!!');
+        if (!(isset($_POST['userID1'])))
+            return ErrorController::badReq('Il userID1 deve essere specificato!!');
+        if (!(isset($_POST['serverID2'])))
+            return ErrorController::badReq('Il serverID2 deve essere specificato!!');
+        if (!(isset($_POST['userID2'])))
+            return ErrorController::badReq('Il userID2 deve essere specificato!!');
+        if (!(isset($_POST['postID2'])))
+            return ErrorController::badReq('Il postID2 deve essere specificato!!');
+        if (!(isset($_POST['value'])))
+            return ErrorController::badReq('Il value deve essere specificato!!');
+        if ($_POST['serverID2'] != 'Spammers')
+            return ErrorController::badReq('Il serverID non corrisponde. Non posso propagare il setLike!');
         $serverID1 = $_POST['serverID1'];
         $userID1 = $_POST['userID1'];
         $userID2 = $_POST['userID2'];

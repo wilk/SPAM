@@ -8,8 +8,7 @@ class LikeController extends DooController {
 
     public $articolo;
     /*
-     * Controllo dell'acl. Verifica se l'utente è loggato o meno
-     * 
+     * Controllo dell'acl. Verifica se l'utente è loggato o meno 
      */
 
     public function beforeRun($resource, $action) {
@@ -54,7 +53,9 @@ class LikeController extends DooController {
         $serverID = $_POST['serverID'];
         $userID = $_POST['userID'];
         $postID = $_POST['postID'];
-        $value = $_POST['value'];
+        $value = intval($_POST['value']);
+        if ($value!=1 && $value!=0 && $value!=-1)
+            return ErrorController::badReq('Il value può essere:-1 || 0 || 1. Altri valori non sono ammessi!!');
         if ($serverID == "Spammers") {
             $this->articolo = new PostModel();
             $p = 'spam:/' . $serverID . '/' . $userID . '/' . $postID;

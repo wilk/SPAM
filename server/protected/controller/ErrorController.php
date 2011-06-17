@@ -24,7 +24,7 @@ Also check out the links page for a list of URLs available in this demo.</p>';
     }
 
     public static function notFound($msg) {
-        print $msg;
+        print html_entity_decode($msg, ENT_QUOTES,'UTF-8');
         return 404;
     }
 

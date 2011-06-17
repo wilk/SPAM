@@ -64,7 +64,7 @@ class SearchController extends DooController {
                     //richiesta esterna
                     $metodo = 'searchserver/'.$limite.'/'.$tipo.'/'.$srv.'/'.$usr;
                     //giro direttamente la risposta sperando che il server non scazzi
-                    return $this->receiveFromServer($srv, $method);
+                    return $this->rcvFromEXTServer($srv, $method);
                 }
                 break;
             case $search_Type[1]: //following
@@ -81,6 +81,7 @@ class SearchController extends DooController {
                         $metodo = 'searchserver/'.$howMany.'/author'.$srv.'/'.$usr;
                         $XMLresult = $this->receiveFromServer($srv, $method);
                         //devo parserizzare l'xml che ricevo
+                        $this->parseEXTContent($XMLresult, $srv);
                     } else {
                         $posts = $this->rcvFromINTServer($usr, $howMany);
                         //inserisco sti messaggi un una lista da inviare al client
@@ -134,23 +135,20 @@ class SearchController extends DooController {
         $request->connect_to($url . $method)
                 ->accept(DooRestClient::HTML)
                 ->get();
-        if ($request->isSuccess()) {
-            $content = $request->xml_result();
-            $this->parseEXTContent($content, $url);
-        } else {
-            //TODO perfezionare l'errore
-            return $request->resultCode();
-        }
+        if ($request->isSuccess())
+            return $request->xml_result();
+        else
+            return $request->resultCode(); //TODO perfezionare l'errore
     }
     
     private function parseEXTContent($toParse, $server){
+        $array = array();
         $html = str_get_html($toParse->asXML());
-//        foreach ($toParse->post as $post){
-//            $html = str_get_html($str)
-//            PostModel::parseArticle($post->article, $base)
-//        }
+        foreach ($html->find('article') as $articolo){
+            array_push($array, (array) PostModel::parseArticle($articolo->outertext, $server));
+        }
+        return $array;
     }
-
 
     private function rcvFromINTServer($usr, $countPost){
         $user = new UserModel($usr);

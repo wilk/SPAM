@@ -28,7 +28,7 @@ Ext.define ('SC.view.regions.West' , {
 		type:'vbox',
 		align:'stretch'
 	},
-	autoScroll:true,
+//	autoScroll:true,
 	split: true ,
 	
 	// Body

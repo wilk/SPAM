@@ -14,15 +14,16 @@ Ext.define ('SC.view.regions.west.User' , {
 	// Configuration
 	id: 'userPanel' ,
 //	autoWidth: true ,
+	height:265,
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 0 ,
-	maxHeight:150,
 //	anchor: '100%' ,
-//	layout: 'anchor' ,
+	layout: 'accordion' ,
 	hidden: true,
 	items:[{
 	//Grid for user's personal server
+		title:'Server',
 		xtype:'grid',
 		id:'userGrid',
 		store:'userStore',
@@ -36,5 +37,7 @@ Ext.define ('SC.view.regions.west.User' , {
 			header: 'server name' ,
 			dataIndex: 'serverID'
 		}]
+	},{
+		title:'Followers'
 	}]
 });

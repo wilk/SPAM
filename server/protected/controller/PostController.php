@@ -41,7 +41,7 @@ class PostController extends DooController {
         else
             $mycontent=$content;
         $this->articolo = new PostModel();
-        if ($pID = $this->articolo->parseArticle($mycontent)) {
+        if ($pID = $this->articolo->initNewPost($mycontent)) {
 //            echo $pID;
 //            echo $_SESSION['user']['username'];
             $utente = new UserModel($_SESSION['user']['username']);
@@ -86,7 +86,7 @@ class PostController extends DooController {
         if ($serverID == "Spammers") {
             $this->articolo = new PostModel();
             $myPost = $this->articolo->getPost('spam:/' . $serverID . '/' . $userID . '/' . $postID);
-            if ($pID = $this->articolo->parseArticle('<article>' . $myPost['sioc:content'][0] . '</article>')) {
+            if ($pID = $this->articolo->initNewPost('<article>' . $myPost['sioc:content'][0] . '</article>')) {
                 $utente = new UserModel($_SESSION['user']['username']);
                 $utente->addPost2Usr($pID);
             }

@@ -12,18 +12,23 @@ class ThesModel {
     public $srvLabel;
     private $termBroader;
     private static $pathTesauro = 'data/tesauro.rdf';
+    private static $pathTesaPost = 'data/tesapost.rdf';
     private $prefLabel = 'http://www.w3.org/2004/02/skos/core#prefLabel';
     private $narrower = 'http://www.w3.org/2004/02/skos/core#narrower';
     private $broader = 'http://www.w3.org/2004/02/skos/core#broader';
     private $inScheme = 'http://www.w3.org/2004/02/skos/core#inScheme';
     private $vitaliPath = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
+    private $file;
 
-    function __construct() {
+    function __construct($check = FALSE) {
+        if (!$check)
+            $this->file = self::$pathTesauro;
+        else
+            $this->file = self::$pathTesaPost;
         $this->srvLabel = 'http://ltw1102.web.cs.unibo.it/thesaurus';
-        $parser = ARC2::getRDFXMLParser();
-        $parser->parse(self::$pathTesauro);
+        $parser = ARC2::getRDFParser();
+        $parser->parse($this->file);
         $this->index = $parser->getSimpleIndex();
-        //print_r($this->index);
     }
 
     public function getTesauro() {
@@ -115,11 +120,12 @@ class ThesModel {
     private function writeInTesauro() {
         $ns = array(
             'skos' => 'http://www.w3.org/2004/02/skos/core#',
+            'sioc' => 'http://rdfs.org/sioc/ns#'
         );
         $conf = array('ns' => $ns);
         $ser = ARC2::getRDFXMLSerializer($conf);
         $RDFdoc = $ser->getSerializedIndex($this->index);
-        @file_put_contents(self::$pathTesauro, $RDFdoc);
+        @file_put_contents($this->file, $RDFdoc);
     }
 
     private function writeLocalTerm($myTermBroader, $term) {
@@ -138,6 +144,15 @@ class ThesModel {
                 $myTermBroader
             ),
         );
+    }
+    
+    /////////////////////////////////
+    
+    public function addPost2Thes($indice, $contenuto, $postID){
+        if (!isset($this->index[$indice]))
+                $this->index[$indice] = $contenuto;
+        $this->index[$indice]['sioc:Post'][] = $postID;
+        $this->writeInTesauro();
     }
 
 }

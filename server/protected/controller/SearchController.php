@@ -6,6 +6,8 @@ include_once 'protected/view/PostView.php';
 include_once 'protected/module/simple_html_dom.php';
 
 class SearchController extends DooController {
+    
+    private $listaPost = array();
 
     public function beforeRun($resource, $action) {
         $role;
@@ -57,16 +59,16 @@ class SearchController extends DooController {
                         return 400;
                 $srv = $this->params['var1'];
                 $usr = $this->params['var2'];
-                if ($srv == 'Spammers') {
+                if ($srv == 'Spammers') {//richiesta interna
                     $posts = $this->rcvFromINTServer($usr, $limite);
                     $this->displayPosts($posts);
-                } else {
-                    //richiesta esterna
+                } else {//richiesta esterna
                     $metodo = 'searchserver/'.$limite.'/'.$tipo.'/'.$srv.'/'.$usr;
                     //giro direttamente la risposta sperando che il server non scazzi
                     return $this->rcvFromEXTServer($srv, $method);
                 }
                 break;
+                
             case $search_Type[1]: //following
                 $user = new UserModel($_SESSION['user']['username']);
                 $follows = $user->getFollows();
@@ -77,35 +79,45 @@ class SearchController extends DooController {
                 $howMany = round($limite/$size);
                 foreach ($follows as $follow){
                     list($domain,$srv,$usr) = explode('/', $follow);
-                    if ($srv != 'Spammers') {
-                        $metodo = 'searchserver/'.$howMany.'/author'.$srv.'/'.$usr;
-                        $XMLresult = $this->receiveFromServer($srv, $method);
-                        //devo parserizzare l'xml che ricevo
-                        $this->parseEXTContent($XMLresult, $srv);
-                    } else {
+                    if ($srv == 'Spammers') {//richiesta interna
                         $posts = $this->rcvFromINTServer($usr, $howMany);
                         //inserisco sti messaggi un una lista da inviare al client
+                        array_push($this->listaPost, $posts);
+                    } else {//richiesta esterna
+                        $metodo = 'searchserver/'.$howMany.'/author'.$srv.'/'.$usr;
+                        $XMLresult = $this->rcvFromEXTServer($srv, $method);
+                        //devo parserizzare l'xml che ricevo
+                        $posts = $this->parseEXTContent($XMLresult, $srv);
+                        array_push($this->listaPost, $posts);
                     }
-                }
+                }//qui dovrei avere la mia lista di messaggi dagli utenti seguiti
+                $this->getPostsOnly();
+                if (sizeof($this->listaPost) > $limite)
+                    $this->listaPost = array_slice($this->listaPost, 0, $limite, TRUE);
+                $this->displayPosts($this->listaPost);
                 break;
+                
             case $search_Type[2]: //recent
                 if (!(isset ($this->params['var1'])))
                         //BAD REQUEST
                         return 400;
 
                 break;
+                
             case $search_Type[3]: //related
                 if (!(isset ($this->params['var1'])))
                         //BAD REQUEST
                         return 400;
 
                 break;
+                
             case $search_Type[4]: //fulltext
                 if (!(isset ($this->params['var1'])))
                         //BAD REQUEST
                         return 400;
 
                 break;
+                
             case $search_Type[5]: //affinity
                 if (!(isset ($this->params['var1'])) || 
                         !(isset ($this->params['var2'])) ||
@@ -114,6 +126,7 @@ class SearchController extends DooController {
                         return 400;
 
                 break;
+                
             default: //beh, altrimenti errore
                 return 400; //?? giust?
                 break;
@@ -133,7 +146,7 @@ class SearchController extends DooController {
         $request = new DooRestClient;
         $url = SRVModel::getUrl($request, $server);
         $request->connect_to($url . $method)
-                ->accept(DooRestClient::HTML)
+                ->accept(DooRestClient::XML)
                 ->get();
         if ($request->isSuccess())
             return $request->xml_result();
@@ -155,6 +168,16 @@ class SearchController extends DooController {
         $post = new PostModel();
         $postIDs = $user->getPosts($countPost);
         return $post->getPostArray($postIDs);
+    }
+    
+    private function getPostsOnly(){
+        $tmp_array = array();
+        foreach ($this->listaPost as $key => $value) {
+            //questa parte non funzionerà, l'etichetta deve essere estesa
+            if ($value['rdf:type'][] == 'sioc:Post')
+                array_push ($tmp_array, $this->listaPost[$key]);
+        }
+        $this->listaPost = $tmp_array;
     }
 
     public function searchRecent($term=null) {

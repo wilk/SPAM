@@ -48,10 +48,8 @@ class UserModel {
         if (!$this->index) {
             return true;
         } else {
-            foreach ($this->index as $usr => $value) {
-                if ($usr == $this->usrLabel)
+            if (isset($this->index[$this->usrLabel]))
                     return false;
-            }
         }//nuovo utente
         return true;
     }

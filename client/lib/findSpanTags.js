@@ -64,3 +64,27 @@ function findGeoLocation (article) {
 	}
 	else return null;
 }
+
+// @brief Retrieve like/dislike set value
+// @param article: body of article
+// @return Set value
+function findSetLike (article) {
+	var spanSetLikeStart = article.indexOf ('<span rev="tweb:like"');
+	
+	// Check if set like span exists
+	if (spanSetLikeStart != -1) {
+		// Return 1 for like
+		return 1;
+	}
+	
+	spanSetLikeStart = article.indexOf ('<span rev="tweb:dislike"');
+	
+	// Check if set dislike span exists
+	if (spanSetLikeStart != -1) {
+		// Return -1 for dislike
+		return -1;
+	}
+	
+	// Return 0 for neutral
+	return 0;
+}

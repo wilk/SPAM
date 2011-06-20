@@ -20,6 +20,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	init: function () {
 		var indexModel;
 		var focusModel;
+		var likeOrDislike;
+		var counterLike, counterDislike, pBarValue;
 		
 		// TODO: after render of this window, check like/dislike and follow/unfollow value of this article
 		this.control ({
@@ -66,9 +68,13 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	} ,
 	
 	// @brief Set Like
-	// TODO: remove like and dislike (setLike 0)
 	setLike: function (button, event, val) {
 		var postData = focusModel.get ('about');
+		
+		// If setlike or setdislike is already set, convert val to 1/-1 in 0
+		if (((val == 1) && (likeOrDislike == 1)) || ((val == -1) && (likeOrDislike == -1))) {
+			val = 0;
+		}
 		
 		// Ajax request
 		Ext.Ajax.request ({
@@ -81,7 +87,45 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				value: val
 			} ,
 			success: function (response) {
-				// TODO: change ui of button (button.setUi (something))
+				switch (val) {
+					// Set like
+					case 1:
+						button.setIcon ('ext/resources/images/btn-icons/already-like.png');
+						counterLike++;
+						// If this post was set dislike, change icon of the dislike button and update the dislike counter
+						if (likeOrDislike == -1) {
+							button.up('window').down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/dislike.png');
+							counterDislike--;
+						}
+						break;
+					// Set dislike
+					case -1:
+						button.setIcon ('ext/resources/images/btn-icons/already-dislike.png');
+						counterDislike++;
+						// If this post was set like, change icon of the like button and update the like counter
+						if (likeOrDislike == 1) {
+							button.up('window').down('button[tooltip="I Like"]').setIcon ('ext/resources/images/btn-icons/like.png');
+							counterLike--;
+						}
+						break;
+					// Set neutral
+					case 0:
+						button.up('window').down('button[tooltip="I Like"]').setIcon ('ext/resources/images/btn-icons/like.png');
+						button.up('window').down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/dislike.png');
+						// If this post was set like/dislike, update the appropriate counter
+						if (likeOrDislike == 1) counterLike--;
+						else if (likeOrDislike == -1) counterDislike--;
+						break;
+				}
+				
+				// Percent of progress bar
+				pBarValue = counterLike / (counterLike + counterDislike);
+			
+				// Update like/dislike progress bar
+				button.up('window').down('progressbar').updateProgress (pBarValue, counterLike + ' like - ' + counterDislike + ' dislike');
+				
+				// Update likeOrDislike with new value to avoid another GET of article
+				likeOrDislike = val;
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
@@ -174,14 +218,17 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		indexModel = win.down('button[tooltip="focusModelIndex"]').getText ();
 		focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
 		
+		// Retrieve user setlike value
+		likeOrDislike = findSetLike (focusModel.get ('article'));
+		
 		// Like and Dislike counters
-		var counterLike = parseInt (findCounters (focusModel.get ('article'), 'Like'));
-		var counterDislike = parseInt (findCounters (focusModel.get ('article'), 'Dislike'));
+		counterLike = parseInt (findCounters (focusModel.get ('article'), 'Like'));
+		counterDislike = parseInt (findCounters (focusModel.get ('article'), 'Dislike'));
 		
 		// Check if counter like/dislike span tag exists
 		if ((counterLike != -1) && (counterDislike != -1)) {
 			// Percent of progress bar
-			var pBarValue = counterLike / (counterLike + counterDislike);
+			pBarValue = counterLike / (counterLike + counterDislike);
 			
 			// Update like/dislike progress bar
 			win.down('progressbar').updateProgress (pBarValue, counterLike + ' like - ' + counterDislike + ' dislike');
@@ -198,6 +245,15 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				googleMap.setCenter (latlng);
 				googleMap.setZoom (5);
 			}
+		}
+		
+		// If user set like, change the icon of 'I like' button
+		if (likeOrDislike == 1) {
+			win.down('button[tooltip="I Like"]').setIcon ('ext/resources/images/btn-icons/already-like.png');
+		}
+		// If user set dislike, change the icon of 'I Dislike' button
+		else if (likeOrDislike == -1) {
+			win.down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/already-dislike.png');
 		}
 	} ,
 	

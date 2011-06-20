@@ -1,6 +1,7 @@
 <?php
 
 include_once 'protected/model/ThesModel.php';
+include_once 'protected/controller/ErrorController.php';
 
 class TesauroController extends DooController {
     
@@ -29,21 +30,30 @@ class TesauroController extends DooController {
 
     public function addTerm() {
         if (!(isset ($_POST['parentterm']))||!(isset ($_POST['term']))){
-            echo "Sia parentterm che term devono essere specificati";
-            return 400;
+            return ErrorController::badReq("Sia parentterm che term devono essere specificati");
         }
-        $parent= $_POST['parentterm'];
-        $term=str_replace(" ", "_", $_POST['term']);
+        $parent= strtolower($_POST['parentterm']);
+        $term=strtolower(str_replace(" ", "_", $_POST['term']));
         if ($parent==$term){
-            echo "I termini non possono essere uguali";
-            return 400;
+            return ErrorController::badReq("I termini non possono essere uguali");
         }
         $thes = new ThesModel();
-        if (!($thes->extendTesauro($parent, $term)))
-            return 400;
-        else return 201;
+        $parentPath = $thes->returnPath($parent);
+        if ($parentPath == false)
+            return ErrorController::badReq("Il parentterm non esiste nel tesauro");
+        if (count(explode('/', $parentPath))<3)
+                return ErrorController::badReq("Il parenterm non è una foglia del tesauro condiviso");
+        $termPath = $thes->returnPath($term);
+        if ($termPath!= false){
+            return ErrorController::badReq("Il term esiste già! Non è possibile aggiungere termini con lo stesso label!");
+        }
+        if (!$thes->extendThes($parentPath, $term))
+            return ErrorController::internalError();
     }
 
+    /*
+     * Ritorna il tesauro condiviso più l'esteso in formato rdf/xml
+     */
     public function sendThesaurus() {
         $thes = new ThesModel();
         $tesauro = $thes->getTesauro();

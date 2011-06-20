@@ -36,7 +36,7 @@ class PostController extends DooController {
         /* Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
 
-        if (!$content)
+        if ($content == null)
             $mycontent = $_POST['article'];
         else
             $mycontent=$content;

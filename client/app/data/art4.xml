@@ -20,7 +20,7 @@
 			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
 			o link sparsi (ad esempio, http://www.example.com),
 			e perché no un po di audio (ad esempio, 
-			<span resource="audio" src="http://www.vorbis.com/music/Epoq-Lepidoptera.ogg" />).
+			<!--<span resource="audio" src="http://www.vorbis.com/music/Epoq-Lepidoptera.ogg" />)-->.
 			<span id="geolocationspan" long="-73.9514422416687" lat="40.69847032728747" />
 			<span rev="tweb:like" resource="/tw14/pluto" />
 			<span property="tweb:countLike" content="16" />
@@ -105,7 +105,7 @@
 			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
 			o link sparsi (ad esempio, http://www.example.com),
 			e perché no un po di audio (ad esempio, 
-			<span resource="audio" src="http://www.vorbis.com/music/Epoq-Lepidoptera.ogg" />),
+			<!--<span resource="audio" src="http://www.vorbis.com/music/Epoq-Lepidoptera.ogg" />)-->,
 			o un po di video (ad esempio, 
 			<span resource="video" src="http://www.youtube.com/embed/anwy2MPT5RE" />),
 			e immagini (ad esempio, 

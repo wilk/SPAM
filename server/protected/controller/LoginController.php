@@ -2,13 +2,20 @@
 
 include_once 'protected/model/UserModel.php';
 include_once 'protected/model/SRVModel.php';
+include_once 'protected/controller/ErrorController.php';
 
 class LoginController extends DooController {
+    /*
+     * Esegue login utente, creandolo se non esiste. 
+     */
 
     public function authUser() {
         $this->load()->helper('DooRestClient');
         $request = new DooRestClient;
-        $user = strtolower($_POST['username']);
+        if (!(isset($_POST['username'])))
+            return ErrorController::badReq('L\' username deve essere specificato!!');
+        $user= strtolower($_POST['username']);
+        $user = str_replace(' ', '_', $user);
         $utente = new UserModel($user);
         if ($utente->firstTime()) {
             $utente->addUser();
@@ -21,6 +28,10 @@ class LoginController extends DooController {
             $this->startSession($user);
         }
     }
+
+    /*
+     * Avvia la sessione dell'utente loggato generando il cookie ltwlogin.
+     */
 
     private function startSession($user) {
         session_name("nologin");
@@ -40,6 +51,10 @@ class LoginController extends DooController {
             'group' => 'logged',
         );
     }
+
+    /*
+     * Esegue logout utente. Elimina il cookie ltwlogin e distrugge la sessione.
+     */
 
     public function logout() {
         session_name('ltwlogin');

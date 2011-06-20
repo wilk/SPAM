@@ -37,8 +37,6 @@ class LikeController extends DooController {
     /**
      * Setta il like/unlike dell'utente
      * Se il post non si trova sul server locale, invia la richiesta al server interessato
-     * 
-     * @return Status Code
      */
     public function setLike() {
         //Controllo che tutte le variabili post siano state inviate

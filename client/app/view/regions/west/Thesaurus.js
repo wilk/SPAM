@@ -10,26 +10,24 @@
 Ext.define ('SC.view.regions.west.Thesaurus' , {
 	extend: 'Ext.tree.Panel' ,
 	alias: 'widget.thesaurus' ,
-//	initComponent: function(){
-//  		this.store = Ext.data.StoreManager.lookup(this.store);
-// 		this.callParent(arguments);
-//	},
 	// Configuration
 	title: 'Thesaurus' ,
-//	autoWidth: true ,
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 2 ,
-//	anchor: '100% 100%' ,
-//	layout: 'anchor' ,
 	rootVisible: true ,
 	autoScroll: true ,
-	useArrows:true,
+//	useArrows:true,
 	flex:1,
-//	scroll:true,
 	store:'Thesaurus',
 	root:{
 		text:'Thesaurus',
 		expanded:true
+	},
+//	textfiled for add thesaurus term
+	bbar:{
+		xtype:'textfield',
+		id:'addTermField',
+		enableKeyEvents:true
 	}
 });

@@ -36,6 +36,10 @@ Also check out the links page for a list of URLs available in this demo.</p>';
         print $msg;
         return 400;
     }
+     public static function internalError(){
+        print 'Anche le scimmie cadono dagli alberi .. risolveremo il problema il prima possibile';
+        return 500;
+    }
 }
 
 ?>

@@ -48,8 +48,7 @@ class TesauroController extends DooController {
             return ErrorController::badReq("Il term esiste già! Non è possibile aggiungere termini con lo stesso label!");
         }
         if (!$thes->extendThes($parentPath, $term))
-            return 500;
-        else return 200;
+            return ErrorController::internalError();
     }
 
     /*

@@ -75,6 +75,7 @@ Ext.define ('SC.controller.regions.North' , {
 	} ,
 	
 	// @brief Login and logout user
+	// TODO: on logout, refresh focus window to hide buttons
 	userLogin : function () {
 		// Check if user wants to login
 		if (fieldUser.isVisible ()) {
@@ -105,6 +106,10 @@ Ext.define ('SC.controller.regions.North' , {
 						pUser.setVisible (true);
 	
 						bNewPost.setVisible (true);
+						
+						// Refresh focus window
+						Ext.getCmp('winFocusArticle').setVisible (false);
+						Ext.getCmp('winFocusArticle').setVisible (true);
 					} ,
 					failure: function (error) {
 						Ext.Msg.show ({
@@ -141,6 +146,10 @@ Ext.define ('SC.controller.regions.North' , {
 					pUser.setVisible (false);
 		
 					bNewPost.setVisible (false);
+					
+					// Refresh focus window
+					Ext.getCmp('winFocusArticle').setVisible (false);
+					Ext.getCmp('winFocusArticle').setVisible (true);
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({

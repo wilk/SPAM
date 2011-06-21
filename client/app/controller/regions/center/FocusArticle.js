@@ -259,21 +259,48 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			win.down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/already-dislike.png');
 		}
 		
-//		followersStore = this.getRegionsWestFollowersStore ();
+		// Check if user is already logged-in: if he is, show every buttons
+		// If there is server cookie
+		if (Ext.util.Cookies.get ('ltwlogin') != null)
+		{
+			// And if there is client cookie
+			if (Ext.util.Cookies.get ('SPAMlogin') != null) {
+				win.down('button[tooltip="I Like"]').setVisible (true);
+				win.down('button[tooltip="I Dislike"]').setVisible (true);
+				win.down('button[tooltip="Reply"]').setVisible (true);
+				win.down('button[tooltip="Respam"]').setVisible (true);
+				
+				// TODO: check if followers store is already loaded
+//				followersStore = this.getRegionsWestFollowersStore ();
+//				
+//				alert (followersStore.getAt(0).get('resource'));
+//				
+//				for (var m in followersStore.getRange ()) {
+//					if (m.get ('follower') == focusModel.get ('resource')) {
+//						isFollowed = true;
+//						break;
+//					}
+//				}
 //		
-//		for (var m in followersStore.getRange ()) {
-//			if (m.get ('follower') == focusModel.get ('resource')) {
-//				isFollowed = true;
-//				break;
-//			}
-//		}
-		
-		// Followers
-		// TODO: activate it
-//		if (isFollowed) {
-//			win.down('button[tooltip="Follow"]').setVisible (false);
-//			win.down('button[tooltip="Unfollow"]').setVisible (true)
-//		}
+//				// Followers
+//				if (isFollowed) {
+//					win.down('button[tooltip="Unfollow"]').setVisible (true);
+//				}
+//				else {
+//					win.down('button[tooltip="Follow"]').setVisible (true);
+//				}
+			}
+		}
+		// Otherwise, hide buttons
+		// This option is for refresh by by login/logout
+		else {
+			win.down('button[tooltip="I Like"]').setVisible (false);
+			win.down('button[tooltip="I Dislike"]').setVisible (false);
+			win.down('button[tooltip="Follow"]').setVisible (false);
+			win.down('button[tooltip="Unfollow"]').setVisible (false);
+			win.down('button[tooltip="Reply"]').setVisible (false);
+			win.down('button[tooltip="Respam"]').setVisible (false);
+		}
 	} ,
 	
 	// @brief Setup default values

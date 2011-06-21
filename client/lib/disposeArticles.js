@@ -150,17 +150,20 @@ function disposeArticles (store, focus, focusIndex) {
 				// Button I Like
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/like.png' ,
-				tooltip: 'I Like'
+				tooltip: 'I Like' ,
+				hidden: true
 			} , {
 				// Button I Dislike
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/dislike.png' ,
-				tooltip: 'I Dislike'
+				tooltip: 'I Dislike' ,
+				hidden: true
 			} , {
 				// Button follow
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/follow.png' ,
-				tooltip: 'Follow'
+				tooltip: 'Follow' ,
+				hidden: true
 			} , {
 				// Button unfollow
 				cls: 'x-btn-icon' ,
@@ -175,12 +178,14 @@ function disposeArticles (store, focus, focusIndex) {
 				// Button reply
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/reply.png' ,
-				tooltip: 'Reply'
+				tooltip: 'Reply' ,
+				hidden: true
 			} , {
 				// Button respam
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/respam.png' ,
-				tooltip: 'Respam'
+				tooltip: 'Respam' ,
+				hidden: true
 			}]
 		}]
 	});

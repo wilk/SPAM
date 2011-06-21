@@ -32,6 +32,7 @@ Ext.define ('SC.controller.regions.west.User' , {
 	} ,
 	
 	// Load the followers store
+	// TODO: problem with load when user is already logged in
 	initUserPanel: function (panel) {
 		var store = this.getRegionsWestFollowersStore ();
 		

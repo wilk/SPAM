@@ -62,8 +62,11 @@ class FollowController extends DooController {
     //nudo e crudo senza controlli
     public function getFollows(){
         $utente = new UserModel($_SESSION['user']['username']);
+        $lista = $utente->getFollows();
+        if (sizeof($lista) == 0)
+            return 404;
         $this->setContentType('xml');
-        print FollowView::renderFollows($utente->getFollows());
+        print FollowView::renderFollows();
     }
 
 }

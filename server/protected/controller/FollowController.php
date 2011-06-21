@@ -66,7 +66,7 @@ class FollowController extends DooController {
         if (sizeof($lista) == 0)
             return 404;
         $this->setContentType('xml');
-        print FollowView::renderFollows();
+        print FollowView::renderFollows($lista);
     }
 
 }

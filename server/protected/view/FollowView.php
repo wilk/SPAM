@@ -16,7 +16,7 @@ class FollowView {
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><followers></followers>');
         foreach ($follows as $follow) {
             $folletto = $xml->addChild('follower');
-            $thisServer->addAttribute('id', $follow);
+            $folletto->addAttribute('id', $follow);
         }
         return $xml->asXML();
     }

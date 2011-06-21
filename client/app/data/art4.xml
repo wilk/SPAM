@@ -80,7 +80,7 @@
 			<span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere/roma" 
 			rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
 			o link sparsi (ad esempio, http://www.example.com).
-			<span rev="tweb:like" resource="/tw14/pluto" />
+			<span rev="tweb:dislike" resource="/tw14/pluto" />
 			<span property="tweb:countLike" content="6" />
 			<span property="tweb:countDislike" content="13" />
 		]]></article>
@@ -110,7 +110,6 @@
 			<span resource="video" src="http://www.youtube.com/embed/anwy2MPT5RE" />),
 			e immagini (ad esempio, 
 			<span resource="image" src="http://www.spam.com/ASSETS/0EE75B480E5B450F807117E06219CDA6/spamReg.png" />).
-			<span rev="tweb:like" resource="/tw14/pluto" />
 			<span property="tweb:countLike" content="10" />
 			<span property="tweb:countDislike" content="0" />
 		]]></article>

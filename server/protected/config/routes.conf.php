@@ -128,6 +128,10 @@ $route['post']['/servers'] = array('ServersController', 'rewriteServersList');
 //Path con servers metodo non supportato
 $route['*']['/servers'] = array('ErrorController', 'notSupport');
 
+//Riceve la lista degli utenti seguiti
+$route['get']['/followers'] = array('FollowController', 'getFollows');
+//Path followers metodo non supportato
+$route['*']['/followers'] = array('ErrorController', 'notSupport');
 //Setta sei seguire o meno un utente
 $route['post']['/setfollow'] = array('FollowController', 'setFollow');
 //Path setfollow metodo non supportato

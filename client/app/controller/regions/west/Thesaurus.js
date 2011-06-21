@@ -66,11 +66,18 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		//query to retrive all "hasTopConcept" node
 			var top=myRDF.Match(null,null,skosNS+"hasTopConcept",null);
 
+		//suspend store content change events
+			theStore.suspendEvents();
+
 		//starting loop to append all "hasTopConcept" node and theirs children
 			for (var i=0;i<top.length;i++){
 				var sub=top[i].object;
 				append(sub,root);
 			};
+		
+		//resume store content change events
+			theStore.resumeEvents();
+		
 		};
 		
 
@@ -82,10 +89,13 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		//get prefLabel value, create a node and append it to his father
 			var val=myRDF.getSingleObject(null,subject,skosNS+"prefLabel",null);
 			var node=SC.model.TheNode.create({text:val});
-			father.appendChild(node);
 			
-		//load nodes in the local storage
-//			theStore.sync();
+		//change node internal id into the store to retrive it with findNodeById method
+			node.internalId=val;
+		
+		
+			father.appendChild(node);
+
 		
 		//query to get all node's children and recall this function to fill the tree
 			var child=myRDF.Match(null,subject,skosNS+"narrower",null);
@@ -135,11 +145,33 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			url:'addterm',
 			method:'post',
 			
+		//request body	
 			params:{parentterm:parentterm,term:term},
 			
-			success:function(response){alert('E MO CHE TI FACCIO FARE?--- una piadeina!!!')},
+			success:function(response){
+			
+			//take store reference and find new node parent	
+				var store=Ext.StoreManager.lookup('Thesaurus');
+				var parent=store.getNodeById(parentterm);
+			
+			//create new node and set his attribute
+				var newNode=SC.model.TheNode.create({text:term});
+				newNode.internalId=term;				
+			
+			//append new node to his father	
+				parent.appendChild(newNode);
+				
+			//set new node and parent leaf attribute	
+				parent.data.leaf=false;
+				newNode.data.leaf=true;
+				
+			//display new item node	
+				parent.expand(false);
+			},
 			
 			failure:function(response){
+			
+			//display error message send by server
 				Ext.Msg.show ({
 				title: 'Error' ,
 				msg: response.responseText ,

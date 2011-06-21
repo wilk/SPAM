@@ -16,9 +16,6 @@ Ext.define ('SC.controller.regions.West' , {
 	// Configuration
 	init: function () {
 		this.control ({
-			'#advancedButton' : {
-				click : function () { Ext.getCmp('windowAdvancedSearch').show (); }
-			}
 		});
 	
 		console.log ('Controller West started.');

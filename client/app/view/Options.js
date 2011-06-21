@@ -84,8 +84,29 @@ Ext.define ('SC.view.Options' , {
 		} , {
 			// Tab About Us
 			title: 'About Us' ,
-			bodyPadding: 10 ,
-			html: '<h1>Thanks to:</h1><br />Clemente Vitale : cvitale@cs.unibo.ti<br />Riccardo Statuto : statuto@cs.unibo.it<br />Stefano Sgarlata : sgarlats@cs.unibo.it<br />Vincenzo Ferrari : ferrari@cs.unibo.it'
+			layout: 'anchor' ,
+			anchor: '100% 100%' ,
+			items: [{
+				xtype: 'panel' ,
+				layout: 'accordion' ,
+				anchor: '100% 100%' ,
+				defaults: {
+					bodyPadding: 10
+				} ,
+				items: [{
+					title: 'Vincenzo Ferrari' ,
+					html: '<h1>email : ferrari@cs.unibo.it</h1>'
+				} , {
+					title: 'Riccardo Statuto' ,
+					html: '<h1>email : statuto@cs.unibo.it</h1>'
+				} , {
+					title: 'Stefano Sgarlata' ,
+					html: '<h1>email : sgarlats@cs.unibo.it</h1>'
+				} , {
+					title: 'Clemente Vitale' ,
+					html: '<h1>email : cvitale@cs.unibo.it</h1>'
+				}]
+			}]
 		} , {
 			// Tab Help
 			title: 'Help' ,

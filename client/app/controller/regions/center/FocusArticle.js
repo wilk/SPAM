@@ -13,8 +13,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// Views
 	views: ['regions.center.FocusArticle'] ,
 	
-	stores: ['regions.center.Articles'] ,
-	models: ['regions.center.Articles'] ,
+	stores: ['regions.center.Articles' , 'regions.west.Followers'] ,
+	models: ['regions.center.Articles' , 'regions.west.Followers'] ,
 	
 	// Configuration
 	init: function () {
@@ -22,6 +22,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		var focusModel;
 		var likeOrDislike;
 		var counterLike, counterDislike, pBarValue;
+//		var followersStore;
+//		var isFollowed;
 		
 		// TODO: after render of this window, check like/dislike and follow/unfollow value of this article
 		this.control ({
@@ -152,6 +154,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				value: val
 			} ,
 			success: function (response) {
+				// TODO: update user list and refresh user panel
 				// On follow: hides follow button and shows the unfollow
 				// On unfollow: hides unfollow button and shows the follow
 				if (val) {
@@ -255,6 +258,22 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		else if (likeOrDislike == -1) {
 			win.down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/already-dislike.png');
 		}
+		
+//		followersStore = this.getRegionsWestFollowersStore ();
+//		
+//		for (var m in followersStore.getRange ()) {
+//			if (m.get ('follower') == focusModel.get ('resource')) {
+//				isFollowed = true;
+//				break;
+//			}
+//		}
+		
+		// Followers
+		// TODO: activate it
+//		if (isFollowed) {
+//			win.down('button[tooltip="Follow"]').setVisible (false);
+//			win.down('button[tooltip="Unfollow"]').setVisible (true)
+//		}
 	} ,
 	
 	// @brief Setup default values

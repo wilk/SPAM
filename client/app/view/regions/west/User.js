@@ -37,7 +37,16 @@ Ext.define ('SC.view.regions.west.User' , {
 			header: 'server name' ,
 			dataIndex: 'serverID'
 		}]
-	},{
-		title:'Followers'
+	} , {
+		title: 'Followers' ,
+		xtype: 'grid' ,
+		id: 'userFollowersGrid' ,
+		store: 'regions.west.Followers' ,
+		autoScroll: true ,
+		border: 0 ,
+		columns: [{
+			header: 'Followers' ,
+			dataIndex: 'follower'
+		}]
 	}]
 });

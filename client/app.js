@@ -17,6 +17,7 @@ Ext.application ({
 		'regions.West' ,
 		'regions.west.Search' ,
 		'regions.west.Thesaurus' ,
+		'regions.west.User' ,
 		'regions.East' ,
 		'regions.east.RecentPost' ,
 		'regions.east.GeoLocation' ,

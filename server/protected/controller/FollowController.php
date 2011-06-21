@@ -2,6 +2,7 @@
 
 include_once 'protected/model/UserModel.php';
 include_once 'protected/controller/ErrorController.php';
+include_once 'protected/view/FollowView.php';
 
 class FollowController extends DooController {
     /*
@@ -56,6 +57,16 @@ class FollowController extends DooController {
         $risorsa = 'spam:/' . $_POST['serverID'] . '/' . $_POST['userID'];
         $utente = new UserModel($_SESSION['user']['username']);
         $utente->handleFollow($risorsa, $value);
+    }
+    
+    //nudo e crudo senza controlli
+    public function getFollows(){
+        $utente = new UserModel($_SESSION['user']['username']);
+        $lista = $utente->getFollows();
+        if (sizeof($lista) == 0)
+            return 404;
+        $this->setContentType('xml');
+        print FollowView::renderFollows($lista);
     }
 
 }

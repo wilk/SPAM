@@ -40,6 +40,10 @@ Also check out the links page for a list of URLs available in this demo.</p>';
         print 'Anche le scimmie cadono dagli alberi .. risolveremo il problema il prima possibile';
         return 500;
     }
+    public static function notImpl(){
+        print 'Ora pretendi troppo. Questa non l\'abbiamo implementata.';
+        return 501;
+    }
 }
 
 ?>

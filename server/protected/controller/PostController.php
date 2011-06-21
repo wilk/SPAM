@@ -4,12 +4,13 @@ include_once 'protected/model/PostModel.php';
 include_once 'protected/model/UserModel.php';
 include_once 'protected/model/SRVModel.php';
 include_once 'protected/view/PostView.php';
+include_once 'protected/controller/ErrorController.php';
 
 class PostController extends DooController {
 
     public $articolo;
 
-       public function beforeRun($resource, $action) {
+    public function beforeRun($resource, $action) {
         session_name("ltwlogin");
         session_start();
         if (!(isset($_SESSION['user']['username']))) {
@@ -54,25 +55,45 @@ class PostController extends DooController {
         $server = $this->params['serverID'];
         $user = $this->params['userID'];
         $post = $this->params['postID'];
-        if ($server != 'Spammers') {
-            $this->load()->helper('DooRestClient');
-            $request = new DooRestClient;
-            $url = SRVModel::getUrl($request, $server);
-            $request->connect_to($url . '/postserver/' . $user . '/' . $post)
-                    ->accept(DooRestClient::HTML)
-                    ->get();
-            if ($request->isSuccess()) {
-                $content = $request->result();
-                $this->setContentType('html');
-                print $content;
-            } else {
-                return $request->resultCode();
+        if (($this->acceptType()) == 'html') {
+            if ($server != 'Spammers') {
+                $this->load()->helper('DooRestClient');
+                $request = new DooRestClient;
+                $url = SRVModel::getUrl($request, $server);
+                $request->connect_to($url . '/postserver/' . $user . '/' . $post)
+                        ->accept(DooRestClient::HTML)
+                        ->get();
+                if ($request->isSuccess()) {
+                    $content = $request->result();
+                    $this->setContentType('html');
+                    print $content;
+                } else {
+                    return $request->resultCode();
+                }
             }
+            $this->articolo = new PostModel();
+            $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
+            $htmlPost = PostView::renderPost($myPost, $user, $post);
+            print $htmlPost;
+        } else if ($server == 'Spammers') {
+            $url = $post . '/' . $this->acceptType();           
+            header('HTTP/1.1 303');
+            header("Location: " . $url);
+        } else {
+            return ErrorController::notImpl();
         }
+    }
+
+    public function sendPostByType() {
+        $server = $this->params['serverID'];
+        $user = $this->params['userID'];
+        $post = $this->params['postID'];
+        $type = $this->params['type'];
         $this->articolo = new PostModel();
         $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
-        $htmlPost = PostView::renderPost($myPost, $user, $post);
-        print $htmlPost;
+        $rdfPost= PostView::renderPostRdf($myPost);
+        $this->setContentType('rdf');
+        print $rdfPost;
     }
 
     /* il respam crea un messaggio sul server quando il client gli passa
@@ -86,7 +107,8 @@ class PostController extends DooController {
         if ($serverID == "Spammers") {
             $this->articolo = new PostModel();
             $myPost = $this->articolo->getPost('spam:/' . $serverID . '/' . $userID . '/' . $postID);
-            if ($pID = $this->articolo->initNewPost('<article>' . $myPost['sioc:content'][0] . '</article>')) {
+            $key=key($myPost);
+            if ($pID = $this->articolo->initNewPost('<article>' . $myPost[$key]['http://rdfs.org/sioc/ns#content'][0] . '</article>')) {
                 $utente = new UserModel($_SESSION['user']['username']);
                 $utente->addPost2Usr($pID);
             }

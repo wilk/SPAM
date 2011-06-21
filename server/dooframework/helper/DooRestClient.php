@@ -59,6 +59,7 @@ class DooRestClient {
     const JPG = 'image/jpeg';
     const GIF = 'image/gif';
     const CSV = 'text/csv';
+    const RDF = 'application/rdf+xml';
 
     function  __construct($server_url=NULL) {
         if($server_url!=NULL)

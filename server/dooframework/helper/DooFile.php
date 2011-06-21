@@ -333,6 +333,7 @@ class DooFile {
                     'swf' => 'application/x-shockwave-flash',
                     'flv' => 'video/x-flv',
                     'sql' => 'text/x-sql',
+                    'rdf'=>'application/rdf+xml',
 
                     // images
                     'png' => 'image/png',

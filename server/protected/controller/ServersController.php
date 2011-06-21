@@ -2,6 +2,7 @@
 
 include_once 'protected/model/UserModel.php';
 include_once 'protected/view/ServersView.php';
+include_once 'protected/controller/ErrorController.php';
 
 class ServersController extends DooController {
 
@@ -42,16 +43,23 @@ class ServersController extends DooController {
 
     public function rewriteServersList() {
         if (!isset($_POST['servers']))
-            return 406;
+            return ErrorController::badReq ('La lista dei server è necessaria');
         $newServersList = $_POST['servers'];
-        $ServerList= simplexml_load_string($newServersList);
-        $idsServer = array();
-        foreach ($ServerList->server as $myServer)
-            array_push($idsServer, (string) $myServer->attributes()->serverID);
-        $user = new UserModel($_SESSION['user']['username']);
-        $user->setServers($idsServer);
+        $xdoc = new DomDocument;
+        $xmlschema = 'data/servers.xsd';
+        $xdoc->loadXML($newServersList);
+        //TOFIX: schemaValidate ritorna errore invece di false nel caso di schema non valido 
+        if ($xdoc->schemaValidate($xmlschema)) {
+            $ServerList = simplexml_load_string($newServersList);
+            $idsServer = array();
+            foreach ($ServerList->server as $myServer)
+                array_push($idsServer, (string) $myServer->attributes()->serverID);
+            $user = new UserModel($_SESSION['user']['username']);
+            $user->setServers($idsServer);
+        }
+        else
+            return ErrorController::badReq ('La lista dei server non è corretta!');
     }
-
-}
+    }
 
 ?>

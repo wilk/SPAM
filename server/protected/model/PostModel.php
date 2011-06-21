@@ -194,8 +194,11 @@ class PostModel {
         return false;
     }
 
-    public function getPost($r) {
-        return $this->index[$r];
+     public function getPost($r) {
+        $a = array(
+            $r => $this->index[$r]
+        );
+        return $a;
     }
     
     public function getPostArray(/*$t = NULL,*/ $a = NULL) {

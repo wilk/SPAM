@@ -36,20 +36,26 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 		var store = this.getRegionsCenterArticlesStore();
 		var model = store.getRange()[index];
 		
-		var winFocus = Ext.getCmp ('winFocusArticle');
+		// Set appropriate URL
+		store.getProxy().url = 'searchserver/5/affinity' + model.get ('about') + '/1/3';
+	
+		// Retrieve articles
+		requestSearchArticles (store, model, index);
 		
-		// Kills focus window
-		if (winFocus != null)
-			winFocus.destroy ();
-		
-		var w;
-		var j = 0;
-		
-		// And then kills the other windows
-		while ((w = Ext.getCmp ('articles'+j)) != null) {
-			w.destroy ();
-			j++;
-		}
+//		var winFocus = Ext.getCmp ('winFocusArticle');
+//		
+//		// Kills focus window
+//		if (winFocus != null)
+//			winFocus.destroy ();
+//		
+//		var w;
+//		var j = 0;
+//		
+//		// And then kills the other windows
+//		while ((w = Ext.getCmp ('articles'+j)) != null) {
+//			w.destroy ();
+//			j++;
+//		}
 		
 		// Redispose windows with new focus
 		disposeArticles (store, model, index);

@@ -72,52 +72,29 @@ Ext.define ('SC.controller.regions.west.Search' , {
 			switch (combo.getValue ()) {
 				case 'Author' :
 					// Set appropriate URL
-					store.getProxy().url = 'search/' + number.getValue () + '/' + text.getValue () + '/' + combo.getValue ();
+					store.getProxy().url = 'searchserver/' + number.getValue () + '/' + text.getValue () + '/' + combo.getValue ();
 					
-					// TODO: make case for every errors (401, 404, ...)
-					// Load data with store request
-					store.load (function (records, operation, success) {
-						if (! success) {
-							var err = operation.getError ();
-							Ext.Msg.show ({
-								title: 'Error ' + err.status ,
-								msg: 'Something bad happened!' ,
-								buttons: Ext.Msg.OK,
-								icon: Ext.Msg.ERROR
-							});
-						}
-					});
+					// Retrieve articles
+					requestSearchArticles (store, null, 0);
+					
 					break;
 				case 'Following' :
-					// TODO: check if user is logged or not
-					Ext.Ajax.request ({
-						url: 'search/' + number.getValue () + '/following' ,
-						// TODO: read the response on success
-						failure: function (error) {
-							Ext.Msg.show ({
-								title: 'Error ' + error.status ,
-								msg: error.responseText ,
-								buttons: Ext.Msg.OK,
-								icon: Ext.Msg.ERROR
-							});
-						}
-					});
+					// Set appropriate URL
+					store.getProxy().url = 'searchserver/' + number.getValue () + '/following';
+					
+					// Retrieve articles
+					requestSearchArticles (store, null, 0);
+					
 					break;
 				case 'Recent' :
 					if (text.isValid ()) {
-						Ext.Ajax.request ({
-							url: 'search/' + number.getValue () + '/recent/' + text.getValue () ,
-							// TODO: read the response on success
-							failure: function (error) {
-								Ext.Msg.show ({
-									title: 'Error ' + error.status ,
-									msg: error.responseText ,
-									buttons: Ext.Msg.OK,
-									icon: Ext.Msg.ERROR
-								});
-							}
-						});
+						// Set appropriate URL
+						store.getProxy().url = 'searchserver/' + number.getValue () + '/recent/' + text.getValue ();
+					
+						// Retrieve articles
+						requestSearchArticles (store, null, 0);
 					}
+					// If textfield is empty, return an error
 					else {
 						Ext.Msg.show ({
 							title: 'Error ' ,
@@ -129,19 +106,13 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					break;
 				case 'Related' :
 					if (text.isValid ()) {
-						Ext.Ajax.request ({
-							url: 'search/' + number.getValue () + '/related/' + text.getValue () ,
-							// TODO: read the response on success
-							failure: function (error) {
-								Ext.Msg.show ({
-									title: 'Error ' + error.status ,
-									msg: error.responseText ,
-									buttons: Ext.Msg.OK,
-									icon: Ext.Msg.ERROR
-								});
-							}
-						});
+						// Set appropriate URL
+						store.getProxy().url = 'searchserver/' + number.getValue () + '/related/' + text.getValue ();
+					
+						// Retrieve articles
+						requestSearchArticles (store, null, 0);
 					}
+					// If textfield is empty, return an error
 					else {
 						Ext.Msg.show ({
 							title: 'Error' ,
@@ -153,19 +124,14 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					break;
 				case 'Fulltext' :
 					if (text.isValid ()) {
-						Ext.Ajax.request ({
-							url: 'search/' + number.getValue () + '/fulltext/' + text.getValue () ,
-							// TODO: read the response on success
-							failure: function (error) {
-								Ext.Msg.show ({
-									title: 'Error ' + error.status ,
-									msg: error.responseText ,
-									buttons: Ext.Msg.OK,
-									icon: Ext.Msg.ERROR
-								});
-							}
-						});
+						// Set appropriate URL
+						store.getProxy().url = 'searchserver/' + number.getValue () + '/fulltext/' + text.getValue ();
+					
+						// Retrieve articles
+						requestSearchArticles (store, null, 0);
+					
 					}
+					// If textfield is empty, return an error
 					else {
 						Ext.Msg.show ({
 							title: 'Error' ,
@@ -175,8 +141,6 @@ Ext.define ('SC.controller.regions.west.Search' , {
 						});
 					}
 					break;
-	//			case 'Affinity' :
-	//				break;
 				default:
 					Ext.Msg.show ({
 						title: 'Error' ,

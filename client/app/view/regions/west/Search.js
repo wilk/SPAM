@@ -34,8 +34,7 @@ Ext.define ('SC.view.regions.west.Search' , {
 			'Following' ,
 			'Recent' ,
 			'Related' ,
-			'Fulltext' ,
-			'Affinity'
+			'Fulltext'
 		] ,
 //		queryMode: 'local' ,
 		value: 'Fulltext' ,

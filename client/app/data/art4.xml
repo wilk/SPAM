@@ -8,7 +8,7 @@
 		ctag: http://commontag.org/ns#
 		skos: http://www.w3.org/2004/02/skos/core#
 		dcterms: http://purl.org/dc/terms/"
-		about="/tw12/pluto/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pluto"
+		about="/Spammers/pluto/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/Spammers/pluto"
 		property="dcterms:created" content="2006-09-07T09:33:30Z"><![CDATA[
 			Testo di un post contenente 
 			<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,

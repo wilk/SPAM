@@ -19,31 +19,38 @@ Also check out the links page for a list of URLs available in this demo.</p>';
     }
 
     public function notAuth() {
-        echo ("Devi eseguire il login per utilizzare questa funzione!!");
-        return 401;
+        header('Status: 401');
+        print ("Devi eseguire il login per utilizzare questa funzione!!");
     }
 
     public static function notFound($msg) {
-        print html_entity_decode($msg, ENT_QUOTES,'UTF-8');
-        return 404;
+        header('Status: 404');
+        print ($msg);
     }
 
     public function notSupport() {
-        return 405;
+        header('Status: 405');
     }
-    
-    public static function badReq($msg){
+
+    public static function badReq($msg) {
+        header('Status: 400');
         print $msg;
-        return 400;
     }
-     public static function internalError(){
-        print 'Anche le scimmie cadono dagli alberi .. risolveremo il problema il prima possibile';
-        return 500;
+
+    public static function internalError() {
+        header('Status: 500');
+        print 'Anche le scimmie cadono dagli alberi .. risolveremo il problema il prima possibile.';
     }
-    public static function notImpl(){
+
+    public static function notImpl() {
+        header('Status: 501');
         print 'Ora pretendi troppo. Questa non l\'abbiamo implementata.';
-        return 501;
     }
+    public static function conflict() {
+        header('Status: 409');
+        print 'Ti vedo indeciso! Mi chiedi un rdf ma non l\'accetti.';
+    }
+
 }
 
 ?>

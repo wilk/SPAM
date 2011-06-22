@@ -120,8 +120,8 @@ class PostModel {
         //print_r($parsedArray);
         return $parsedArray;
     }
-    
-    public function initNewPost($data){
+
+    public function initNewPost($data) {
         $index = self::parseArticle($data);
         $usrResource = 'spam:/Spammers/' . $_SESSION['user']['username'];
         /* Customize post */
@@ -132,8 +132,8 @@ class PostModel {
         $pre['tweb:countLike'][] = 0;
         $pre['tweb:countDislike'][] = 0;
         /* questi non se li caga
-        $pre['tweb:like'] = array();
-        $pre['tweb:disklike'] = array();
+          $pre['tweb:like'] = array();
+          $pre['tweb:disklike'] = array();
          * 
          */
         $this->postID = $usrResource . '/' . rand();
@@ -143,10 +143,9 @@ class PostModel {
 //        print_r($post);
         foreach ($index as $post) {
             foreach ($post as $k => $risorsa) {
-                if ($k == self::$siocContent){
+                if ($k == self::$siocContent) {
                     $customized[$this->postID]['sioc:content'][] = $risorsa[0];
-                }
-                elseif ($k == self::$siocTopic) {
+                } elseif ($k == self::$siocTopic) {
                     $customized[$this->postID]['sioc:topic'] = $risorsa;
                     $tesauro = new ThesModel(TRUE);
                     foreach ($risorsa as $i) {
@@ -159,7 +158,7 @@ class PostModel {
                 }
             }break;
         }
-        
+
         //print_r($customized);
         foreach ($customized as $k => $v) {
             $this->index[$k] = $v;
@@ -170,7 +169,10 @@ class PostModel {
 
     public function addRespamOf($r) {
         $pID = $this->postID;
-        $this->index[$pID]['tweb:respamOf'][] = $r;
+        if (isset($this->index[$pID]['tweb:respamOf'][0]))
+            $this->index[$pID]['tweb:respamOf'][0] = $r;
+        else
+            $this->index[$pID]['tweb:respamOf'][] = $r;
         $this->saveInPost();
     }
 
@@ -187,75 +189,79 @@ class PostModel {
             $this->index[$p]['sioc:has_reply'][] = $path;
         $this->saveInPost();
     }
-    
+
     public function postExist($r) {
         if (isset($this->index[$r]))
-                return true;
+            return true;
         return false;
     }
 
-     public function getPost($r) {
+    public function getPost($r) {
         $a = array(
             $r => $this->index[$r]
         );
         return $a;
     }
-    
-    public function getPostArray(/*$t = NULL,*/ $a = NULL) {
+
+    public function getPostArray(/* $t = NULL, */ $a = NULL) {
         $lista = array();
-        /*if ($t){
-            
-        }*/
+        /* if ($t){
+
+          } */
         if (isset($a)) {//se ricevo una lista di postid
-            foreach ($a as $i){
+            foreach ($a as $i) {
                 if ($this->postExist($i))
-                    array_push ($lista, $this->getPost($i));
+                    array_push($lista, $this->getPost($i));
             }
-        } 
+        }
         else {//TODO altrimenti pusho i post che trovo
             foreach ($this->index as $post) {
-                if (isset($post[self::$siocTopic]))
-                    array_push($lista,$post);
+                if (isset($post[self::$siocContent]))
+                    array_push($lista, $post);
             }
         }
         return $lista;
     }
 
-    public function addLike($p, $value, $userID,$serverID="Spammers") {
+    public function addLike($p, $value, $userID, $serverID="Spammers") {
         switch ($value) {
             case 0:
-                $this->neutralLike($p,$serverID, $userID);
+                if(!$this->neutralLike($p, $serverID, $userID))
+                        $this->neutralDislike($p, $serverID, $userID);
                 $this->saveInPost();
                 break;
             case 1:
                 //Se c'è tweb:dislike rimuovilo, aggiungi tweb:like, decrementa countDislike e incrementa countLike
-                $this->neutralLike($p,$serverID, $userID);
-                $this->like($p,$serverID, $userID);
+                $this->neutralDislike($p, $serverID, $userID);
+                $this->like($p, $serverID, $userID);
                 $this->saveInPost();
                 break;
             case -1:
                 //Se c'è tweb:like rimuovilo, aggiungi tweb:dislike, decrementa countLike e incrementa countDislike
-                $this->neutralLike($p,$serverID, $userID);
-                $this->dislike($p,$serverID, $userID);
+                $this->neutralLike($p, $serverID, $userID);
+                $this->dislike($p, $serverID, $userID);
                 $this->saveInPost();
                 break;
         }
     }
 
-    public function neutralLike($p,$serverID, $userID) {
+    public function neutralLike($p, $serverID, $userID) {
         //Rimuovi tweb:like/dislike e decrementa il valore appropriato
         if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
             foreach ($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'] as $key => $likeUser) {
-                if ($likeUser == "spam:/".$serverID."/" . $userID) {
+                if ($likeUser == "spam:/" . $serverID . "/" . $userID) {
                     unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'][$key]);
                     $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]--;
-                    return;
+                    return true;
                 }
             }
         }
+    }
+    
+    public function neutralDislike($p, $serverID, $userID) {    
         if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
             foreach ($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $key => $dislikeUser) {
-                if ($dislikeUser == "spam:/".$serverID."/". $userID) {
+                if ($dislikeUser == "spam:/" . $serverID . "/" . $userID) {
                     unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'][$key]);
                     $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]--;
                     return;
@@ -264,13 +270,13 @@ class PostModel {
         }
     }
 
-    public function like($p,$serverID, $userID) {
-        $this->index[$p]['tweb:like'][] = "spam:/".$serverID."/" . $userID;
+    public function like($p, $serverID, $userID) {
+        $this->index[$p]['tweb:like'][] = "spam:/" . $serverID . "/" . $userID;
         $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]++;
     }
 
-    public function dislike($p,$serverID, $userID) {
-        $this->index[$p]['tweb:dislike'][] = "spam:/".$serverID."/" . $userID;
+    public function dislike($p, $serverID, $userID) {
+        $this->index[$p]['tweb:dislike'][] = "spam:/" . $serverID . "/" . $userID;
         $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]++;
     }
 

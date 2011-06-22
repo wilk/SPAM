@@ -20,7 +20,7 @@ Ext.define ('SC.model.regions.west.Followers' , {
 	// REST Proxy for REST requests
 	proxy: {
 		type: 'rest' ,
-		url: 'app/data/follower.xml' ,
+		url: 'followers' ,
 		reader: {
 			type: 'xml' ,
 			root: 'followers' ,

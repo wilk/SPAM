@@ -31,8 +31,7 @@ Ext.define ('SC.model.regions.center.Articles' , {
 	// REST Proxy for REST requests
 	proxy: {
 		type: 'rest' ,
-		// 10 recent posts
-		url: 'app/data/art4.xml' ,
+		// url is set dynamically
 		reader: {
 			type: 'xml' ,
 			root: 'archive' ,

@@ -22,10 +22,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		var focusModel;
 		var likeOrDislike;
 		var counterLike, counterDislike, pBarValue;
-//		var followersStore;
-//		var isFollowed;
+		var followersStore;
+		var isFollowed;
 		
-		// TODO: after render of this window, check like/dislike and follow/unfollow value of this article
 		this.control ({
 			// Window render
 			'focusarticle' : {
@@ -154,7 +153,6 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				value: val
 			} ,
 			success: function (response) {
-				// TODO: update user list and refresh user panel
 				// On follow: hides follow button and shows the unfollow
 				// On unfollow: hides unfollow button and shows the follow
 				if (val) {
@@ -165,6 +163,14 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 					button.setVisible (false);
 					button.up('window').down('button[tooltip="Follow"]').setVisible (true);
 				}
+				
+				// Reload followers store to refresh user panel
+				followersStore.load (function (record, option, success) {
+					if (! success) {
+						// If there aren't followers, remove all previous (old) followers from the store
+						followersStore.removeAll ();
+					}
+				});
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
@@ -220,6 +226,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		// Getting model associated with
 		indexModel = win.down('button[tooltip="focusModelIndex"]').getText ();
 		focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
+		followersStore = this.getRegionsWestFollowersStore ();
 		
 		// Retrieve user setlike value
 		likeOrDislike = findSetLike (focusModel.get ('article'));
@@ -270,29 +277,36 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				win.down('button[tooltip="Reply"]').setVisible (true);
 				win.down('button[tooltip="Respam"]').setVisible (true);
 				
-				// TODO: check if followers store is already loaded
-//				followersStore = this.getRegionsWestFollowersStore ();
-//				
-//				alert (followersStore.getAt(0).get('resource'));
-//				
-//				for (var m in followersStore.getRange ()) {
-//					if (m.get ('follower') == focusModel.get ('resource')) {
-//						isFollowed = true;
-//						break;
-//					}
-//				}
-//		
-//				// Followers
-//				if (isFollowed) {
-//					win.down('button[tooltip="Unfollow"]').setVisible (true);
-//				}
-//				else {
-//					win.down('button[tooltip="Follow"]').setVisible (true);
-//				}
+				isFollowed = false;
+				
+				// If there are followers
+				if (followersStore.getCount () != 0) {
+					// Find if user of the focus article is already followed
+					followersStore.each (function (record) {
+						if (record.get ('follower') == focusModel.get ('resource')) {
+							isFollowed = true;
+						}
+					});
+				}
+				else {
+					isFollowed = false;
+				}
+		
+				// If user is already followed, shows the unfollow button
+				if (isFollowed) {
+					win.down('button[tooltip="Unfollow"]').setVisible (true);
+					win.down('button[tooltip="Follow"]').setVisible (false);
+				}
+				// Otherwise shows the follow button
+				else {
+					win.down('button[tooltip="Follow"]').setVisible (true);
+					win.down('button[tooltip="Unfollow"]').setVisible (false);
+				}
+				
 			}
 		}
 		// Otherwise, hide buttons
-		// This option is for refresh by by login/logout
+		// This option is for refresh by login/logout
 		else {
 			win.down('button[tooltip="I Like"]').setVisible (false);
 			win.down('button[tooltip="I Dislike"]').setVisible (false);

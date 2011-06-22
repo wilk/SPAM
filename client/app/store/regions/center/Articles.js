@@ -12,5 +12,5 @@ Ext.define ('SC.store.regions.center.Articles' , {
 	
 	model: 'SC.model.regions.center.Articles' ,
 	
-	autoLoad: true
+	autoLoad: false
 });

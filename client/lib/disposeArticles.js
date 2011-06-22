@@ -91,6 +91,7 @@ function disposeArticles (store, focus, focusIndex) {
 					id: 'articles' + j ,
 					x: x ,
 					y: y ,
+					
 					items: [{
 						// Saves model ID of this article
 						xtype: 'button' ,
@@ -98,7 +99,7 @@ function disposeArticles (store, focus, focusIndex) {
 						tooltip: 'index' ,
 						hidden: true
 					}] ,
-					// TODO: insert buttons in the articles view
+					
 					dockedItems: [{
 						xtype: 'toolbar' ,
 						dock: 'bottom' ,
@@ -123,7 +124,6 @@ function disposeArticles (store, focus, focusIndex) {
 	}
 	
 	// Add focus window at last
-	// TODO: setup dinamically like and follow buttons
 	var win = Ext.widget ('focusarticle' , {
 		// Author is /serverID/userID, so split and take only userID
 		title: focus.get('resource').split("/")[2] + ' said:' ,
@@ -151,25 +151,25 @@ function disposeArticles (store, focus, focusIndex) {
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/like.png' ,
 				tooltip: 'I Like' ,
-				hidden: true
+				hidden: false
 			} , {
 				// Button I Dislike
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/dislike.png' ,
 				tooltip: 'I Dislike' ,
-				hidden: true
+				hidden: false
 			} , {
 				// Button follow
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/follow.png' ,
 				tooltip: 'Follow' ,
-				hidden: true
+				hidden: false
 			} , {
 				// Button unfollow
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/unfollow.gif' ,
 				tooltip: 'Unfollow' ,
-				hidden: true
+				hidden: false
 			} , '->' , {
 				// Progress Bar like/dislike
 				xtype: 'progressbar' ,
@@ -179,13 +179,13 @@ function disposeArticles (store, focus, focusIndex) {
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/reply.png' ,
 				tooltip: 'Reply' ,
-				hidden: true
+				hidden: false
 			} , {
 				// Button respam
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/respam.png' ,
 				tooltip: 'Respam' ,
-				hidden: true
+				hidden: false
 			}]
 		}]
 	});

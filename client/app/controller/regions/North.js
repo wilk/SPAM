@@ -106,10 +106,6 @@ Ext.define ('SC.controller.regions.North' , {
 						pUser.setVisible (true);
 	
 						bNewPost.setVisible (true);
-						
-						// Refresh focus window
-						Ext.getCmp('winFocusArticle').setVisible (false);
-						Ext.getCmp('winFocusArticle').setVisible (true);
 					} ,
 					failure: function (error) {
 						Ext.Msg.show ({

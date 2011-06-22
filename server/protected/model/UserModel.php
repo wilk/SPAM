@@ -82,7 +82,7 @@ class UserModel {
     public function getPosts($c){
         if (!isset($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#Post']))
                 return 404;
-        $postsUtente = &array_reverse($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#Post'], TRUE);
+        $postsUtente = array_reverse($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#Post'], TRUE);
         $size = sizeof($postsUtente);
         if ($size < $c)
             return $postsUtente;

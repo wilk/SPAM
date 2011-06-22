@@ -7,7 +7,7 @@ class PostView {
 
     public static function renderPost($p, $userID=null, $postID=null) {
         //Definisco template di un articolo HTML standard da inviare
-        $key=key($p);
+        $key = key($p);
         $articleTemplate = '<article prefix="
    sioc: http://rdfs.org/sioc/ns#
    ctag: http://commontag.org/ns#
@@ -46,7 +46,7 @@ class PostView {
             "/Spammers/" . $userID . '/' . $postID,
             "/Spammers/" . $userID,
             $p[$key]['http://purl.org/dc/terms/created'][0],
-            htmlentities($p[$key]['http://rdfs.org/sioc/ns#content'][0], ENT_QUOTES, 'UTF-8'),
+            htmlspecialchars_decode($p[$key]['http://rdfs.org/sioc/ns#content'][0]),
             $userPref,
             $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0],
             $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0],
@@ -73,15 +73,24 @@ class PostView {
     /* il parametro $m è un array multiplo di post */
 
     public static function renderMultiplePost($m) {
-        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><archive></archive>');
+        $dom = new DOMDocument('1.0', 'utf-8');
+        $archive = $dom->appendChild($dom->createElement('archive'));
+        /* $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><archive></archive>'); */
         foreach ($m as $post) {
-            $myPost = $xml->addChild('post');
-            $myPost->addChild('content', 'text/html; charset=UTF8');
-            $myPost->addChild('affinity', rand(3, 13));
-            $myPost->addChild($this->renderPost($post));
+//            $myPost = $xml->addChild('post');
+//            $myPost->addChild('content', 'text/html; charset=UTF8');
+//            $myPost->addChild('affinity', rand(3, 13));
+            $myPost = $archive->appendChild($dom->createElement('post'));
+            $myPost->appendChild($dom->createElement('content', 'text/html; charset=UTF8'));
+            $myPost->appendChild($dom->createElement('affinity', rand(1, 20)));
+            $content = self::renderPost($post);
+            //$myPost->addChild(self::renderPost($post));
+
+            $article = $dom->createTextNode($content);
+            $myPost->appendChild($article);
             ;
         }
-        return $xml->asXML();
+        return $dom->saveXML();
     }
 
 }

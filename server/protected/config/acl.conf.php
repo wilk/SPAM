@@ -49,11 +49,11 @@
 //							);
 $acl['logged']['allow'] = array(
     'PostController' => '*', 'ServersController' => '*', 'LikeController'=>'*', 'FollowController'=>'*',
-    'TesauroController'=>'*'
+    'TesauroController'=>'*','SearchController'=>'*'
 );
 $acl['anonymous']['allow'] = array(
     'PostController' => array('sendPost','hasReply'), 'ServersController' => array('sendServersList'),'LikeController'=>array('propagateLike'),
-    'TesauroController'=>array('sendThesaurus')
+    'TesauroController'=>array('sendThesaurus'), 'SearchController'=>'*'
 );
 $acl['anonymous']['deny'] = array(
     'FollowController' => '*', 'ServersController'=>array('rewriteServersList'),'LikeController'=>array('setLike'),

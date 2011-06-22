@@ -75,26 +75,34 @@ class PostController extends DooController {
             $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
             $htmlPost = PostView::renderPost($myPost, $user, $post);
             print $htmlPost;
-        } else if ($server == 'Spammers') {
-            $url = $post . '/' . $this->acceptType();           
-            header('HTTP/1.1 303');
-            header("Location: " . $url);
+        } else if ($server == 'Spammers' && $this->acceptType() == 'rdf') {
+            if (!isset($this->params['type'])) {
+                $url = $post . '/rdf';
+                header('Status: 303');
+                header("Location: " . $url);
+            } else {
+                $this->articolo = new PostModel();
+                $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
+                $rdfPost = PostView::renderPostRdf($myPost);
+                $this->setContentType('rdf');
+                print $rdfPost;
+            }
         } else {
             return ErrorController::notImpl();
         }
     }
-
-    public function sendPostByType() {
-        $server = $this->params['serverID'];
-        $user = $this->params['userID'];
-        $post = $this->params['postID'];
-        $type = $this->params['type'];
-        $this->articolo = new PostModel();
-        $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
-        $rdfPost= PostView::renderPostRdf($myPost);
-        $this->setContentType('rdf');
-        print $rdfPost;
-    }
+//DEPRECATED
+//    public function sendPostByType() {
+//        $server = $this->params['serverID'];
+//        $user = $this->params['userID'];
+//        $post = $this->params['postID'];
+//        $type = $this->params['type'];
+//        $this->articolo = new PostModel();
+//        $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
+//        $rdfPost = PostView::renderPostRdf($myPost);
+//        $this->setContentType('rdf');
+//        print $rdfPost;
+//    }
 
     /* il respam crea un messaggio sul server quando il client gli passa
      * un <article> esattamente come accade in createPost;
@@ -107,7 +115,7 @@ class PostController extends DooController {
         if ($serverID == "Spammers") {
             $this->articolo = new PostModel();
             $myPost = $this->articolo->getPost('spam:/' . $serverID . '/' . $userID . '/' . $postID);
-            $key=key($myPost);
+            $key = key($myPost);
             if ($pID = $this->articolo->initNewPost('<article>' . $myPost[$key]['http://rdfs.org/sioc/ns#content'][0] . '</article>')) {
                 $utente = new UserModel($_SESSION['user']['username']);
                 $utente->addPost2Usr($pID);

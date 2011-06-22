@@ -19,7 +19,7 @@ Also check out the links page for a list of URLs available in this demo.</p>';
     }
 
     public function notAuth() {
-        print ("Devi eseguire il login per utilizzare questa funzione!!");
+        echo ("Devi eseguire il login per utilizzare questa funzione!!");
         return 401;
     }
 

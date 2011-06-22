@@ -72,7 +72,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 			switch (combo.getValue ()) {
 				case 'Author' :
 					// Set appropriate URL
-					store.getProxy().seturl = 'search/' + number.getValue () + '/author/' + text.getValue ();
+					store.getProxy().url = 'search/' + number.getValue () + '/author/' + text.getValue ();
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);

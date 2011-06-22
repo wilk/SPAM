@@ -97,8 +97,13 @@ class UserModel {
     }
     
     public function getFollows(){
-        if (isset($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows']))
-            return $this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows'];
+        if (isset($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows'])){
+            $a = array();
+            foreach($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows'] as $v){
+                array_push($a, (strstr($v, '/')));
+            }
+            return $a;
+        }
     }
     
     public function handleFollow($r, $v){

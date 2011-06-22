@@ -58,6 +58,6 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 //		}
 		
 		// Redispose windows with new focus
-		disposeArticles (store, model, index);
+		//disposeArticles (store, model, index);
 	} 
 });

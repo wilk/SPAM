@@ -245,17 +245,17 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		}
 		
 		// Check if browser can support geolocation to prevent useless operations
-//		if (browserGeoSupportFlag) {
-//			// Set new coords
-//			var coords = findGeoLocation (focusModel.get ('article'));
-//			
-//			// Check if geolocation span tag exists
-//			if (coords != null) {
-//				var latlng = new google.maps.LatLng (coords.lat, coords.lng);
-//				googleMap.setCenter (latlng);
-//				googleMap.setZoom (5);
-//			}
-//		}
+		if (browserGeoSupportFlag) {
+			// Set new coords
+			var coords = findGeoLocation (focusModel.get ('article'));
+			
+			// Check if geolocation span tag exists
+			if (coords != null) {
+				var latlng = new google.maps.LatLng (coords.lat, coords.lng);
+				googleMap.setCenter (latlng);
+				googleMap.setZoom (5);
+			}
+		}
 		
 		// If user set like, change the icon of 'I like' button
 		if (likeOrDislike == 1) {

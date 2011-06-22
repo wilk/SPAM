@@ -122,6 +122,14 @@ function disposeArticles (store, focus, focusIndex) {
 			}
 		} , this);
 	}
+	// Check if there's only an article
+	else if (store.count () == 1) {
+		if (focus == null) {
+			// Set the first of store
+			focusIndex = 0;
+			focus = allRecord[focusIndex];
+		}
+	}
 	
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {

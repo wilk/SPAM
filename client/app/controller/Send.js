@@ -114,6 +114,12 @@ Ext.define ('SC.controller.Send' , {
 				url: 'post' ,
 				params: { article: article } ,
 				success: function (response) {
+					Ext.Msg.show ({
+						title: response.status + ' : success!' ,
+						msg: 'New article was created successfully! Please, don\'t stop spamming!' ,
+						buttons: Ext.Msg.OK ,
+						icon: Ext.Msg.INFO
+					});
 					win.close ();
 				} ,
 				failure: function (error) {

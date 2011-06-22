@@ -22,6 +22,9 @@ Ext.define ('SC.controller.Send' , {
 	// Views
 	views: ['Send'] ,
 	
+	models: ['regions.center.Articles'] ,
+	stores: ['regions.center.Articles'] ,
+	
 	// Configuration
 	init: function () {
 		this.control ({
@@ -66,9 +69,12 @@ Ext.define ('SC.controller.Send' , {
 	} ,
 	
 	// @brief
-	sendPost : function () {
+	sendPost : function (button) {
 		// TODO: parsing text to finding hashtag
 		// TODO: hashtag autocomplete
+		
+		// Articles store
+		var store = this.getRegionsCenterArticlesStore ();
 		
 		// Check if text area is filled and if it has at most 140 chars
 		if (txtSendArea.isValid () && (txtSendArea.getValue().length <= MAXCHARS)) {
@@ -114,13 +120,14 @@ Ext.define ('SC.controller.Send' , {
 				url: 'post' ,
 				params: { article: article } ,
 				success: function (response) {
-					Ext.Msg.show ({
-						title: response.status + ' : success!' ,
-						msg: 'New article was created successfully! Please, don\'t stop spamming!' ,
-						buttons: Ext.Msg.OK ,
-						icon: Ext.Msg.INFO
-					});
+					// On success, close window and display last 5 posts of the user
 					win.close ();
+					
+					// Set appropriate URL with username of the user already logged-in
+					store.getProxy().url = 'search/5/author/' + Ext.util.Cookies.get ('SPAMlogin');
+					
+					// Retrieve articles
+					requestSearchArticles (store, null, 0);
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({

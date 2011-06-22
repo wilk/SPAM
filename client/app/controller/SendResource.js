@@ -25,6 +25,9 @@ Ext.define ('SC.controller.SendResource' , {
 	// Views
 	views: ['SendResource'] ,
 	
+	models: ['regions.center.Articles'] ,
+	stores: ['regions.center.Articles'] ,
+	
 	// Configuration
 	init: function () {
 		this.control ({
@@ -72,6 +75,10 @@ Ext.define ('SC.controller.SendResource' , {
 	sendPost : function () {
 		// TODO: parsing text to finding hashtag
 		// TODO: hashtag autocomplete
+		
+		// Articles store
+		var store = this.getRegionsCenterArticlesStore ();
+		
 		// Check if text area is filled and if it has at most 140 chars
 		if (txtResUrl.isValid () && (txtResDes.getValue().length <= MAXCHARS)) {
 		
@@ -115,7 +122,14 @@ Ext.define ('SC.controller.SendResource' , {
 				url: 'post' ,
 				params: { article: article } ,
 				success: function (response) {
+					// On success, close window and display last 5 posts of the user
 					winRes.close ();
+
+					// Set appropriate URL with username of the user already logged-in
+					store.getProxy().url = 'search/5/author/' + Ext.util.Cookies.get ('SPAMlogin');
+					
+					// Retrieve articles
+					requestSearchArticles (store, null, 0);
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({

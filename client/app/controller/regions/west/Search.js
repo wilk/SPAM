@@ -87,22 +87,23 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					
 					break;
 				case 'Recent' :
-					if (text.isValid ()) {
+					// TODO: check if is it possible to search by recent without terms
+//					if (text.isValid ()) {
 						// Set appropriate URL
 						store.getProxy().url = 'search/' + number.getValue () + '/recent/' + text.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);
-					}
+//					}
 					// If textfield is empty, return an error
-					else {
-						Ext.Msg.show ({
-							title: 'Error ' ,
-							msg: 'You must specify the term to search.' ,
-							buttons: Ext.Msg.OK,
-							icon: Ext.Msg.ERROR
-						});
-					}
+//					else {
+//						Ext.Msg.show ({
+//							title: 'Error ' ,
+//							msg: 'You must specify the term to search.' ,
+//							buttons: Ext.Msg.OK,
+//							icon: Ext.Msg.ERROR
+//						});
+//					}
 					break;
 				case 'Related' :
 					if (text.isValid ()) {

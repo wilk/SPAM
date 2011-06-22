@@ -8,7 +8,6 @@
 // @note	Recent posts panel
 
 Ext.define ('SC.view.regions.east.RecentPost' , {
-//	extend: 'Ext.panel.Panel' ,
 	extend: 'Ext.grid.Panel' ,
 	alias: 'widget.recentpost' ,
 	

@@ -25,7 +25,7 @@ class PostView {
         $article_vars = array("%POSTID%", "%USERID%", "%POSTDATE%", "%POSTCONTENT%", "%USERLIKE%", "%LIKEVALUE%", "%DISLIKEVALUE%");
         //Controllo se l'utente ha un preferenza di like o dislike
         $userPref = '';
-        if ($myUser != null) {
+        if ($myUser !=null) {
             if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
                 foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'] as $likeUser) {
                     if ($likeUser == "spam:/Spammers/" . $myUser) {

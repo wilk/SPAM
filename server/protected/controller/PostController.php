@@ -71,8 +71,8 @@ class PostController extends DooController {
                     return $request->resultCode();
                 }
             }
-            if (isset ($_SESSION['user']['username']))
-                $myUser=$_SESSION['user']['username'];
+            if (isset($_SESSION['user']['username']))
+                $myUser = $_SESSION['user']['username'];
             $this->articolo = new PostModel();
             $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
             $htmlPost = PostView::renderPost($myPost, $myUser);
@@ -93,6 +93,7 @@ class PostController extends DooController {
             return ErrorController::notImpl();
         }
     }
+
 //DEPRECATED
 //    public function sendPostByType() {
 //        $server = $this->params['serverID'];

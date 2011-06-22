@@ -71,9 +71,11 @@ class PostController extends DooController {
                     return $request->resultCode();
                 }
             }
+            if (isset ($_SESSION['user']['username']))
+                $myUser=$_SESSION['user']['username'];
             $this->articolo = new PostModel();
             $myPost = $this->articolo->getPost('spam:/' . $server . '/' . $user . '/' . $post);
-            $htmlPost = PostView::renderPost($myPost, $user, $post);
+            $htmlPost = PostView::renderPost($myPost, $myUser);
             print $htmlPost;
         } else if ($server == 'Spammers' && $this->acceptType() == 'rdf') {
             if (!isset($this->params['type'])) {

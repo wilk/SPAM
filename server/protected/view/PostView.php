@@ -5,7 +5,7 @@ include_once 'protected/module/arc/ARC2.php';
 class PostView {
     /* prende in input il post come array e lo ritorna in html+rdfa */
 
-    public static function renderPost($p, $userID=null, $postID=null) {
+    public static function renderPost($p, $myUser=null) {
         //Definisco template di un articolo HTML standard da inviare
         $key = key($p);
         $articleTemplate = '<article prefix="
@@ -18,38 +18,43 @@ class PostView {
    property="dcterms:created" content="%POSTDATE%">
    %POSTCONTENT%
    %USERLIKE%
-   <span property="tweb:countLike" content="%LIKEVALUE%" />
-   <span property="tweb:countDislike" content="%DISLIKEVALUE%" />
+   %LIKEVALUE%
+   %DISLIKEVALUE%
 </article>';
         //Identifico array delle variabili del template da sostituire
         $article_vars = array("%POSTID%", "%USERID%", "%POSTDATE%", "%POSTCONTENT%", "%USERLIKE%", "%LIKEVALUE%", "%DISLIKEVALUE%");
         //Controllo se l'utente ha un preferenza di like o dislike
         $userPref = '';
-        if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
-            foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'] as $likeUser) {
-                if ($likeUser == "spam:/Spammers/" . $userID) {
-                    $userPref = '<span rev="tweb:like" resource="/Spammers/' . $userID . '" />';
-                    break;
+        if ($myUser != null) {
+            if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
+                foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'] as $likeUser) {
+                    if ($likeUser == "spam:/Spammers/" . $myUser) {
+                        $userPref = '<span rev="tweb:like" resource="/Spammers/' . $myUser . '" />';
+                        break;
+                    }
+                }
+            }
+            if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
+                foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $dislikeUser) {
+                    if ($dislikeUser == "spam:/Spammers/" . $myUser) {
+                        $userPref = '<span rev="tweb:dislike" resource="/Spammers/' . $myUser . '" />';
+                        break;
+                    }
                 }
             }
         }
-        if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
-            foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $dislikeUser) {
-                if ($dislikeUser == "spam:/Spammers/" . $userID) {
-                    $userPref = '<span rev="tweb:dislike" resource="/Spammers/' . $userID . '" />';
-                    break;
-                }
-            }
-        }
+        $elementPost = explode('/', strstr($key, '/'));
+        unset($elementPost[3]);
+        $authorPost = implode('/', $elementPost);
 //Specifico array con i valori da inserire
         $article_values = array(
-            "/Spammers/" . $userID . '/' . $postID,
-            "/Spammers/" . $userID,
+            strstr($key, '/'),
+            $authorPost,
             $p[$key]['http://purl.org/dc/terms/created'][0],
-            htmlspecialchars_decode($p[$key]['http://rdfs.org/sioc/ns#content'][0]),
+            htmlspecialchars($p[$key]['http://rdfs.org/sioc/ns#content'][0]),
             $userPref,
-            $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0],
-            $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0],
+            htmlspecialchars("<span property=\"tweb:countLike\" content=\"" . $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0] . " />"),
+            htmlspecialchars("<span property=\"tweb:countDislike\" content=\"" . $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0] . " />"),
         );
         $article_html = str_replace($article_vars, $article_values, $articleTemplate);
         return $article_html;
@@ -90,7 +95,7 @@ class PostView {
             $myPost->appendChild($article);
             ;
         }
-        return $dom->saveXML();
+        return htmlspecialchars_decode($dom->saveHTML());
     }
 
 }

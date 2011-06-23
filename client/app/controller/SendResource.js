@@ -125,8 +125,16 @@ Ext.define ('SC.controller.SendResource' , {
 					// On success, close window and display last 5 posts of the user
 					winRes.close ();
 
+					// Get appropriate serverID of the user logged in
+					var sendServerID = Ext.getCmp('tfServerUrl').getValue ();
+					
+					// If it is null, set default value ('Spammers')
+					if (sendServerID == null) {
+						sendServerID = 'Spammers';
+					}
+					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = 'search/5/author/' + Ext.util.Cookies.get ('SPAMlogin');
+					store.getProxy().url = 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);

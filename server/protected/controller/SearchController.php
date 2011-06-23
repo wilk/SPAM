@@ -121,7 +121,7 @@ class SearchController extends DooController {
                 } else {
                     $post = new PostModel();
                     $this->listaPost = $post->getPostArray();
-                    print_r($this->listaPost);
+                    //print_r($this->listaPost);
                     if (sizeof($this->listaPost) > $limite)
                         array_slice ($this->listaPost, 0, $limite, TRUE);
                     $this->displayPosts($this->listaPost);

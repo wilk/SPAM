@@ -8,6 +8,7 @@ class PostView {
     public static function renderPost($p, $myUser=null) {
         //Definisco template di un articolo HTML standard da inviare
         $key = key($p);
+        print_r($p); die();
         $articleTemplate = '<article prefix="
    sioc: http://rdfs.org/sioc/ns#
    ctag: http://commontag.org/ns#
@@ -81,14 +82,14 @@ class PostView {
         $dom = new DOMDocument('1.0', 'utf-8');
         $archive = $dom->appendChild($dom->createElement('archive'));
         /* $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><archive></archive>'); */
-        foreach ($m as $post) {
+        foreach ($m as $k => $post) {
 //            $myPost = $xml->addChild('post');
 //            $myPost->addChild('content', 'text/html; charset=UTF8');
 //            $myPost->addChild('affinity', rand(3, 13));
             $myPost = $archive->appendChild($dom->createElement('post'));
             $myPost->appendChild($dom->createElement('content', 'text/html; charset=UTF8'));
             $myPost->appendChild($dom->createElement('affinity', rand(1, 20)));
-            $content = self::renderPost($post);
+            $content = self::renderPost($m[$k]);
             //$myPost->addChild(self::renderPost($post));
 
             $article = $dom->createTextNode($content);

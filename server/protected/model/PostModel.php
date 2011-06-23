@@ -207,7 +207,7 @@ class PostModel {
     //devo gestire il limite
     public function getPostArray($a = NULL) {
         $lista = array();
-        if (isset($a)) {//se ricevo una lista di postid
+        if ($a != NULL) {//se ricevo una lista di postid
             foreach ($a as $i) {
                 if ($this->postExist($i))
                     array_push($lista, $this->getPost($i));
@@ -216,8 +216,8 @@ class PostModel {
         else {//TODO altrimenti pusho i post che trovo
             //$a = array_reverse($this->index, TRUE);
             foreach ($this->index as $k => $post) {
-                if (isset($post[self::$siocPost]))
-                    array_push($lista, $this->index[$k]);
+                if ($post['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://rdfs.org/sioc/ns#Post')
+                    $lista[$k] = $post;
             }
         }
         return $lista;

@@ -18,9 +18,10 @@ function requestSearchArticles (store, focus, focusIndex) {
 		// On failure, display error box
 		if (! success) {
 			var err = operation.getError ();
+			var msg = displayError (err.status);
 			Ext.Msg.show ({
 				title: 'Error ' + err.status ,
-				msg: 'Something bad happened!' ,
+				msg: msg ,
 				buttons: Ext.Msg.OK,
 				icon: Ext.Msg.ERROR
 			});
@@ -60,4 +61,36 @@ function requestSearchArticles (store, focus, focusIndex) {
 	});
 }
 
-
+// @brief Set the appropriate error message.
+// @param status: http error status.
+// @return Error message to display.
+function displayError (status) {
+	var msg;
+	switch (status) {
+		case 400:
+			msg = 'Sorry! Bad request!';
+			break;
+		case 401:
+			msg = 'Sorry! You are unauthorized to get this resource!';
+			break;
+		case 404:
+			msg = 'Sorry! Resource not found!';
+			break;
+		case 405:
+			msg = 'Sorry! Method not allowed!';
+			break;
+		case 406:
+			msg = 'Sorry! The requested resource is only capable of generating content not acceptable according to the Accept headers sent in the request.';
+		case 500: 
+			msg = 'Sorry! Internal server error!';
+			break;
+		case 501:
+			msg = 'Sorry! The service is not implemented!';
+			break;
+		default:
+			msg = 'Sorry! Something bad happened!';
+			break;
+	}
+	
+	return msg;
+}

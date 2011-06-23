@@ -21,7 +21,7 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 	
 	// Configuration
 	init: function () {
-		var store;
+		var storeRecentPost;
 		this.control ({
 			'recentpost' : {
 				afterrender : this.initRecentPostPanel ,
@@ -32,10 +32,10 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 	} ,
 	
 	initRecentPostPanel: function (panel) {
-		store = this.getRegionsEastRecentPostStore ();
+		storeRecentPost = this.getRegionsEastRecentPostStore ();
 		
 		// Every 5 secs refresh the recent articles list
-		setInterval ('store.load ()', 5000);
+		setInterval ('storeRecentPost.load ()', 5000);
 	} ,
 	
 	displayArticle: function (view, record, item, index, event) {

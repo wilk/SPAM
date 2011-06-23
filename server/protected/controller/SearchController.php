@@ -3,6 +3,7 @@
 include_once 'protected/model/PostModel.php';
 include_once 'protected/model/UserModel.php';
 include_once 'protected/view/PostView.php';
+include_once 'protected/controller/ErrorController.php';
 include_once 'protected/module/simple_html_dom.php';
 
 class SearchController extends DooController {
@@ -60,47 +61,71 @@ class SearchController extends DooController {
                 $srv = $this->params['var1'];
                 $usr = $this->params['var2'];
                 if ($srv == 'Spammers') {//richiesta interna
-                    $posts = $this->rcvFromINTServer($usr, $limite);
-                    $this->displayPosts($posts);
+                    $user = new UserModel($usr);
+                    //qui faccio solo un controllo; sarebbe giusto farne due distinti
+                    if ($user->ifUserExist()){
+                        if ($user->checkPosts()){
+                            $posts = $this->rcvFromINTServer($user, $limite);
+                            if (sizeof($posts))
+                                $this->displayPosts($posts);
+                            else{
+                                ErrorController::internalError();
+                            }
+                        } else
+                            ErrorController::notFound("Errore: l'utente $usr non ha pubblicato messaggi.\n");
+                    } else
+                        ErrorController::notFound("Errore: l'utente $usr non esiste.\n");
                 } else {//richiesta esterna
                     $metodo = 'searchserver/'.$limite.'/'.$tipo.'/'.$srv.'/'.$usr;
                     //giro direttamente la risposta sperando che il server non scazzi
+                    //ps: può dare problemi interni per il fatto dello status di ritorno
                     return $this->rcvFromEXTServer($srv, $method);
                 }
                 break;
                 
             case $search_Type[1]: //following
-                $user = new UserModel($_SESSION['user']['username']);
-                $follows = $user->getFollows();
-                $size = sizeof($follows);
-                if (!$size)
-                    return 'Attualmente non ci sono utenti seguiti.';
-                //scelgo di prendere lo stesso numero di messaggi da ogni server
-                $howMany = round($limite/$size);
-                foreach ($follows as $follow){
-                    list($domain,$srv,$usr) = explode('/', $follow);
-                    if ($srv == 'Spammers') {//richiesta interna
-                        $posts = $this->rcvFromINTServer($usr, $howMany);
-                        //inserisco sti messaggi un una lista da inviare al client
+                if (isset($_SESSION['user']['username'])){
+                    $user = new UserModel($_SESSION['user']['username']);
+                    $follows = $user->getFollows();
+                    $size = sizeof($follows);
+                    if (!$size)
+                        ErrorController::notFound('Attualmente non ci sono utenti seguiti.\n');
+                    foreach ($follows as $follow){
+                        $posts;
+                        $howMany = round($limite/$size);
+                        list($domain,$srv,$usr) = explode('/', $follow);
+                        if ($srv == 'Spammers') {//richiesta interna
+                            $utente = new UserModel($usr);
+                            $posts = $this->rcvFromINTServer($utente, $howMany);
+                        } else {//richiesta esterna
+                            $metodo = 'searchserver/'.$howMany.$search_Type[0].$srv.'/'.$usr;
+                            $XMLresult = $this->rcvFromEXTServer($srv, $method);
+                            //if ($XMLresult === false)
+                            $posts = $this->parseEXTContent($XMLresult, $srv);
+                        }
+                        $limite -= sizeof($posts);
+                        $size--;
                         array_push($this->listaPost, $posts);
-                    } else {//richiesta esterna
-                        $metodo = 'searchserver/'.$howMany.'/author'.$srv.'/'.$usr;
-                        $XMLresult = $this->rcvFromEXTServer($srv, $method);
-                        //devo parserizzare l'xml che ricevo
-                        $posts = $this->parseEXTContent($XMLresult, $srv);
-                        array_push($this->listaPost, $posts);
-                    }
-                }//qui dovrei avere la mia lista di messaggi dagli utenti seguiti
-                $this->getPostsOnly();
-                if (sizeof($this->listaPost) > $limite)
-                    $this->listaPost = array_slice($this->listaPost, 0, $limite, TRUE);
-                $this->displayPosts($this->listaPost);
+                    }//qui dovrei avere la mia lista di messaggi dagli utenti seguiti
+                    //$this->getPostsOnly();
+                    if (sizeof($this->listaPost) > $limite)
+                        $this->listaPost = array_slice($this->listaPost, 0, $limite, TRUE);
+                    $this->displayPosts($this->listaPost);
+                } else
+                    return 401;
                 break;
                 
             case $search_Type[2]: //recent
-                if (!(isset ($this->params['var1'])))
-                        //BAD REQUEST
-                        return 400;
+                if (isset($this->params['var1'])){
+                    //sto cercando un termine specifico
+                } else {
+                    $post = new PostModel();
+                    $this->listaPost = $post->getPostArray();
+                    print_r($this->listaPost);
+                    if (sizeof($this->listaPost) > $limite)
+                        array_slice ($this->listaPost, 0, $limite, TRUE);
+                    $this->displayPosts($this->listaPost);
+                }
 
                 break;
                 
@@ -151,34 +176,38 @@ class SearchController extends DooController {
         if ($request->isSuccess())
             return $request->xml_result();
         else
-            return $request->resultCode(); //TODO perfezionare l'errore
+            return false;
     }
     
     private function parseEXTContent($toParse, $server){
         $array = array();
         $html = str_get_html($toParse->asXML());
         foreach ($html->find('article') as $articolo){
-            array_push($array, (array) PostModel::parseArticle($articolo->outertext, $server));
+            $post = PostModel::parseArticle($articolo->outertext, $server);
+            //sto bordello è solo per prelevare solo il post vero e proprio
+            foreach ($post as $k => $value){
+                if ($value['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://rdfs.org/sioc/ns#Post')
+                    array_push($array, $post[$k]);
+            }
         }
         return $array;
     }
 
     private function rcvFromINTServer($usr, $countPost){
-        $user = new UserModel($usr);
         $post = new PostModel();
-        $postIDs = $user->getPosts($countPost);
+        $postIDs = $usr->getPosts($countPost);
         return $post->getPostArray($postIDs);
     }
     
-    private function getPostsOnly(){
-        $tmp_array = array();
-        foreach ($this->listaPost as $key => $value) {
-            //questa parte non funzionerà, l'etichetta deve essere estesa
-            if ($value['rdf:type'][] == 'sioc:Post')
-                array_push ($tmp_array, $this->listaPost[$key]);
-        }
-        $this->listaPost = $tmp_array;
-    }
+//    private function getPostsOnly(){
+//        $tmp_array = array();
+//        foreach ($this->listaPost as $key => $value) {
+//            //questa parte non funzionerà, l'etichetta deve essere estesa
+//            if ($value['rdf:type'][] == 'sioc:Post')
+//                array_push ($tmp_array, $this->listaPost[$key]);
+//        }
+//        $this->listaPost = $tmp_array;
+//    }
 
     public function searchRecent($term=null) {
         

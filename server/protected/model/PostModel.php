@@ -12,6 +12,7 @@ class PostModel {
     /* RDF properties */
     private static $siocTopic = 'http://rdfs.org/sioc/ns#topic';
     private static $siocContent = 'http://rdfs.org/sioc/ns#content';
+    private static $siocPost = 'http://rdfs.org/sioc/ns#Post';
     private $index;
     public $postID;
     private $msg2 = '
@@ -202,12 +203,10 @@ class PostModel {
         );
         return $a;
     }
-
-    public function getPostArray(/* $t = NULL, */ $a = NULL) {
+    
+    //devo gestire il limite
+    public function getPostArray($a = NULL) {
         $lista = array();
-        /* if ($t){
-
-          } */
         if (isset($a)) {//se ricevo una lista di postid
             foreach ($a as $i) {
                 if ($this->postExist($i))
@@ -215,9 +214,10 @@ class PostModel {
             }
         }
         else {//TODO altrimenti pusho i post che trovo
-            foreach ($this->index as $post) {
-                if (isset($post[self::$siocContent]))
-                    array_push($lista, $post);
+            //$a = array_reverse($this->index, TRUE);
+            foreach ($this->index as $k => $post) {
+                if (isset($post[self::$siocPost]))
+                    array_push($lista, $this->index[$k]);
             }
         }
         return $lista;

@@ -21,21 +21,28 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 	
 	// Configuration
 	init: function () {
+		var store;
 		this.control ({
 			'recentpost' : {
-				afterrender : function () {
-//					Ext.Ajax.request ({
-//						url: 'search/10/recent/' ,
-//						success: function (response) {
-//							Ext.Msg.alert (response.responseText);
-//						} ,
-//						failure: function (error) {
-//							Ext.Msg.alert ('Error ' + error.status, error);
-//						}
-//					});
-				}
+				afterrender : this.initRecentPostPanel ,
+				itemdblclick: this.displayArticle
 			}
 		});
 		console.log ('Controller RecentPost started.');
+	} ,
+	
+	initRecentPostPanel: function (panel) {
+		store = this.getRegionsEastRecentPostStore ();
+		
+		// Every 5 secs refresh the recent articles list
+		setInterval ('store.load ()', 5000);
+	} ,
+	
+	displayArticle: function (view, record, item, index, event) {
+		// Set appropriate URL
+		store.getProxy().url = 'search/5/affinity' + record.get ('about');
+	
+		// Retrieve articles
+		requestSearchArticles (store, record, index);
 	}
 });

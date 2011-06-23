@@ -204,10 +204,10 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			} ,
 			success: function (response) {
 				Ext.Msg.show ({
-					title: 'Success!' ,
-					msg: "Respam was successful!" ,
+					title: response.status + ' : success!' ,
+					msg: "Respam was successful! +1!" ,
 					buttons: Ext.Msg.OK,
-					icon: Ext.Msg.OK
+					icon: Ext.Msg.INFO
 				});
 			} ,
 			failure: function (error) {

@@ -11,14 +11,25 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 	extend: 'Ext.data.Model' ,
 	
 	// Fields
-	fields: ['content' , 'affinity' , 'article'] ,
+	fields: ['content' , {
+		name: 'affinity' ,
+		type: 'int'
+	} , {
+		name: 'article' ,
+		type: 'string' 
+	} , {
+		name: 'resource' ,
+		mapping: 'article @resource'
+	} , {
+		name: 'about' ,
+		mapping: 'article @about'
+	}] ,
 	
 	// REST Proxy for REST requests
 	proxy: {
 		type: 'rest' ,
-		// 10 recent posts
-//		url: 'search/10/recent/' ,
-		url: 'app/data/art.xml' ,
+//		url: 'search/10/recent' ,
+		url: 'app/data/art4.xml' ,
 		reader: {
 			type: 'xml' ,
 			root: 'archive' ,

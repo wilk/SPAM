@@ -217,9 +217,10 @@ class PostModel {
             //$a = array_reverse($this->index, TRUE);
             foreach ($this->index as $k => $post) {
                 if ($post['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://rdfs.org/sioc/ns#Post')
-                    $lista[$k] = $post;
+                    array_push ($lista, $this->getPost($k));
             }
         }
+        //print_r($lista);
         return $lista;
     }
 

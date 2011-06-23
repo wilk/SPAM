@@ -8,7 +8,7 @@ class PostView {
     public static function renderPost($p, $myUser=null) {
         //Definisco template di un articolo HTML standard da inviare
         $key = key($p);
-        print_r($p); die();
+        //print_r($p); die();
         $articleTemplate = '<article prefix="
    sioc: http://rdfs.org/sioc/ns#
    ctag: http://commontag.org/ns#
@@ -94,7 +94,6 @@ class PostView {
 
             $article = $dom->createTextNode($content);
             $myPost->appendChild($article);
-            ;
         }
         return htmlspecialchars_decode($dom->saveHTML());
     }

@@ -33,12 +33,22 @@ class PostController extends DooController {
         }
     }
 
+    /*
+     * Crea un nuovo post aggiungendolo al file data/posts.rdf e aggiunge un riferimento al post
+     * nel file data/users.rdf nella descrizione dell'utente.
+     * Il contenuto del post può essere passato o come variabile POST o tramite variabile interna.
+     */
+
     public function createPost($content = null) {
         /* Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
 
-        if ($content == null)
-            $mycontent = $_POST['article'];
+        if ($content == null) {
+            if (isset($_POST['article']))
+                $mycontent = $_POST['article'];
+            else
+                return ErrorController::badReq("Il contenuto dell'articolo non può essere vuoto");
+        }
         else
             $mycontent=$content;
         $this->articolo = new PostModel();
@@ -83,7 +93,7 @@ class PostController extends DooController {
                     if ($request->isSuccess()) {
                         $content = $request->result();
                         $this->setContentType('html');
-                        die ($content);
+                        die($content);
                     } else {
                         return $request->resultCode();
                     }
@@ -122,9 +132,12 @@ class PostController extends DooController {
 //        print $rdfPost;
 //    }
 
-    /* il respam crea un messaggio sul server quando il client gli passa
-     * un <article> esattamente come accade in createPost;
-     * al momento lascio cmq il suo metodo */
+    /*
+     * Copia il contenuto del post richiesto e lo salva come post ex-novo sfruttando la funzione CreatePost
+     * Nel caso il post richiesto sia sul server interno controlla che esista, se invece il post è su un server esterno
+     * viene inoltrata la richesta per ricevere il post.
+     * Una volta creato, il post viene arricchito con sintassi rdfa per indicare che è un respam.
+     */
 
     public function createRespam() {
         if (!(isset($_POST['serverID'])))
@@ -166,6 +179,12 @@ class PostController extends DooController {
         }
         $this->articolo->addRespamOf('spam:/' . $serverID . '/' . $userID . '/' . $postID);
     }
+
+    /*
+     * Genera un nuovo post di risposta collegato all'originale.
+     * Una volta generato il post lo si arrichisce con rdfa per indicare che è una risposta all'originale.
+     * Inoltra la richiesta di arricchire il post originale con rdfa per indicare che è presente una risposta.
+     */
 
     public function createReply() {
         if (!(isset($_POST['article'])))
@@ -214,7 +233,7 @@ class PostController extends DooController {
             return ErrorController::badReq('Il userID deve essere specificato!!');
         if (!(isset($_POST['postID'])))
             return ErrorController::badReq('Il postID deve essere specificato!!');
-         if (!(isset($_POST['userID2Up'])))
+        if (!(isset($_POST['userID2Up'])))
             return ErrorController::badReq('Il userID2Up deve essere specificato!!');
         if (!(isset($_POST['postID2Up'])))
             return ErrorController::badReq('Il postID2Up deve essere specificato!!');
@@ -226,8 +245,9 @@ class PostController extends DooController {
         $resource = 'spam:/Spammers/' . $myUser . '/' . $myPost;
         $pathOfReply = 'spam:/' . $serverID . '/' . $userID . '/' . $postID;
         if ($this->articolo->postExist($resource))
-        $this->articolo->addHasReply($resource, $pathOfReply);
-        else return ErrorController::notFound ('Il post non esiste!');
+            $this->articolo->addHasReply($resource, $pathOfReply);
+        else
+            return ErrorController::notFound('Il post non esiste!');
     }
 
 }

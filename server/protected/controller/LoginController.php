@@ -14,7 +14,7 @@ class LoginController extends DooController {
         $request = new DooRestClient;
         if (!(isset($_POST['username'])))
             return ErrorController::badReq('L\' username deve essere specificato!!');
-        $user= strtolower($_POST['username']);
+        $user=$_POST['username'];
         $user = str_replace(' ', '_', $user);
         $utente = new UserModel($user);
         if ($utente->firstTime()) {

@@ -105,7 +105,7 @@ class PostModel {
         $parsedArray = $parser->getSimpleIndex();
         //print_r($parsedArray);
         $html = str_get_html($data);
-        $testoHTML = html_entity_decode($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
+        $testoHTML = htmlentities($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
         /* questo controllo serve quando ricevo da client e non so nulla del messaggio,
          * quindi il mio array sarà vuoto: lo creo mettendo solo il testo del messaggio;
          * ci penserà la initNewPost ad arricchirlo.

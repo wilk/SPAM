@@ -21,16 +21,19 @@ class PostView {
    %USERLIKE%
    %LIKEVALUE%
    %DISLIKEVALUE%
+   %HASREPLY%
+   %RESPAMOF%
+   %REPLYOF%
 </article>';
         //Identifico array delle variabili del template da sostituire
-        $article_vars = array("%POSTID%", "%USERID%", "%POSTDATE%", "%POSTCONTENT%", "%USERLIKE%", "%LIKEVALUE%", "%DISLIKEVALUE%");
+        $article_vars = array("%POSTID%", "%USERID%", "%POSTDATE%", "%POSTCONTENT%", "%USERLIKE%", "%LIKEVALUE%", "%DISLIKEVALUE%", "%HASREPLY%", "%RESPAMOF%", "%REPLYOF%");
         //Controllo se l'utente ha un preferenza di like o dislike
         $userPref = '';
-        if ($myUser !=null) {
+        if ($myUser != null) {
             if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
                 foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'] as $likeUser) {
                     if ($likeUser == "spam:/Spammers/" . $myUser) {
-                        $userPref = '<span rev="tweb:like" resource="/Spammers/' . $myUser . '" />';
+                        $userPref = htmlspecialchars('<span rev="tweb:like" resource="/Spammers/' . $myUser . '" />');
                         break;
                     }
                 }
@@ -38,11 +41,28 @@ class PostView {
             if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
                 foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $dislikeUser) {
                     if ($dislikeUser == "spam:/Spammers/" . $myUser) {
-                        $userPref = '<span rev="tweb:dislike" resource="/Spammers/' . $myUser . '" />';
+                        $userPref = htmlspecialchars('<span rev="tweb:dislike" resource="/Spammers/' . $myUser . '" />');
                         break;
                     }
                 }
             }
+        }
+        $listOfReply = '';
+        if (isset($p[$key]['http://rdfs.org/sioc/ns#has_reply'])) {
+            foreach ($p[$key]['http://rdfs.org/sioc/ns#has_reply'] as $hasReply) {
+                $pathPost = strstr($hasReply, '/');
+                $listOfReply .= htmlspecialchars("<span rev=\"sioc:has_reply\" resource=\"$pathPost\" />\n\r");
+            }
+        }
+        $respamOF = '';
+        if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/respamOf'])) {
+            $pathPost = strstr($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/respamOf'][0], '/');
+            $respamOF = htmlspecialchars("<span rev=\"tweb:respamOf\" resource=\"$pathPost\" />\n\r");
+        }
+        $replyOf = '';
+        if (isset($p[$key]['http://rdfs.org/sioc/ns#reply_of'])) {
+            $pathPost = strstr($p[$key]['http://rdfs.org/sioc/ns#reply_of'][0], '/');
+            $respamOF = htmlspecialchars("<span rev=\"sioc:reply_of\" resource=\"$pathPost\" />\n\r");
         }
         $elementPost = explode('/', strstr($key, '/'));
         unset($elementPost[3]);
@@ -56,6 +76,8 @@ class PostView {
             $userPref,
             htmlspecialchars("<span property=\"tweb:countLike\" content=\"" . $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0] . " />"),
             htmlspecialchars("<span property=\"tweb:countDislike\" content=\"" . $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0] . " />"),
+            $listOfReply,
+            $respamOF,
         );
         $article_html = str_replace($article_vars, $article_values, $articleTemplate);
         return $article_html;

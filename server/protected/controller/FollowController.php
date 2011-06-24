@@ -61,12 +61,21 @@ class FollowController extends DooController {
     
     //nudo e crudo senza controlli
     public function getFollows(){
+        if (isset ($_SESSION['user']['username'])){
         $utente = new UserModel($_SESSION['user']['username']);
         $lista = $utente->getFollows();
-        if (sizeof($lista) == 0)
-            return 404;
+        //Ho modificato facendo stampare una lista vuota invece di un 404, credo sia più appropriato
+       if (sizeof($lista) == 0)
+           //return ErrorController::notFound("L'utente non ha followers!");
+           $lista= array();
         $this->setContentType('xml');
         print FollowView::renderFollows($lista);
+        }
+        else {
+            $lista= array();
+            print FollowView::renderFollows($lista);
+        }
+        
     }
 
 }

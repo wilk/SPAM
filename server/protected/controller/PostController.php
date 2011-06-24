@@ -83,7 +83,7 @@ class PostController extends DooController {
                     if ($request->isSuccess()) {
                         $content = $request->result();
                         $this->setContentType('html');
-                        print $content;
+                        die ($content);
                     } else {
                         return $request->resultCode();
                     }

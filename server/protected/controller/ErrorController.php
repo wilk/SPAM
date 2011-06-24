@@ -17,38 +17,45 @@ class ErrorController extends DooController {
 <p>Give some helpful comments other than 404 :(
 Also check out the links page for a list of URLs available in this demo.</p>';
     }
-
+    //TODO: Eliminare tutti gli header HTTP, sono stati inseriti per genererare gli errori al di fuori di cgi
     public function notAuth() {
         header('Status: 401');
-        print ("Devi eseguire il login per utilizzare questa funzione!!");
+        header('HTTP/1.1 401');
+        die ("Devi eseguire il login per utilizzare questa funzione!!");
     }
 
     public static function notFound($msg) {
         header('Status: 404');
-        print ($msg);
+        header('HTTP/1.1 404');
+        die ($msg);
     }
 
     public function notSupport() {
         header('Status: 405');
+        header('HTTP/1.1 405');
     }
 
     public static function badReq($msg) {
         header('Status: 400');
-        print $msg;
+        header('HTTP/1.1 400');
+        die ($msg);
     }
 
     public static function internalError() {
         header('Status: 500');
-        print 'Anche le scimmie cadono dagli alberi .. risolveremo il problema il prima possibile.';
+        header('HTTP/1.1 500');
+        die ('Anche le scimmie cadono dagli alberi .. risolveremo il problema il prima possibile.');
     }
 
     public static function notImpl() {
         header('Status: 501');
-        print 'Ora pretendi troppo. Questa non l\'abbiamo implementata.';
+        header('HTTP/1.1 501');
+        die ('Ora pretendi troppo. Questa non l\'abbiamo implementata.');
     }
     public static function conflict() {
         header('Status: 409');
-        print 'Ti vedo indeciso! Mi chiedi un rdf ma non l\'accetti.';
+        header('HTTP/1.1 409');
+        die ('Ti vedo indeciso! Mi chiedi un rdf ma non l\'accetti.');
     }
 
 }

@@ -17,9 +17,6 @@ Ext.define ('SC.model.regions.center.Articles' , {
 	} , {
 		name: 'article' ,
 		type: 'string' 
-//		convert: function (value, record) {
-//			return base64_decode (value);
-//		}
 	} , {
 		name: 'resource' ,
 		mapping: 'article @resource'

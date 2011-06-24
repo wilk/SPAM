@@ -37,9 +37,14 @@ Ext.define ('SC.controller.regions.east.GeoLocation' , {
 				};
 				googleMap = new google.maps.Map(document.getElementById("geoloc"), myOptions);
 			}
-			// TODO: improve error handler
+			// If something goes wrong, alert user
 			catch (error) {
-				console.log (error);
+				Ext.Msg.show ({
+					title: 'Error' ,
+					msg: error.description ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
 			}
 		}
 		// Otherwise, do not show geo location panel

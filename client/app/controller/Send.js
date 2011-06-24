@@ -169,7 +169,7 @@ Ext.define ('SC.controller.Send' , {
 	} ,
 	
 	// @brief Reset text area of the new post
-	resetFields: function () {
+	resetFields: function (win) {
 		txtSendArea.reset ();
 		chkSendBoxGeoLoc.reset ();
 		

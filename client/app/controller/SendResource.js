@@ -72,7 +72,7 @@ Ext.define ('SC.controller.SendResource' , {
 	} ,
 	
 	// @brief
-	sendPost : function () {
+	sendPost : function (button) {
 		// TODO: parsing text to finding hashtag
 		// TODO: hashtag autocomplete
 		
@@ -175,7 +175,7 @@ Ext.define ('SC.controller.SendResource' , {
 	} ,
 	
 	// @brief Reset fields
-	resetFields: function () {
+	resetFields: function (button) {
 		txtResUrl.reset ();
 		txtResDes.reset ();
 		chkBoxGeoLoc.reset ();

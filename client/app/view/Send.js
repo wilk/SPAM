@@ -21,20 +21,36 @@ Ext.define ('SC.view.Send' , {
 	maximizable: true ,
 	// On top of any content
 	modal: true ,
-	layout: 'anchor' ,
 	bodyPadding: 10 ,
 	closeAction: 'hide' ,
+	// Horizontal box layout
+	layout: {
+		type: 'hbox' ,
+		pack: 'start' ,
+		align: 'stretch'
+	} ,
 	
 	// Body
 	items: [{
+		// Hashtag grid
+		xtype: 'grid' ,
+		flex: 1 ,
+		maxWidth: 150 ,
+		forceFit: true ,
+		store: 'Thesaurus' ,
+		columns: [{
+			header: 'Hashtag' ,
+			dataIndex: 'text'
+		}]
+	} , {
+		// Text area
 		xtype: 'textareafield' ,
 		id: 'txtAreaSend' ,
+		flex: 2 ,
 		emptyText: 'Type you text here ...' ,
 		allowBlank: false ,
 		enforceMaxLenght: true ,
 		maxLenght: 140 ,
-		// Anchor width and height
-		anchor: '100% 100%' ,
 		enableKeyEvents: true
 	}] ,
 	// Bottom buttons

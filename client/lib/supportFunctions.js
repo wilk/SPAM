@@ -12,7 +12,6 @@
 // @param focus: model of focus article
 // @param focusIndex: index focus article model
 function requestSearchArticles (store, focus, focusIndex) {
-	// TODO: make case for every errors (401, 404, ...)
 	// Load data with store request
 	store.load (function (records, operation, success) {
 		// On failure, display error box

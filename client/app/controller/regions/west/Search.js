@@ -52,7 +52,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 	} ,
 	
 	// @brief Reset all search fields
-	formReset : function () {		
+	formReset : function (button) {		
 		Ext.getCmp('comboSearch').reset ();
 		Ext.getCmp('numberSearch').reset ();
 		Ext.getCmp('textSearch').reset ();

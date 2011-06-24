@@ -44,7 +44,7 @@ class SRVModel {
             if ($myServer->attributes()->serverID == $s)
                 return $myServer->attributes()->serverURL;
         }
-        return 0;
+        return false;
     }
 
 }

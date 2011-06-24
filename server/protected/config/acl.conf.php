@@ -53,10 +53,10 @@ $acl['logged']['allow'] = array(
 );
 $acl['anonymous']['allow'] = array(
     'PostController' => array('sendPost','hasReply'), 'ServersController' => array('sendServersList'),'LikeController'=>array('propagateLike'),
-    'TesauroController'=>array('sendThesaurus'), 'SearchController'=>'*'
+    'TesauroController'=>array('sendThesaurus'), 'SearchController'=>'*', 'FollowController' => array('getFollows')
 );
 $acl['anonymous']['deny'] = array(
-    'FollowController' => '*', 'ServersController'=>array('rewriteServersList'),'LikeController'=>array('setLike'),
+    'FollowController' => array('setFollow'), 'ServersController'=>array('rewriteServersList'),'LikeController'=>array('setLike'),
     'TesauroController'=>array('addTerm'), 'PostController' => array('createPost','createRespam','createReply')
 );
 ?>

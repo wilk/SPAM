@@ -76,7 +76,7 @@ class PostController extends DooController {
                 $this->load()->helper('DooRestClient');
                 $request = new DooRestClient;
                 $url = SRVModel::getUrl($request, $server);
-                if (!$url) {
+                if ($url) {
                     $request->connect_to($url . '/postserver/' . $user . '/' . $post)
                             ->accept(DooRestClient::HTML)
                             ->get();
@@ -152,7 +152,7 @@ class PostController extends DooController {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
             $url = SRVModel::getUrl($request, $serverID);
-            if (!$url) {
+            if ($url) {
                 $request->connect_to($url . '/postserver/' . $userID . '/' . $postID)
                         ->accept(DooRestClient::HTML)
                         ->get();
@@ -195,7 +195,7 @@ class PostController extends DooController {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
             $url = SRVModel::getUrl($request, $sID);
-            if (!url) {
+            if ($url) {
                 $request->connect_to($url . '/hasreply')
                         ->data(array('serverID' => $s, 'userID' => $u, 'postID' => $p, 'userID2Up' => $uID, 'postID2Up' => $pID))
                         ->post();

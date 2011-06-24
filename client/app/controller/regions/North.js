@@ -48,7 +48,7 @@ Ext.define ('SC.controller.regions.North' , {
 	} ,
 	
 	// New post handler
-	sendNewPost : function () {
+	sendNewPost : function (button) {
 		var selectPostWindow = Ext.getCmp ('windowSelectPost');
 		selectPostWindow.show ();
 	} ,
@@ -75,7 +75,6 @@ Ext.define ('SC.controller.regions.North' , {
 	} ,
 	
 	// @brief Login and logout user
-	// TODO: on logout, refresh focus window to hide buttons
 	userLogin : function () {
 		// Check if user wants to login
 		if (fieldUser.isVisible ()) {
@@ -172,7 +171,7 @@ Ext.define ('SC.controller.regions.North' , {
 		bNewPost.setVisible (true);
 	} ,
 	
-	showOptions: function () {
+	showOptions: function (button) {
 		Ext.getCmp('windowOptions').show ();
 	}
 });

@@ -45,7 +45,7 @@ Ext.define ('SC.controller.Options' , {
 	} ,
 	
 	// @brief Update urlServerLtw global var
-	updateUrl : function () {
+	updateUrl : function (win) {
 		if (txtServerUrl.isValid ()) {
 			// Get the associated field of serverID (e.g. Spammers -> ltw1102.web.cs.unibo.it)
 			var record = Ext.StoreManager.lookup('serverStore').findRecord ('serverID' , txtServerUrl.getValue ());
@@ -57,7 +57,7 @@ Ext.define ('SC.controller.Options' , {
 	} ,
 	
 	// @brief Reset fields
-	resetFields : function () {
+	resetFields : function (button) {
 		txtServerUrl.setValue ('Spammers');
 	}
 });

@@ -137,7 +137,7 @@ class PostModel {
           $pre['tweb:disklike'] = array();
          * 
          */
-        $this->postID = $usrResource.'/'.rand();
+        $this->postID = $usrResource . '/' . rand();
         $customized[$this->postID] = $pre;
 //        print_r($index);
 //        $post = current($index);
@@ -148,10 +148,10 @@ class PostModel {
                     $customized[$this->postID]['sioc:content'][] = $risorsa[0];
                 } elseif ($k == self::$siocTopic) {
                     $tagList = array();
-                    foreach ($risorsa as $i){
-                        if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://commontag.org/ns#Tag'){
+                    foreach ($risorsa as $i) {
+                        if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://commontag.org/ns#Tag') {
                             $label = $index[$i]['http://commontag.org/ns#label'][0];
-                            $ctagResource = 'http://ltwt1102.web.cs.unibo.it/tags/'.$label;
+                            $ctagResource = 'http://ltwt1102.web.cs.unibo.it/tags/' . $label;
                             $customized[$this->postID]['sioc:topic'][] = $ctagResource;
                             $tagList[$ctagResource] = $index[$i];
                         } else if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://www.w3.org/2004/02/skos/core#Concept') {
@@ -204,9 +204,9 @@ class PostModel {
         );
         return $a;
     }
-    
+
     //devo gestire il limite
-    public function getPostArray($a = NULL) {
+    public function getPostArray($a = NULL, $lim = NULL) {
         $lista = array();
         if ($a != NULL) {//se ricevo una lista di postid
             foreach ($a as $i) {
@@ -214,11 +214,14 @@ class PostModel {
                     array_push($lista, $this->getPost($i));
             }
         }
-        else {//TODO altrimenti pusho i post che trovo
-            //$a = array_reverse($this->index, TRUE);
+        else if ($lim != NULL) {//altrimenti pusho i post che trovo
+            $this->index = array_reverse($this->index, TRUE);
             foreach ($this->index as $k => $post) {
-                if ($post['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://rdfs.org/sioc/ns#Post')
-                    array_push ($lista, $this->getPost($k));
+                //if ($post['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://rdfs.org/sioc/ns#Post')
+                if ($lim == 'all' || $lim > 0)
+                    array_push($lista, $this->getPost($k));
+                if ($lim != 'all')
+                    $lim--;
             }
         }
         //print_r($lista);
@@ -228,8 +231,8 @@ class PostModel {
     public function addLike($p, $value, $userID, $serverID="Spammers") {
         switch ($value) {
             case 0:
-                if(!$this->neutralLike($p, $serverID, $userID))
-                        $this->neutralDislike($p, $serverID, $userID);
+                if (!$this->neutralLike($p, $serverID, $userID))
+                    $this->neutralDislike($p, $serverID, $userID);
                 $this->saveInPost();
                 break;
             case 1:
@@ -259,8 +262,8 @@ class PostModel {
             }
         }
     }
-    
-    public function neutralDislike($p, $serverID, $userID) {    
+
+    public function neutralDislike($p, $serverID, $userID) {
         if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
             foreach ($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $key => $dislikeUser) {
                 if ($dislikeUser == "spam:/" . $serverID . "/" . $userID) {

@@ -52,16 +52,20 @@ class LikeController extends DooController {
         $userID = $_POST['userID'];
         $postID = $_POST['postID'];
         $value = intval($_POST['value']);
-        if ($value!=1 && $value!=0 && $value!=-1)
+        if ($value != 1 && $value != 0 && $value != -1)
             return ErrorController::badReq('Il value può essere:-1 || 0 || 1. Altri valori non sono ammessi!!');
         if ($serverID == "Spammers") {
-            $this->articolo = new PostModel();
-            $p = 'spam:/' . $serverID . '/' . $userID . '/' . $postID;
-            if ($this->articolo->postExist($p))
-                $this->articolo->addLike($p, $value, $_SESSION['user']['username']);
-            else {
-                return ErrorController::notFound("Il post non esiste! Controlla user e post id.");
+            if ($_POST['userID'] != $_SESSION['user']['username']) {
+                $this->articolo = new PostModel();
+                $p = 'spam:/' . $serverID . '/' . $userID . '/' . $postID;
+                if ($this->articolo->postExist($p))
+                    $this->articolo->addLike($p, $value, $_SESSION['user']['username']);
+                else {
+                    return ErrorController::notFound("Il post non esiste! Controlla user e post id.");
+                }
             }
+            else
+                ErrorController::badReq('Nono.. questo non ti è permesso!');
         } else {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;

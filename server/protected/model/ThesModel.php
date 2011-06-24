@@ -17,6 +17,7 @@ class ThesModel {
     private $narrower = 'http://www.w3.org/2004/02/skos/core#narrower';
     private $broader = 'http://www.w3.org/2004/02/skos/core#broader';
     private $inScheme = 'http://www.w3.org/2004/02/skos/core#inScheme';
+    static $siocPost = 'http://rdfs.org/sioc/ns#Post';
     private $vitaliPath = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
     private $file;
 
@@ -67,7 +68,7 @@ class ThesModel {
             if ($label[$this->prefLabel][0] == $term) {
                 $pathArray = explode('/', strstr(parse_url($key, PHP_URL_PATH), 'thesaurus/'));
                 unset($pathArray[0]);
-                return implode('/', $pathArray);
+                return $pathArray;
             }
         }
         return false;
@@ -195,11 +196,48 @@ class ThesModel {
 
     /////////////////////////////////
 
-    public function addPost2Thes($indice, $contenuto, $postID) {
-        if (!isset($this->index[$indice]))
-            $this->index[$indice] = $contenuto;
-        $this->index[$indice]['sioc:Post'][] = $postID;
+    public function addPost2Thes($arrayDescriptions, $postID) {
+        foreach ($arrayDescriptions as $key => $value) {
+            if(!isset($this->index[$key]))
+                    $this->index[$key] = $value;
+            $this->index[$key]['sioc:Post'][] = $postID;
+        }
         $this->writeInTesauro();
+    }
+    
+    public function getPostsFromThes($path, $limite, $specific = FALSE){
+        $pIDs = array();
+        for ($i=sizeof($path);$i>0;$i--){
+            if ($limite == 0)
+                break;
+            $mandrakata = implode('/', array_slice($path, 0, $i));
+            if (isset($this->index[$mandrakata])){
+                //qui se è settato il termine, mi aspetto che abbia dei sioc:Post associati
+                $nposts = sizeof($this->index[$mandrakata][self::$siocPost]);
+                if ($limite == 'all' || 
+                        $nposts<$limite){
+                    array_push($pIDs, $this->index[$mandrakata][self::$siocPost]);
+                } else {
+                    array_push($pIDs, array_slice($this->index[$mandrakata][self::$siocPost], 0, $limite));
+                    break;
+                }
+            }
+            if ($specific == TRUE)
+                break;
+        }
+        return $pIDs;
+    }
+    
+    public function getPostsByCtag($term, $limite){
+        $pIDs = array();
+        $label = 'http://ltw1102.web.cs.unibo.it/tags/';
+        $label .= $term;
+        if (!isset($this->index[$label]))
+            return 0;
+        $c = sizeof($this->index[$label][self::$siocPost]);
+        if ($c < $limite)
+            return $this->index[$label][self::$siocPost];
+        return array_slice($this->index[$label][self::$siocPost], 0, $limite);
     }
 
 }

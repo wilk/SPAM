@@ -97,7 +97,7 @@ class PostModel {
 
     public static function parseArticle($data, $base = 'http://ltw1102.web.cs.unibo.it/') {
         //commentare la riga successiva per bypassare la stringa per i test
-        $data = self::$msg;
+        //$data = self::$msg;
         //inizializzo il parser per parserizzare HTML+RDFa
         $parser = ARC2::getSemHTMLParser();
         $parser->parse($base, $data);
@@ -137,7 +137,7 @@ class PostModel {
           $pre['tweb:disklike'] = array();
          * 
          */
-        $this->postID = $usrResource . '/' . rand();
+        $this->postID = $usrResource.'/'.rand();
         $customized[$this->postID] = $pre;
 //        print_r($index);
 //        $post = current($index);
@@ -147,23 +147,24 @@ class PostModel {
                 if ($k == self::$siocContent) {
                     $customized[$this->postID]['sioc:content'][] = $risorsa[0];
                 } elseif ($k == self::$siocTopic) {
-                    $customized[$this->postID]['sioc:topic'] = $risorsa;
-                    $tesauro = new ThesModel(TRUE);
-                    foreach ($risorsa as $i) {
-                        if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://commontag.org/ns#Tag')
-                            $customized[$i] = $index[$i];
-                        else {
-                            $tesauro->addPost2Thes($i, $index[$i], $this->postID);
+                    $tagList = array();
+                    foreach ($risorsa as $i){
+                        if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://commontag.org/ns#Tag'){
+                            $label = $index[$i]['http://commontag.org/ns#label'][0];
+                            $ctagResource = 'http://ltwt1102.web.cs.unibo.it/tags/'.$label;
+                            $customized[$this->postID]['sioc:topic'][] = $ctagResource;
+                            $tagList[$ctagResource] = $index[$i];
+                        } else if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://www.w3.org/2004/02/skos/core#Concept') {
+                            $tagList[$i] = $index[$i];
                         }
                     }
+                    $tesauro = new ThesModel(TRUE);
+                    $tesauro->addPost2Thes($tagList, $this->postID);
                 }
             }break;
         }
 
-        //print_r($customized);
-        foreach ($customized as $k => $v) {
-            $this->index[$k] = $v;
-        }
+        $this->index[$this->postID] = $customized[$this->postID];
         $this->saveInPost();
         return $this->postID;
     }

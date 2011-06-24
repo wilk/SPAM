@@ -118,6 +118,10 @@ class SearchController extends DooController {
             case $search_Type[2]: //recent
                 if (isset($this->params['var1'])){
                     //sto cercando un termine specifico
+                    $termine = $this->params['var1'];
+                    $thes = new ThesModel(TRUE);
+                    $pathTerm = $thes->returnPath($termine);
+                    $thes->getPostsFromThes($pathTerm, $limite, TRUE);
                 } else {
                     $post = new PostModel();
                     $this->listaPost = $post->getPostArray();
@@ -126,7 +130,6 @@ class SearchController extends DooController {
                     //    array_slice ($this->listaPost, 0, $limite, TRUE);
                     $this->displayPosts($this->listaPost);
                 }
-
                 break;
                 
             case $search_Type[3]: //related

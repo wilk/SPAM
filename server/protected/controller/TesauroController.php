@@ -41,13 +41,13 @@ class TesauroController extends DooController {
         $parentPath = $thes->returnPath($parent);
         if ($parentPath == false)
             return ErrorController::badReq("Il parentterm non esiste nel tesauro");
-        if (count(explode('/', $parentPath))<3)
+        if (count($parentPath)<3)
                 return ErrorController::badReq("Il parenterm non è una foglia del tesauro condiviso");
         $termPath = $thes->returnPath($term);
         if ($termPath!= false){
             return ErrorController::badReq("Il term esiste già! Non è possibile aggiungere termini con lo stesso label!");
         }
-        if (!$thes->extendThes($parentPath, $term))
+        if (!$thes->extendThes(implode('/', $parentPath), $term))
             return ErrorController::internalError();
     }
 

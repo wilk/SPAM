@@ -73,7 +73,7 @@ class PostView {
             strstr($key, '/'),
             $authorPost,
             $p[$key]['http://purl.org/dc/terms/created'][0],
-            $p[$key]['http://rdfs.org/sioc/ns#content'][0],
+            html_entity_decode($p[$key]['http://rdfs.org/sioc/ns#content'][0]),
             $userPref,
             "<span property=\"tweb:countLike\" content=\"" . $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0] . "\" />",
             "<span property=\"tweb:countDislike\" content=\"" . $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0] . "\" />",

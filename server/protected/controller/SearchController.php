@@ -76,7 +76,8 @@ class SearchController extends DooController {
                     } else
                         ErrorController::notFound("Errore: l'utente $usr non esiste.\n");
                 } else {//richiesta esterna
-                    $metodo = 'searchserver/'.$limite.'/'.$tipo.'/'.$srv.'/'.$usr;
+                    $parametri = array($limite, $tipo, $srv, $usr);
+                    $metodo = 'searchserver'.implode('/', $parametri);
                     //giro direttamente la risposta sperando che il server non scazzi
                     //ps: può dare problemi interni per il fatto dello status di ritorno
                     return $this->rcvFromEXTServer($srv, $method);
@@ -98,7 +99,8 @@ class SearchController extends DooController {
                             $utente = new UserModel($usr);
                             $posts = $this->rcvFromINTServer($utente, $howMany);
                         } else {//richiesta esterna
-                            $metodo = 'searchserver/'.$howMany.$search_Type[0].$srv.'/'.$usr;
+                            $parametri = array($howMany, $search_Type[0], $srv, $usr);
+                            $metodo = 'searchserver'.implode('/', $parametri);
                             $XMLresult = $this->rcvFromEXTServer($srv, $method);
                             //if ($XMLresult === false)
                             $posts = $this->parseEXTContent($XMLresult, $srv);
@@ -108,6 +110,8 @@ class SearchController extends DooController {
                         array_push($this->listaPost, $posts);
                     }//qui dovrei avere la mia lista di messaggi dagli utenti seguiti
                     //$this->getPostsOnly();
+                    
+                    //qui devo ordinare la mia lista
                     if (sizeof($this->listaPost) > $limite)
                         $this->listaPost = array_slice($this->listaPost, 0, $limite, TRUE);
                     $this->displayPosts($this->listaPost);
@@ -116,6 +120,65 @@ class SearchController extends DooController {
                 break;
                 
             case $search_Type[2]: //recent
+                $howMany;
+                $servers;
+                $size = 1;
+                $ext = FALSE;
+                $pIDs = 0;
+                
+                if (isset($_SESSION['user']['username'])){
+                    $ext = TRUE;
+                    $user = new UserModel($_SESSION['user']['username']);
+                    $servers = $user->getServers();
+                    $size += sizeof($servers);
+                }
+                $howMany = round($limite/$size) + 1;
+                
+                if (isset($this->params['var1'])){
+                    $termine = $this->params['var1'];
+                    $tesauro = new ThesModel();
+                    $pathTerm = $tesauro->returnPath($termine);
+                    $tesauro = new ThesModel(TRUE);
+                    if ($pathTerm != false)
+                        $pIDs = $tesauro->getPostsFromThes($pathTerm, $howMany, TRUE);
+                        
+                    else if ($res = $tesauro->getPostsByCtag($termine, $howMany))
+                        $pIDs = $res;
+
+                }
+                else {// qui ricerco senza termine
+                    $post = new PostModel();
+                    $pIDs = $post->getPostArray(NULL, $howMany);
+                }
+                
+                if ($pIDs != 0){
+                    $post = new PostModel();
+                    $this->listaPost = $post->getPostArray($pIDs);
+                    $limite -= $pIDs;
+                }                                    
+                $size--;
+                if ($ext && $size){//richiedo all'esterno
+                    $howMany = round($limite/$size) + 1;
+                    $a = array();
+                    foreach ($servers as $value) {
+                        $a[]['url'] = $value;
+                    }
+                    $servers = $a;
+                    $metodo = '/'.$tipo;
+                    if (isset($this->params['var1']))
+                            $metodo .= '/'.$this->params['var1'];
+
+                    if ($this->rcvFromEXTServers($servers, $howMany, $metodo)){
+                        foreach ($servers as $value) {
+                            if ($value['data'])
+                            $lista = $this->parseEXTContent($value['data'], $value['url']);
+                        }
+                    } else 
+                        return 501;
+                }
+
+                    
+             /////////
                 if (isset($this->params['var1'])){
                     //sto cercando un termine specifico
                     $termine = $this->params['var1'];
@@ -180,6 +243,44 @@ class SearchController extends DooController {
             return $request->xml_result();
         else
             return false;
+    }
+    
+    private function rcvFromEXTServers($servers, $limite, $metodo){
+        if(count($servers)<=0) return false;
+
+        $hArr = array();//handle array
+
+        foreach($servers as $k=>$server){
+
+                $url = $server['url'].'searchserver/'.$limite.$metodo;
+                $h = curl_init();
+                curl_setopt($h,CURLOPT_URL,$url);
+                curl_setopt($h,CURLOPT_HEADER,0);
+                curl_setopt($h,CURLOPT_RETURNTRANSFER,1);//return the image value
+
+                array_push($hArr,$h);
+        }
+
+        $mh = curl_multi_init();
+        foreach($hArr as $k => $h)      
+            curl_multi_add_handle($mh,$h);
+
+        $running = null;
+        do{ curl_multi_exec($mh,$running);
+        }while($running > 0);
+
+        // get the result and save it in the result ARRAY
+        foreach($hArr as $k => $h)
+            $servers[$k]['data'] = curl_multi_getcontent($h);
+
+        //close all the connections
+        foreach($hArr as $k => $h)
+                curl_multi_remove_handle($mh,$h);
+        
+        curl_multi_close($mh);
+
+        return true;
+
     }
     
     private function parseEXTContent($toParse, $server){

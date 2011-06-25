@@ -222,7 +222,7 @@ class ThesModel {
                     break;
                 }
             }
-            if ($specific == TRUE)
+            if ($specific === TRUE)
                 break;
         }
         return $pIDs;

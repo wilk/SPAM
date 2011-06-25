@@ -90,3 +90,19 @@ function requestSearchArticles (store, focus, focusIndex) {
 		}
 	});
 }
+
+// @brief Check if user is already logged-in or not.
+// @return True if it's logged, false if not.
+function checkIfUserLogged () {
+	// If there is server cookie
+	if (Ext.util.Cookies.get ('ltwlogin') != null)
+	{
+		// And if there is client cookie
+		if (Ext.util.Cookies.get ('SPAMlogin') != null) {
+	
+			return true;
+		}
+	}
+	
+	return false;
+}

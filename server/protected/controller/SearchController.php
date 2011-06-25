@@ -2,6 +2,7 @@
 
 include_once 'protected/model/PostModel.php';
 include_once 'protected/model/UserModel.php';
+include_once 'protected/model/ThesModel.php';
 include_once 'protected/view/PostView.php';
 include_once 'protected/controller/ErrorController.php';
 include_once 'protected/module/simple_html_dom.php';
@@ -45,6 +46,7 @@ class SearchController extends DooController {
             return 400;
         $limite = $this->params['limit'];
         $tipo = $this->params['type'];
+        
         $search_Type = array(
             'author',
             'following', 
@@ -53,6 +55,12 @@ class SearchController extends DooController {
             'fulltext', 
             'affinity'
         );
+        
+        $request;
+        if (isset($_SESSION['user']['username'])){
+            $this->load()->helper('DooRestClient');
+            $request = new DooRestClient;
+        }
         switch ($tipo) {
             case $search_Type[0]: //author
                 if (!(isset ($this->params['var1'])) || !(isset ($this->params['var2'])))
@@ -139,29 +147,32 @@ class SearchController extends DooController {
                     $tesauro = new ThesModel();
                     $pathTerm = $tesauro->returnPath($termine);
                     $tesauro = new ThesModel(TRUE);
-                    if ($pathTerm != false)
+                    if ($pathTerm !== false)
                         $pIDs = $tesauro->getPostsFromThes($pathTerm, $howMany, TRUE);
                         
                     else if ($res = $tesauro->getPostsByCtag($termine, $howMany))
                         $pIDs = $res;
+                }
 
-                }
-                else {// qui ricerco senza termine
-                    $post = new PostModel();
-                    $pIDs = $post->getPostArray(NULL, $howMany);
-                }
-                
-                if ($pIDs != 0){
-                    $post = new PostModel();
+                $post = new PostModel();
+                if ($pIDs != 0)
                     $this->listaPost = $post->getPostArray($pIDs);
-                    $limite -= $pIDs;
-                }                                    
+                    
+                else {// qui ricerco senza termine
+                    $this->listaPost = $post->getPostArray(NULL, $howMany);
+                }
+                $rimasti = $limite - count($this->listaPost);
                 $size--;
+                
                 if ($ext && $size){//richiedo all'esterno
-                    $howMany = round($limite/$size) + 1;
+                    $howMany = round($rimasti/$size) + 1;
+                    
+                    $askServers = new SRVModel($request);
                     $a = array();
                     foreach ($servers as $value) {
-                        $a[]['url'] = $value;
+                        $k['url'] = $askServers->getUrl($value);
+                        $k['data'] = 0;
+                        $a[] = $k;
                     }
                     $servers = $a;
                     $metodo = '/'.$tipo;
@@ -169,31 +180,27 @@ class SearchController extends DooController {
                             $metodo .= '/'.$this->params['var1'];
 
                     if ($this->rcvFromEXTServers($servers, $howMany, $metodo)){
+                        print_r($servers); die();
                         foreach ($servers as $value) {
-                            if ($value['data'])
-                            $lista = $this->parseEXTContent($value['data'], $value['url']);
+                            if ($value['data']){
+                                //$lista = $this->parseEXTContent($value['data'], $value['url']);
+                                //print_r($lista); die();
+//                                foreach ($lista as $value) {
+//                                    if(isset($value[]))
+//                                }
+                            } else {
+                                //qui gestisco i server da fanculizzare
+                            }
                         }
                     } else 
                         return 501;
                 }
 
-                    
-             /////////
-                if (isset($this->params['var1'])){
-                    //sto cercando un termine specifico
-                    $termine = $this->params['var1'];
-                    $thes = new ThesModel(TRUE);
-                    $pathTerm = $thes->returnPath($termine);
-                    $thes->getPostsFromThes($pathTerm, $limite, TRUE);
-                } else {
-                    $post = new PostModel();
-                    $this->listaPost = $post->getPostArray();
-                    //print_r($this->listaPost);
-                    //if (sizeof($this->listaPost) > $limite)
-                    //    array_slice ($this->listaPost, 0, $limite, TRUE);
-                    $this->displayPosts($this->listaPost);
-                }
-                break;
+               if (sizeof($this->listaPost) > $limite)
+                   array_slice ($this->listaPost, 0, $limite, TRUE);
+               $this->displayPosts($this->listaPost);
+
+               break;
                 
             case $search_Type[3]: //related
                 if (!(isset ($this->params['var1'])))
@@ -245,7 +252,7 @@ class SearchController extends DooController {
             return false;
     }
     
-    private function rcvFromEXTServers($servers, $limite, $metodo){
+    private function rcvFromEXTServers(&$servers, $limite, $metodo){
         if(count($servers)<=0) return false;
 
         $hArr = array();//handle array

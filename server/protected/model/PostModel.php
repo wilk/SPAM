@@ -231,8 +231,7 @@ class PostModel {
     public function addLike($p, $value, $userID, $serverID="Spammers") {
         switch ($value) {
             case 0:
-                if (!$this->neutralLike($p, $serverID, $userID))
-                    $this->neutralDislike($p, $serverID, $userID);
+                if ($this->neutralLike($p, $serverID, $userID) || $this->neutralDislike($p, $serverID, $userID))
                 $this->saveInPost();
                 break;
             case 1:
@@ -260,7 +259,9 @@ class PostModel {
                     return true;
                 }
             }
+            return false;
         }
+        return false;
     }
 
     public function neutralDislike($p, $serverID, $userID) {
@@ -269,20 +270,30 @@ class PostModel {
                 if ($dislikeUser == "spam:/" . $serverID . "/" . $userID) {
                     unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'][$key]);
                     $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]--;
-                    return;
+                    return true;
                 }
             }
+            return false;
         }
+        return false;
     }
 
     public function like($p, $serverID, $userID) {
-        $this->index[$p]['tweb:like'][] = "spam:/" . $serverID . "/" . $userID;
-        $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]++;
+        if ((array_search("spam:/" . $serverID . "/" . $userID, $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) === false) {
+            $this->index[$p]['tweb:like'][] = "spam:/" . $serverID . "/" . $userID;
+            $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]++;
+        }
+        else
+            ErrorController::badReq('Hai già espresso la tua opinione');
     }
 
     public function dislike($p, $serverID, $userID) {
-        $this->index[$p]['tweb:dislike'][] = "spam:/" . $serverID . "/" . $userID;
-        $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]++;
+        if ((array_search("spam:/" . $serverID . "/" . $userID, $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) === false) {
+            $this->index[$p]['tweb:dislike'][] = "spam:/" . $serverID . "/" . $userID;
+            $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]++;
+        }
+        else
+            ErrorController::badReq('Hai già espresso la tua opinione');
     }
 
 }

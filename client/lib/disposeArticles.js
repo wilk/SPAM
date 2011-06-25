@@ -86,7 +86,8 @@ function disposeArticles (store, focus, focusIndex) {
 				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
-					title: record.get('resource').split("/")[2] + ' said:' ,
+					//title: record.get('resource').split("/")[2] + ' said:' ,
+					title: record.get ('user') + ' said:' ,
 					html: parseToRead (record.get ('article')) ,
 					id: 'articles' + j ,
 					x: x ,
@@ -134,7 +135,8 @@ function disposeArticles (store, focus, focusIndex) {
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {
 		// Author is /serverID/userID, so split and take only userID
-		title: focus.get('resource').split("/")[2] + ' said:' ,
+//		title: focus.get('resource').split("/")[2] + ' said:' ,
+		title: focus.get ('user') + ' said:' ,
 		html: parseToRead (focus.get ('article')) ,
 		x: focusX ,
 		y: focusY ,
@@ -159,25 +161,25 @@ function disposeArticles (store, focus, focusIndex) {
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/like.png' ,
 				tooltip: 'I Like' ,
-				hidden: false
+				hidden: true
 			} , {
 				// Button I Dislike
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/dislike.png' ,
 				tooltip: 'I Dislike' ,
-				hidden: false
+				hidden: true
 			} , {
 				// Button follow
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/follow.png' ,
 				tooltip: 'Follow' ,
-				hidden: false
+				hidden: true
 			} , {
 				// Button unfollow
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/unfollow.gif' ,
 				tooltip: 'Unfollow' ,
-				hidden: false
+				hidden: true
 			} , '->' , {
 				// Progress Bar like/dislike
 				xtype: 'progressbar' ,
@@ -187,13 +189,13 @@ function disposeArticles (store, focus, focusIndex) {
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/reply.png' ,
 				tooltip: 'Reply' ,
-				hidden: false
+				hidden: true
 			} , {
 				// Button respam
 				cls: 'x-btn-icon' ,
 				icon: 'ext/resources/images/btn-icons/respam.png' ,
 				tooltip: 'Respam' ,
-				hidden: false
+				hidden: true
 			}]
 		}]
 	});

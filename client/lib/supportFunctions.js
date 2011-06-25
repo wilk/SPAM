@@ -12,84 +12,81 @@
 // @param focus: model of focus article
 // @param focusIndex: index focus article model
 function requestSearchArticles (store, focus, focusIndex) {
-	// Load data with store request
-	store.load (function (records, operation, success) {
-		// On failure, display error box
-		if (! success) {
-			var err = operation.getError ();
-			var msg = displayError (err.status);
+	// Clean the store
+	store.removeAll ();
+
+	// Make an AJAX request with JQuery to read XML structure (ExtJS can't read XML with mixed content model)
+	$.ajax({
+		type: 'GET',
+		// Uses url of the store
+		url: store.getProxy().url,
+		dataType: "xml",
+		success: function (xml) {
+			// Check every posts
+			$(xml).find('post').each (function () {
+				var numLike, numDislike;
+				var ifLikeDislike = 0;
+				
+				// Find like and dislike counter plus setlike of the user
+				$(this).find('article').find('span').each (function () {
+					// Find like counter
+					if ($(this).attr ('property') == 'tweb:countLike') {
+						numLike = parseInt ($(this).attr ('content'));
+					}
+					
+					// Find dislike counter
+					if ($(this).attr ('property') == 'tweb:countDislike') {
+						numDislike = parseInt ($(this).attr ('content'));
+					}
+					
+					// Find setlike/setdislike of the user
+					if ($(this).attr ('rev') == 'tweb:like') {
+						ifLikeDislike = 1;
+					}
+					else if ($(this).attr ('rev') == 'tweb:dislike') {
+						ifLikeDislike = -1;
+					}
+				});
+				
+				// Add article to the store
+				store.add ({
+					affinity: parseInt ($(this).find('affinity').text ()) ,
+					article: $(this).find('article').text () ,
+					resource: $(this).find('article').attr ('resource') ,
+					about: $(this).find('article').attr ('about') ,
+					like: numLike ,
+					dislike: numDislike ,
+					setlike: ifLikeDislike ,
+					user: $(this).find('article').attr('resource').split("/")[2]
+				});
+			});
+			
+			// Before dispose the retrieved articles, kill the old windows
+			var winFocus = Ext.getCmp ('winFocusArticle');
+	
+			// Kills focus window
+			if (winFocus != null)
+				winFocus.destroy ();
+	
+			var win;
+			var j = 0;
+	
+			// And then kills the other windows
+			while ((win = Ext.getCmp ('articles'+j)) != null) {
+				win.destroy ();
+				j++;
+			}
+			
+			// Dispose retrieved articles
+			disposeArticles (store, focus, focusIndex);
+		} ,
+		error: function (xhr, type, text) {
 			Ext.Msg.show ({
-				title: 'Error ' + err.status ,
-				msg: msg ,
+				title: type,
+				msg: text ,
 				buttons: Ext.Msg.OK,
 				icon: Ext.Msg.ERROR
 			});
 		}
-		// On success, dispose articles retrieved
-		else {
-			// Check if there are articles to display
-			if (store.count () == 0) {
-				Ext.Msg.show ({
-					title: 'Error',
-					msg: 'No articles found!' ,
-					buttons: Ext.Msg.OK,
-					icon: Ext.Msg.ERROR
-				});
-			}
-			else {
-				// Before dispose the retrieved articles, kill the old windows
-				var winFocus = Ext.getCmp ('winFocusArticle');
-		
-				// Kills focus window
-				if (winFocus != null)
-					winFocus.destroy ();
-		
-				var win;
-				var j = 0;
-		
-				// And then kills the other windows
-				while ((win = Ext.getCmp ('articles'+j)) != null) {
-					win.destroy ();
-					j++;
-				}
-				
-				// Dispose retrieved articles
-				disposeArticles (store, focus, focusIndex);
-			}
-		}
 	});
-}
-
-// @brief Set the appropriate error message.
-// @param status: http error status.
-// @return Error message to display.
-function displayError (status) {
-	var msg;
-	switch (status) {
-		case 400:
-			msg = 'Sorry! Bad request!';
-			break;
-		case 401:
-			msg = 'Sorry! You are unauthorized to get this resource!';
-			break;
-		case 404:
-			msg = 'Sorry! Resource not found!';
-			break;
-		case 405:
-			msg = 'Sorry! Method not allowed!';
-			break;
-		case 406:
-			msg = 'Sorry! The requested resource is only capable of generating content not acceptable according to the Accept headers sent in the request.';
-		case 500: 
-			msg = 'Sorry! Internal server error!';
-			break;
-		case 501:
-			msg = 'Sorry! The service is not implemented!';
-			break;
-		default:
-			msg = 'Sorry! Something bad happened!';
-			break;
-	}
-	
-	return msg;
 }

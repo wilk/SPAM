@@ -12,17 +12,37 @@ Ext.define ('SC.model.regions.center.Articles' , {
 	
 	// Fields
 	fields: ['content' , {
+		// Affinity
 		name: 'affinity' ,
 		type: 'int'
 	} , {
+		// Content of article
 		name: 'article' ,
-		type: 'string' 
+		type: 'string'
 	} , {
-		name: 'resource' ,
-		mapping: 'article @resource'
+		// The owner of article
+		name: 'resource'
+		//mapping: 'article @resource'
 	} , {
-		name: 'about' ,
-		mapping: 'article @about'
+		// Article ID
+		name: 'about'
+		//mapping: 'article @about'
+	} , {
+		// The owner of article (only userID)
+		name: 'user' ,
+		type: 'string'
+	} , {
+		// If setlike or dislike
+		name: 'setlike' ,
+		type: 'int'
+	} , {
+		// Like counter
+		name: 'like' ,
+		type: 'int'
+	} , {
+		// Dislike counter
+		name: 'dislike' ,
+		type: 'int'
 	}] ,
 	
 	// REST Proxy for REST requests

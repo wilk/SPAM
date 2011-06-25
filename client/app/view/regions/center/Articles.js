@@ -18,8 +18,6 @@ Ext.define ('SC.view.regions.center.Articles' , {
 	width: 300 ,
 	autoWidth: true ,
 	autoHeight: true ,
-	collapsible: true ,
-	animCollapse: true ,
 	bodyPadding: 5 ,
 	layout: 'anchor' ,
 	maximizable: true ,

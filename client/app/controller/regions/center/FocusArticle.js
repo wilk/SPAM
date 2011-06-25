@@ -24,6 +24,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		var counterLike, counterDislike, pBarValue;
 		var followersStore;
 		var isFollowed;
+		var focusUser;
 		
 		this.control ({
 			// Window render
@@ -228,12 +229,19 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
 		followersStore = this.getRegionsWestFollowersStore ();
 		
+		// Retrieve the owner of the post
+		focusUser = focusModel.get ('user');
+		
 		// Retrieve user setlike value
-		likeOrDislike = findSetLike (focusModel.get ('article'));
+		//likeOrDislike = findSetLike (focusModel.get ('article'));
+		likeOrDislike = focusModel.get ('setlike');
 		
 		// Like and Dislike counters
-		counterLike = parseInt (findCounters (focusModel.get ('article'), 'Like'));
-		counterDislike = parseInt (findCounters (focusModel.get ('article'), 'Dislike'));
+//		counterLike = parseInt (findCounters (focusModel.get ('article'), 'Like'));
+//		counterDislike = parseInt (findCounters (focusModel.get ('article'), 'Dislike'));
+
+		counterLike = focusModel.get ('like');
+		counterDislike = focusModel.get ('dislike');
 		
 		// Check if counter like/dislike span tag exists
 		if ((counterLike != -1) && (counterDislike != -1)) {
@@ -272,8 +280,12 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		{
 			// And if there is client cookie
 			if (Ext.util.Cookies.get ('SPAMlogin') != null) {
-				win.down('button[tooltip="I Like"]').setVisible (true);
-				win.down('button[tooltip="I Dislike"]').setVisible (true);
+				// Hide setlike buttons because user can't set like/dislike on his own post
+				if (focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
+					win.down('button[tooltip="I Like"]').setVisible (true);
+					win.down('button[tooltip="I Dislike"]').setVisible (true);
+				}
+				
 				win.down('button[tooltip="Reply"]').setVisible (true);
 				win.down('button[tooltip="Respam"]').setVisible (true);
 				
@@ -291,18 +303,20 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				else {
 					isFollowed = false;
 				}
-		
-				// If user is already followed, shows the unfollow button
-				if (isFollowed) {
-					win.down('button[tooltip="Unfollow"]').setVisible (true);
-					win.down('button[tooltip="Follow"]').setVisible (false);
-				}
-				// Otherwise shows the follow button
-				else {
-					win.down('button[tooltip="Follow"]').setVisible (true);
-					win.down('button[tooltip="Unfollow"]').setVisible (false);
-				}
 				
+				// Hide setfollow buttons because user can't set follow/unfollow himself
+				if (focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
+					// If user is already followed, shows the unfollow button
+					if (isFollowed) {
+						win.down('button[tooltip="Unfollow"]').setVisible (true);
+						win.down('button[tooltip="Follow"]').setVisible (false);
+					}
+					// Otherwise shows the follow button
+					else {
+						win.down('button[tooltip="Follow"]').setVisible (true);
+						win.down('button[tooltip="Unfollow"]').setVisible (false);
+					}
+				}
 			}
 		}
 		// Otherwise, hide buttons

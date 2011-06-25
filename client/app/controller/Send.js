@@ -36,6 +36,7 @@ Ext.define ('SC.controller.Send' , {
 			// Controlling txtArea of window for sending new posts
 			'#txtAreaSend': {
 				// On every keypress do something
+				//initialize: this.initHtmlEditor ,
 				keypress: this.checkChars
 			} , 
 			// Send button
@@ -51,13 +52,22 @@ Ext.define ('SC.controller.Send' , {
 		console.log ('Controller Send started.');
 	} ,
 	
+//	initHtmlEditor: function (he) {
+//		he.focus ();
+//		
+//		he.addEvents ('keypress');
+//		
+//		he.on ('keypress' , this.checkChars (this));
+//	} ,
+	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
 	// TOFIX: pasted text!!!
 	// TODO: cancel/delete keys aren't captured by chrome
-	checkChars : function (txtarea, e) {
+	checkChars : function (ta, event) {
 		var 	// Get the lenght
-			numChar = txtarea.getValue().length ,
+			//numChar = txtarea.getValue().length ,
+			numChar = ta.getValue().length ,
 			// And the difference
 			diffCount = MAXCHARS - numChar;
 		
@@ -83,7 +93,7 @@ Ext.define ('SC.controller.Send' , {
 				win = Ext.getCmp ('windowNewPost');
 			
 			// XML Injection for hashtag
-//			artBody = htInjection (artBody);
+			artBody = htInjection (artBody);
 			
 			// XML Injection
 			var article = artHeader + '\n' + artBody + '\n';
@@ -174,5 +184,9 @@ Ext.define ('SC.controller.Send' , {
 		chkSendBoxGeoLoc.reset ();
 		
 		lblSendCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
+		
+		//var tss = Ext.getCmp('treePanelThesaurus').cloneConfig ({maxWidth: 150, id: 'cloneTPThesaurus'});
+		//var tss = Ext.create ('SC.view.SendThesaurus');
+		//win.add (tss);
 	}
 });

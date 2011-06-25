@@ -26,6 +26,7 @@ Ext.application ({
 		'regions.center.FocusArticle' ,
 		'Send' ,
 		'SendResource' ,
+		'SendHashtag' ,
 		'SelectPost' ,
 		'Options' ,
 		'Server'

@@ -10,6 +10,8 @@
 Ext.define ('SC.view.Send' , {
 	extend: 'Ext.window.Window' ,
 	alias: 'widget.send' ,
+	requires: ['SC.view.SendHashtag'] ,
+	
 	
 	// Configuration
 	title: 'New post' ,
@@ -31,20 +33,13 @@ Ext.define ('SC.view.Send' , {
 	} ,
 	
 	// Body
-	items: [{
-		// Hashtag grid
-		xtype: 'grid' ,
-		flex: 1 ,
-		maxWidth: 150 ,
-		forceFit: true ,
-		store: 'Thesaurus' ,
-		columns: [{
-			header: 'Hashtag' ,
-			dataIndex: 'text'
-		}]
-	} , {
+	items: [//{
+		//xtype: 'sendhashtag'
+	//}
+	{
 		// Text area
 		xtype: 'textareafield' ,
+		//xtype: 'htmleditor' ,
 		id: 'txtAreaSend' ,
 		flex: 2 ,
 		emptyText: 'Type you text here ...' ,

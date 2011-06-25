@@ -252,12 +252,10 @@ class PostModel {
     public function neutralLike($p, $serverID, $userID) {
         //Rimuovi tweb:like/dislike e decrementa il valore appropriato
         if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
-            foreach ($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'] as $key => $likeUser) {
-                if ($likeUser == "spam:/" . $serverID . "/" . $userID) {
+            if (($key= array_search("spam:/" . $serverID . "/" . $userID,$this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like']))!==false) {
                     unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'][$key]);
                     $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]--;
                     return true;
-                }
             }
             return false;
         }
@@ -266,12 +264,10 @@ class PostModel {
 
     public function neutralDislike($p, $serverID, $userID) {
         if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
-            foreach ($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $key => $dislikeUser) {
-                if ($dislikeUser == "spam:/" . $serverID . "/" . $userID) {
+ if (($key= array_search("spam:/" . $serverID . "/" . $userID,$this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike']))!==false) {
                     unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'][$key]);
                     $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]--;
                     return true;
-                }
             }
             return false;
         }

@@ -14,6 +14,7 @@ class SRVModel {
 
     static private $_SERVERSBASE =
             "http://vitali.web.cs.unibo.it/twiki/pub/TechWeb11/Spam/ServerFederatiGiusta.xml";
+    private $serverList = NULL;
 
 //    
 //    function __construct() {
@@ -22,12 +23,15 @@ class SRVModel {
 //        $request->connect_to(self::$_SERVERSBASE)->get();
 //        $this->serverList = $request->xml_result();
 //    }
-
-    public static function getDefaults($request) {
+    function __construct($request) {
         $request->connect_to(self::$_SERVERSBASE)->get();
-        $serverList = $request->xml_result();
+        $this->serverList = $request->xml_result();
+    }
+
+    public function getDefaults() {
+        $mirror = $this->serverList;
         $idsServer = array();
-        foreach ($serverList->server as $myServer)
+        foreach ($mirror->server as $myServer)
             array_push($idsServer, (string) $myServer->attributes()->serverID);
         return $idsServer;
     }
@@ -37,10 +41,9 @@ class SRVModel {
      * @param $s = serverID
      */
 
-    public static function getUrl($request, $s) {
-        $request->connect_to(self::$_SERVERSBASE)->get();
-        $serverList = $request->xml_result();
-        foreach ($serverList->server as $myServer) {
+    public function getUrl($s) {
+        $mirror = $this->serverList;
+        foreach ($mirror->server as $myServer) {
             if ($myServer->attributes()->serverID == $s)
                 return $myServer->attributes()->serverURL;
         }

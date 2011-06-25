@@ -20,7 +20,9 @@ class LoginController extends DooController {
         if ($utente->firstTime()) {
             $utente->addUser();
             //cerco di arricchire la risorsa con i servers            
-            $listaServer = SRVModel::getDefaults($request);
+            //$listaServer = SRVModel::getDefaults($request);
+            $recuperaServers = new SRVModel($request);
+            $listaServer = $recuperaServers->getDefaults();
             $utente->setServers($listaServer);
             $this->startSession($user);
             return 201;

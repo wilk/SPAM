@@ -38,7 +38,7 @@ Ext.define ('SC.controller.regions.west.User' , {
 		var winFocus = Ext.getCmp ('winFocusArticle');
 		
 		// It doesn't retrieve follower list if the user is logged off
-		if (checkIfUserLogged) {
+		if (checkIfUserLogged ()) {
 			// When panel is showed or rendered, load followers store
 			store.load (function (records, option, success) {
 				if (! success) {

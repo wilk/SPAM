@@ -96,8 +96,10 @@ class PostModel {
     }
 
     public static function parseArticle($data, $base = 'http://ltw1102.web.cs.unibo.it/') {
-        //commentare la riga successiva per bypassare la stringa per i test
-        //$data = self::$msg;
+        //[TEST]commentare la riga successiva per bypassare la stringa per i test
+        $data = self::$msg;
+        //////////////////
+        
         //inizializzo il parser per parserizzare HTML+RDFa
         $parser = ARC2::getSemHTMLParser();
         $parser->parse($base, $data);

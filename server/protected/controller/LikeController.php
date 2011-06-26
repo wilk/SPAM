@@ -69,7 +69,8 @@ class LikeController extends DooController {
         } else {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
-            $url = SRVModel::getUrl($request, $serverID);
+            $servers = new SRVModel($request);
+            $url = $servers->getUrl($serverID);
             if ($url) {
                 $request->connect_to($url . '/propagatelike')
                         ->data(array('serverID1' => "Spammers", 'userID1' => $_SESSION['user']['username'],

@@ -5,6 +5,7 @@ include_once 'protected/model/UserModel.php';
 include_once 'protected/model/SRVModel.php';
 include_once 'protected/view/PostView.php';
 include_once 'protected/controller/ErrorController.php';
+include_once 'protected/module/simple_html_dom.php';
 
 class PostController extends DooController {
 
@@ -85,7 +86,8 @@ class PostController extends DooController {
             if ($server != 'Spammers') {
                 $this->load()->helper('DooRestClient');
                 $request = new DooRestClient;
-                $url = SRVModel::getUrl($request, $server);
+                $servers = new SRVModel($request);
+                $url = $servers->getUrl($server);
                 if ($url) {
                     $request->connect_to($url . '/postserver/' . $user . '/' . $post)
                             ->accept(DooRestClient::HTML)
@@ -164,13 +166,20 @@ class PostController extends DooController {
         } else {
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
-            $url = SRVModel::getUrl($request, $serverID);
+            $servers = new SRVModel($request);
+            $url = $servers->getUrl($serverID);
             if ($url) {
                 $request->connect_to($url . '/postserver/' . $userID . '/' . $postID)
                         ->accept(DooRestClient::HTML)
                         ->get();
                 if ($request->isSuccess()) {
                     $content = $request->result();
+                    $html= str_get_html($content);
+                    foreach($html->find('span') as $span){
+                        if(!isset($span->typeof) && !isset($span->rel) && !isset($span->resource))
+                        $span->outertext= '';
+                    }
+                    $content=$html->outertext;
                     $this->createPost($content);
                 }else
                     return $request->resultCode();
@@ -178,6 +187,7 @@ class PostController extends DooController {
                 return ErrorController::notFound("Il server richiesto non esiste!");
         }
         $this->articolo->addRespamOf('spam:/' . $serverID . '/' . $userID . '/' . $postID);
+        return 201;
     }
 
     /*
@@ -213,7 +223,8 @@ class PostController extends DooController {
             list($tag, $s, $u, $p) = split('/', $risorsa);
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
-            $url = SRVModel::getUrl($request, $sID);
+            $servers = new SRVModel($request);
+            $url = $servers->getUrl($sID);
             if ($url) {
                 $request->connect_to($url . '/hasreply')
                         ->data(array('serverID' => $s, 'userID' => $u, 'postID' => $p, 'userID2Up' => $uID, 'postID2Up' => $pID))

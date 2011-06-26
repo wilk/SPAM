@@ -45,7 +45,7 @@ class SRVModel {
         $mirror = $this->serverList;
         foreach ($mirror->server as $myServer) {
             if ($myServer->attributes()->serverID == $s)
-                return (string) $myServer->attributes()->serverURL;
+                return $myServer->attributes()->serverURL;
         }
         return false;
     }

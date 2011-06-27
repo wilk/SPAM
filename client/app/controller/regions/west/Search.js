@@ -72,7 +72,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 			switch (combo.getValue ()) {
 				case 'Author' :
 					// Set appropriate URL
-					store.getProxy().url = 'search/' + number.getValue () + '/author' + text.getValue ();
+					store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/author' + text.getValue ();
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
@@ -80,7 +80,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					break;
 				case 'Following' :
 					// Set appropriate URL
-					store.getProxy().url = 'search/' + number.getValue () + '/following';
+					store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/following';
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
@@ -90,7 +90,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					// TODO: check if is it possible to search by recent without terms
 //					if (text.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = 'search/' + number.getValue () + '/recent/' + text.getValue ();
+						store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/recent/' + text.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);
@@ -108,7 +108,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 				case 'Related' :
 					if (text.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = 'search/' + number.getValue () + '/related/' + text.getValue ();
+						store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/related/' + text.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);
@@ -126,7 +126,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 				case 'Fulltext' :
 					if (text.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = 'search/' + number.getValue () + '/fulltext/' + text.getValue ();
+						store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/fulltext/' + text.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);

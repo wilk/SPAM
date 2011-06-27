@@ -38,7 +38,7 @@ Ext.define ('SC.controller.SendHashtag' , {
 	
 	//function and constructor from parse.js library
 		myRDF=new RDF();
-		myRDF.getRDFURL('thesaurus',callback)
+		myRDF.getRDFURL(urlServerLtw + 'thesaurus',callback)
 	
 	//callback function called when request is complete
 		function callback(){

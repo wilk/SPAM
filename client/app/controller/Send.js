@@ -22,11 +22,13 @@ Ext.define ('SC.controller.Send' , {
 	// Views
 	views: ['Send'] ,
 	
-	models: ['regions.center.Articles'] ,
-	stores: ['regions.center.Articles'] ,
+	models: ['regions.center.Articles' , 'TheNode'] ,
+	stores: ['regions.center.Articles' , 'Thesaurus'] ,
 	
 	// Configuration
 	init: function () {
+		var hashtagArray = new Array ();
+		
 		this.control ({
 			// Reset field when it's showed
 			'send': {
@@ -93,7 +95,7 @@ Ext.define ('SC.controller.Send' , {
 				win = Ext.getCmp ('windowNewPost');
 			
 			// XML Injection for hashtag
-			artBody = htInjection (artBody);
+			artBody = htInjection (artBody , this.getThesaurusStore ());
 			
 			// XML Injection
 			var article = artHeader + '\n' + artBody + '\n';
@@ -127,7 +129,7 @@ Ext.define ('SC.controller.Send' , {
 			
 			// AJAX Request
 			Ext.Ajax.request ({
-				url: 'post' ,
+				url: urlServerLtw + 'post' ,
 				params: { article: article } ,
 				success: function (response) {
 					// On success, close window and display last 5 posts of the user
@@ -142,7 +144,7 @@ Ext.define ('SC.controller.Send' , {
 					}
 					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
+					store.getProxy().url = urlServerLtw + 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
@@ -176,6 +178,38 @@ Ext.define ('SC.controller.Send' , {
 		// If browser do not support geolocation, hide the checkbox
 		if ((browserGeoSupportFlag))
 			chkSendBoxGeoLoc.setVisible (false);
+		
+		// Saving all hashtags
+		
+//		var hashtagModels = this.getThesaurusStore().getNewRecords ();
+//		
+//		// Populate hashtag array
+//		for (var m in hashtagModels)
+//		{
+//			try {
+//				hashtagArray[m].text = hashtagModels[m].get ('text');
+//				hashtagArray[m].ns = hashtagModels[m].get ('ns');
+//			}
+//			catch (err) {
+//				break;
+//			}
+//		}
+
+		// Autocomplete
+//		$('#taSend').autocomplete({
+//			wordCount:1,
+//			mode: "outter",
+//			on: {
+//				query: function(text,cb){
+//					var words = [];
+//					for( var i=0; i<hashtagArray.length; i++ ) {
+//						if( hashtagArray[i].toLowerCase().indexOf(text.toLowerCase()) == 0 ) 
+//							words.push(hashtagArray[i]);
+//					}
+//					cb(words);								
+//				}
+//			}
+//		});
 	} ,
 	
 	// @brief Reset text area of the new post
@@ -184,6 +218,14 @@ Ext.define ('SC.controller.Send' , {
 		chkSendBoxGeoLoc.reset ();
 		
 		lblSendCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
+		
+//		var a = Ext.toArray (Ext.StoreManager.lookup('Thesaurus'));
+//		var store = Ext.StoreManager.lookup ('Thesaurus');
+//		var a = store.getNewRecords ();
+//		
+//		for (var i in a) {
+//			alert (a[i].get ('text'));
+//		}
 		
 		//var tss = Ext.getCmp('treePanelThesaurus').cloneConfig ({maxWidth: 150, id: 'cloneTPThesaurus'});
 		//var tss = Ext.create ('SC.view.SendThesaurus');

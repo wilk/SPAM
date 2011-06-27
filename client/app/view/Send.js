@@ -27,21 +27,30 @@ Ext.define ('SC.view.Send' , {
 	closeAction: 'hide' ,
 	// Horizontal box layout
 	layout: {
-		type: 'hbox' ,
+		type: 'vbox' ,
 		pack: 'start' ,
 		align: 'stretch'
 	} ,
+//	layout: 'anchor' ,
 	
 	// Body
 	items: [//{
 		//xtype: 'sendhashtag'
 	//}
 	{
+		xtype: 'textareafield' ,
+		id: 'txtAreaReply' ,
+		flex: 1 ,
+		disable: true ,
+		hidden: true		
+	} , {
 		// Text area
 		xtype: 'textareafield' ,
 		//xtype: 'htmleditor' ,
 		id: 'txtAreaSend' ,
-		flex: 2 ,
+		inputId: 'taSend' ,
+		flex: 1 ,
+		//anchor: '100% 70%' ,
 		emptyText: 'Type you text here ...' ,
 		allowBlank: false ,
 		enforceMaxLenght: true ,

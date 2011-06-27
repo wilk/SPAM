@@ -11,7 +11,11 @@ Ext.define ('SC.model.regions.center.Articles' , {
 	extend: 'Ext.data.Model' ,
 	
 	// Fields
-	fields: ['content' , {
+	fields: [{
+		// Content
+		name: 'content' ,
+		type: 'string'
+	} , {
 		// Affinity
 		name: 'affinity' ,
 		type: 'int'
@@ -22,11 +26,9 @@ Ext.define ('SC.model.regions.center.Articles' , {
 	} , {
 		// The owner of article
 		name: 'resource'
-		//mapping: 'article @resource'
 	} , {
 		// Article ID
 		name: 'about'
-		//mapping: 'article @about'
 	} , {
 		// The owner of article (only userID)
 		name: 'user' ,

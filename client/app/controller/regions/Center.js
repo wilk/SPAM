@@ -20,7 +20,7 @@ Ext.define ('SC.controller.regions.Center' , {
 		this.control ({
 			'centerregion' : {
 //				afterrender : this.setArtDisp
-				enable : this.setArtDisp
+//				enable : this.setArtDisp
 			}
 		});
 		console.log ('Controller Center started.');

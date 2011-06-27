@@ -11,25 +11,46 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 	extend: 'Ext.data.Model' ,
 	
 	// Fields
-	fields: ['content' , {
+	fields: [{
+		// Content
+		name: 'content' ,
+		type: 'string'
+	} , {
+		// Affinity
 		name: 'affinity' ,
 		type: 'int'
 	} , {
+		// Content of article
 		name: 'article' ,
-		type: 'string' 
+		type: 'string'
 	} , {
-		name: 'resource' ,
-		mapping: 'article @resource'
+		// The owner of article
+		name: 'resource'
 	} , {
-		name: 'about' ,
-		mapping: 'article @about'
+		// Article ID
+		name: 'about'
+	} , {
+		// The owner of article (only userID)
+		name: 'user' ,
+		type: 'string'
+	} , {
+		// If setlike or dislike
+		name: 'setlike' ,
+		type: 'int'
+	} , {
+		// Like counter
+		name: 'like' ,
+		type: 'int'
+	} , {
+		// Dislike counter
+		name: 'dislike' ,
+		type: 'int'
 	}] ,
 	
 	// REST Proxy for REST requests
 	proxy: {
 		type: 'rest' ,
-//		url: 'search/10/recent' ,
-		url: 'app/data/art4.xml' ,
+		url: urlServerLtw + 'search/10/recent' ,
 		reader: {
 			type: 'xml' ,
 			root: 'archive' ,

@@ -28,6 +28,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			},
 			'#addTermField':{
 				specialkey:function(field,ev,opt){
+					console.log (theStore.getNodeById (field));
 				//listen to ENTER key press to send data
 						if(ev.getKey()==ev.ENTER){
 							//directly send becouse validating process is done by server
@@ -47,11 +48,11 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 
 	//set namespaces
 		skosNS="http://www.w3.org/2004/02/skos/core#"
-		twebNS="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus/"
+		twebNS="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus"
 	
 	//function and constructor from parse.js library
 		myRDF=new RDF();
-		myRDF.getRDFURL('thesaurus',callback)
+		myRDF.getRDFURL(urlServerLtw + 'thesaurus',callback)
 	
 
 
@@ -88,7 +89,10 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 
 		//get prefLabel value, create a node and append it to his father
 			var val=myRDF.getSingleObject(null,subject,skosNS+"prefLabel",null);
-			var node=SC.model.TheNode.create({text:val});
+			var node=SC.model.TheNode.create({
+				text: val ,
+				ns: myRDF.getSingleObject(null,subject,skosNS+"inScheme",null)
+			});
 			
 		//change node internal id into the store to retrive it with findNodeById method
 			node.internalId=val;
@@ -142,7 +146,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 	
 	//send data
 		Ext.Ajax.request({
-			url:'addterm',
+			url:urlServerLtw + 'addterm',
 			method:'post',
 			
 		//request body	

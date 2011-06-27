@@ -43,7 +43,7 @@ Ext.define('SC.controller.Server',{
 //						send data to server
 						
 						Ext.Ajax.request({
-							url:'servers',
+							url:urlServerLtw + 'servers',
 							method:'POST',
 							params:{servers:body}
 						});
@@ -79,7 +79,7 @@ Ext.define('SC.controller.Server',{
 //						send data to server
 						
 						Ext.Ajax.request({
-							url:'servers',
+							url:urlServerLtw + 'servers',
 							method:'POST',
 							params:{servers:body}
 						});

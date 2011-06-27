@@ -9,7 +9,7 @@ Ext.define('SC.store.Servers',{
 	proxy: {
 		
 		type: 'ajax',
-		url: 'servers',
+		url: urlServerLtw + 'servers',
 		limitParam:undefined,
 		pageParam:undefined,
 		startParam:undefined,

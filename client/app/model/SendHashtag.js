@@ -12,6 +12,8 @@ Ext.define('SC.model.SendHashtag',{
 	
 	fields:[{
 		name: 'text'
+	} , {
+		name: 'namespace'
 	}],
 	
 	proxy:{

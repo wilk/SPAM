@@ -25,8 +25,8 @@ Ext.define ('SC.controller.SendResource' , {
 	// Views
 	views: ['SendResource'] ,
 	
-	models: ['regions.center.Articles'] ,
-	stores: ['regions.center.Articles'] ,
+	models: ['regions.center.Articles' , 'TheNode'] ,
+	stores: ['regions.center.Articles' , 'Thesaurus'] ,
 	
 	// Configuration
 	init: function () {
@@ -73,7 +73,6 @@ Ext.define ('SC.controller.SendResource' , {
 	
 	// @brief
 	sendPost : function (button) {
-		// TODO: parsing text to finding hashtag
 		// TODO: hashtag autocomplete
 		
 		// Articles store
@@ -85,7 +84,7 @@ Ext.define ('SC.controller.SendResource' , {
 			var 	artBody = txtResDes.getValue () ,
 				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />';
 			
-//			artBody = htInjection (artBody);
+			artBody = htInjection (artBody , this.getThesaurusStore ());
 			
 			// XML Injection
 			var article = artHeader + '\n' + artBody + '\n' + artResource + '\n';
@@ -119,7 +118,7 @@ Ext.define ('SC.controller.SendResource' , {
 		
 			// AJAX Request
 			Ext.Ajax.request ({
-				url: 'post' ,
+				url: urlServerLtw + 'post' ,
 				params: { article: article } ,
 				success: function (response) {
 					// On success, close window and display last 5 posts of the user
@@ -134,7 +133,7 @@ Ext.define ('SC.controller.SendResource' , {
 					}
 					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
+					store.getProxy().url = urlServerLtw + 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);

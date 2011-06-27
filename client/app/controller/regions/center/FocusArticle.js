@@ -80,7 +80,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		
 		// Ajax request
 		Ext.Ajax.request ({
-			url: 'setlike' ,
+			url: urlServerLtw + 'setlike' ,
 			// Sending server, user and post ID of this article
 			params: { 
 				serverID: postData.split("/")[1] ,
@@ -146,7 +146,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		
 		// Ajax request
 		Ext.Ajax.request ({
-			url: 'setfollow' ,
+			url: urlServerLtw + 'setfollow' ,
 			// Sending server and user ID of this article
 			params: { 
 				serverID: postData.split("/")[1] ,
@@ -187,7 +187,22 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// @brief Reply
 	// TODO: all
 	reply: function (button, event) {
-		var win = button.up('window');
+//		var dataToReply = focusModel.get ('article');
+//		var ownerOfReply = focusModel.get ('user');
+//		var winSend = Ext.getCmp ('windowNewPost');
+//		var taReply = winSend.down ('#txtAreaReply');
+//		
+//		var tpl = Ext.create ('Ext.form.Label' , {
+//			text: dataToReply ,
+//			flex: 0.5
+//		});
+//		
+//		//taReply.setValue (dataToReply);
+//		//taReply.setVisible (true);
+//		
+//		winSend.insert (0, tpl);
+//		
+//		winSend.show ();
 	} ,
 	
 	// @brief Respam
@@ -196,7 +211,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		
 		// Ajax request
 		Ext.Ajax.request ({
-			url: 'respam' ,
+			url: urlServerLtw + 'respam' ,
 			// Sending server and user ID of this article
 			params: { 
 				serverID: postData.split("/")[1] ,
@@ -233,13 +248,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		focusUser = focusModel.get ('user');
 		
 		// Retrieve user setlike value
-		//likeOrDislike = findSetLike (focusModel.get ('article'));
 		likeOrDislike = focusModel.get ('setlike');
 		
 		// Like and Dislike counters
-//		counterLike = parseInt (findCounters (focusModel.get ('article'), 'Like'));
-//		counterDislike = parseInt (findCounters (focusModel.get ('article'), 'Dislike'));
-
 		counterLike = focusModel.get ('like');
 		counterDislike = focusModel.get ('dislike');
 		
@@ -284,10 +295,10 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				if (focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
 					win.down('button[tooltip="I Like"]').setVisible (true);
 					win.down('button[tooltip="I Dislike"]').setVisible (true);
+					win.down('button[tooltip="Respam"]').setVisible (true);
 				}
 				
 				win.down('button[tooltip="Reply"]').setVisible (true);
-				win.down('button[tooltip="Respam"]').setVisible (true);
 				
 				isFollowed = false;
 				

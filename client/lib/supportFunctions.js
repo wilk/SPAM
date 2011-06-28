@@ -112,7 +112,10 @@ function checkIfUserLogged () {
 function retrieveRecentArticles (store) {
 	// Clean the store
 	store.removeAll ();
-
+	
+	// Set URL dinamically
+	store.getProxy().url = urlServerLtw + 'search/10/recent';
+	
 	// Make an AJAX request with JQuery to read XML structure (ExtJS can't read XML with mixed content model)
 	$.ajax({
 		type: 'GET',
@@ -125,8 +128,6 @@ function retrieveRecentArticles (store) {
 				var numLike, numDislike;
 				var ifLikeDislike = 0;
 				
-				alert ($(this).find('article'));
-			
 				// Find like and dislike counter plus setlike of the user
 				$(this).find('article').find('span').each (function () {
 					// Find like counter
@@ -151,7 +152,7 @@ function retrieveRecentArticles (store) {
 				// Add article to the store
 				store.add ({
 					affinity: parseInt ($(this).find('affinity').text ()) ,
-					article: $(this).find('article') ,
+					article: $(this).find('article').text () ,
 					resource: $(this).find('article').attr ('resource') ,
 					about: $(this).find('article').attr ('about') ,
 					like: numLike ,
@@ -162,12 +163,12 @@ function retrieveRecentArticles (store) {
 			});
 		} ,
 		error: function (xhr, type, text) {
-			Ext.Msg.show ({
-				title: type,
-				msg: text ,
-				buttons: Ext.Msg.OK,
-				icon: Ext.Msg.ERROR
-			});
+//			Ext.Msg.show ({
+//				title: type,
+//				msg: text ,
+//				buttons: Ext.Msg.OK,
+//				icon: Ext.Msg.ERROR
+//			});
 		}
 	});
 }

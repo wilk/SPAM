@@ -19,40 +19,22 @@ Ext.define ('SC.controller.regions.Center' , {
 	init: function () {
 		this.control ({
 			'centerregion' : {
-//				afterrender : this.setArtDisp
-//				enable : this.setArtDisp
+				afterrender : this.setArtDisp
 			}
 		});
 		console.log ('Controller Center started.');
 	} ,
 	
 	setArtDisp : function (region) {
-		store = this.getRegionsCenterArticlesStore();
+		var store = this.getRegionsCenterArticlesStore ();
 
-		store.getProxy().url = 'app/data/art4.xml';
+		store.getProxy().url = urlServerLtw + 'search/10/recent';
 		
 		// TODO: make case for every errors (401, 404, ...)
 		store.load (function (records, operation, success) {
-			if (! success) {
-				var err = operation.getError ();
-				Ext.Msg.show ({
-					title: 'Error ' + err.status ,
-					msg: 'Something bad happened!' ,
-					buttons: Ext.Msg.OK,
-					icon: Ext.Msg.ERROR
-				});
-			}
-			else {
-				// Check if there are articles to display
-				if (store.count () == 0)
-					Ext.Msg.show ({
-						title: 'Error',
-						msg: 'No articles found!' ,
-						buttons: Ext.Msg.OK,
-						icon: Ext.Msg.ERROR
-					});
-				else
-					disposeArticles (store, null, 0);
+			// Check if there are articles to display
+			if (success && (store.count () != 0)) {
+				disposeArticles (store, null, 0);
 			}
 		});
 	}

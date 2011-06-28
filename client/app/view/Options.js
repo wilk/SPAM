@@ -20,7 +20,6 @@ Ext.define ('SC.view.Options' , {
 	// On top of any content
 	modal: true ,
 	layout: 'anchor' ,
-//	bodyPadding: 10 ,
 	closeAction: 'hide' ,
 	activeTab: 0 ,
 	
@@ -43,24 +42,26 @@ Ext.define ('SC.view.Options' , {
 				layout: 'anchor' ,
 				items: [{
 					// Server URL
-					// TODO: insert a default value (default server ID)
 					xtype: 'combo' ,
 					id: 'tfServerUrl' ,
 					fieldLabel: 'Server URL ' ,
 					anchor: '100% 100%' ,
 					allowBlank: false ,
 					editable: false ,
-//					forceSelection: true ,
 					displayField: 'serverID' ,
 					labelWidth: 130 ,
 					store: 'serverStore' ,
 					queryMode: 'local'
-//					typeAhead: true ,
 				}] ,
 				// Buttons
 				buttons: [{
+					// Reset
 					text: 'Reset' ,
 					id: 'btnOptionReset'
+				} , {
+					// Apply
+					text: 'Apply' ,
+					id: 'btnOptionApply'
 				}]
 			}]
 		} , {

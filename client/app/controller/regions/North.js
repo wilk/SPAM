@@ -87,6 +87,7 @@ Ext.define ('SC.controller.regions.North' , {
 				// AJAX request to login
 				Ext.Ajax.request ({
 					url: urlServerLtw + 'login' ,
+					method: 'POST' ,
 					params: { username: txtUser } ,
 					success: function (response) {
 						// If server sets his cookies

@@ -36,7 +36,7 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 		storeRecentPost = this.getRegionsEastRecentPostStore ();
 		
 		// Every 5 secs refresh the recent articles list
-		setInterval ('retrieveRecentArticles (storeRecentPost)', 5000);
+		setInterval ('retrieveRecentArticles (storeRecentPost)', 35000);
 	} ,
 	
 	// Display articles when someone dclick on this article

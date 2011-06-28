@@ -143,9 +143,13 @@ Ext.define ('SC.controller.regions.North' , {
 		
 					bNewPost.setVisible (false);
 					
-					// Refresh focus window
-					Ext.getCmp('winFocusArticle').setVisible (false);
-					Ext.getCmp('winFocusArticle').setVisible (true);
+					var winFocus = Ext.getCmp('winFocusArticle');
+					
+					if (winFocus != null) {
+						// Refresh focus window
+						Ext.getCmp('winFocusArticle').setVisible (false);
+						Ext.getCmp('winFocusArticle').setVisible (true);
+					}
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({

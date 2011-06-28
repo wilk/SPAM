@@ -32,6 +32,9 @@
 		
 		// When the page is loaded
 		Ext.onReady (function () {
+			// To avoid AJAX request problems
+			Ext.Ajax.useDefaultXhrHeader = false;
+		
 			// Check if user agent support geolocation
 			browserGeoSupportFlag = (navigator.geolocation) ? true : false;
 			

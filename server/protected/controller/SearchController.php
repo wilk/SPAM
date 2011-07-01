@@ -67,7 +67,7 @@ class SearchController extends DooController {
                         //BAD REQUEST
                         return 400;
                 $srv = $this->params['var1'];
-                $usr = $this->params['var2'];
+                $usr = urldecode($this->params['var2']);
                 if ($srv == 'Spammers') {//richiesta interna
                     $user = new UserModel($usr);
                     //qui faccio solo un controllo; sarebbe giusto farne due distinti

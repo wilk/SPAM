@@ -69,7 +69,7 @@ class PostController extends DooController {
         $pathPost = 'spam:/' . $server . '/' . $user . '/' . $post;
         if (isset($this->params['type'])) {
             if ($this->params['type'] == "rdf") {
-                if ($this->acceptType() == 'rdf') {
+//                if ($this->acceptType() == 'rdf') {
                     $this->articolo = new PostModel();
                     if ($this->articolo->postExist($pathPost)) {
                         $myPost = $this->articolo->getPost($pathPost);
@@ -78,8 +78,8 @@ class PostController extends DooController {
                         print $rdfPost;
                     } else
                         return ErrorController::notFound('Questo post non esiste!!');
-                }else
-                    return ErrorController::conflict();
+//                }else
+//                    return ErrorController::conflict();
             } else
                 return ErrorController::notImpl();
         }else if (($this->acceptType()) == 'html') {
@@ -173,13 +173,13 @@ class PostController extends DooController {
                         ->accept(DooRestClient::HTML)
                         ->get();
                 if ($request->isSuccess()) {
-                    $content = $request->result();
+                    $content = $request->result();    
                     $html= str_get_html($content);
                     foreach($html->find('span') as $span){
                         if(!isset($span->typeof) && !isset($span->rel) && !isset($span->resource))
                         $span->outertext= '';
                     }
-                    $content=$html->outertext;
+                    $content=html_entity_decode($html->outertext, ENT_NOQUOTES, 'UTF-8');
                     $this->createPost($content);
                 }else
                     return $request->resultCode();

@@ -15,8 +15,9 @@ class PostView {
    ctag: http://commontag.org/ns#
    skos: http://www.w3.org/2004/02/skos/core#
    dcterms: http://purl.org/dc/terms/
-   tweb: http://vitali.web.cs.unibo.it/vocabulary/"
-    about="%POSTID%" typeof="sioc:Post" rel="sioc:has_creator" resource="%USERID%"
+   tweb: http://vitali.web.cs.unibo.it/vocabulary/
+   "
+   about="%POSTID%" typeof="sioc:Post" rel="sioc:has_creator" resource="%USERID%"
    property="dcterms:created" content="%POSTDATE%">
    %POSTCONTENT%
    %USERLIKE%

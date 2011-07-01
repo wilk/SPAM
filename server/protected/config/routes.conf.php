@@ -83,6 +83,7 @@ $route['*']['/notAuth']=array('ErrorController', 'notAuth');
 /////////INIZIO ROUTING SPAM//////////
 //Login utente
 $route['post']['/login'] = array('LoginController', 'authUser');
+$route['options']['/login']= array('CORSController','sendOk');
 //Path con login metodo non supportato
 $route['*']['/login'] = array('ErrorController', 'notSupport');
 

@@ -64,10 +64,12 @@ class ThesModel {
      */
 
     public function returnPath($term) {
+        //print_r($this->index); die();
         foreach ($this->index as $key => $label) {
             if ($label[$this->prefLabel][0] == $term) {
                 $pathArray = explode('/', strstr(parse_url($key, PHP_URL_PATH), 'thesaurus/'));
                 unset($pathArray[0]);
+                //print_r($pathArray); die();
                 return $pathArray;
             }
         }
@@ -207,20 +209,27 @@ class ThesModel {
     
     public function getPostsFromThes($path, $limite, $specific = FALSE){
         $pIDs = array();
+        //print_r($this->index); die();
         for ($i=sizeof($path);$i>0;$i--){
             if ($limite == 0)
                 break;
-            $mandrakata = implode('/', array_slice($path, 0, $i));
+            $mandrakata = 'http://ltw1102.web.cs.unibo.it/'.implode('/', array_slice($path, 0, $i));
+            //echo $mandrakata; die();
             if (isset($this->index[$mandrakata])){
                 //qui se è settato il termine, mi aspetto che abbia dei sioc:Post associati
                 $nposts = sizeof($this->index[$mandrakata][self::$siocPost]);
-                if ($limite == 'all' || 
-                        $nposts<$limite){
-                    array_push($pIDs, $this->index[$mandrakata][self::$siocPost]);
-                } else {
-                    array_push($pIDs, array_slice($this->index[$mandrakata][self::$siocPost], 0, $limite));
+                if ($limite != 'all' && 
+                        $nposts>$limite){
+                    $limite--;
+                    $posts = array_slice($this->index[$mandrakata][self::$siocPost], 0, $limite);
+                } else
+                    $posts = $this->index[$mandrakata][self::$siocPost];
+                foreach ($posts as $id)
+                    array_push($pIDs, $id);
+                
+                if ($limite != 'all' && 
+                        $nposts>$limite)
                     break;
-                }
             }
             if ($specific === TRUE)
                 break;
@@ -230,13 +239,16 @@ class ThesModel {
     
     public function getPostsByCtag($term, $limite){
         $pIDs = array();
-        $label = 'http://ltw1102.web.cs.unibo.it/tags/';
-        $label .= $term;
+        //print_r($this->index); die();
+        $label = 'http://ltw1102.web.cs.unibo.it/tags/'.$term;
         if (!isset($this->index[$label]))
             return 0;
+            //die('non ci siamo');
         $c = sizeof($this->index[$label][self::$siocPost]);
+        //print_r($this->index[$label][self::$siocPost]); die();
         if ($c < $limite)
             return $this->index[$label][self::$siocPost];
+        $limite--;
         return array_slice($this->index[$label][self::$siocPost], 0, $limite);
     }
 

@@ -16,6 +16,8 @@ class LoginController extends DooController {
             return ErrorController::badReq('L\' username deve essere specificato!!');
         $user=$_POST['username'];
         $user = str_replace(' ', '_', $user);
+        if (preg_match("/[\/\\\&\?#@%\'\";]/", $user))
+            ErrorController::badReq ("Non sono permessi i caratteri: \" /\\& ? # @ % ; ' \"");
         $utente = new UserModel($user);
         if ($utente->firstTime()) {
             $utente->addUser();

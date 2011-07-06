@@ -43,7 +43,7 @@ class PostController extends DooController {
     public function createPost($content = null) {
         /* Recupero nella variabile $content tutto quello che mi viene passato tramite POST
          */
-
+        $this->articolo = new PostModel();
         if ($content == null) {
             if (isset($_POST['article']))
                 $mycontent = $_POST['article'];
@@ -52,7 +52,6 @@ class PostController extends DooController {
         }
         else
             $mycontent=$content;
-        $this->articolo = new PostModel();
         if ($pID = $this->articolo->initNewPost($mycontent)) {
 //            echo $pID;
 //            echo $_SESSION['user']['username'];
@@ -70,14 +69,14 @@ class PostController extends DooController {
         if (isset($this->params['type'])) {
             if ($this->params['type'] == "rdf") {
 //                if ($this->acceptType() == 'rdf') {
-                    $this->articolo = new PostModel();
-                    if ($this->articolo->postExist($pathPost)) {
-                        $myPost = $this->articolo->getPost($pathPost);
-                        $rdfPost = PostView::renderPostRdf($myPost);
-                        $this->setContentType('rdf');
-                        print $rdfPost;
-                    } else
-                        return ErrorController::notFound('Questo post non esiste!!');
+                $this->articolo = new PostModel();
+                if ($this->articolo->postExist($pathPost)) {
+                    $myPost = $this->articolo->getPost($pathPost);
+                    $rdfPost = PostView::renderPostRdf($myPost);
+                    $this->setContentType('rdf');
+                    print $rdfPost;
+                } else
+                    return ErrorController::notFound('Questo post non esiste!!');
 //                }else
 //                    return ErrorController::conflict();
             } else
@@ -173,13 +172,18 @@ class PostController extends DooController {
                         ->accept(DooRestClient::HTML)
                         ->get();
                 if ($request->isSuccess()) {
-                    $content = $request->result();    
-                    $html= str_get_html($content);
-                    foreach($html->find('span') as $span){
-                        if(!isset($span->typeof) && !isset($span->rel) && !isset($span->resource))
-                        $span->outertext= '';
+                    $content = $request->result();
+                    $html = str_get_html($content);
+                    print "$content\n\r";
+                    foreach ($html->find('span') as $span) {
+                        if (!isset($span->typeof) && !isset($span->rel) && (!isset($span->resource) || isset($span->rev)))
+                            $span->outertext = '';
                     }
-                    $content=html_entity_decode($html->outertext, ENT_NOQUOTES, 'UTF-8');
+                    foreach ($html->find('span[rel=sioc:reply_of]') as $span)
+                        $span->outertext = '';
+                    foreach ($html->find('span[rel=sioc:has_reply]') as $span)
+                        $span->outertext = '';
+                    $content = "<article>" . html_entity_decode($html->find('article', 0)->innertext, ENT_NOQUOTES, 'UTF-8') . "</article>";
                     $this->createPost($content);
                 }else
                     return $request->resultCode();
@@ -209,6 +213,7 @@ class PostController extends DooController {
         $uID = $_POST['userID'];
         $pID = $_POST['postID'];
         $resource = 'spam:/' . $sID . '/' . $uID . '/' . $pID;
+        $this->articolo = new PostModel();
         if ($sID == 'Spammers') {
             if ($this->articolo->postExist($resource)) {
                 $this->createPost();

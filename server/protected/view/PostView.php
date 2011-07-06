@@ -119,7 +119,7 @@ class PostView {
             $article = $dom->createTextNode($content);
             $myPost->appendChild($article);
         }
-        return htmlspecialchars_decode($dom->saveXML());
+        return html_entity_decode($dom->saveXML());
     }
 
 }

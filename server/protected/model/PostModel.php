@@ -119,7 +119,6 @@ class PostModel {
         $parser->parse($base, $data);
         $parser->extractRDF('rdfa');
         $parsedArray = $parser->getSimpleIndex();
-        print_r($parsedArray);die();
         $html = str_get_html($data);
         $testoHTML = htmlspecialchars($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
         /* questo controllo serve quando ricevo da client e non so nulla del messaggio,
@@ -155,7 +154,6 @@ class PostModel {
          */
         $this->postID = $usrResource . '/' . rand();
         $customized[$this->postID] = $pre;
-        print_r($index); die();
 //        $post = current($index);
 //        print_r($post);
         foreach ($index as $post) {
@@ -175,7 +173,6 @@ class PostModel {
                         }
                     }
                     $tesauro = new ThesModel(TRUE);
-                    print_r($tagList); die();
                     $tesauro->addPost2Thes($tagList, $this->postID);
                 }
             }break;
@@ -307,6 +304,13 @@ class PostModel {
         }
         else
             ErrorController::badReq('Hai già espresso la tua opinione');
+    }
+    public function stupidity($content){
+        $htmlContent = str_get_html($content);
+        $fixedHtml= $htmlContent->find('article',0);
+        $about= $fixedHtml->about;
+        $fixedHtml->innertext="<div about=\"$about\"><div property=\"sioc:content\">$fixedHtml->innertext</div>";
+        
     }
 
 }

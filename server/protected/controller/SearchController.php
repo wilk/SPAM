@@ -39,8 +39,8 @@ class SearchController extends DooController {
         }
     }
 
-    /* qui sono mazzate */
-    public function searchMain() {
+    /* il booleano $extRequest viene settano nel route a TRUE se si tratta di /searchserver */
+    public function searchMain($extRequest = FALSE) {
         if (!(isset ($this->params['limit'])) || !(isset ($this->params['type'])))
             //BAD REQUEST
             return 400;
@@ -56,11 +56,10 @@ class SearchController extends DooController {
             'affinity'
         );
         
-        $request;
-        if (isset($_SESSION['user']['username'])){
-            $this->load()->helper('DooRestClient');
-            $request = new DooRestClient;
-        }
+        
+        $this->load()->helper('DooRestClient');
+        $request = new DooRestClient;
+        
         switch ($tipo) {
             case $search_Type[0]: //author
                 if (!(isset ($this->params['var1'])) || !(isset ($this->params['var2'])))
@@ -71,24 +70,24 @@ class SearchController extends DooController {
                 if ($srv == 'Spammers') {//richiesta interna
                     $user = new UserModel($usr);
                     //qui faccio solo un controllo; sarebbe giusto farne due distinti
-                    if ($user->ifUserExist()){
-                        if ($user->checkPosts()){
-                            $posts = $this->rcvFromINTServer($user, $limite);
-                            if (sizeof($posts))
-                                $this->displayPosts($posts);
-                            else{
-                                ErrorController::internalError();
-                            }
-                        } else
+                    if (!$user->ifUserExist())
+                            ErrorController::notFound("Errore: l'utente $usr non esiste.\n");
+
+                    if (!$user->checkPosts())
                             ErrorController::notFound("Errore: l'utente $usr non ha pubblicato messaggi.\n");
-                    } else
-                        ErrorController::notFound("Errore: l'utente $usr non esiste.\n");
+
+                    $posts = $this->rcvFromINTServer($user, $limite);
+
+                    if (!sizeof($posts))
+                            ErrorController::internalError();
+
+                    $this->displayPosts($posts);
                 } else {//richiesta esterna
                     $parametri = array($limite, $tipo, $srv, $usr);
                     $metodo = 'searchserver'.implode('/', $parametri);
                     //giro direttamente la risposta sperando che il server non scazzi
                     //ps: può dare problemi interni per il fatto dello status di ritorno
-                    return $this->rcvFromEXTServer($srv, $method);
+                    $this->rcvFromEXTServer($srv, $method);
                 }
                 break;
                 
@@ -98,7 +97,7 @@ class SearchController extends DooController {
                     $follows = $user->getFollows();
                     $size = sizeof($follows);
                     if (!$size)
-                        ErrorController::notFound('Attualmente non ci sono utenti seguiti.\n');
+                        ErrorController::notFound('Attualmente non ci sono utenti seguiti.');
                     foreach ($follows as $follow){
                         $posts;
                         $howMany = round($limite/$size);
@@ -128,80 +127,87 @@ class SearchController extends DooController {
                 break;
                 
             case $search_Type[2]: //recent
-                $howMany;
                 $servers;
-                $size = 1;
                 $ext = FALSE;
                 $pIDs = 0;
+                $SRV = new SRVModel($request);
                 
-                if (isset($_SESSION['user']['username'])){
-                    $ext = TRUE;
-                    $user = new UserModel($_SESSION['user']['username']);
-                    $servers = $user->getServers();
-                    $size += sizeof($servers);
-                }
-                $howMany = round($limite/$size) + 1;
-                
+                $post = new PostModel();
                 if (isset($this->params['var1'])){
                     $termine = $this->params['var1'];
                     $tesauro = new ThesModel();
                     $pathTerm = $tesauro->returnPath($termine);
+                    //print_r($pathTerm); die();
                     $tesauro = new ThesModel(TRUE);
                     if ($pathTerm !== false)
-                        $pIDs = $tesauro->getPostsFromThes($pathTerm, $howMany, TRUE);
+                        $pIDs = $tesauro->getPostsFromThes($pathTerm, $limite, TRUE);
                         
-                    else if ($res = $tesauro->getPostsByCtag($termine, $howMany))
+                    else if ($res = $tesauro->getPostsByCtag($termine, $limite))
                         $pIDs = $res;
+                    
+                    if ($pIDs != 0) //{print_r($pIDs); die();}
+                        $this->listaPost = $post->getPostArray($pIDs);
+                    /*else//posso considerare se sono in locale
+                        return 404;*///per il momento non la considero sta cosa
                 }
+                else // qui ricerco senza termine --> OCCHIO ALLA RELATED
+                    $this->listaPost = $post->getPostArray(NULL, $limite);
 
-                $post = new PostModel();
-                if ($pIDs != 0)
-                    $this->listaPost = $post->getPostArray($pIDs);
-                    
-                else {// qui ricerco senza termine
-                    $this->listaPost = $post->getPostArray(NULL, $howMany);
-                }
-                $rimasti = $limite - count($this->listaPost);
-                $size--;
+                if (isset($_SESSION['user']['username'])){
+                    $ext = TRUE;
+                    $user = new UserModel($_SESSION['user']['username']);
+                    $servers = $user->getServers();
+                } else if($extRequest === FALSE)//qui la ricerca è interna, ma non ci sono utenti loggati
+                    $servers = $SRV->getDefaults();
                 
-                if ($ext && $size){//richiedo all'esterno
-                    $howMany = round($rimasti/$size) + 1;
-                    
-                    $askServers = new SRVModel($request);
+                if ($ext || !$extRequest){//richiedo all'esterno
                     $a = array();
                     foreach ($servers as $value) {
-                        $k['url'] = $askServers->getUrl($value);
-                        $k['data'] = 0;
-                        $a[] = $k;
+                        if ($value != 'Spammers'){
+                            $k['name'] = $value;
+                            $k['url'] = $SRV->getUrl($value);
+                            $k['code'] = 0;
+                            $k['data'] = 0;
+                            $a[] = $k;
+                        }
                     }
                     $servers = $a;
                     $metodo = '/'.$tipo;
                     if (isset($this->params['var1']))
                             $metodo .= '/'.$this->params['var1'];
 
-                    if ($this->rcvFromEXTServers($servers, $howMany, $metodo)){
-                        print_r($servers); die();
+                    if ($this->rcvFromEXTServers($servers, $limite, $metodo)){
+                        
+                        $badServer = array();
                         foreach ($servers as $value) {
-                            if ($value['data']){
-                                //$lista = $this->parseEXTContent($value['data'], $value['url']);
-                                //print_r($lista); die();
-//                                foreach ($lista as $value) {
-//                                    if(isset($value[]))
-//                                }
-                            } else {
-                                //qui gestisco i server da fanculizzare
-                            }
+                            if ($value['code'] === 200) {
+                                $this->parseEXTContent($value['data'], $value['url']);
+                                $b[] = $value['url'].' => '.$value['code'];
+                                //QUESTO PUNTO È CRUCIALE!!!!!!!!!!!
+                            } else if($value['code'] === 500){
+                                array_push($badServer, $value['name']);
+                            } /*else {
+                                print($value['url'].' => '.$value['code']);
+                                print(" ");
+                            }*/
                         }
+                        print_r($b);die();
+                        //qui fanculizzo i server
+                        if (count($badServer))
+                            $this->funcoolizer($badServer);
+                        
                     } else 
-                        return 501;
+                        return 500;
                 }
-
-               if (sizeof($this->listaPost) > $limite)
-                   array_slice ($this->listaPost, 0, $limite, TRUE);
-               $this->displayPosts($this->listaPost);
-
-               break;
                 
+                //QUI MI METTO IN ORDINE LA MIA LISTA
+                print_r($this->listaPost);
+//                if (sizeof($this->listaPost) > $limite)
+//                    $this->listaPost = array_slice ($this->listaPost, 0, $limite, TRUE);
+//                $this->displayPosts($this->listaPost);
+
+                break;
+
             case $search_Type[3]: //related
                 if (!(isset ($this->params['var1'])))
                         //BAD REQUEST
@@ -226,9 +232,17 @@ class SearchController extends DooController {
                 break;
                 
             default: //beh, altrimenti errore
-                return 400; //?? giust?
+                return 501; //?? giust?
                 break;
         }
+    }
+    
+    private function funcoolizer(&$badS){
+        if (!isset($_SESSION['user']['username']))
+            return;
+        $user = new UserModel($_SESSION['user']['username']);
+        $listaServers = $user->getServers();
+        $user->setServers(array_diff($listaServers, $badS));
     }
     
     private function displayPosts($lista){
@@ -248,8 +262,8 @@ class SearchController extends DooController {
                 ->get();
         if ($request->isSuccess())
             return $request->xml_result();
-        else
-            return false;
+        /*else
+            return false;*///questo me lo risparmio... lascio fare tutto al server esterno!
     }
     
     private function rcvFromEXTServers(&$servers, $limite, $metodo){
@@ -263,7 +277,11 @@ class SearchController extends DooController {
                 $h = curl_init();
                 curl_setopt($h,CURLOPT_URL,$url);
                 curl_setopt($h,CURLOPT_HEADER,0);
-                curl_setopt($h,CURLOPT_RETURNTRANSFER,1);//return the image value
+                curl_setopt($h,CURLOPT_RETURNTRANSFER,1);
+                /*curl_setopt($h, CURLOPT_HTTPHEADER, array(
+                    "Content-Type: application/xml; charset=utf-8"
+                ));*/
+                curl_setopt($h, CURLOPT_TIMEOUT, 5);
 
                 array_push($hArr,$h);
         }
@@ -273,13 +291,14 @@ class SearchController extends DooController {
             curl_multi_add_handle($mh,$h);
 
         $running = null;
-        do{ curl_multi_exec($mh,$running);
-        }while($running > 0);
+        do curl_multi_exec($mh,$running);
+        while($running > 0);
 
         // get the result and save it in the result ARRAY
-        foreach($hArr as $k => $h)
+        foreach($hArr as $k => $h){
             $servers[$k]['data'] = curl_multi_getcontent($h);
-
+            $servers[$k]['code'] = curl_getinfo($h, CURLINFO_HTTP_CODE);
+        }
         //close all the connections
         foreach($hArr as $k => $h)
                 curl_multi_remove_handle($mh,$h);
@@ -292,12 +311,14 @@ class SearchController extends DooController {
     
     private function parseEXTContent($toParse, $server){
         $array = array();
-        $html = str_get_html($toParse->asXML());
+        $html = str_get_html($toParse/*->asXML()*/);
         foreach ($html->find('article') as $articolo){
             $post = PostModel::parseArticle($articolo->outertext, $server);
+            //array_push($array, $post);
+            //print_r($post);
             //sto bordello è solo per prelevare solo il post vero e proprio
             foreach ($post as $k => $value){
-                if ($value['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://rdfs.org/sioc/ns#Post')
+                if ($value['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'sioc:Post')
                     array_push($array, $post[$k]);
             }
         }

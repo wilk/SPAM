@@ -89,10 +89,10 @@ class SearchController extends DooController {
                     $metodo = 'searchserver/'.implode('/', $parametri);
                     //giro direttamente la risposta sperando che il server non scazzi
                     //ps: può dare problemi interni per il fatto dello status di ritorno
-                    //$res = $this->rcvFromEXTServer($srv, $metodo);
-                    //if (is_numeric($res))
-                    //    return $res;
-                    return $this->rcvFromEXTServer($srv, $metodo);
+                    $res = $this->rcvFromEXTServer($srv, $metodo);
+                    if (is_numeric($res))
+                        return $res;
+                    print $res;
                 }
                 break;
                 
@@ -113,8 +113,8 @@ class SearchController extends DooController {
                             $parametri = array($limite, $types[0], $srv, $usr);
                             $metodo = 'searchserver/'.implode('/', $parametri);
                             $XMLresult = $this->rcvFromEXTServer($srv, $method);
-                            if ($XMLresult != false)
-                                $posts = $this->parseEXTContent($XMLresult);
+                            if (!is_numeric($XMLresult))
+                                $this->parseEXTContent($XMLresult);
                         }
                     }
                     //qui devo ordinare la mia lista

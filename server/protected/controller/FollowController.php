@@ -51,11 +51,11 @@ class FollowController extends DooController {
         if ($_POST['serverID'] == 'Spammers') {
             if ($_POST['userID']!= $_SESSION['user']['username']){
             $test = new UserModel($_POST['userID']);
-            if (!$test->ifUserExist()) {
-                return ErrorController::notFound("L'utente che si vuole seguire non esiste su questo server.");
-            }
-            }
-            ErrorController::badReq('Non puoi seguirti ci pensa la tua ombra a farlo!');
+                if (!$test->ifUserExist()) {
+                    return ErrorController::notFound("L'utente che si vuole seguire non esiste su questo server.");
+                }
+            } else
+                ErrorController::badReq('Non puoi seguirti ci pensa la tua ombra a farlo!');
         }
         $risorsa = 'spam:/' . $_POST['serverID'] . '/' . $_POST['userID'];
         $utente = new UserModel($_SESSION['user']['username']);

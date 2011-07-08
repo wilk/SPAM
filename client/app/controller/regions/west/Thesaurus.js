@@ -64,6 +64,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		//get root node to append all chileds
 			var root=theStore.getRootNode();
 			
+			
 		//query to retrive all "hasTopConcept" node
 			var top=myRDF.Match(null,null,skosNS+"hasTopConcept",null);
 
@@ -77,6 +78,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			};
 		
 		//resume store content change events
+		
 			theStore.resumeEvents();
 		
 		};
@@ -94,12 +96,10 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 				ns: myRDF.getSingleObject(null,subject,skosNS+"inScheme",null)
 			});
 			
-		//change node internal id into the store to retrive it with findNodeById method
-			node.internalId=val;
+		//change node internal id into the store to retrive it with getNodeById method
 		
 		
 			father.appendChild(node);
-
 		
 		//query to get all node's children and recall this function to fill the tree
 			var child=myRDF.Match(null,subject,skosNS+"narrower",null);
@@ -154,13 +154,12 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			
 			success:function(response){
 			
-			//take store reference and find new node parent	
+			//get store reference and find new node parent	
 				var store=Ext.StoreManager.lookup('Thesaurus');
 				var parent=store.getNodeById(parentterm);
 			
 			//create new node and set his attribute
-				var newNode=SC.model.TheNode.create({text:term});
-				newNode.internalId=term;				
+				var newNode=SC.model.TheNode.create({text:term});			
 			
 			//append new node to his father	
 				parent.appendChild(newNode);

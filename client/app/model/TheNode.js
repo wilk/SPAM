@@ -19,6 +19,8 @@ Ext.define('SC.model.TheNode',{
 			name: 'ns' ,
 			type: 'string'
 		}],
+		
+	idProperty:'text',
 
 	proxy:{
 		type: 'localstorage' ,

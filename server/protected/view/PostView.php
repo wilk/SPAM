@@ -10,23 +10,25 @@ class PostView {
         //Definisco template di un articolo HTML standard da inviare
         $key = key($p);
         //print_r($p); die();
-        $articleTemplate = '<article prefix="
-   sioc: http://rdfs.org/sioc/ns#
-   ctag: http://commontag.org/ns#
-   skos: http://www.w3.org/2004/02/skos/core#
-   dcterms: http://purl.org/dc/terms/
-   tweb: http://vitali.web.cs.unibo.it/vocabulary/
-   "
-   about="%POSTID%" typeof="sioc:Post" rel="sioc:has_creator" resource="%USERID%"
-   property="dcterms:created" content="%POSTDATE%">
-   %POSTCONTENT%
-   %USERLIKE%
-   %LIKEVALUE%
-   %DISLIKEVALUE%
-   %HASREPLY%
-   %RESPAMOF%
-   %REPLYOF%
-</article>';
+        $articleTemplate = '
+            <article prefix="
+               sioc: http://rdfs.org/sioc/ns#
+               ctag: http://commontag.org/ns#
+               skos: http://www.w3.org/2004/02/skos/core#
+               dcterms: http://purl.org/dc/terms/
+               tweb: http://vitali.web.cs.unibo.it/vocabulary/
+               "
+               about="%POSTID%" typeof="sioc:Post" rel="sioc:has_creator" resource="%USERID%"
+               property="dcterms:created" content="%POSTDATE%">
+               %POSTCONTENT%
+               %USERLIKE%
+               %LIKEVALUE%
+               %DISLIKEVALUE%
+               %HASREPLY%
+               %RESPAMOF%
+               %REPLYOF%
+            </article>
+            ';
         //Identifico array delle variabili del template da sostituire
         $article_vars = array("%POSTID%", "%USERID%", "%POSTDATE%", "%POSTCONTENT%", "%USERLIKE%", "%LIKEVALUE%", "%DISLIKEVALUE%", "%HASREPLY%", "%RESPAMOF%", "%REPLYOF%");
         //Controllo se l'utente ha un preferenza di like o dislike
@@ -106,15 +108,23 @@ class PostView {
         $dom = new DOMDocument('1.0', 'utf-8');
         $archive = $dom->appendChild($dom->createElement('archive'));
         /* $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><archive></archive>'); */
-        foreach ($m as $k => $post) {
+        foreach ($m as /*$k => */$post) {
 //            $myPost = $xml->addChild('post');
 //            $myPost->addChild('content', 'text/html; charset=UTF8');
 //            $myPost->addChild('affinity', rand(3, 13));
             $myPost = $archive->appendChild($dom->createElement('post'));
             $myPost->appendChild($dom->createElement('content', 'text/html; charset=UTF8'));
-            $myPost->appendChild($dom->createElement('affinity', rand(1, 20)));
-            $content = self::renderPost($m[$k]);
-            //$myPost->addChild(self::renderPost($post));
+            
+            if (isset($post['peso']))
+                $weight = $post['peso'];
+            else
+                $weight = rand(1, 20);
+            $myPost->appendChild($dom->createElement('affinity', $weight));
+            
+            if (is_string($post['articolo']))
+                $content = $post['articolo'];
+            else
+                $content = self::renderPost($post['articolo']);
 
             $article = $dom->createTextNode($content);
             $myPost->appendChild($article);

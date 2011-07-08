@@ -89,8 +89,10 @@ class SearchController extends DooController {
                     $metodo = 'searchserver/'.implode('/', $parametri);
                     //giro direttamente la risposta sperando che il server non scazzi
                     //ps: può dare problemi interni per il fatto dello status di ritorno
-                    print $this->rcvFromEXTServer($srv, $metodo);
-                    return;
+                    //$res = $this->rcvFromEXTServer($srv, $metodo);
+                    //if (is_numeric($res))
+                    //    return $res;
+                    return $this->rcvFromEXTServer($srv, $metodo);
                 }
                 break;
                 
@@ -280,9 +282,9 @@ class SearchController extends DooController {
                 ->accept(DooRestClient::XML)
                 ->get();
         if ($request->isSuccess())
-            return $request->xml_result();
+            return $request->result();
         else
-            return false;//questo me lo risparmio... lascio fare tutto al server esterno!
+            return $request->resultCode();//questo me lo risparmio... lascio fare tutto al server esterno!
     }
     
     private function rcvFromEXTServers(&$servers, $limite, $metodo){

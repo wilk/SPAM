@@ -31,9 +31,11 @@ class FollowController extends DooController {
             return $rs;
         }
     }
+
     /*
      * Aggiunge l'utente specificato nella lista degli utenti seguiti dal client.
      */
+
     public function setFollow() {
         //Controllo che tutte le variabili post siano state inviate
         if (!(isset($_POST['serverID'])))
@@ -43,14 +45,14 @@ class FollowController extends DooController {
         if (!(isset($_POST['value'])))
             return ErrorController::badReq('Il value deve essere specificato!!');
         $value = intval($_POST['value']);
-        if ($value!=1 && $value!=0)
+        if ($value != 1 && $value != 0)
             return ErrorController::badReq('Il value può essere: 0 o 1. Altri valori non sono ammessi!!');
         /* Faccio un piccolo controllo:
          * se l'utente da seguire è sul mio server, controllo se esiste. 
          */
         if ($_POST['serverID'] == 'Spammers') {
-            if ($_POST['userID']!= $_SESSION['user']['username']){
-            $test = new UserModel($_POST['userID']);
+            if ($_POST['userID'] != $_SESSION['user']['username']) {
+                $test = new UserModel($_POST['userID']);
                 if (!$test->ifUserExist()) {
                     return ErrorController::notFound("L'utente che si vuole seguire non esiste su questo server.");
                 }
@@ -61,18 +63,18 @@ class FollowController extends DooController {
         $utente = new UserModel($_SESSION['user']['username']);
         $utente->handleFollow($risorsa, $value);
     }
-    
+
     //nudo e crudo senza controlli
-    public function getFollows(){
+    public function getFollows() {
 
         $utente = new UserModel($_SESSION['user']['username']);
         $lista = $utente->getFollows();
         //Ho modificato facendo stampare una lista vuota invece di un 404, credo sia più appropriato
-       if (sizeof($lista) == 0)
-           //return ErrorController::notFound("L'utente non ha followers!");
-           $lista= array();
+        if (sizeof($lista) == 0)
+        //return ErrorController::notFound("L'utente non ha followers!");
+            $lista = array();
         $this->setContentType('xml');
-        print FollowView::renderFollows($lista);        
+        print FollowView::renderFollows($lista);
     }
 
 }

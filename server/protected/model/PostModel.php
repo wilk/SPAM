@@ -15,34 +15,6 @@ class PostModel {
     private static $siocPost = 'http://rdfs.org/sioc/ns#Post';
     private $index;
     public $postID;
-    static $msg3 = '
-        <article prefix="
-   sioc: http://rdfs.org/sioc/ns#
-   ctag: http://commontag.org/ns#
-   skos: http://www.w3.org/2004/02/skos/core#
-   dcterms: http://purl.org/dc/terms/
-   tweb: http://vitali.web.cs.unibo.it/vocabulary/"
-   about="/tw12/pippo/11" typeof="sioc:Post" rel="sioc:has_creator" resource="/tw12/pippo"
-   property="dcterms:created" content="2006-09-07T09:33:30Z">
-      Testo di un post contenente 
-      <span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">hashtag</span></span>,
-      altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio 
-      <span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere" 
-      rel="skos:inScheme" resource="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus">portiere</span> </span>)
-      o del tesauro esteso (ad esempio 
-      <span rel="sioc:topic">#<span typeof="skos:Concept" about="/sport/calcio/portiere/roma" 
-      rel="skos:inScheme" resource="http://ltw11.web.cs.unibo.it/thesaurus">roma</span></span>)
-      o link sparsi (ad esempio, http://www.example.com),
-      e perché no un po\' di audio (ad esempio, 
-      <span resource="audio" src="http://www.example.com/song.mp3" />),
-      o un po\' di video (ad esempio, 
-      <span resource="video" src="http://www.example.com/video.ogv" />),
-      e immagini (ad esempio, 
-      <span resource="image" src="http://www.example.com/pic.png" />).
-      <span rev="tweb:like" resource="/tw14/pluto" />
-      <span property="tweb:countLike" content="1" />
-      <span property="tweb:countDislike" content="5" />
-</article>';
     static $msg2 = '
 <article prefix="
    sioc: http://rdfs.org/sioc/ns#
@@ -334,7 +306,7 @@ class PostModel {
         $fixedHtml= $htmlContent->find('article',0);
         $about= $fixedHtml->about;
         $fixedHtml->innertext="<div about=\"$about\"><div property=\"sioc:content\">$fixedHtml->innertext</div>";
-        
+       
     }
 
 }

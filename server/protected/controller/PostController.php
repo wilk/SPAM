@@ -45,8 +45,13 @@ class PostController extends DooController {
          */
         $this->articolo = new PostModel();
         if ($content == null) {
-            if (isset($_POST['article']))
+            if (isset($_POST['article'])) {
                 $mycontent = $_POST['article'];
+                //Arrichisco article con i ns e il typeof
+                //La funzione è brutta ma veloce
+                $replace = "<article\n\rxmlns:sioc=\"http://rdfs.org/sioc/ns#\"\n\rxmlns:ctag=\"http://commontag.org/ns#\"\n\rxmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"\n\rtypeof=\"sioc:Post\">";
+                $mycontent = str_replace("<article>", $replace, $mycontent);
+            }
             else
                 return ErrorController::badReq("Il contenuto dell'articolo non può essere vuoto");
         }
@@ -62,9 +67,11 @@ class PostController extends DooController {
     }
 
     public function sendPost() {
-        $server = $this->params['serverID'];
-        $user = $this->params['userID'];
-        $post = $this->params['postID'];
+        if ( isset($this->params['serverID']))
+            $server = urldecode($this->params['serverID']);
+        else $server="Spammers";
+        $user = urldecode($this->params['userID']);
+        $post = urldecode($this->params['postID']);
         $pathPost = 'spam:/' . $server . '/' . $user . '/' . $post;
         if (isset($this->params['type'])) {
             if ($this->params['type'] == "rdf") {
@@ -174,7 +181,6 @@ class PostController extends DooController {
                 if ($request->isSuccess()) {
                     $content = $request->result();
                     $html = str_get_html($content);
-                    print "$content\n\r";
                     foreach ($html->find('span') as $span) {
                         if (!isset($span->typeof) && !isset($span->rel) && (!isset($span->resource) || isset($span->rev)))
                             $span->outertext = '';
@@ -183,7 +189,11 @@ class PostController extends DooController {
                         $span->outertext = '';
                     foreach ($html->find('span[rel=sioc:has_reply]') as $span)
                         $span->outertext = '';
-                    $content = "<article>" . html_entity_decode($html->find('article', 0)->innertext, ENT_NOQUOTES, 'UTF-8') . "</article>";
+                    $content = "<article 
+                        xmlns:sioc=\"http://rdfs.org/sioc/ns#\"
+                        xmlns:ctag=\"http://commontag.org/ns#\"
+                        xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"
+                        typeof=\"sioc:Post\">" . html_entity_decode($html->find('article', 0)->innertext, ENT_NOQUOTES, 'UTF-8') . "</article>";
                     $this->createPost($content);
                 }else
                     return $request->resultCode();

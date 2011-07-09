@@ -30,6 +30,7 @@ Ext.define ('SC.view.regions.west.Search' , {
 		editable: false ,
 		// Different types of search
 		store: [
+			'Affinity' ,
 			'Author' ,
 			'Following' ,
 			'Recent' ,
@@ -48,6 +49,12 @@ Ext.define ('SC.view.regions.west.Search' , {
 		minValue: 1 ,
 		allowBlank: false ,
 		anchor: '100%'
+	} , {
+		// Checkbox Maximum limit
+		xtype: 'checkboxfield' ,
+		boxLabel: 'Maximum limit' ,
+		id: 'checkBoxSearch' ,
+		padding: '0 0 2 5'
 	} , {
 		xtype: 'textfield' ,
 		id: 'textSearch' ,

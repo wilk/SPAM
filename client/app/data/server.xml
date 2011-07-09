@@ -1,4 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <servers>
-   <server serverID="tw11" />
+	<server serverID="Tайбердег" serverURL="http://ltw1109.web.cs.unibo.it/" />
+	<server serverID="RucolaIPM" serverURL="http://ltw1105.web.cs.unibo.it/" />
+	<server serverID="TerSoft" serverURL="http://ltw1113.web.cs.unibo.it/" />
+	<server serverID="FreeWeb" serverURL="http://ltw1115.web.cs.unibo.it/" />
+	<server serverID="NotFound" serverURL="http://ltw1111.web.cs.unibo.it/" />
+	<server serverID="BedCompany" serverURL="http://ltw1117.web.cs.unibo.it/" />
+	<server serverID="VoglioLaurearmi" serverURL="http://ltw1110.web.cs.unibo.it/" />
+	<server serverID="Spammers" serverURL=" http://ltw1102.web.cs.unibo.it/" />
+	<server serverID="TapiriSoft" serverURL="http://ltw1119.web.cs.unibo.it/" />
+	<server serverID="ArBaKaMa" serverURL="http://ltw1103.web.cs.unibo.it/" />
+	<server serverID="NetForce" serverURL="http://ltw1114.web.cs.unibo.it/" />
+	<server serverID="TangoWhiskey" serverURL="http://ltw1106.web.cs.unibo.it/" />
+	<server serverID="Capo_Oro" serverURL="http://ltw1118.web.cs.unibo.it/" />
+	<server serverID="Twenty" serverURL="http://ltw1120.web.cs.unibo.it/" />
+	<server serverID="ModernFamily" serverURL="http://ltw1121.web.cs.unibo.it/" />
+	<server serverID="FrisaEporceddu" serverURL="http://ltw1124.web.cs.unibo.it/" />
 </servers>
-

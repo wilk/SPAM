@@ -10,8 +10,6 @@
 Ext.define ('SC.view.Send' , {
 	extend: 'Ext.window.Window' ,
 	alias: 'widget.send' ,
-	requires: ['SC.view.SendHashtag'] ,
-	
 	
 	// Configuration
 	title: 'New post' ,
@@ -34,16 +32,17 @@ Ext.define ('SC.view.Send' , {
 //	layout: 'anchor' ,
 	
 	// Body
-	items: [//{
-		//xtype: 'sendhashtag'
-	//}
+	items: [
+		// TODO: textarea to display the content of an article to reply
+//	{
+//		xtype: 'textareafield' ,
+//		id: 'txtAreaReply' ,
+//		flex: 1 ,
+//		disable: true ,
+//		hidden: true
+//	} , 
 	{
-		xtype: 'textareafield' ,
-		id: 'txtAreaReply' ,
-		flex: 1 ,
-		disable: true ,
-		hidden: true		
-	} , {
+		// TODO: use htmleditor instead of normal textarea
 		// Text area
 		xtype: 'textareafield' ,
 		//xtype: 'htmleditor' ,
@@ -56,7 +55,21 @@ Ext.define ('SC.view.Send' , {
 		enforceMaxLenght: true ,
 		maxLenght: 140 ,
 		enableKeyEvents: true
-	}] ,
+	}
+//	 , {
+//		// TODO: it's a treestore, maybe some problems?
+		// TODO: combobox for autocomplete
+//		xtype: 'combo' ,
+//		id: 'sendComboHashtag' ,
+//		displayField: 'text' ,
+////		width: 500 ,
+//		flex: 1 ,
+//		store: 'Thesaurus' ,
+//		queryMode: 'local' ,
+//		typeAhead: true ,
+//		hidden: true
+//	}
+	] ,
 	// Bottom buttons
 	dockedItems: [{
 		xtype: 'toolbar' ,

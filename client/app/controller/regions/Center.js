@@ -24,18 +24,13 @@ Ext.define ('SC.controller.regions.Center' , {
 		});
 		console.log ('Controller Center started.');
 	} ,
-	
+
+	// Display 10 recent posts
 	setArtDisp : function (region) {
 		var store = this.getRegionsCenterArticlesStore ();
 
 		store.getProxy().url = urlServerLtw + 'search/10/recent';
 		
-		// TODO: make case for every errors (401, 404, ...)
-		store.load (function (records, operation, success) {
-			// Check if there are articles to display
-			if (success && (store.count () != 0)) {
-				disposeArticles (store, null, 0);
-			}
-		});
+		requestSearchArticles (store, null, 0);
 	}
 });

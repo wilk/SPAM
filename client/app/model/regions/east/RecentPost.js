@@ -25,13 +25,19 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 		type: 'string'
 	} , {
 		// The owner of article
-		name: 'resource'
+		name: 'resource' ,
+		type: 'string'
 	} , {
 		// Article ID
-		name: 'about'
+		name: 'about' ,
+		type: 'string'
 	} , {
 		// The owner of article (only userID)
 		name: 'user' ,
+		type: 'string'
+	} , {
+		// The owner of article (only serverID)
+		name: 'server' ,
 		type: 'string'
 	} , {
 		// If setlike or dislike

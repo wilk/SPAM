@@ -25,7 +25,10 @@ class SRVModel {
 //    }
     function __construct($request) {
         $request->connect_to(self::$_SERVERSBASE)->get();
-        $this->serverList = $request->xml_result();
+        if ($request->isSuccess())
+            $this->serverList = $request->xml_result();
+        else
+            ErrorController::internalError ();
     }
 
     public function getDefaults() {

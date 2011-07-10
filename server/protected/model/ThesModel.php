@@ -22,10 +22,10 @@ class ThesModel {
     private $file;
 
     function __construct($check = FALSE) {
-        if (!$check)
-            $this->file = self::$pathTesauro;
-        else
+        if ($check)
             $this->file = self::$pathTesaPost;
+        else
+            $this->file = self::$pathTesauro;
         $this->srvLabel = 'http://ltw1102.web.cs.unibo.it/thesaurus';
         $parser = ARC2::getRDFParser();
         $parser->parse($this->file);
@@ -67,6 +67,7 @@ class ThesModel {
         //print_r($this->index); die();
         foreach ($this->index as $key => $label) {
             if ($label[$this->prefLabel][0] == $term) {
+                //echo $key, $term; die();
                 $pathArray = explode('/', strstr(parse_url($key, PHP_URL_PATH), 'thesaurus/'));
                 unset($pathArray[0]);
                 //print_r($pathArray); die();

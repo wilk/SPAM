@@ -195,7 +195,7 @@ class PostModel {
                         } else if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://www.w3.org/2004/02/skos/core#Concept') {
                             $tagList[$i] = $index[$i];
                         }
-                    }
+                    } print_r($tagList); die();
                     $tesauro = new ThesModel(TRUE);
                     $tesauro->addPost2Thes($tagList, $this->postID);
                 }

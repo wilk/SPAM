@@ -41,6 +41,10 @@ class SearchController extends DooController {
             return $rs;
         }
     }
+    
+    public function searchServer(){
+        $this->searchMain(TRUE);
+    }
 
     /* il booleano $extRequest viene settano nel route a TRUE se si tratta di /searchserver */
     public function searchMain($extRequest = FALSE) {
@@ -60,10 +64,9 @@ class SearchController extends DooController {
             'affinity'
         );
         
-        
-        $this->load()->helper('DooRestClient');
-        $this->request = new DooRestClient;
-        $this->SRV = new SRVModel($this->request);
+//        $this->load()->helper('DooRestClient');
+//        $this->request = new DooRestClient;
+//        $this->SRV = new SRVModel($this->request);
         
         switch ($tipo) {
             case $types[0]: //author
@@ -74,21 +77,16 @@ class SearchController extends DooController {
                 $usr = urldecode($this->params['var2']);
                 if ($srv == 'Spammers') {//richiesta interna
                     $user = new UserModel($usr);
-
                     if (!$user->ifUserExist())
                             ErrorController::notFound("Errore: l'utente $usr non esiste.\n");
-
                     if (!$user->checkPosts())
                             ErrorController::notFound("Errore: l'utente $usr non ha pubblicato messaggi.\n");
 
                     $this->rcvFromINTServer($user, $limite);
-
                     $this->displayPosts();
                 } else {//richiesta esterna
                     $parametri = array($limite, $tipo, $srv, $usr);
                     $metodo = 'searchserver/'.implode('/', $parametri);
-                    //giro direttamente la risposta sperando che il server non scazzi
-                    //ps: può dare problemi interni per il fatto dello status di ritorno
                     $res = $this->rcvFromEXTServer($srv, $metodo);
                     if (is_numeric($res))
                         return $res;
@@ -125,12 +123,9 @@ class SearchController extends DooController {
                 break;
                 
             case $types[2]: //recent
-                $ext = FALSE;
                 $pIDs = 0;
-                $posts;
-                $servers;
+                $posts; $post = new PostModel();
                 
-                $post = new PostModel();
                 if (isset($this->params['var1'])){
                     $termine = $this->params['var1'];
                     $tesauro = new ThesModel();//oggetto del tesauro
@@ -144,7 +139,7 @@ class SearchController extends DooController {
                     
                     if ($pIDs != 0)
                         $posts = $post->getPostArray($pIDs);
-                }
+                } 
                 else // qui ricerco senza termine --> OCCHIO ALLA RELATED
                     $posts = $post->getPostArray(NULL, $limite);
 
@@ -159,6 +154,7 @@ class SearchController extends DooController {
                 }
 
                 if ($extRequest === FALSE) {
+                    $servers;
                     $this->initServers($servers);
                     
                     $metodo = '/'.$tipo;
@@ -170,7 +166,7 @@ class SearchController extends DooController {
                         $badServer = array();
                         foreach ($servers as $value) {
                             if ($value['code'] === 200)
-                                $this->parseEXTContent($value['data']/*, $value['url']*/);
+                                $this->parseEXTContent($value['data']);
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
                             
@@ -193,7 +189,59 @@ class SearchController extends DooController {
                 if (!(isset ($this->params['var1'])))
                         //BAD REQUEST
                         return 400;
+                $termine = $this->params['var1'];
+                $tesauro = new ThesModel();//oggetto del tesauro
+                $pathTerm = $tesauro->returnPath($termine);
+                //$pIDs = 0;
+                if ($pathTerm === false)
+                    ErrorController::notFound ("Il termine non è presente nel tesauro.\n");
+                
+                $tesauro = new ThesModel(TRUE);//oggetto del tesapost
+                $pIDs = $tesauro->getPostsFromThes($pathTerm, $limite, TRUE);
+                            
+                $posts; 
+                $post = new PostModel();
+                if ($pIDs)
+                    $posts = $post->getPostArray($pIDs);
 
+                if (isset($posts)){
+                    foreach ($posts as $post){
+                        $nodo['articolo'] = $post;
+                        $nodo['peso'] = strtotime($post[key($post)]['http://purl.org/dc/terms/created'][0]);
+                        //print_r($nodo); die();
+                        array_push($this->listaPost, $nodo);
+                        array_push($this->toMerge, $nodo['peso']);
+                    }
+                }
+
+                if ($extRequest === FALSE) {
+                    $servers;
+                    $this->initServers($servers);
+                    
+                    $metodo = '/'.implode('/', array($tipo, $termine));
+
+                    if ($this->rcvFromEXTServers($servers, $limite, $metodo)){
+                        
+                        $badServer = array();
+                        foreach ($servers as $value) {
+                            if ($value['code'] === 200)
+                                $this->parseEXTContent($value['data']);
+                            else if ($value['code'] === 500)
+                                array_push($badServer, $value['name']);
+                            
+                            //$test[] = $value['url'].' => '.$value['code']."\n";
+                        }
+                        //print_r($test);die();
+                        //qui fanculizzo i server
+                        /*if (count($badServer))
+                            $this->funcoolizer($badServer);
+                        */
+                    } else 
+                        return 500;
+                }
+
+                $this->sortPost($limite);
+                $this->displayPosts();
                 break;
                 
             case $types[4]: //fulltext
@@ -270,21 +318,19 @@ class SearchController extends DooController {
         $this->setContentType('xml');
         print $XMLPosts;
     }
-    /*questa l'ho presa da sendPost() in PostController;
-     * si potrebbero accorpare
-     */
+    
     private function rcvFromEXTServer($server, $method){
-        $this->load()->helper('DooRestClient');
-        $request = new DooRestClient;
+        /*$this->load()->helper('DooRestClient');
+        $request = new DooRestClient;*/
         $url = $this->SRV->getUrl($server);
         //echo $url, $method; die();
-        $request->connect_to($url . $method)
-                ->accept(DooRestClient::XML)
-                ->get();
-        if ($request->isSuccess())
-            return $request->result();
+        $this->request->connect_to($url . $method)
+                      ->accept(DooRestClient::XML)
+                      ->get();
+        if ($this->request->isSuccess())
+            return $this->request->result();
         else
-            return $request->resultCode();//questo me lo risparmio... lascio fare tutto al server esterno!
+            return $this->request->resultCode();
     }
     
     private function rcvFromEXTServers(&$servers, $limite, $metodo){

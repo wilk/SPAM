@@ -86,8 +86,7 @@ function disposeArticles (store, focus, focusIndex) {
 				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
-					//title: record.get('resource').split("/")[2] + ' said:' ,
-					title: record.get ('user') + ' said:' ,
+					title: '<span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,
 					html: parseToRead (record.get ('article')) ,
 					id: 'articles' + j ,
 					x: x ,
@@ -135,8 +134,7 @@ function disposeArticles (store, focus, focusIndex) {
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {
 		// Author is /serverID/userID, so split and take only userID
-//		title: focus.get('resource').split("/")[2] + ' said:' ,
-		title: focus.get ('user') + ' said:' ,
+		title: '<span style="color: green; font-style: italic">' + focus.get ('user') + '</span> on <span style="color: red; font-style: italic">' + focus.get ('server') + '</span> said:' ,
 		html: parseToRead (focus.get ('article')) ,
 		x: focusX ,
 		y: focusY ,

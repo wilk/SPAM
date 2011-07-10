@@ -57,7 +57,8 @@ function requestSearchArticles (store, focus, focusIndex) {
 					like: numLike ,
 					dislike: numDislike ,
 					setlike: ifLikeDislike ,
-					user: $(this).find('article').attr('resource').split("/")[2]
+					user: $(this).find('article').attr('resource').split('/')[2] ,
+					server: $(this).find('article').attr('resource').split('/')[1]
 				});
 			});
 			
@@ -158,11 +159,13 @@ function retrieveRecentArticles (store) {
 					like: numLike ,
 					dislike: numDislike ,
 					setlike: ifLikeDislike ,
-					user: $(this).find('article').attr('resource').split("/")[2]
+					user: $(this).find('article').attr('resource').split("/")[2] ,
+					server: $(this).find('article').attr('resource').split('/')[1]
 				});
 			});
 		} ,
 		error: function (xhr, type, text) {
+			// TODO: yep?
 //			Ext.Msg.show ({
 //				title: type,
 //				msg: text ,

@@ -110,9 +110,9 @@ class SearchController extends DooController {
                         } else {//richiesta esterna
                             $parametri = array($limite, $types[0], $srv, $usr);
                             $metodo = 'searchserver/'.implode('/', $parametri);
-                            $XMLresult = $this->rcvFromEXTServer($srv, $method);
-                            if (!is_numeric($XMLresult))
-                                $this->parseEXTContent($XMLresult);
+                            $XMLresult = $this->rcvFromEXTServer($srv, $metodo);
+                            if ($XMLresult != false)
+                                $posts = $this->parseEXTContent($XMLresult);
                         }
                     }
                     //qui devo ordinare la mia lista

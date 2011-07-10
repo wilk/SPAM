@@ -18,18 +18,16 @@ Ext.define ('SC.controller.regions.west.Search' , {
 	
 	// Configuration
 	init: function () {
+		var sCombo, sTextfield, sNumberfield, sCheckbox, store;
+		
 		this.control ({
+			'search' : {
+				afterrender : this.initVar
+			} ,
 			// Combo change events
 			'#comboSearch' : {
 				// When user select 'Following', textfield disappear
-				select : function (cBox, value) {
-					var tSearch = Ext.getCmp ('textSearch');
-					
-					if (cBox.getValue () == 'Following')
-						tSearch.setVisible (false);
-					else 
-						tSearch.setVisible (true);
-				}
+				select : this.updateTextValue
 			} ,
 			// Reset
 			'#resetSearch' : {
@@ -39,11 +37,26 @@ Ext.define ('SC.controller.regions.west.Search' , {
 			'#submitSearch' : {
 				click : this.submitSearch
 			} ,
-			// Submit by ENTER key
+			// Textfield events
 			'#textSearch' : {
+				// Erase raw text
+				focus : function (tf) {
+					tf.setValue ('');
+				} ,
+				// Handle ENTER key
 				keypress : function (field , event) {
 					if (event.getKey () == event.ENTER)
 						this.submitSearch ();
+				}
+			} ,
+			// Checkbox events
+			'#checkBoxSearch' : {
+				// Enable/Disable numberfield when maximum checkbox changed
+				change : function (cb, nVal, oVal) {
+					if (nVal)
+						Ext.getCmp('numberSearch').setDisabled (true);
+					else
+						Ext.getCmp('numberSearch').setDisabled (false);
 				}
 			}
 		});
@@ -51,28 +64,70 @@ Ext.define ('SC.controller.regions.west.Search' , {
 		console.log ('Controller Search started.');
 	} ,
 	
+	// @brief Initialize variables
+	initVar : function (panel) {
+		sCombo = panel.down ('#comboSearch');
+		sTextfield = panel.down ('#textSearch');
+		sNumberfield = panel.down ('#numberSearch');
+		sCheckbox = panel.down ('#checkBoxSearch');
+		store = this.getRegionsCenterArticlesStore ();
+	} ,
+	
+	// @brief Update textfield value
+	updateTextValue : function (combo, value) {
+		// For each combo value, set the appropriate value to the textfield
+		switch (combo.getValue ()) {
+			case 'Author':
+				sTextfield.setRawValue ('/serverID/userID');
+				sTextfield.setVisible (true);
+				break;
+			case 'Following':
+				sTextfield.setVisible (false);
+				break;
+			case 'Recent':
+				sTextfield.setRawValue ('Term of Thesaurus');
+				sTextfield.setVisible (true);
+				break;
+			case 'Related':
+				sTextfield.setRawValue ('Term of Thesaurus');
+				sTextfield.setVisible (true);
+				break;
+			case 'Fulltext':
+				sTextfield.setRawValue ('Some to search');
+				sTextfield.setVisible (true);
+				break;
+			case 'Affinity':
+				sTextfield.setRawValue ('/serverID/userID/postID');
+				sTextfield.setVisible (true);
+				break;
+		}
+	} ,
+	
 	// @brief Reset all search fields
 	formReset : function (button) {		
-		Ext.getCmp('comboSearch').reset ();
-		Ext.getCmp('numberSearch').reset ();
-		Ext.getCmp('textSearch').reset ();
-		Ext.getCmp('textSearch').setVisible (true);
+		sCombo.reset ();
+		sTextfield.reset ();
+		sTextfield.setVisible (true);
+		sNumberfield.reset ();
+		sCheckbox.reset ();
 	} ,
 	
 	submitSearch : function (button) {
-		var 	combo = Ext.getCmp ('comboSearch') ,
-			number = Ext.getCmp ('numberSearch') ,
-			text = Ext.getCmp ('textSearch');
+		var limit;
 		
-		var store = this.getRegionsCenterArticlesStore ();
-	
+		// Checks to set 'all' or a number to search limit
+		if (sCheckbox.getValue ())
+			limit = 'all';
+		else
+			limit = sNumberfield.getValue ();
+		
 		// Check if combo and number boxes are empty or not
-		if (combo.isValid () && number.isValid ()) {
+		if (sCombo.isValid () && sNumberfield.isValid ()) {
 			// Check the type of search
-			switch (combo.getValue ()) {
+			switch (sCombo.getValue ()) {
 				case 'Author' :
 					// Set appropriate URL
-					store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/author' + text.getValue ();
+					store.getProxy().url = urlServerLtw + 'search/' + limit + '/author' + sTextfield.getValue ();
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
@@ -80,7 +135,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					break;
 				case 'Following' :
 					// Set appropriate URL
-					store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/following';
+					store.getProxy().url = urlServerLtw + 'search/' + limit + '/following';
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
@@ -90,7 +145,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					// TODO: check if is it possible to search by recent without terms
 //					if (text.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/recent/' + text.getValue ();
+						store.getProxy().url = urlServerLtw + 'search/' + limit + '/recent/' + sTextfield.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);
@@ -106,9 +161,9 @@ Ext.define ('SC.controller.regions.west.Search' , {
 //					}
 					break;
 				case 'Related' :
-					if (text.isValid ()) {
+					if (sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/related/' + text.getValue ();
+						store.getProxy().url = urlServerLtw + 'search/' + limit + '/related/' + sTextfield.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);
@@ -124,9 +179,9 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					}
 					break;
 				case 'Fulltext' :
-					if (text.isValid ()) {
+					if (sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = urlServerLtw + 'search/' + number.getValue () + '/fulltext/' + text.getValue ();
+						store.getProxy().url = urlServerLtw + 'search/' + limit + '/fulltext/' + sTextfield.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);
@@ -137,6 +192,25 @@ Ext.define ('SC.controller.regions.west.Search' , {
 						Ext.Msg.show ({
 							title: 'Error' ,
 							msg: 'You must specify the term to search.' ,
+							buttons: Ext.Msg.OK,
+							icon: Ext.Msg.ERROR
+						});
+					}
+					break;
+				case 'Affinity' :
+					if (sTextfield.isValid ()) {
+						// Set appropriate URL
+						store.getProxy().url = urlServerLtw + 'search/' + limit + '/affinity' + sTextfield.getValue ();
+					
+						// Retrieve articles
+						requestSearchArticles (store, null, 0);
+					
+					}
+					// If textfield is empty, return an error
+					else {
+						Ext.Msg.show ({
+							title: 'Error' ,
+							msg: 'You must specify a post (/serverID/userID/postID)' ,
 							buttons: Ext.Msg.OK,
 							icon: Ext.Msg.ERROR
 						});

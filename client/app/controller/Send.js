@@ -54,17 +54,9 @@ Ext.define ('SC.controller.Send' , {
 		console.log ('Controller Send started.');
 	} ,
 	
-//	initHtmlEditor: function (he) {
-//		he.focus ();
-//		
-//		he.addEvents ('keypress');
-//		
-//		he.on ('keypress' , this.checkChars (this));
-//	} ,
-	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
-	// TOFIX: pasted text!!!
+	// TODO: pasted text!!!
 	// TODO: cancel/delete keys aren't captured by chrome
 	checkChars : function (ta, event) {
 		var 	// Get the lenght
@@ -78,6 +70,12 @@ Ext.define ('SC.controller.Send' , {
 			lblSendCount.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
 		else
 			lblSendCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
+
+		// TODO: '#' handler
+//		if (event.getKey () == '35') {
+//			Ext.getCmp('sendComboHashtag').setVisible (true);
+//			//Ext.getCmp('sendComboHashtag').setValue ('#');
+//		}
 	} ,
 	
 	// @brief

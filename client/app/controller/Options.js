@@ -91,6 +91,9 @@ Ext.define ('SC.controller.Options' , {
 				buttons: Ext.Msg.OK,
 				icon: Ext.Msg.INFO
 			});
+			
+			// Hide the option window
+			button.up('window').hide ();
 		}
 	} ,
 	

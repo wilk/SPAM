@@ -92,23 +92,33 @@ Ext.define ('SC.controller.regions.North' , {
 					success: function (response) {
 						// If server sets his cookies
 						var userCookie = Ext.util.Cookies.get ('ltwlogin');
-
-						if (userCookie != null)					
+						
+						// Check if server has saved ltwlogin cookie
+						if (userCookie != null)	{	
 							// Client sets its
 							Ext.util.Cookies.set ('SPAMlogin' , txtUser);
 						
-						// Setup login fields
-						btnLogin.setText ('Logout');
+							// Setup login fields
+							btnLogin.setText ('Logout');
 						
-						fieldUser.setVisible (false);
+							fieldUser.setVisible (false);
 						
-						pUser.setTitle ('User :: ' + txtUser);
-						pUser.setVisible (true);
+							pUser.setTitle ('User :: ' + txtUser);
+							pUser.setVisible (true);
 	
-						bNewPost.setVisible (true);
+							bNewPost.setVisible (true);
 						
-						// Show button to add new terms to the thesaurus
-						Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
+							// Show button to add new terms to the thesaurus
+							Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
+						}
+						else {
+							Ext.Msg.show ({
+								title: 'Error' ,
+								msg: 'Sorry, but cookie \'ltwlogin\' isn\'t been saved. Try again.' ,
+								buttons: Ext.Msg.OK,
+								icon: Ext.Msg.ERROR
+							});
+						}
 					} ,
 					failure: function (error) {
 						Ext.Msg.show ({

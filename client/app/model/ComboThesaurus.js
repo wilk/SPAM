@@ -13,5 +13,8 @@ Ext.define ('SC.model.ComboThesaurus' , {
 	fields: [{
 		name: 'term' ,
 		type: 'string'
+	} , {
+		name: 'isLeaf' ,
+		type: 'boolean'
 	}]
 });

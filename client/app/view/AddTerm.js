@@ -14,7 +14,7 @@ Ext.define ('SC.view.AddTerm' , {
 	// Configuration
 	title: 'Add new term' ,
 	id: 'windowAddTerm' ,
-	height: 250 ,
+	height: 200 ,
 	width: 400 ,
 	resizable: false ,
 	// On top of any content

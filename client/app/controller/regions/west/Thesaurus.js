@@ -84,14 +84,6 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 				ns: myRDF.getSingleObject (null, subject, skosNS + 'inScheme', null)
 			});
 			
-			// Fill the ComboThesaurus
-			storeComboThesaurus.add ({
-				term : val
-			});
-			
-			// And sort the store
-			storeComboThesaurus.sort ('term' , 'ASC');
-			
 			// change node internal id into the store to retrive it with getNodeById method
 			father.appendChild (node);
 			
@@ -101,6 +93,16 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			if (child.length == 0) {
 				node.data.leaf = true;
 			}
+			
+			// Fill the ComboThesaurus
+			storeComboThesaurus.add ({
+				term : val ,
+				// Setup if is it a leaf or not
+				isLeaf : (child.length == 0 ? true : false)
+			});
+			
+			// And sort the store
+			storeComboThesaurus.sort ('term' , 'ASC');
 			
 			for (var i=0; i < child.length; i++) {
 				append (child[i].object, node);

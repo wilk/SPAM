@@ -20,10 +20,7 @@ Ext.define ('SC.model.regions.west.Thesaurus' , {
 		type: 'string'
 	}] ,
 		
-	idProperty: 'text' ,
-
 	proxy: {
-		type: 'localstorage' ,
-		id: 'localThesaurus'
+		type: 'memory'
 	}
 });

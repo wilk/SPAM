@@ -11,15 +11,14 @@ Ext.define ('SC.controller.AddTerm' , {
 	
 	// Views
 	views: ['AddTerm'] ,
-	stores: ['regions.west.Thesaurus'] ,
-	models: ['regions.west.Thesaurus'] ,
+	stores: ['ComboThesaurus'] ,
+	models: ['ComboThesaurus'] ,
 			
 	// Configuration
 	init: function () {
 		var comboBox;
 		var textField;
 		var winAdd;
-		var storeThesaurus;
 		var storeComboThesaurus;
 		
 		this.control ({
@@ -54,7 +53,7 @@ Ext.define ('SC.controller.AddTerm' , {
 		textField = win.down ('#tfAddTerm');
 		winAdd = win;
 		
-		storeThesaurus = this.getRegionsWestThesaurusStore ();
+		storeComboThesaurus = this.getComboThesaurusStore ();
 	} ,
 	
 	// @brief Send 
@@ -64,45 +63,60 @@ Ext.define ('SC.controller.AddTerm' , {
 			var cValue = comboBox.getValue ();
 			var tValue = textField.getValue ();
 			
-			var termToCheck = storeThesaurus.getNodeById (cValue);
+			//var termToCheck = storeThesaurus.getNodeById (cValue);
+			var termToCheck = storeComboThesaurus.findRecord ('term' , cValue);
 			
 			// Check if the parent term is present into the thesaurus
 			if (termToCheck != null) {
 			
 				// Check if the parent term is a leaf
-				if (termToCheck.isLeaf ()) {
+				if (termToCheck.get ('isLeaf')) {
 				
-					// AJAX request to send new term to add
-					Ext.Ajax.request ({
-						url: urlServerLtw + 'addterm' ,
-						method: 'POST' ,
-						params: {
-							parentterm : cValue ,
-							term : tValue
-						} ,
-						success: function (response) {
-							Ext.Msg.show ({
-								title: 'Term added successfully!' ,
-								msg: 'The term ' + tValue + ' is been added to the Thesaurus!' ,
-								buttons: Ext.Msg.OK,
-								icon: Ext.Msg.INFO
-							});
+					termToCheck = storeComboThesaurus.findRecord ('term' , tValue);
+					
+					// Check if term is present into thesaurus
+					if (termToCheck == null) {
+				
+						// AJAX request to send new term to add
+						Ext.Ajax.request ({
+							url: urlServerLtw + 'addterm' ,
+							method: 'POST' ,
+							params: {
+								parentterm : cValue ,
+								term : tValue
+							} ,
+							success: function (response) {
+								Ext.Msg.show ({
+									title: 'Term added successfully!' ,
+									msg: 'The term ' + tValue + ' is been added to the Thesaurus!' ,
+									buttons: Ext.Msg.OK,
+									icon: Ext.Msg.INFO
+								});
 							
-							// Hide this window
-							winAdd.hide ();
+								// Hide this window
+								winAdd.hide ();
 							
-							// Reload thesaurus panel
-							Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
-						} ,
-						failure: function (response) {
-							Ext.Msg.show ({
-								title: 'Error ' + response.status ,
-								msg: response.responseText ,
-								buttons: Ext.Msg.OK,
-								icon: Ext.Msg.ERROR
-							});
-						}
-					});
+								// Reload thesaurus panel
+								Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
+							} ,
+							failure: function (response) {
+								Ext.Msg.show ({
+									title: 'Error ' + response.status ,
+									msg: response.responseText ,
+									buttons: Ext.Msg.OK,
+									icon: Ext.Msg.ERROR
+								});
+							}
+						});
+					}
+					else {
+						Ext.Msg.show ({
+							title: 'Error' ,
+							msg: tValue + ' is already present into Thesaurus. Choose a different one.' ,
+							buttons: Ext.Msg.OK,
+							icon: Ext.Msg.ERROR
+						});
+					}
 				}
 				else {
 					Ext.Msg.show ({

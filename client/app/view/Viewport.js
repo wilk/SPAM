@@ -19,7 +19,8 @@ Ext.define ('SC.view.Viewport' , {
 		'SC.view.Send' ,
 		'SC.view.SelectPost' ,
 		'SC.view.SendResource' ,
-		'SC.view.Options'
+		'SC.view.Options' ,
+		'SC.view.AddTerm'
 	] ,
 	
 	// Configuration
@@ -42,5 +43,7 @@ Ext.define ('SC.view.Viewport' , {
 		xtype: 'sendresource'
 	} , {
 		xtype: 'options'
+	} , {
+		xtype: 'thesaurusaddterm'
 	}]
 });

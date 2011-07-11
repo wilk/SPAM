@@ -1,4 +1,4 @@
-// @file 	TheNode.js
+// @file 	Thesaurus.js
 //
 // @author 	Vincenzo Ferrari <ferrari@cs.unibo.it>
 //		Riccardo Statuto <statuto@cs.unibo.it>
@@ -7,22 +7,22 @@
 //
 // @note	Model of thesaurus
 
-Ext.define('SC.model.TheNode',{
-	extend:'Ext.data.Model',
+Ext.define ('SC.model.regions.west.Thesaurus' , {
+	extend: 'Ext.data.Model' ,
 	
-	fields:[{
-			// skos:prefLabel
-			name: 'text' ,
-			type: 'string'
-		} , {
-			// skos:inScheme
-			name: 'ns' ,
-			type: 'string'
-		}],
+	fields: [{
+		// skos:prefLabel
+		name: 'text' ,
+		type: 'string'
+	} , {
+		// skos:inScheme
+		name: 'ns' ,
+		type: 'string'
+	}] ,
 		
-	idProperty:'text',
+	idProperty: 'text' ,
 
-	proxy:{
+	proxy: {
 		type: 'localstorage' ,
 		id: 'localThesaurus'
 	}

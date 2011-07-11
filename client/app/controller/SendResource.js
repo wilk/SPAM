@@ -25,8 +25,8 @@ Ext.define ('SC.controller.SendResource' , {
 	// Views
 	views: ['SendResource'] ,
 	
-	models: ['regions.center.Articles' , 'TheNode'] ,
-	stores: ['regions.center.Articles' , 'Thesaurus'] ,
+	models: ['regions.center.Articles' , 'ComboThesaurus'] ,
+	stores: ['regions.center.Articles' , 'ComboThesaurus'] ,
 	
 	// Configuration
 	init: function () {
@@ -84,7 +84,7 @@ Ext.define ('SC.controller.SendResource' , {
 			var 	artBody = txtResDes.getValue () ,
 				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />';
 			
-			artBody = htInjection (artBody , this.getThesaurusStore ());
+			artBody = htInjection (artBody , this.getComboThesaurusStore ());
 			
 			// XML Injection
 			var article = artHeader + '\n' + artBody + '\n' + artResource + '\n';

@@ -11,178 +11,111 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 	
 	// Views
 	views: ['regions.west.Thesaurus'] ,
-	stores:['Thesaurus'],
-	models:['TheNode'],
+	stores: ['regions.west.Thesaurus' , 'ComboThesaurus' , 'regions.center.Articles'] ,
+	models: ['regions.west.Thesaurus' , 'ComboThesaurus' , 'regions.center.Articles'] ,
 			
 	// Configuration
-
-	
 	init: function () {
+		var skosNS, twebNS;
 
-		this.control({
-			'thesaurus':{
-				itemdblclick:function(view,record,item,index,ev,opt){
-				//when expand a node with a double click, change texfield content with the node value
-						Ext.getCmp('addTermField').setValue(record.data.text+'/');
-					}
+		this.control ({
+			'thesaurus': {
+				afterrender: this.loadThesaurus ,
+				// Related search on a item db click
+				itemdblclick: this.startRelatedTermSearch
 			},
-			'#addTermField':{
-				specialkey:function(field,ev,opt){
-					console.log (theStore.getNodeById (field));
-				//listen to ENTER key press to send data
-						if(ev.getKey()==ev.ENTER){
-							//directly send becouse validating process is done by server
-							this.addTerm(field)
-						}
-					}
+			// Add button
+			'#btnThesaurusAddTerm': {
+				click: function (button) {
+					Ext.getCmp('windowAddTerm').show ();
+				}
 			}
 		});
-
 	
-	//useful variables	
-		var theStore, theProxy, skosNS, twebNS, myRDF;
+		console.log ('Controller Thesaurus started.');
+	} ,
 	
-	//get reference to tree store and his localstorage proxy	
-		theStore=this.getThesaurusStore();
-		theProxy=theStore.getProxy();
-
-	//set namespaces
-		skosNS="http://www.w3.org/2004/02/skos/core#"
-		twebNS="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus"
-	
-	//function and constructor from parse.js library
-		myRDF=new RDF();
-		myRDF.getRDFURL(urlServerLtw + 'thesaurus',callback)
-	
-
-
-
-
-	//callback function called when request is complete
-		function callback(){
+	// @brief Load the thesaurus in his tree panel
+	loadThesaurus: function (panel) {
+		var storeThesaurus = this.getRegionsWestThesaurusStore ();
+		var storeComboThesaurus = this.getComboThesaurusStore ();
 		
-		//get root node to append all chileds
-			var root=theStore.getRootNode();
+		// set namespaces
+		skosNS = 'http://www.w3.org/2004/02/skos/core#';
+		twebNS = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
+	
+		// function and constructor from parse.js library
+		myRDF = new RDF ();
+		myRDF.getRDFURL (urlServerLtw + 'thesaurus', function () {
+			// get root node to append all chileds
+			var root = storeThesaurus.getRootNode ();
 			
+			// Clear previous storeThesaurus and refresh treepanel
+			while (root.firstChild) {
+				root.removeChild (root.firstChild);
+			}
 			
-		//query to retrive all "hasTopConcept" node
-			var top=myRDF.Match(null,null,skosNS+"hasTopConcept",null);
+			// Clear previous storeComboThesaurus
+			storeComboThesaurus.removeAll ();
+			
+			// query to retrive all "hasTopConcept" node
+			var top = myRDF.Match (null, null, skosNS + 'hasTopConcept', null);
+			
+			// suspend store content change events
+			//storeThesaurus.suspendEvents ();
 
-		//suspend store content change events
-			theStore.suspendEvents();
-
-		//starting loop to append all "hasTopConcept" node and theirs children
-			for (var i=0;i<top.length;i++){
-				var sub=top[i].object;
-				append(sub,root);
-			};
+			// starting loop to append all "hasTopConcept" node and theirs children
+			for (var i = 0; i < top.length; i++) {
+				var sub = top[i].object;
+				append (sub, root);
+			}
 		
-		//resume store content change events
+			// resume store content change events
+			//storeThesaurus.resumeEvents ();
+		});
 		
-			theStore.resumeEvents();
-		
-		};
-		
-
-
-
-	//funcion to append a node to his father	
-		function append(subject,father){
-
-		//get prefLabel value, create a node and append it to his father
-			var val=myRDF.getSingleObject(null,subject,skosNS+"prefLabel",null);
-			var node=SC.model.TheNode.create({
+		// Append subject to father
+		function append (subject, father) {
+			// get prefLabel value, create a node and append it to his father
+			var val = myRDF.getSingleObject (null, subject, skosNS + 'prefLabel', null);
+			
+			var node = SC.model.regions.west.Thesaurus.create ({
 				text: val ,
-				ns: myRDF.getSingleObject(null,subject,skosNS+"inScheme",null)
+				ns: myRDF.getSingleObject (null, subject, skosNS + 'inScheme', null)
 			});
 			
-		//change node internal id into the store to retrive it with getNodeById method
-		
-		
-			father.appendChild(node);
-		
-		//query to get all node's children and recall this function to fill the tree
-			var child=myRDF.Match(null,subject,skosNS+"narrower",null);
-			if(child.length==0){
-				node.data.leaf=true
+			// Fill the ComboThesaurus
+			storeComboThesaurus.add ({
+				term : val
+			});
+			
+			// And sort the store
+			storeComboThesaurus.sort ('term' , 'ASC');
+			
+			// change node internal id into the store to retrive it with getNodeById method
+			father.appendChild (node);
+			
+			// query to get all node's children and recall this function to fill the tree
+			var child = myRDF.Match (null, subject, skosNS + 'narrower', null);
+			
+			if (child.length == 0) {
+				node.data.leaf = true;
 			}
-			for (var i=0;i<child.length;i++){
-				append(child[i].object,node);
+			
+			for (var i=0; i < child.length; i++) {
+				append (child[i].object, node);
 			}
-		};
+		}
+	} ,
 	
-
-
-
-	//listen to requests errors
-		theProxy.on('excetion',function(response,operation){console.log(response,operation);});
-		Ext.Ajax.on('requestexception',function(conn,response,operation){console.log(conn,response,operation);});
-		Ext.Ajax.on('requestcomplete',function(conn,response,operation){console.log(conn,response,operation);});
-		console.log ('Controller Thesaurus started.');
-	},
-	
-	//send new term
-	addTerm:function(field){
-	
-	//useful variables
-		var parentterm='';
-		var term='';
-		var slash=false;
+	// @brief Starts a search related to a term just db clicked by the user
+	startRelatedTermSearch: function (view, record, item, index, ev, opt) {
+		var storeArticle = this.getRegionsCenterArticlesStore ();
 		
-	//load entire string into an array and separate terms
-		var strArray=Ext.Array.toArray(field.value);
-		Ext.Array.forEach(strArray,function(item){
-					if(item!='/'){
-						if(!slash){
-							parentterm=parentterm+item;
-						}
-						else{
-							term=term+item;
-						}
-					}
-					else
-						slash=true;
-			},this);
+		// Set appropriate URL
+		storeArticle.getProxy().url = urlServerLtw + 'search/5/related/' + record.get ('text');
 	
-	//send data
-		Ext.Ajax.request({
-			url:urlServerLtw + 'addterm',
-			method:'post',
-			
-		//request body	
-			params:{parentterm:parentterm,term:term},
-			
-			success:function(response){
-			
-			//get store reference and find new node parent	
-				var store=Ext.StoreManager.lookup('Thesaurus');
-				var parent=store.getNodeById(parentterm);
-			
-			//create new node and set his attribute
-				var newNode=SC.model.TheNode.create({text:term});			
-			
-			//append new node to his father	
-				parent.appendChild(newNode);
-				
-			//set new node and parent leaf attribute	
-				parent.data.leaf=false;
-				newNode.data.leaf=true;
-				
-			//display new item node	
-				parent.expand(false);
-			},
-			
-			failure:function(response){
-			
-			//display error message send by server
-				Ext.Msg.show ({
-				title: 'Error' ,
-				msg: response.responseText ,
-				buttons: Ext.Msg.OK,
-				icon: Ext.Msg.ERROR
-				})
-			}
-		});
+		// Retrieve articles
+		requestSearchArticles (store, null, 0);
 	}
-	
 });

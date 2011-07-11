@@ -7,7 +7,7 @@
 //
 // @note	Store of thesaurus
 
-Ext.define('SC.store.Thesaurus',{	
-	extend:'Ext.data.TreeStore',
-	model:'SC.model.TheNode'
+Ext.define ('SC.store.regions.west.Thesaurus' , {	
+	extend: 'Ext.data.TreeStore' ,
+	model: 'SC.model.regions.west.Thesaurus'
 });

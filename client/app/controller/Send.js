@@ -22,8 +22,8 @@ Ext.define ('SC.controller.Send' , {
 	// Views
 	views: ['Send'] ,
 	
-	models: ['regions.center.Articles' , 'TheNode'] ,
-	stores: ['regions.center.Articles' , 'Thesaurus'] ,
+	models: ['regions.center.Articles' , 'ComboThesaurus'] ,
+	stores: ['regions.center.Articles' , 'ComboThesaurus'] ,
 	
 	// Configuration
 	init: function () {
@@ -93,7 +93,7 @@ Ext.define ('SC.controller.Send' , {
 				win = Ext.getCmp ('windowNewPost');
 			
 			// XML Injection for hashtag
-			artBody = htInjection (artBody , this.getThesaurusStore ());
+			artBody = htInjection (artBody , this.getComboThesaurusStore ());
 			
 			// XML Injection
 			var article = artHeader + '\n' + artBody + '\n';

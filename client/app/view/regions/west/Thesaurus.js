@@ -10,24 +10,32 @@
 Ext.define ('SC.view.regions.west.Thesaurus' , {
 	extend: 'Ext.tree.Panel' ,
 	alias: 'widget.thesaurus' ,
+	
 	// Configuration
 	title: 'Thesaurus' ,
+	id: 'thesaurusPanel' ,
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 2 ,
 	rootVisible: true ,
 	autoScroll: true ,
-//	useArrows:true,
-	flex:1,
-	store:'Thesaurus',
-	root:{
-		text:'Thesaurus',
-		expanded:true
-	},
-//	textfiled for add thesaurus term
-	bbar:{
-		xtype:'textfield',
-		id:'addTermField',
-		enableKeyEvents:true
-	}
+	flex: 1 ,
+	store: 'regions.west.Thesaurus' ,
+	root: {
+		text: 'Thesaurus' ,
+		expanded: true
+	} ,
+
+	// Docked button	
+	dockedItems: [{
+		xtype: 'toolbar' ,
+		dock: 'bottom' ,
+		height: 25 ,
+		items: ['->' , {
+			// Button to add new terms to the thesaurus
+			id: 'btnThesaurusAddTerm' ,
+			text: 'Add new term' ,
+			hidden: true
+		} , '->']
+	}]
 });

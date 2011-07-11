@@ -27,6 +27,7 @@ Ext.application ({
 		'Send' ,
 		'SendResource' ,
 		'SelectPost' ,
-		'Options'
+		'Options' ,
+		'AddTerm'
 	]
 });

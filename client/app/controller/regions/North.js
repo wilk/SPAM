@@ -106,6 +106,9 @@ Ext.define ('SC.controller.regions.North' , {
 						pUser.setVisible (true);
 	
 						bNewPost.setVisible (true);
+						
+						// Show button to add new terms to the thesaurus
+						Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
 					} ,
 					failure: function (error) {
 						Ext.Msg.show ({
@@ -150,6 +153,9 @@ Ext.define ('SC.controller.regions.North' , {
 						Ext.getCmp('winFocusArticle').setVisible (false);
 						Ext.getCmp('winFocusArticle').setVisible (true);
 					}
+					
+					// Hide button to add new terms to the thesaurus
+					Ext.getCmp('btnThesaurusAddTerm').setVisible (false);
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({

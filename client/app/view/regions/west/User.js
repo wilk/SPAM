@@ -22,19 +22,16 @@ Ext.define ('SC.view.regions.west.User' , {
 	layout: 'accordion' ,
 	hidden: true,
 	items:[{
-	//Grid for user's personal server
-		title:'Server',
-		xtype:'grid',
-		id:'userGrid',
-		store:'userStore',
+		// Grid for user's personal server
+		xtype: 'grid' ,
+		title: 'Server' ,
+		id: 'userGrid' ,
+		store: 'regions.west.user.Server' ,
 		autoScroll:true,
 		forceFit:true,
-//		frame: false ,
 		border: 0 ,
-//		bodyPadding: 0 ,
-//		anchor: '100%' ,
 		columns:[{
-			header: 'server name' ,
+			header: 'Server Name' ,
 			dataIndex: 'serverID'
 		}]
 	} , {

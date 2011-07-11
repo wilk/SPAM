@@ -5,24 +5,21 @@
 //		Stefano Sgarlata <sgarlat@cs.unibo.it>
 //		Clemente Vitale  <cvitale@cs.unibo.it>
 //
-// @note	Model of federated servers
+// @note	Model of federated servers followed by user
 
-Ext.define ('SC.model.Server', {
+Ext.define ('SC.model.regions.west.user.Server', {
 	extend: 'Ext.data.Model' ,
 	
 	fields:	[{
 		name: 'serverID' ,
 		mapping: '@serverID'
-	} , {
-		name: 'serverURL' ,
-		mapping: '@serverURL'
 	}] ,
 	
 	proxy: {
 		type: 'rest' ,
-		// federated server list is located onto client
-		url: 'app/data/server.xml' ,
+		url: urlServerLtw + 'servers' ,
 		
+		// Read user servers list
 		reader: {
 			type: 'xml' ,
 			root: 'servers' ,

@@ -27,7 +27,6 @@ Ext.application ({
 		'Send' ,
 		'SendResource' ,
 		'SelectPost' ,
-		'Options' ,
-		'Server'
+		'Options'
 	]
 });

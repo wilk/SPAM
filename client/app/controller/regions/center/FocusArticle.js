@@ -82,7 +82,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		Ext.Ajax.request ({
 			url: urlServerLtw + 'setlike' ,
 			// Sending server, user and post ID of this article
-			params: { 
+			params: {
+				// TODO: use focusModel.get ('user') and focusModel.get ('server')
 				serverID: postData.split("/")[1] ,
 				userID: postData.split("/")[2] ,
 				postID: postData.split("/")[3] ,

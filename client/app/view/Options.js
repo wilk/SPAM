@@ -34,6 +34,7 @@ Ext.define ('SC.view.Options' , {
 			title: 'Options' ,
 			items: [{
 				xtype: 'panel' ,
+				id: 'optionTab' ,
 				// No frame nor border
 				frame: false ,
 				border: 0 ,
@@ -50,7 +51,7 @@ Ext.define ('SC.view.Options' , {
 					editable: false ,
 					displayField: 'serverID' ,
 					labelWidth: 130 ,
-					store: 'serverStore' ,
+					store: 'Server' ,
 					queryMode: 'local'
 				}] ,
 				// Buttons
@@ -67,19 +68,43 @@ Ext.define ('SC.view.Options' , {
 		} , {
 			// Tab Server Grid
 			title: 'Server' ,
-			autoScroll:true,
+			id: 'serverTab' ,
+			autoScroll: true ,
 			items: [{
 				xtype: 'grid' ,
 				forceFit:true,
 				id: 'fedServer' ,
-				store: 'serverStore' ,
+				store: 'Server' ,
 				frame: false ,
 				border: 0 ,
-				bodyPadding: 10 ,
 				anchor: '100% 100%' ,
+				layout: 'anchor' ,
+				
 				columns: [{
-					header: 'server name' ,
-					dataIndex: 'serverID'
+					// Server ID
+					header: 'Server Name' ,
+					dataIndex: 'serverID' ,
+					anchor: '80%'
+				} , {
+					// Column to add/del servers
+					xtype: 'actioncolumn' ,
+					header: 'Add/Delete' ,
+					id: 'adServerColumn' ,
+					anchor: '20%' ,
+					align: 'center' ,
+					// Visibile if the user is logged in
+					hidden: true ,
+					items: [{
+						// Add button
+						icon: 'ext/resources/images/server-grid-actions/check.ico' ,
+						iconCls: 'icon-add' ,
+						tooltip: 'Add this server to yours list'
+					} , {
+						// Del button
+						icon: 'ext/resources/images/server-grid-actions/delete.ico' ,
+						iconCls: 'icon-delete' ,
+						tooltip: 'Delete this server from yours list'
+					}]
 				}]
 			}]
 		} , {

@@ -64,7 +64,9 @@ Ext.define ('SC.view.Send' , {
 		anchor: '100%' ,
 		store: 'ComboThesaurus' ,
 		queryMode: 'local' ,
-		typeAhead: true
+		typeAhead: true ,
+		enableKeyEvents: true ,
+		pickerAlign: 'bl'
 	}] ,
 	// Bottom buttons
 	dockedItems: [{

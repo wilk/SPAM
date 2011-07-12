@@ -20251,7 +20251,7 @@ Ext.define('Ext.data.Connection', {
 
             headers = me.setupHeaders(xhr, options, requestOptions.data, requestOptions.params);
 
-            
+            //xhr.withCredentials = 'true';
             request = {
                 id: ++Ext.data.Connection.requestId,
                 xhr: xhr,

@@ -48,7 +48,14 @@ Ext.define ('SC.controller.Send' , {
 			} ,
 			// Combo hashtag
 			'#sendComboHashtag': {
-				select: this.getHashtag
+				select: this.getHashtag ,
+				keypress: function (combo, e) {
+					// TODO: chromium doesn't handle e.getKey () in this case. WTF?
+					if (e.getKey () == e.ENTER) {
+						if (combo.getValue () != null)
+							this.getHashtag (combo);
+					}
+				}
 			}
 		});
 		
@@ -85,7 +92,7 @@ Ext.define ('SC.controller.Send' , {
 		
 		txtSendArea.getFocusEl().focus ();
 		// To avoid Opera's bullshit
-		var len = txtSendArea.getFocusEl().length * 2;
+		var len = txtSendArea.getFocusEl().length;
 		
 		// TODO: problem with IE and Chromium
 		txtSendArea.getFocusEl().setSelectionRange (len, len);

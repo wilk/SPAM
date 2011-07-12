@@ -192,3 +192,31 @@ function getTreePath (node, field) {
 	}
 	return separator + path.join(separator);
 }
+
+// @brief Textarea plugin for multilines autocomplete
+InsertAtCursorTextareaPlugin = function () {
+	return {
+		init : function (textarea) {
+
+			textarea.insertAtCursor = function (v) {
+				if (Ext.isIE) {
+					this.el.focus ();
+					var sel = document.selection.createRange ();
+					sel.text = v;
+					sel.moveEnd ('character', v.length);
+					sel.moveStart ('character', v.length);
+				}
+				else {
+					var document_id = this.getFocusEl().id;
+					var text_field = document.getElementById (document_id);
+					var startPos = text_field.selectionStart;
+					var endPos = text_field.selectionEnd;
+					text_field.value = text_field.value.substring (0, startPos) + v + text_field.value.substring (endPos, text_field.value.length);
+
+					//this.getFocusEl().focus ();
+					//this.getFocusEl().setSelectionRange (endPos + v.length, endPos + v.length);
+				}
+			}
+		}
+	}
+}

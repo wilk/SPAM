@@ -7,15 +7,6 @@
 //
 // @note	Controller of view of sending new posts
 
-var MAXCHARS = 140;
-
-var 	artHeader = '<article>' ,
-	artFooter = '</article>';
-
-var txtSendArea , lblSendCount , chkSendBoxGeoLoc;
-
-var sendGeoLocSpan;
-
 Ext.define ('SC.controller.Send' , {
 	extend: 'Ext.app.Controller' ,
 	
@@ -27,7 +18,13 @@ Ext.define ('SC.controller.Send' , {
 	
 	// Configuration
 	init: function () {
+		var MAXCHARS;
+		var artHeader;
+		var artFooter;
+		var txtSendArea , lblSendCount , chkSendBoxGeoLoc;
+		var sendGeoLocSpan;
 		var hashtagArray = new Array ();
+		var sendComboHashtag;
 		
 		this.control ({
 			// Reset field when it's showed
@@ -48,6 +45,10 @@ Ext.define ('SC.controller.Send' , {
 			// Reset button
 			'#buttonReset': {
 				click: this.resetFields
+			} ,
+			// Combo hashtag
+			'#sendComboHashtag': {
+				select: this.getHashtag
 			}
 		});
 		
@@ -71,11 +72,23 @@ Ext.define ('SC.controller.Send' , {
 		else
 			lblSendCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 
-		// TODO: '#' handler
-//		if (event.getKey () == '35') {
-//			Ext.getCmp('sendComboHashtag').setVisible (true);
-//			//Ext.getCmp('sendComboHashtag').setValue ('#');
-//		}
+		// Focus on hashtag combobox on '#'
+		if (event.getKey () == '35') {
+			sendComboHashtag.focus ();
+		}
+	} ,
+	
+	// @brief Insert the appropriate hashtag into the textarea
+	getHashtag : function (combo) {
+		txtSendArea.insertAtCursor (combo.getValue ());
+		combo.reset ();
+		
+		txtSendArea.getFocusEl().focus ();
+		// To avoid Opera's bullshit
+		var len = txtSendArea.getFocusEl().length * 2;
+		
+		// TODO: problem with IE and Chromium
+		txtSendArea.getFocusEl().setSelectionRange (len, len);
 	} ,
 	
 	// @brief
@@ -172,61 +185,23 @@ Ext.define ('SC.controller.Send' , {
 		txtSendArea = win.down ('#txtAreaSend');
 		lblSendCount = win.down ('#sendCharCounter');
 		chkSendBoxGeoLoc = win.down ('#chkSendGeoLoc');
+		sendComboHashtag = win.down ('#sendComboHashtag');
 		
 		// If browser do not support geolocation, hide the checkbox
 		if ((browserGeoSupportFlag))
 			chkSendBoxGeoLoc.setVisible (false);
 		
-		// Saving all hashtags
-		
-//		var hashtagModels = this.getThesaurusStore().getNewRecords ();
-//		
-//		// Populate hashtag array
-//		for (var m in hashtagModels)
-//		{
-//			try {
-//				hashtagArray[m].text = hashtagModels[m].get ('text');
-//				hashtagArray[m].ns = hashtagModels[m].get ('ns');
-//			}
-//			catch (err) {
-//				break;
-//			}
-//		}
-
-		// Autocomplete
-//		$('#taSend').autocomplete({
-//			wordCount:1,
-//			mode: "outter",
-//			on: {
-//				query: function(text,cb){
-//					var words = [];
-//					for( var i=0; i<hashtagArray.length; i++ ) {
-//						if( hashtagArray[i].toLowerCase().indexOf(text.toLowerCase()) == 0 ) 
-//							words.push(hashtagArray[i]);
-//					}
-//					cb(words);								
-//				}
-//			}
-//		});
+		MAXCHARS = 140;
+		artHeader = '<article>';
+		artFooter = '</article>';
 	} ,
 	
 	// @brief Reset text area of the new post
 	resetFields: function (win) {
 		txtSendArea.reset ();
 		chkSendBoxGeoLoc.reset ();
+		sendComboHashtag.reset ();
 		
 		lblSendCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
-		
-//		var a = Ext.toArray (Ext.StoreManager.lookup('Thesaurus'));
-//		var store = Ext.StoreManager.lookup ('Thesaurus');
-//		var a = store.getNewRecords ();
-//		
-//		for (var i in a) {
-//			alert (a[i].get ('text'));
-//		}
-		
-		//var tss = Ext.getCmp('treePanelThesaurus').cloneConfig ({maxWidth: 150, id: 'cloneTPThesaurus'});
-		//var tss = Ext.create ('SC.view.SendThesaurus');
-		//win.add (tss);
 	}
 });

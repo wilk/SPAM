@@ -15,7 +15,7 @@ Ext.define ('SC.view.SendResource' , {
 	id: 'windowSendResource' ,
 	minHeight: 150 ,
 	minWidth: 200 ,
-	height: 230 ,
+	height: 240 ,
 	width: 450 ,
 	maximizable: true ,
 	// On top of any content
@@ -43,9 +43,18 @@ Ext.define ('SC.view.SendResource' , {
 		emptyText: 'Type resource description here ...' ,
 		enforceMaxLenght: true ,
 		maxLenght: 140 ,
-		// Anchor width and height
 		anchor: '100%' ,
-		enableKeyEvents: true
+		enableKeyEvents: true ,
+		plugins: new InsertAtCursorTextareaPlugin ()
+	} , {
+		// Combo Hashtag
+		xtype: 'combo' ,
+		id: 'sendResourceComboHashtag' ,
+		displayField: 'term' ,
+		anchor: '100%' ,
+		store: 'ComboThesaurus' ,
+		queryMode: 'local' ,
+		typeAhead: true
 	}] ,
 	// Bottom buttons
 	dockedItems: [{

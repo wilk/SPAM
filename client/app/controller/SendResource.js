@@ -7,18 +7,6 @@
 //
 // @note	Controller of send resource view
 
-var MAXCHARS = 140;
-
-var 	artHeader = '<article>' ,
-	artFooter = '</article>';
-
-var 	winRes, txtResUrl, txtResDes, lblResCount , chkBoxGeoLoc;
-
-var geoLocSpan;
-
-// Type of resource
-var btnGhost;
-
 Ext.define ('SC.controller.SendResource' , {
 	extend: 'Ext.app.Controller' ,
 	
@@ -30,6 +18,16 @@ Ext.define ('SC.controller.SendResource' , {
 	
 	// Configuration
 	init: function () {
+		var MAXCHARS;
+		var artHeader;
+		var artFooter;
+		var winRes, txtResUrl, txtResDes, lblResCount , chkBoxGeoLoc;
+		var geoLocSpan;
+
+		// Type of resource
+		var btnGhost;
+		var sendResourceComboHashtag;
+		
 		this.control ({
 			// Reset field when it's showed
 			'sendresource': {
@@ -48,6 +46,10 @@ Ext.define ('SC.controller.SendResource' , {
 			// Reset button
 			'#btnResReset': {
 				click: this.resetFields
+			} ,
+			// Combo Hashtag
+			'#sendResourceComboHashtag': {
+				select: this.getHashtag
 			}
 		});
 	
@@ -69,6 +71,24 @@ Ext.define ('SC.controller.SendResource' , {
 			lblResCount.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
 		else
 			lblResCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
+		
+		// Focus on hashtag combobox on '#'
+		if (e.getKey () == '35') {
+			sendResourceComboHashtag.focus ();
+		}
+	} ,
+	
+	// @brief Insert the appropriate hashtag into the textarea
+	getHashtag : function (combo) {
+		txtResDes.insertAtCursor (combo.getValue ());
+		combo.reset ();
+		
+		txtResDes.getFocusEl().focus ();
+		// To avoid Opera's bullshit
+		var len = txtResDes.getFocusEl().length * 2;
+		
+		// TODO: problem with IE and Chromium
+		txtResDes.getFocusEl().setSelectionRange (len, len);
 	} ,
 	
 	// @brief
@@ -171,6 +191,12 @@ Ext.define ('SC.controller.SendResource' , {
 		// If browser do not support geolocation, hide the checkbox
 		if ((browserGeoSupportFlag))
 			chkBoxGeoLoc.setVisible (false);
+		
+		sendResourceComboHashtag = winRes.down ('#sendResourceComboHashtag');
+		
+		MAXCHARS = 140;
+		artHeader = '<article>';
+		artFooter = '</article>';
 	} ,
 	
 	// @brief Reset fields

@@ -24,12 +24,12 @@ Ext.define ('SC.view.Send' , {
 	bodyPadding: 10 ,
 	closeAction: 'hide' ,
 	// Horizontal box layout
-	layout: {
-		type: 'vbox' ,
-		pack: 'start' ,
-		align: 'stretch'
-	} ,
-//	layout: 'anchor' ,
+//	layout: {
+//		type: 'vbox' ,
+//		pack: 'start' ,
+//		align: 'stretch'
+//	} ,
+	layout: 'anchor' ,
 	
 	// Body
 	items: [
@@ -48,28 +48,24 @@ Ext.define ('SC.view.Send' , {
 		//xtype: 'htmleditor' ,
 		id: 'txtAreaSend' ,
 		inputId: 'taSend' ,
-		flex: 1 ,
-		//anchor: '100% 70%' ,
+//		flex: 1 ,
+		anchor: '100% 89%' ,
 		emptyText: 'Type you text here ...' ,
 		allowBlank: false ,
 		enforceMaxLenght: true ,
 		maxLenght: 140 ,
-		enableKeyEvents: true
-	}
-//	 , {
-//		// TODO: it's a treestore, maybe some problems?
-		// TODO: combobox for autocomplete
-//		xtype: 'combo' ,
-//		id: 'sendComboHashtag' ,
-//		displayField: 'text' ,
-////		width: 500 ,
-//		flex: 1 ,
-//		store: 'Thesaurus' ,
-//		queryMode: 'local' ,
-//		typeAhead: true ,
-//		hidden: true
-//	}
-	] ,
+		enableKeyEvents: true ,
+		plugins: new InsertAtCursorTextareaPlugin ()
+	} , {
+		// Combo Hashtag
+		xtype: 'combo' ,
+		id: 'sendComboHashtag' ,
+		displayField: 'term' ,
+		anchor: '100%' ,
+		store: 'ComboThesaurus' ,
+		queryMode: 'local' ,
+		typeAhead: true
+	}] ,
 	// Bottom buttons
 	dockedItems: [{
 		xtype: 'toolbar' ,

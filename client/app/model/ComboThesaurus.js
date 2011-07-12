@@ -16,5 +16,13 @@ Ext.define ('SC.model.ComboThesaurus' , {
 	} , {
 		name: 'isLeaf' ,
 		type: 'boolean'
+	} , {
+		// skos:inScheme
+		name: 'ns' ,
+		type: 'string'
+	} , {
+		// Path into the tree
+		name: 'path' ,
+		type: 'string'
 	}]
 });

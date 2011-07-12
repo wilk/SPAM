@@ -41,20 +41,25 @@ function htInjection (text, store) {
 				wordToSearch = wordToSearch.slice (0, indexPunctuation);
 			}
 			
-			try {
-				switch (store.getNodeById(wordToSearch).get ('ns')) {
+			// Model associated to the hashtag
+			var recordOfTerm = store.findRecord ('term' , wordToSearch);
+			
+			if (recordOfTerm != null) {
+				// TODO: problem with terms with punctuation (like ansi_c)
+				// Handle the appropriate namespace
+				switch (recordOfTerm.get ('ns')) {
 					// If hashtag belongs to the extended thesaurus, set as extended
 					case extendedNS:
-						wordToReplace += '<span typeof="skos:Concept" about="' + getTreePath (store.getNodeById (wordToSearch) , 'text') + '" rel="skos:inScheme" resource="' + extendedNS + '">';
+						wordToReplace += '<span typeof="skos:Concept" about="' + recordOfTerm.get ('path') + '" rel="skos:inScheme" resource="' + extendedNS + '">';
 						break;
 					// If hashtag belongs to the shared thesaurus, set as shared
 					case sharedNS:
-						wordToReplace += '<span typeof="skos:Concept" about="' + getTreePath (store.getNodeById (wordToSearch) , 'text') + '" rel="skos:inScheme" resource="' + sharedNS + '">';
+						wordToReplace += '<span typeof="skos:Concept" about="' + recordOfTerm.get ('path') + '" rel="skos:inScheme" resource="' + sharedNS + '">';
 						break;
 				}
 			}
-			// If hashtag doesn't belong to the thesaurus, set as ctag
-			catch (err) {
+			else {
+				// CTag term
 				wordToReplace += spanHTExternal;
 			}
 			

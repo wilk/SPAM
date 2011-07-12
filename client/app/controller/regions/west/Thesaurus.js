@@ -16,7 +16,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			
 	// Configuration
 	init: function () {
-		var skosNS, twebNS;
+		var skosNS, twebNS, rdfNS;
 
 		this.control ({
 			'thesaurus': {
@@ -43,6 +43,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		// set namespaces
 		skosNS = 'http://www.w3.org/2004/02/skos/core#';
 		twebNS = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
+		rdfNS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
 	
 		// function and constructor from parse.js library
 		myRDF = new RDF ();
@@ -80,8 +81,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			var val = myRDF.getSingleObject (null, subject, skosNS + 'prefLabel', null);
 			
 			var node = SC.model.regions.west.Thesaurus.create ({
-				text: val ,
-				ns: myRDF.getSingleObject (null, subject, skosNS + 'inScheme', null)
+				text: val
 			});
 			
 			// change node internal id into the store to retrive it with getNodeById method
@@ -94,11 +94,19 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 				node.data.leaf = true;
 			}
 			
+			// Get namespace of the term
+			var nsOfTerm = myRDF.getSingleObject (null, subject, skosNS + 'inScheme', null);
+			
+			// And then get the tree path of the term (/sport , /sport/calcio , etc.)
+			var pathOfTerm = subject.slice (nsOfTerm.length, subject.length);
+			
 			// Fill the ComboThesaurus
 			storeComboThesaurus.add ({
 				term : val ,
 				// Setup if is it a leaf or not
-				isLeaf : (child.length == 0 ? true : false)
+				isLeaf : (child.length == 0 ? true : false) ,
+				ns: nsOfTerm ,
+				path: pathOfTerm
 			});
 			
 			// And sort the store

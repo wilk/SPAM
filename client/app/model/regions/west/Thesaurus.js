@@ -14,10 +14,6 @@ Ext.define ('SC.model.regions.west.Thesaurus' , {
 		// skos:prefLabel
 		name: 'text' ,
 		type: 'string'
-	} , {
-		// skos:inScheme
-		name: 'ns' ,
-		type: 'string'
 	}] ,
 		
 	proxy: {

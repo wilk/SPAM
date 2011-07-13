@@ -144,6 +144,7 @@ class SearchController extends DooController {
                     $posts = $post->getPostArray(NULL, $limite);
 
                 if (isset($posts)){
+                    echo sizeof($posts); die();
                     foreach ($posts as $post){
                         $nodo['articolo'] = $post;
                         $nodo['peso'] = strtotime($post[key($post)]['http://purl.org/dc/terms/created'][0]);

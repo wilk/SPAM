@@ -201,4 +201,7 @@ function disposeArticles (store, focus, focusIndex) {
 	// Add win to center region
 	cntRegion.add (win);
 	win.show ();
+	
+	// Unset loading mask to the center region
+	Ext.getCmp('centReg').setLoading (false);
 }

@@ -14,6 +14,9 @@
 function requestSearchArticles (store, focus, focusIndex) {
 	// Clean the store
 	store.removeAll ();
+	
+	// Setup loading mask to the center region
+	Ext.getCmp('centReg').setLoading (true);
 
 	// Make an AJAX request with JQuery to read XML structure (ExtJS can't read XML with mixed content model)
 	$.ajax({
@@ -22,6 +25,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 		url: store.getProxy().url,
 		dataType: "xml",
 		success: function (xml) {
+			// TODO: check if xml is empty
 			// Check every posts
 			$(xml).find('post').each (function () {
 				var numLike, numDislike;
@@ -88,6 +92,9 @@ function requestSearchArticles (store, focus, focusIndex) {
 				buttons: Ext.Msg.OK,
 				icon: Ext.Msg.ERROR
 			});
+			
+			// Unset loading mask to the center region
+			Ext.getCmp('centReg').setLoading (false);
 		}
 	});
 }
@@ -174,23 +181,6 @@ function retrieveRecentArticles (store) {
 //			});
 		}
 	});
-}
-
-// @brief Find the path of an hashtag in the treestore
-// @param node: node to get path
-// @param field: field of model
-// @return Path of hashtag
-function getTreePath (node, field) {
-	var separator = '/';
-	
-	var path = [node.get(field)],
-	parent = node.parentNode;
-	
-	while (parent.get (field) != 'Thesaurus') {
-		path.unshift(parent.get(field));
-		parent = parent.parentNode;
-	}
-	return separator + path.join(separator);
 }
 
 // @brief Textarea plugin for multilines autocomplete

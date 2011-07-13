@@ -81,55 +81,67 @@ Ext.define ('SC.controller.regions.North' , {
 			
 			// Check if the form is filled or not
 			if (fieldUser.isValid ()) {
-		
+			
 				var txtUser = fieldUser.getValue ();
-		
-				// AJAX request to login
-				Ext.Ajax.request ({
-					url: urlServerLtw + 'login' ,
-					method: 'POST' ,
-					withCredentials: true ,
-					params: { username: txtUser } ,
-					success: function (response) {
-						// If server sets his cookies
-						var userCookie = Ext.util.Cookies.get ('ltwlogin');
+				
+				// Check if user setup a username with strange symbols
+				if (txtUser.search (/[\. ,-\/!?$%\^&\*;:{}=\-_`~()]/g) == -1) {
+
+					// AJAX request to login
+					Ext.Ajax.request ({
+						url: urlServerLtw + 'login' ,
+						method: 'POST' ,
+						withCredentials: true ,
+						params: { username: txtUser } ,
+						success: function (response) {
+							// If server sets his cookies
+							var userCookie = Ext.util.Cookies.get ('ltwlogin');
 						
-						// Check if server has saved ltwlogin cookie
-						if (userCookie != null)	{	
-							// Client sets its
-							Ext.util.Cookies.set ('SPAMlogin' , txtUser);
+							// Check if server has saved ltwlogin cookie
+							if (userCookie != null)	{	
+								// Client sets its
+								Ext.util.Cookies.set ('SPAMlogin' , txtUser);
 						
-							// Setup login fields
-							btnLogin.setText ('Logout');
+								// Setup login fields
+								btnLogin.setText ('Logout');
 						
-							fieldUser.setVisible (false);
+								fieldUser.setVisible (false);
 						
-							pUser.setTitle ('User :: ' + txtUser);
-							pUser.setVisible (true);
+								pUser.setTitle ('User :: ' + txtUser);
+								pUser.setVisible (true);
 	
-							bNewPost.setVisible (true);
+								bNewPost.setVisible (true);
 						
-							// Show button to add new terms to the thesaurus
-							Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
-						}
-						else {
+								// Show button to add new terms to the thesaurus
+								Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
+							}
+							else {
+								Ext.Msg.show ({
+									title: 'Error' ,
+									msg: 'Sorry, but cookie \'ltwlogin\' isn\'t been saved. Try again.' ,
+									buttons: Ext.Msg.OK,
+									icon: Ext.Msg.ERROR
+								});
+							}
+						} ,
+						failure: function (error) {
 							Ext.Msg.show ({
-								title: 'Error' ,
-								msg: 'Sorry, but cookie \'ltwlogin\' isn\'t been saved. Try again.' ,
+								title: 'Error ' + error.status ,
+								msg: error.responseText ,
 								buttons: Ext.Msg.OK,
 								icon: Ext.Msg.ERROR
 							});
 						}
-					} ,
-					failure: function (error) {
-						Ext.Msg.show ({
-							title: 'Error ' + error.status ,
-							msg: error.responseText ,
-							buttons: Ext.Msg.OK,
-							icon: Ext.Msg.ERROR
-						});
-					}
+					});
+				}
+				else {
+					Ext.Msg.show ({
+					title: 'Error' ,
+					msg: 'Username must contain only characters and numbers (a-z, A-Z, 0..9)' ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
 				});
+				}
 			}
 			else {
 				// If fields are empty, show an error message

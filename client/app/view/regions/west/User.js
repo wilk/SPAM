@@ -13,37 +13,41 @@ Ext.define ('SC.view.regions.west.User' , {
 	
 	// Configuration
 	id: 'userPanel' ,
-//	autoWidth: true ,
 	height:265,
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 0 ,
-//	anchor: '100%' ,
 	layout: 'accordion' ,
-	hidden: true,
+	hidden: true ,
+	
+	// Body
 	items:[{
 		// Grid for user's personal server
 		xtype: 'grid' ,
 		title: 'Server' ,
 		id: 'userGrid' ,
 		store: 'regions.west.user.Server' ,
-		autoScroll:true,
-		forceFit:true,
+		autoScroll: true ,
+		forceFit: true ,
 		border: 0 ,
-		columns:[{
+		columns: [{
 			header: 'Server Name' ,
 			dataIndex: 'serverID'
 		}]
 	} , {
-		title: 'Followers' ,
+		// Followers grid
+		// TODO: header is hidden BUG BUG
 		xtype: 'grid' ,
+		title: 'Followers' ,
 		id: 'userFollowersGrid' ,
 		store: 'regions.west.Followers' ,
 		autoScroll: true ,
+//		forceFit: true ,
+		layout: 'column' ,
 		border: 0 ,
 		columns: [{
-			header: 'Followers' ,
-			dataIndex: 'follower'
+			header: 'Your Friends' ,
+			dataIndex: 'follower' ,
 		}]
 	}]
 });

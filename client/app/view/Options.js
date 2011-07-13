@@ -58,11 +58,13 @@ Ext.define ('SC.view.Options' , {
 				buttons: [{
 					// Reset
 					text: 'Reset' ,
-					id: 'btnOptionReset'
+					id: 'btnOptionReset' ,
+					icon: 'ext/resources/images/btn-icons/reset.png'
 				} , {
 					// Apply
 					text: 'Apply' ,
-					id: 'btnOptionApply'
+					id: 'btnOptionApply' ,
+					icon: 'ext/resources/images/btn-icons/apply.png'
 				}]
 			}]
 		} , {
@@ -98,12 +100,12 @@ Ext.define ('SC.view.Options' , {
 						// Add button
 						icon: 'ext/resources/images/server-grid-actions/check.ico' ,
 						iconCls: 'icon-add' ,
-						tooltip: 'Add this server to yours list'
+						tooltip: 'Add this server to your list'
 					} , {
 						// Del button
 						icon: 'ext/resources/images/server-grid-actions/delete.ico' ,
 						iconCls: 'icon-delete' ,
-						tooltip: 'Delete this server from yours list'
+						tooltip: 'Delete this server from your list'
 					}]
 				}]
 			}]

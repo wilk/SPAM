@@ -76,11 +76,13 @@ Ext.define ('SC.view.SendResource' , {
 		} , {
 			// Button reset
 			text: 'Reset' ,
-			id: 'btnResReset'
+			id: 'btnResReset' ,
+			icon: 'ext/resources/images/btn-icons/reset.png'
 		} , {
 			// Button send
 			text: 'Send' ,
-			id: 'btnResSend'
+			id: 'btnResSend' ,
+			icon: 'ext/resources/images/btn-icons/send.png'
 		} , {
 			// Ghost button for knowing resource type
 			id: 'resBtnGhost' ,

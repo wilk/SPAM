@@ -20,7 +20,8 @@ Ext.define ('SC.view.Viewport' , {
 		'SC.view.SelectPost' ,
 		'SC.view.SendResource' ,
 		'SC.view.Options' ,
-		'SC.view.AddTerm'
+		'SC.view.AddTerm' ,
+		'SC.view.FollowerWindow'
 	] ,
 	
 	// Configuration
@@ -45,5 +46,7 @@ Ext.define ('SC.view.Viewport' , {
 		xtype: 'options'
 	} , {
 		xtype: 'thesaurusaddterm'
+	} , {
+		xtype: 'followerwindow'
 	}]
 });

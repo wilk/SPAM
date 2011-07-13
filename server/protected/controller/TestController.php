@@ -3,8 +3,10 @@ include_once 'protected/module/arc/ARC2.php';
 include_once 'protected/module/Graphite.php';
 /*Classe per i test*/
 class TestController extends DooController{
-    
+
     public function getHead(){
+        if (!isset($_POST['url']))
+            ErrorController::badReq ("<b>Nessun url da proxare.</b>\n Riprova passando un link corretto alla POST.\n");
         $url =html_entity_decode($_POST['url']);
         $url = quoted_printable_decode($url);
         $this->load()->helper('DooRestClient');

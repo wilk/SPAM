@@ -166,6 +166,6 @@ $route['post']['/hasreply'] = array('PostController', 'hasReply');
 $route['*']['/hasreply'] = array('ErrorController', 'notSupport');
 
 //SEZIONE TEST
-$route['post']['/extrasource'] = array('TestController', 'getHead');
+$route['post']['/proxy'] = array('TestController', 'getHead');
 $route['get']['/test'] = array('TestController', 'tester');
 ?>

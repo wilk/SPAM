@@ -31,10 +31,12 @@ Ext.define ('SC.view.regions.west.Thesaurus' , {
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
 		height: 25 ,
+		ui: 'footer' ,
 		items: ['->' , {
 			// Button to add new terms to the thesaurus
 			id: 'btnThesaurusAddTerm' ,
 			text: 'Add new term' ,
+			icon: 'ext/resources/images/btn-icons/add.png' ,
 			hidden: true
 		} , '->']
 	}]

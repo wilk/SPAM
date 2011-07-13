@@ -28,6 +28,7 @@ Ext.application ({
 		'SendResource' ,
 		'SelectPost' ,
 		'Options' ,
-		'AddTerm'
+		'AddTerm' ,
+		'FollowerWindow'
 	]
 });

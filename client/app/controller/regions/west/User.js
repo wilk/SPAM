@@ -14,19 +14,25 @@ Ext.define ('SC.controller.regions.west.User' , {
 	views: ['regions.west.User'] ,
 	
 	// Models
-	models: ['regions.west.Followers' , 'regions.west.user.Server'] ,
+	models: ['regions.west.Followers' , 'regions.west.user.Server' , 'regions.center.Articles'] ,
 	
 	// Stores
-	stores: ['regions.west.Followers' , 'regions.west.user.Server'] ,
+	stores: ['regions.west.Followers' , 'regions.west.user.Server' , 'regions.center.Articles'] ,
 	
 	// Configuration
 	init: function () {
+		var storeArticles;
+		
 		this.control ({
 			// Init user with his followers list
 			'user' : {
 				render : this.initUserPanel ,
 				show : this.initUserPanel
 			} ,
+			// Followers grid
+			'#userFollowersGrid' : {
+				itemdblclick : this.showProfileWindow
+			}
 		});
 		
 		console.log ('Controller User started');
@@ -37,6 +43,8 @@ Ext.define ('SC.controller.regions.west.User' , {
 		var storeFollowers = this.getRegionsWestFollowersStore ();
 		var storeServer = this.getRegionsWestUserServerStore ();
 		var winFocus = Ext.getCmp ('winFocusArticle');
+		
+		storeArticles = this.getRegionsCenterArticlesStore ();
 		
 		// It doesn't retrieve follower list if the user is logged off
 		if (checkIfUserLogged ()) {
@@ -70,6 +78,9 @@ Ext.define ('SC.controller.regions.west.User' , {
 						winFocus.setVisible (false);
 						winFocus.setVisible (true);
 					}
+					
+					// Ascendent sort for followers
+					storeFollowers.sort ('follower' , 'ASC');
 				}
 			});
 			
@@ -95,5 +106,24 @@ Ext.define ('SC.controller.regions.west.User' , {
 				}
 			});
 		}
+	} ,
+	
+	// @brief Shows window of the user profile
+	showProfileWindow: function (view, record, item, index, event) {
+		// Retrieve userID and serverID
+		var followerServer = record.get('follower').split('/')[1];
+		var followerName = record.get('follower').split('/')[2];
+		
+		// Shows the profile window
+		var win = Ext.getCmp ('windowFollower');
+		win.setTitle ('Profile of ' + followerName);
+		win.show ();
+		
+		// Change userID and serverID
+		var nameToChange = document.getElementById ('followerUserName');
+		var serverToChange = document.getElementById ('followerUserServer');
+		
+		nameToChange.innerHTML = followerName;
+		serverToChange.innerHTML = followerServer;
 	}
 });

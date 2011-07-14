@@ -35,7 +35,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			// I Like button
 			'focusarticle button[tooltip="I Like"]' : {
 				click : function (button, event) {
-					this.setLike (button, event, 1);
+					this.setLike (button, event, '+1');
 				}
 			} ,
 			// I Dislike button
@@ -74,7 +74,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		var postData = focusModel.get ('about');
 		
 		// If setlike or setdislike is already set, convert val to 1/-1 in 0
-		if (((val == 1) && (likeOrDislike == 1)) || ((val == -1) && (likeOrDislike == -1))) {
+		if (((val == '+1') && (likeOrDislike == 1)) || ((val == -1) && (likeOrDislike == -1))) {
 			val = 0;
 		}
 		
@@ -87,12 +87,12 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				serverID: postData.split("/")[1] ,
 				userID: postData.split("/")[2] ,
 				postID: postData.split("/")[3] ,
-				value: val
+				value: encodeURIComponent (val)
 			} ,
 			success: function (response) {
 				switch (val) {
 					// Set like
-					case 1:
+					case '+1':
 						button.setIcon ('ext/resources/images/btn-icons/already-like.png');
 						counterLike++;
 						// If this post was set dislike, change icon of the dislike button and update the dislike counter
@@ -128,7 +128,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				button.up('window').down('progressbar').updateProgress (pBarValue, counterLike + ' like - ' + counterDislike + ' dislike');
 				
 				// Update likeOrDislike with new value to avoid another GET of article
-				likeOrDislike = val;
+				likeOrDislike = parseInt (val);
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
@@ -169,8 +169,23 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				// Reload followers store to refresh user panel
 				followersStore.load (function (record, option, success) {
 					if (! success) {
-						// If there aren't followers, remove all previous (old) followers from the store
-						followersStore.removeAll ();
+						var err = option.getError ();
+						// If 404 is returned, ignore it because or user isn't logged in or hasn't followers
+						if (err.status != 404) {
+							Ext.Msg.show ({
+								title: 'Error ' + err.status,
+								msg: 'Something bad happened during retrieve the followers list!' ,
+								buttons: Ext.Msg.OK,
+								icon: Ext.Msg.ERROR
+							});
+						
+							// If there aren't followers, remove all previous (old) followers from the store
+							followersStore.removeAll ();
+						}
+					}
+					else {
+						// Ascendent sort for followers
+						followersStore.sort ('follower' , 'ASC');
 					}
 				});
 			} ,

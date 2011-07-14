@@ -142,6 +142,7 @@ class SearchController extends DooController {
                     $posts = $post->getPostArray(NULL, $limite);
 
                 if (isset($posts)){
+//                    echo sizeof($posts); die();
                     foreach ($posts as $post){
                         $nodo['articolo'] = $post;
                         $nodo['peso'] = strtotime($post[key($post)]['http://purl.org/dc/terms/created'][0]);
@@ -246,7 +247,7 @@ class SearchController extends DooController {
                 if (!(isset ($this->params['var1'])))
                         //BAD REQUEST
                         return 400;
-
+                ErrorController::notImpl();
                 break;
                 
             case $types[5]: //affinity
@@ -255,11 +256,11 @@ class SearchController extends DooController {
                                 !(isset ($this->params['var3'])))
                         //BAD REQUEST
                         return 400;
-
+                ErrorController::notImpl();
                 break;
                 
             default: //beh, altrimenti errore
-                return 501; //?? giust?
+                ErrorController::notImpl();
                 break;
         }
     }

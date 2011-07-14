@@ -12,10 +12,5 @@ Ext.define ('SC.store.regions.west.Followers' , {
 	
 	model: 'SC.model.regions.west.Followers' ,
 	
-	sorters: [{
-		property: 'follower' ,
-		direction: 'ASC'
-	}] ,
-	
 	autoLoad: false
 });

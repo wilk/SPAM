@@ -55,6 +55,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 				// Add article to the store
 				store.add ({
 					affinity: parseInt ($(this).find('affinity').text ()) ,
+					// TODO: bug with reading tags
 					article: $(this).find('article').text () ,
 					resource: $(this).find('article').attr ('resource') ,
 					about: $(this).find('article').attr ('about') ,
@@ -160,6 +161,7 @@ function retrieveRecentArticles (store) {
 				// Add article to the store
 				store.add ({
 					affinity: parseInt ($(this).find('affinity').text ()) ,
+					// TODO: bug with reading tags
 					article: $(this).find('article').text () ,
 					resource: $(this).find('article').attr ('resource') ,
 					about: $(this).find('article').attr ('about') ,

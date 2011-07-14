@@ -50,7 +50,7 @@ Also check out the links page for a list of URLs available in this demo.</p>';
     public static function notImpl() {
         header('Status: 501');
         header('HTTP/1.1 501');
-        die ('Ora pretendi troppo. Questa non l\'abbiamo implementata.');
+        die ('Ora pretendi troppo. Questa non l\'abbiamo implementata. (per il momento.....)');
     }
     public static function conflict() {
         header('Status: 409');

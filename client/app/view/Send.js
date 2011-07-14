@@ -88,11 +88,13 @@ Ext.define ('SC.view.Send' , {
 		} , {
 			// Button reset
 			text: 'Reset' ,
-			id: 'buttonReset'
+			id: 'buttonReset' ,
+			icon: 'ext/resources/images/btn-icons/reset.png'
 		} , {
 			// Button send
 			text: 'Send' ,
-			id: 'buttonSend'
+			id: 'buttonSend' ,
+			icon: 'ext/resources/images/btn-icons/send.png'
 		}]
 	}]
 });

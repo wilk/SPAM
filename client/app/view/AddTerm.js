@@ -58,11 +58,13 @@ Ext.define ('SC.view.AddTerm' , {
 		items: ['->' , {
 			// Reset Button
 			id: 'btnAddTermReset' ,
-			text: 'Reset'
+			text: 'Reset' ,
+			icon: 'ext/resources/images/btn-icons/reset.png'
 		} , {
 			// Apply Button
 			id: 'btnAddTermApply' ,
-			text: 'Apply'
+			text: 'Apply' ,
+			icon: 'ext/resources/images/btn-icons/apply.png'
 		}]
 	}]
 });

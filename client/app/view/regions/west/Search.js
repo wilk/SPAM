@@ -68,13 +68,17 @@ Ext.define ('SC.view.regions.west.Search' , {
 	dockedItems: [{
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
-//		ui: 'footer' ,
+		ui: 'footer' ,
 		items: ['->' , {
+			// Reset
 			text: 'Reset' ,
-			id: 'resetSearch'
+			id: 'resetSearch' ,
+			icon: 'ext/resources/images/btn-icons/reset.png'
 		} , {
-			text: 'Submit' ,
-			id: 'submitSearch'
+			// Search
+			text: 'Search' ,
+			id: 'submitSearch' ,
+			icon: 'ext/resources/images/btn-icons/search.png'
 		}]
 	}]
 });

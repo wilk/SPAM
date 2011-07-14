@@ -51,6 +51,8 @@ Ext.define ('SC.controller.regions.west.User' , {
 			// Clear store of the last user
 			storeFollowers.removeAll ();
 			
+			storeFollowers.getProxy().url = urlServerLtw + 'followers';
+			
 			// When panel is showed or rendered, load followers store
 			storeFollowers.load (function (records, option, success) {
 				if (! success) {
@@ -86,6 +88,8 @@ Ext.define ('SC.controller.regions.west.User' , {
 			
 			// Clear store of the last user
 			storeServer.removeAll ();
+			
+			storeFollowers.getProxy().url = urlServerLtw + 'servers';
 			
 			// Retrieve federated servers list of the current user
 			storeServer.load (function (records, option, success) {

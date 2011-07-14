@@ -21,6 +21,17 @@ Ext.define ('SC.model.regions.west.Followers' , {
 	proxy: {
 		type: 'rest' ,
 		url: urlServerLtw + 'followers' ,
+		
+		// To avoid url problems with other federated servers
+		filterParam: null ,
+		groupParam: null ,
+		limitParam: null ,
+		noCache: false ,
+		pageParam: null ,
+		simpleSortMode: false ,
+		sortParam: null ,
+		startParam: null ,
+		
 		reader: {
 			type: 'xml' ,
 			root: 'followers' ,

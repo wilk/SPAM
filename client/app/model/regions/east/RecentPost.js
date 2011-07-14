@@ -57,6 +57,17 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 	proxy: {
 		type: 'rest' ,
 		url: urlServerLtw + 'search/10/recent' ,
+		
+		// To avoid url problems with other federated servers
+		filterParam: null ,
+		groupParam: null ,
+		limitParam: null ,
+		noCache: false ,
+		pageParam: null ,
+		simpleSortMode: false ,
+		sortParam: null ,
+		startParam: null ,
+		
 		reader: {
 			type: 'xml' ,
 			root: 'archive' ,

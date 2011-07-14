@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^([^.]+)$ http://ltw1124.web.cs.unibo.it/$1 [P,L]

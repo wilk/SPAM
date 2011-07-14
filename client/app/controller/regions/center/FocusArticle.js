@@ -166,6 +166,12 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 					button.up('window').down('button[tooltip="Follow"]').setVisible (true);
 				}
 				
+				// Clean the store
+				followersStore.removeAll ();
+				
+				// Update proxy url
+				followersStore.getProxy().url = urlServerLtw + 'followers';
+				
 				// Reload followers store to refresh user panel
 				followersStore.load (function (record, option, success) {
 					if (! success) {

@@ -112,6 +112,11 @@ Ext.define ('SC.controller.Send' , {
 			var 	artBody = txtSendArea.getValue () ,
 				win = Ext.getCmp ('windowNewPost');
 			
+			win.setLoading (true);
+			// TODO: check from option with a global var
+			artBody = transformNakedUrl (artBody , 0, artBody.length);
+			win.setLoading (false);
+			
 			// XML Injection for hashtag
 			artBody = htInjection (artBody , this.getComboThesaurusStore ());
 			

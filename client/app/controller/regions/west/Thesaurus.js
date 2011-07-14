@@ -62,17 +62,11 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			// query to retrive all "hasTopConcept" node
 			var top = myRDF.Match (null, null, skosNS + 'hasTopConcept', null);
 			
-			// suspend store content change events
-			//storeThesaurus.suspendEvents ();
-
 			// starting loop to append all "hasTopConcept" node and theirs children
 			for (var i = 0; i < top.length; i++) {
 				var sub = top[i].object;
 				append (sub, root);
 			}
-		
-			// resume store content change events
-			//storeThesaurus.resumeEvents ();
 		});
 		
 		// Append subject to father

@@ -19,6 +19,16 @@ Ext.define ('SC.model.regions.west.user.Server', {
 		type: 'rest' ,
 		url: urlServerLtw + 'servers' ,
 		
+		// To avoid url problems with other federated servers
+		filterParam: null ,
+		groupParam: null ,
+		limitParam: null ,
+		noCache: false ,
+		pageParam: null ,
+		simpleSortMode: false ,
+		sortParam: null ,
+		startParam: null ,
+		
 		// Read user servers list
 		reader: {
 			type: 'xml' ,

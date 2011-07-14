@@ -62,6 +62,12 @@ Ext.define ('SC.controller.FollowerWindow' , {
 				value: 0
 			} ,
 			success: function (response) {
+				// Reset the store
+				storeFollowers.removeAll ();
+				
+				// Update URL
+				storeFollowers.getProxy().url = urlServerLtw + 'followers';
+				
 				// Reload followers store to refresh user panel
 				storeFollowers.load (function (record, option, success) {
 					if (! success) {

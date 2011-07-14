@@ -83,7 +83,15 @@ Ext.define ('SC.controller.Options' , {
 		else {
 			// Get the associated field of serverID (e.g. Spammers -> ltw1102.web.cs.unibo.it)
 			var record = this.getServerStore().findRecord ('serverID' , txtServerUrl.getValue ());
-			urlServerLtw = record.get ('serverURL');
+			
+			// Local requests
+			if (record.get ('serverID') == 'Spammers') {
+				urlServerLtw = record.get ('serverURL');
+			}
+			// Cross requests (http://ltw1102.web.cs.unibo.it/federated-servers/serverID/)
+			else {
+				urlServerLtw = 'http://ltw1102.web.cs.unibo.it/federated-servers/' + record.get ('serverID') + '/';
+			}
 			
 			Ext.Msg.show ({
 				title: 'Success.',

@@ -161,13 +161,13 @@ class PostModel {
                     foreach ($risorsa as $i) {
                         if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://commontag.org/ns#Tag') {
                             $label = $index[$i]['http://commontag.org/ns#label'][0];
-                            $ctagResource = 'http://ltwt1102.web.cs.unibo.it/tags/' . $label;
+                            $ctagResource = 'http://ltw1102.web.cs.unibo.it/tags/' . $label;
                             $customized[$this->postID]['sioc:topic'][] = $ctagResource;
                             $tagList[$ctagResource] = $index[$i];
                         } else if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://www.w3.org/2004/02/skos/core#Concept') {
                             $tagList[$i] = $index[$i];
                         }
-                    } print_r($tagList); die();
+                    }
                     $tesauro = new ThesModel(TRUE);
                     $tesauro->addPost2Thes($tagList, $this->postID);
                 }
@@ -242,7 +242,7 @@ class PostModel {
         switch ($value) {
             case 0:
                 if ($this->neutralLike($p, $serverID, $userID) || $this->neutralDislike($p, $serverID, $userID))
-                $this->saveInPost();
+                    $this->saveInPost();
                 break;
             case 1:
                 //Se c'è tweb:dislike rimuovilo, aggiungi tweb:like, decrementa countDislike e incrementa countLike
@@ -262,10 +262,10 @@ class PostModel {
     public function neutralLike($p, $serverID, $userID) {
         //Rimuovi tweb:like/dislike e decrementa il valore appropriato
         if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
-            if (($key= array_search("spam:/" . $serverID . "/" . $userID,$this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like']))!==false) {
-                    unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'][$key]);
-                    $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]--;
-                    return true;
+            if (($key = array_search("spam:/" . $serverID . "/" . $userID, $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) !== false) {
+                unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'][$key]);
+                $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]--;
+                return true;
             }
             return false;
         }
@@ -274,10 +274,10 @@ class PostModel {
 
     public function neutralDislike($p, $serverID, $userID) {
         if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
- if (($key= array_search("spam:/" . $serverID . "/" . $userID,$this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike']))!==false) {
-                    unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'][$key]);
-                    $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]--;
-                    return true;
+            if (($key = array_search("spam:/" . $serverID . "/" . $userID, $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) !== false) {
+                unset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'][$key]);
+                $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]--;
+                return true;
             }
             return false;
         }
@@ -285,28 +285,40 @@ class PostModel {
     }
 
     public function like($p, $serverID, $userID) {
-        if ((array_search("spam:/" . $serverID . "/" . $userID, $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) === false) {
+        if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
+            if ((array_search("spam:/" . $serverID . "/" . $userID, $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/like'])) === false) {
+                $this->index[$p]['tweb:like'][] = "spam:/" . $serverID . "/" . $userID;
+                $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]++;
+            }
+            else
+                ErrorController::badReq('Hai già espresso la tua opinione');
+        }
+        else {
             $this->index[$p]['tweb:like'][] = "spam:/" . $serverID . "/" . $userID;
             $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0]++;
         }
-        else
-            ErrorController::badReq('Hai già espresso la tua opinione');
     }
 
     public function dislike($p, $serverID, $userID) {
-        if ((array_search("spam:/" . $serverID . "/" . $userID, $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) === false) {
+        if (isset($this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
+            if ((array_search("spam:/" . $serverID . "/" . $userID, $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) === false) {
+                $this->index[$p]['tweb:dislike'][] = "spam:/" . $serverID . "/" . $userID;
+                $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]++;
+            }
+            else
+                ErrorController::badReq('Hai già espresso la tua opinione');
+        }
+        else {
             $this->index[$p]['tweb:dislike'][] = "spam:/" . $serverID . "/" . $userID;
             $this->index[$p]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0]++;
         }
-        else
-            ErrorController::badReq('Hai già espresso la tua opinione');
     }
-    public function stupidity($content){
+
+    public function stupidity($content) {
         $htmlContent = str_get_html($content);
-        $fixedHtml= $htmlContent->find('article',0);
-        $about= $fixedHtml->about;
-        $fixedHtml->innertext="<div about=\"$about\"><div property=\"sioc:content\">$fixedHtml->innertext</div>";
-       
+        $fixedHtml = $htmlContent->find('article', 0);
+        $about = $fixedHtml->about;
+        $fixedHtml->innertext = "<div about=\"$about\"><div property=\"sioc:content\">$fixedHtml->innertext</div>";
     }
 
 }

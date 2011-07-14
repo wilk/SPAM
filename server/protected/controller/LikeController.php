@@ -74,7 +74,7 @@ class LikeController extends DooController {
             if ($url) {
                 $request->connect_to($url . '/propagatelike')
                         ->data(array('serverID1' => "Spammers", 'userID1' => $_SESSION['user']['username'],
-                            'value' => $value,
+                            'value' => $_POST['value'],
                             'serverID2' => $serverID, 'userID2Up' => $userID, 'postID2Up' => $postID))
                         ->post();
                 if (!($request->isSuccess())) {

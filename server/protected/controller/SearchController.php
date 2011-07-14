@@ -64,9 +64,9 @@ class SearchController extends DooController {
             'affinity'
         );
         
-//        $this->load()->helper('DooRestClient');
-//        $this->request = new DooRestClient;
-//        $this->SRV = new SRVModel($this->request);
+        $this->load()->helper('DooRestClient');
+        $this->request = new DooRestClient;
+        $this->SRV = new SRVModel($this->request);
         
         switch ($tipo) {
             case $types[0]: //author
@@ -130,13 +130,11 @@ class SearchController extends DooController {
                     $termine = $this->params['var1'];
                     $tesauro = new ThesModel();//oggetto del tesauro
                     $pathTerm = $tesauro->returnPath($termine);
-
                     $tesauro = new ThesModel(TRUE);//oggetto del tesapost
                     if ($pathTerm !== false)
                         $pIDs = $tesauro->getPostsFromThes($pathTerm, $limite, TRUE);
                     else
                         $pIDs = $tesauro->getPostsByCtag($termine, $limite);
-                    
                     if ($pIDs != 0)
                         $posts = $post->getPostArray($pIDs);
                 } 

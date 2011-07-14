@@ -240,7 +240,6 @@ class ThesModel {
     
     public function getPostsByCtag($term, $limite){
         $pIDs = array();
-        //print_r($this->index); die();
         $label = 'http://ltw1102.web.cs.unibo.it/tags/'.$term;
         if (!isset($this->index[$label]))
             return 0;

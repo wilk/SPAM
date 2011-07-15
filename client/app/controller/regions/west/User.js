@@ -89,7 +89,7 @@ Ext.define ('SC.controller.regions.west.User' , {
 			// Clear store of the last user
 			storeServer.removeAll ();
 			
-			storeFollowers.getProxy().url = urlServerLtw + 'servers';
+			storeServer.getProxy().url = urlServerLtw + 'servers';
 			
 			// Retrieve federated servers list of the current user
 			storeServer.load (function (records, option, success) {
@@ -115,8 +115,8 @@ Ext.define ('SC.controller.regions.west.User' , {
 	// @brief Shows window of the user profile
 	showProfileWindow: function (view, record, item, index, event) {
 		// Retrieve userID and serverID
-		var followerServer = record.get('follower').split('/')[1];
-		var followerName = record.get('follower').split('/')[2];
+		var followerServer = record.get('follower').split('/')[0];
+		var followerName = record.get('follower').split('/')[1];
 		
 		// Shows the profile window
 		var win = Ext.getCmp ('windowFollower');

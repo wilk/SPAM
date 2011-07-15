@@ -19,7 +19,6 @@ Ext.define ('SC.view.regions.east.RecentPost' , {
 	height: 265 ,
 	collapsible: true ,
 	animCollapse: true ,
-	bodyPadding: 2 ,
 	anchor: '100%' ,
 	layout: 'anchor' ,
 	

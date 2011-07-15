@@ -62,6 +62,11 @@ function disposeArticles (store, focus, focusIndex) {
 		// Create a window for any articles
 		store.each (function (record) {
 			var winAff = record.get ('affinity');
+			var strWinAff = winAff.toString ();
+			// Check if affinity value is greater then 99. If is it, keep the last two figures (1099 -> 99)
+			if (strWinAff.length > 2) {
+				winAff = parseInt (strWinAff.slice (strWinAff.length - 2, strWinAff.length));
+			}
 			var x, y;
 			
 			// Don't manage the focus article
@@ -75,8 +80,8 @@ function disposeArticles (store, focus, focusIndex) {
 				var cosX = Math.cos (degree * (Math.PI/180));
 				var sinY = Math.sin (degree * (Math.PI/180));
 			
-				x = oX + (((cntRegion.getWidth () / 2) - ARTICLE_WINDOW_WIDTH) * cosX);
-				y = oY - (((cntRegion.getHeight () / 2) - ARTICLE_WINDOW_HEIGHT) * sinY);
+				x = oX + (((cntRegion.getWidth () / 2) - ARTICLE_WINDOW_WIDTH) * cosX) + winAff;
+				y = oY - (((cntRegion.getHeight () / 2) - ARTICLE_WINDOW_HEIGHT) * sinY) + winAff;
 			
 				// No negative values
 				if (x < 0) x = Math.abs (x);

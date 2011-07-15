@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:tweb="http://vitali.web.cs.unibo.it/TechWeb11/thesaurus">
+
+
+	<rdf:Description rdf:about="tweb"                                  
+                         rdf:type="skos:ConceptScheme">
+          <skos:prefLabel>Tesauro</skos:prefLabel>
+          <skos:hasTopConcept rdf:resource="tweb:/sport" />
+          <skos:hasTopConcept rdf:resource="tweb:/musica" />
+          <skos:hasTopConcept rdf:resource="tweb:/letteratura" />
+          <skos:hasTopConcept rdf:resource="tweb:/informatica" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>sport</skos:prefLabel>
+          <skos:narrower rdf:resource="tweb:/sport/calcio" />
+          <skos:narrower rdf:resource="tweb:/sport/pallavolo" />
+          <skos:narrower rdf:resource="tweb:/sport/nuoto" />
+          <skos:narrower rdf:resource="tweb:/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>musica</skos:prefLabel>
+          <skos:narrower rdf:resource="tweb:/musica/genere" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti" />
+          <skos:narrower rdf:resource="tweb:/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>letteratura</skos:prefLabel>
+          <skos:narrower rdf:resource="tweb:/letteratura/argomento" />
+          <skos:narrower rdf:resource="tweb:/letteratura/ruolo" />
+          <skos:narrower rdf:resource="tweb:/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>informatica</skos:prefLabel>
+          <skos:narrower rdf:resource="tweb:/informatica/dispositivi" />
+          <skos:narrower rdf:resource="tweb:/informatica/sistemi_operativi" />
+          <skos:narrower rdf:resource="tweb:/informatica/software" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/calcio"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>calcio</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport" />
+          <skos:narrower rdf:resource="tweb:/sport/calcio/portiere" />
+          <skos:narrower rdf:resource="tweb:/sport/calcio/difensore" />
+          <skos:narrower rdf:resource="tweb:/sport/calcio/centrocampista" />
+          <skos:narrower rdf:resource="tweb:/sport/calcio/attaccante" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/pallavolo"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>pallavolo</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport" />
+          <skos:narrower rdf:resource="tweb:/sport/pallavolo/schiacciatore" />
+          <skos:narrower rdf:resource="tweb:/sport/pallavolo/palleggiatore" />
+          <skos:narrower rdf:resource="tweb:/sport/pallavolo/allenatore" />
+          <skos:narrower rdf:resource="tweb:/sport/pallavolo/arbitro" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/nuoto"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>nuoto</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport" />
+          <skos:narrower rdf:resource="tweb:/sport/nuoto/stile_libero" />
+          <skos:narrower rdf:resource="tweb:/sport/nuoto/farfalla" />
+          <skos:narrower rdf:resource="tweb:/sport/nuoto/delfino" />
+          <skos:narrower rdf:resource="tweb:/sport/nuoto/dorso" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/tennis"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>tennis</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport" />
+          <skos:narrower rdf:resource="tweb:/sport/tennis/racchetta" />
+          <skos:narrower rdf:resource="tweb:/sport/tennis/pallina" />
+          <skos:narrower rdf:resource="tweb:/sport/tennis/terra_battuta" />
+          <skos:narrower rdf:resource="tweb:/sport/tennis/cemento" />
+          <skos:narrower rdf:resource="tweb:/sport/tennis/erba" />
+          <skos:narrower rdf:resource="tweb:/sport/tennis/sintetico" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/genere"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>genere</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica" />
+          <skos:narrower rdf:resource="tweb:/musica/genere/rock" />
+          <skos:narrower rdf:resource="tweb:/musica/genere/jazz" />
+          <skos:narrower rdf:resource="tweb:/musica/genere/classica" />
+          <skos:narrower rdf:resource="tweb:/musica/genere/pop" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>strumenti</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti/chitarra" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti/tastiera" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti/piano" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti/batteria" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti/sassofono" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti/tromba" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti/sintetizzatore" />
+          <skos:narrower rdf:resource="tweb:/musica/strumenti/basso" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/media"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>media</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica" />
+          <skos:narrower rdf:resource="tweb:/musica/media/cd" />
+          <skos:narrower rdf:resource="tweb:/musica/media/mp3" />
+          <skos:narrower rdf:resource="tweb:/musica/media/vinile" />
+          <skos:narrower rdf:resource="tweb:/musica/media/wav" />
+          <skos:narrower rdf:resource="tweb:/musica/media/streaming" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/argomento"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>argomento</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura" />
+          <skos:narrower rdf:resource="tweb:/letteratura/argomento/fantascienza" />
+          <skos:narrower rdf:resource="tweb:/letteratura/argomento/fantasy" />
+          <skos:narrower rdf:resource="tweb:/letteratura/argomento/storia" />
+          <skos:narrower rdf:resource="tweb:/letteratura/argomento/epistolare" />
+          <skos:narrower rdf:resource="tweb:/letteratura/argomento/filosofia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/ruolo"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>ruolo</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura" />
+          <skos:narrower rdf:resource="tweb:/letteratura/ruolo/autore" />
+          <skos:narrower rdf:resource="tweb:/letteratura/ruolo/editore" />
+          <skos:narrower rdf:resource="tweb:/letteratura/ruolo/lettore" />
+          <skos:narrower rdf:resource="tweb:/letteratura/ruolo/distributore" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/tipologia"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>tipologia</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura" />
+          <skos:narrower rdf:resource="tweb:/letteratura/tipologia/romanzo" />
+          <skos:narrower rdf:resource="tweb:/letteratura/tipologia/racconto" />
+          <skos:narrower rdf:resource="tweb:/letteratura/tipologia/poesia" />
+          <skos:narrower rdf:resource="tweb:/letteratura/tipologia/collana" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/dispositivi"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>dispositivi</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica" />
+          <skos:narrower rdf:resource="tweb:/informatica/dispositivi/fisso" />
+          <skos:narrower rdf:resource="tweb:/informatica/dispositivi/laptop" />
+          <skos:narrower rdf:resource="tweb:/informatica/dispositivi/notebook" />
+          <skos:narrower rdf:resource="tweb:/informatica/dispositivi/netbook" />
+          <skos:narrower rdf:resource="tweb:/informatica/dispositivi/smartphone" />
+          <skos:narrower rdf:resource="tweb:/informatica/dispositivi/tablet" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/sistemi_operativi"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>sistemi_operativi</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica" />
+          <skos:narrower rdf:resource="tweb:/informatica/sistemi_operativi/linux" />
+          <skos:narrower rdf:resource="tweb:/informatica/sistemi_operativi/osx" />
+          <skos:narrower rdf:resource="tweb:/informatica/sistemi_operativi/windows" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/software"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>software</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica" />
+          <skos:narrower rdf:resource="tweb:/informatica/software/grafica" />
+          <skos:narrower rdf:resource="tweb:/informatica/software/internet" />
+          <skos:narrower rdf:resource="tweb:/informatica/software/programmazione" />
+          <skos:narrower rdf:resource="tweb:/informatica/software/giochi" />
+          <skos:narrower rdf:resource="tweb:/informatica/software/audio_video" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>hardware</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware/processore" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware/scheda_madre" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware/scheda_video" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware/scheda_audio" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware/scheda_rete" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware/harddisk" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware/ram" />
+          <skos:narrower rdf:resource="tweb:/informatica/hardware/monitor" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>linguaggi</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/ansi_c" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/cplusplus" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/csharp" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/python" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/bash" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/xml" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/html" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/perl" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/ruby" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/php" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/javascript" />
+          <skos:narrower rdf:resource="tweb:/informatica/linguaggi/java" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/calcio/portiere"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>portiere</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/calcio" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/calcio/difensore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>difensore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/calcio" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/calcio/centrocampista"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>centrocampista</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/calcio" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/calcio/attaccante"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>attaccante</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/calcio" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/pallavolo/schiacciatore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>schiacciatore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/pallavolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/pallavolo/palleggiatore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>palleggiatore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/pallavolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/pallavolo/allenatore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>allenatore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/pallavolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/pallavolo/arbitro"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>arbitro</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/pallavolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/nuoto/stile_libero"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>stile_libero</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/nuoto" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/nuoto/farfalla"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>farfalla</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/nuoto" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/nuoto/delfino"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>delfino</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/nuoto" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/nuoto/dorso"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>dorso</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/nuoto" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/tennis/racchetta"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>racchetta</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/tennis/pallina"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>pallina</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/tennis/terra_battuta"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>terra_battuta</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/tennis/cemento"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>cemento</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/tennis/erba"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>erba</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/sport/tennis/sintetico"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>sintetico</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/sport/tennis" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/genere/rock"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>rock</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/genere/jazz"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>jazz</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/genere/classica"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>classica</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/genere/pop"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>pop</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/genere" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti/chitarra"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>chitarra</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti/tastiera"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>tastiera</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti/piano"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>piano</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti/batteria"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>batteria</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti/sassofono"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>sassofono</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti/tromba"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>tromba</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti/sintetizzatore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>sintetizzatore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/strumenti/basso"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>basso</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/strumenti" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/media/cd"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>cd</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/media/mp3"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>mp3</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/media/vinile"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>vinile</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/media/wav"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>wav</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/musica/media/streaming"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>streaming</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/musica/media" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/argomento/fantascienza"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>fantascienza</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/argomento" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/argomento/fantasy"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>fantasy</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/argomento" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/argomento/storia"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>storia</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/argomento" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/argomento/epistolare"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>epistolare</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/argomento" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/argomento/filosofia"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>filosofia</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/argomento" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/ruolo/autore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>autore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/ruolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/ruolo/editore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>editore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/ruolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/ruolo/lettore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>lettore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/ruolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/ruolo/distributore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>distributtore</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/ruolo" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/tipologia/romanzo"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>romanzo</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/tipologia/racconto"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>racconto</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/tipologia/poesia"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>poesia</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/letteratura/tipologia/collana"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>collana</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/letteratura/tipologia" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/dispositivi/fisso"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>fisso</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/dispositivi/laptop"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>laptop</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/dispositivi/notebook"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>notebook</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/dispositivi/netbook"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>netbook</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/dispositivi/smartphone"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>smartphone</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/dispositivi/tablet"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>tablet</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/dispositivi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/sistemi_operativi/linux"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>linux</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/sistemi_operativi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/sistemi_operativi/osx"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>osx</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/sistemi_operativi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/sistemi_operativi/windows"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>windows</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/sistemi_operativi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/software/grafica"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>grafica</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/software/internet"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>internet</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/software/programmazione"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>programmazione</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/software/giochi"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>giochi</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/software/audio_video"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>audio_video</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/software" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware/processore"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>processo</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware/scheda_madre"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>scheda_madre</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware/scheda_video"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>scheda_video</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware/scheda_audio"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>scheda_audio</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware/scheda_rete"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>scheda_rete</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware/harddisk"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>harddisk</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware/ram"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>ram</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/hardware/monitor"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>monitor</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/hardware" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/ansi_c"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>ansi_c</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/cplusplus"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>cplusplus</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/csharp"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>csharp</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/python"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>python</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/bash"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>bash</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/xml"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>xml</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/html"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>html</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/perl"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>perl</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/ruby"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>ruby</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/php"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>php</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/javascript"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>javascript</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+        <rdf:Description rdf:about="tweb:/informatica/linguaggi/java"
+                         rdf:type="skos:Concept">
+          <skos:inScheme rdf:resource="tweb" />
+          <skos:prefLabel>java</skos:prefLabel>
+          <skos:broader rdf:resource="tweb:/informatica/linguaggi" />
+        </rdf:Description>
+
+</rdf:RDF>

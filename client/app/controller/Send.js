@@ -113,6 +113,8 @@ Ext.define ('SC.controller.Send' , {
 				win = Ext.getCmp ('windowNewPost');
 			
 			win.setLoading (true);
+			// Escapes every '<'
+			//artBody = artBody.replace ('<' , '&lt;');
 			// TODO: check from option with a global var
 			artBody = transformNakedUrl (artBody , 0, artBody.length);
 			win.setLoading (false);

@@ -43,11 +43,19 @@ Ext.define ('SC.view.regions.west.User' , {
 		store: 'regions.west.Followers' ,
 		autoScroll: true ,
 //		forceFit: true ,
-		layout: 'column' ,
+//		layout: 'column' ,
+		layout: 'anchor' ,
+//		anchor: '100%' ,
 		border: 0 ,
 		columns: [{
 			header: 'Your Friends' ,
-			dataIndex: 'follower' ,
-		}]
+			dataIndex: 'follower'
+		//	columnWidth: '2/3'
+		} 
+		//, {
+		//	header: 'WTF?'
+		//	columnWidth: '1/3'
+		//}
+		]
 	}]
 });

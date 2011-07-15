@@ -40,6 +40,9 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		var storeThesaurus = this.getRegionsWestThesaurusStore ();
 		var storeComboThesaurus = this.getComboThesaurusStore ();
 		
+		// Choose which thesaurus to load (shared or extended)
+		var urlThesaurus = (checkIfUserLogged () ? urlServerLtw + 'thesaurus' : 'app/data/tesauro.xml');
+		
 		// set namespaces
 		skosNS = 'http://www.w3.org/2004/02/skos/core#';
 		twebNS = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
@@ -47,7 +50,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 	
 		// function and constructor from parse.js library
 		myRDF = new RDF ();
-		myRDF.getRDFURL (urlServerLtw + 'thesaurus', function () {
+		myRDF.getRDFURL (urlThesaurus, function () {
 			// get root node to append all chileds
 			var root = storeThesaurus.getRootNode ();
 			

@@ -40,13 +40,13 @@ class LikeController extends DooController {
      */
     public function setLike() {
         //Controllo che tutte le variabili post siano state inviate
-        if (!(isset($_POST['serverID'])))
+        if (!(isset($_POST['serverID']))|| $_POST['serverID']=="")
             return ErrorController::badReq('Il serverID deve essere specificato!!');
-        if (!(isset($_POST['userID'])))
+        if (!(isset($_POST['userID']))|| $_POST['userID']=="")
             return ErrorController::badReq('Il userID deve essere specificato!!');
-        if (!(isset($_POST['postID'])))
+        if (!(isset($_POST['postID']))|| $_POST['postID']=="")
             return ErrorController::badReq('Il postID deve essere specificato!!');
-        if (!(isset($_POST['value'])))
+        if (!(isset($_POST['value']))|| $_POST['value']=="")
             return ErrorController::badReq('Il value deve essere specificato!!');
         $serverID = $_POST['serverID'];
         $userID = $_POST['userID'];
@@ -92,17 +92,17 @@ class LikeController extends DooController {
      * @return Status code
      */
     public function propagateLike() {
-        if (!(isset($_POST['serverID1'])))
+        if (!(isset($_POST['serverID1']))|| $_POST['serverID1']=="")
             return ErrorController::badReq('Il serverID1 deve essere specificato!!');
-        if (!(isset($_POST['userID1'])))
+        if (!(isset($_POST['userID1']))|| $_POST['userID1']=="")
             return ErrorController::badReq('Il userID1 deve essere specificato!!');
-        if (!(isset($_POST['serverID2'])))
+        if (!(isset($_POST['serverID2']))|| $_POST['serverID2']=="")
             return ErrorController::badReq('Il serverID2 deve essere specificato!!');
-        if (!(isset($_POST['userID2'])))
+        if (!(isset($_POST['userID2']))|| $_POST['userID2']=="")
             return ErrorController::badReq('Il userID2 deve essere specificato!!');
-        if (!(isset($_POST['postID2'])))
+        if (!(isset($_POST['postID2']))|| $_POST['postID2']=="")
             return ErrorController::badReq('Il postID2 deve essere specificato!!');
-        if (!(isset($_POST['value'])))
+        if (!(isset($_POST['value']))|| $_POST['value']=="")
             return ErrorController::badReq('Il value deve essere specificato!!');
         if ($_POST['serverID2'] != 'Spammers')
             return ErrorController::badReq('Il serverID non corrisponde. Non posso propagare il setLike!');

@@ -238,7 +238,7 @@ class SearchController extends DooController {
                     } else 
                         return 500;
                 }
-                $this->calcWeigth();
+                //$this->calcWeight();
                 $this->sortPost($limite);
                 $this->displayPosts();
                 break;
@@ -286,6 +286,27 @@ class SearchController extends DooController {
         }
         $servers = $a;
         return;
+    }
+    
+    private function calcWeight($articolo, $term){
+        $arr = array();
+        if (!is_string($articolo))
+            $articolo = $articolo[key($articolo)]['http://rdfs.org/sioc/ns#content'];
+        $html = str_get_html($articolo);
+        foreach ($html->find("span[tipeof=skos:Concept]") as $tag)
+            array_push($arr, $a[$tag->about]);
+        foreach($arr as $tag => $peso){
+            $termtmp = $term;
+            while(TRUE){
+                $term2search = '/'.implode('/', $termtmp);
+                if(stristr($tag, $term2search)){
+                    $avanzati = sizeof(explode('/', substr($tag, 0, strlen($term2search))))-1;
+                    $totali = sizeof($termtmp);
+                    $peso = 1-($none/$lenght)-($avanzati/$totali);
+                    //TODO
+                }
+            }
+        }
     }
     
     private function sortPost($limite){

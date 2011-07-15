@@ -107,7 +107,7 @@ class UserModel {
             $a = array();
             foreach ($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows'] as $v) {
                 //TOFIX: rimuovere il primo / della stringa
-                array_push($a, (strstr($v, '/')));
+                array_push($a, substr((strstr($v, '/')),1));
             }
             return $a;
         }

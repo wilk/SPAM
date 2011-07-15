@@ -114,6 +114,9 @@ Ext.define ('SC.controller.regions.North' , {
 						
 								// Show button to add new terms to the thesaurus
 								Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
+								
+								// Request extended thesaurus
+								Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
 							}
 							else {
 								Ext.Msg.show ({
@@ -179,6 +182,9 @@ Ext.define ('SC.controller.regions.North' , {
 					
 					// Hide button to add new terms to the thesaurus
 					Ext.getCmp('btnThesaurusAddTerm').setVisible (false);
+					
+					// Request shared thesaurus
+					Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({

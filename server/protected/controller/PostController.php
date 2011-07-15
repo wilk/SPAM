@@ -37,7 +37,7 @@ class PostController extends DooController {
     /*
      * Crea un nuovo post aggiungendolo al file data/posts.rdf e aggiunge un riferimento al post
      * nel file data/users.rdf nella descrizione dell'utente.
-     * Il contenuto del post può essere passato o come variabile POST o tramite variabile interna.
+     * Il contenuto del post puÃ² essere passato o come variabile POST o tramite variabile interna.
      */
 
     public function createPost($content = null) {
@@ -47,6 +47,10 @@ class PostController extends DooController {
         if ($content == null) {
             if (isset($_POST['article'])) {
                 $mycontent = $_POST['article'];
+                if ($mycontent=="")
+                    ErrorController::badReq ("Se non hai niente da scrivere non inviare il post!!");
+                if (strpos($mycontent, "<[CDATA["))
+                    ErrorController::badReq ("Non sabotarci il lavoro. Leva il CDATA!");
                 //Arrichisco article con i ns e il typeof
                 //La funzione è brutta ma veloce
                 $replace = "<article\n\rxmlns:sioc=\"http://rdfs.org/sioc/ns#\"\n\rxmlns:ctag=\"http://commontag.org/ns#\"\n\rxmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"\n\rtypeof=\"sioc:Post\">";
@@ -119,7 +123,7 @@ class PostController extends DooController {
             }else
                 return ErrorController::notFound('Questo post non esiste!!');
         } else if ($server == 'Spammers' && $this->acceptType() == 'rdf') {
-            $url = $post . '/rdf';
+            $url = "http://ltw1102.web.cs.unibo.it/post/Spammers/$user/$post/rdf";
             header('Status: 303');
             header("Location: " . $url);
         } else {
@@ -142,9 +146,9 @@ class PostController extends DooController {
 
     /*
      * Copia il contenuto del post richiesto e lo salva come post ex-novo sfruttando la funzione CreatePost
-     * Nel caso il post richiesto sia sul server interno controlla che esista, se invece il post è su un server esterno
+     * Nel caso il post richiesto sia sul server interno controlla che esista, se invece il post Ã¨ su un server esterno
      * viene inoltrata la richesta per ricevere il post.
-     * Una volta creato, il post viene arricchito con sintassi rdfa per indicare che è un respam.
+     * Una volta creato, il post viene arricchito con sintassi rdfa per indicare che Ã¨ un respam.
      */
 
     public function createRespam() {
@@ -206,8 +210,8 @@ class PostController extends DooController {
 
     /*
      * Genera un nuovo post di risposta collegato all'originale.
-     * Una volta generato il post lo si arrichisce con rdfa per indicare che è una risposta all'originale.
-     * Inoltra la richiesta di arricchire il post originale con rdfa per indicare che è presente una risposta.
+     * Una volta generato il post lo si arrichisce con rdfa per indicare che Ã¨ una risposta all'originale.
+     * Inoltra la richiesta di arricchire il post originale con rdfa per indicare che Ã¨ presente una risposta.
      */
 
     public function createReply() {
@@ -231,7 +235,7 @@ class PostController extends DooController {
                 list($tag, $s, $u, $p) = split('/', $risorsa);
                 $this->articolo->addHasReply($resource);
             } else
-                return ErrorController::notFound('Il post non esiste e non è possibile creare una risposta');
+                return ErrorController::notFound('Il post non esiste e non Ã¨ possibile creare una risposta');
         }else {
             $this->createPost();
             $risorsa = $this->articolo->addReplyOf($resource);

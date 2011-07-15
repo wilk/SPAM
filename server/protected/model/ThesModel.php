@@ -9,6 +9,7 @@ class ThesModel {
 
     //private $broaderIsVitali = true;
     private $index;
+    static $ltw1102 = 'http://ltw1102.web.cs.unibo.it/';
     public $srvLabel;
     private $termBroader;
     private static $pathTesauro = 'data/tesauro.rdf';
@@ -33,7 +34,11 @@ class ThesModel {
     }
 
     public function getTesauro() {
-        $ser = ARC2::getRDFXMLSerializer();
+        $ns = array(
+            'skos' => 'http://www.w3.org/2004/02/skos/core#'
+        );
+        $conf = array('ns' => $ns);
+        $ser = ARC2::getRDFXMLSerializer($conf);
         $RDF = $ser->getSerializedIndex($this->index);
         return($RDF);
     }
@@ -170,7 +175,8 @@ class ThesModel {
     private function writeInTesauro() {
         $ns = array(
             'skos' => 'http://www.w3.org/2004/02/skos/core#',
-            'sioc' => 'http://rdfs.org/sioc/ns#'
+            'sioc' => 'http://rdfs.org/sioc/ns#',
+            'ctag' => 'http://commontag.org/ns#'
         );
         $conf = array('ns' => $ns);
         $ser = ARC2::getRDFXMLSerializer($conf);
@@ -209,35 +215,86 @@ class ThesModel {
     }
     
     public function getPostsFromThes($path, $limite, $specific = FALSE){
-        $pIDs = array();
-        //print_r($this->index); die();
-        for ($i=sizeof($path);$i>0;$i--){
-            if ($limite == 0)
-                break;
-            $mandrakata = 'http://ltw1102.web.cs.unibo.it/'.implode('/', array_slice($path, 0, $i));
-            //echo $mandrakata; die();
-            if (isset($this->index[$mandrakata])){
-                //qui se è settato il termine, mi aspetto che abbia dei sioc:Post associati
-                $nposts = sizeof($this->index[$mandrakata][self::$siocPost]);
-                if ($limite != 'all' && 
-                        $nposts>$limite){
-                    $limite--;
-                    $posts = array_slice($this->index[$mandrakata][self::$siocPost], 0, $limite);
-                } else
-                    $posts = $this->index[$mandrakata][self::$siocPost];
-                foreach ($posts as $id)
-                    array_push($pIDs, $id);
-                
-                if ($limite != 'all' && 
-                        $nposts>$limite)
-                    break;
-            }
-            if ($specific === TRUE)
-                break;
+        $posts = array();
+        $d = array();//array delle distanze
+        $p = array();
+        $label = self::$ltw1102.implode('/', $path);
+        
+        if ($specific && !isset($this->index[$label]))
+                return 0;
+        elseif (isset($this->index[$label])) {
+            $posts = array_reverse ($this->index[$label][self::$siocPost]);
+            if ($limite != 'all' && 
+                    count($posts) > $limite)
+                return array_slice ($posts, 0, $limite);
+            if ($specific)
+                return $posts;
         }
-        return $pIDs;
+        //qui ricerco i correlati
+        if ($limite != 'all')
+            $limite -= sizeof($posts);
+        unset ($this->index[$label]);
+        $keys = array_keys($this->index);
+        //print_r($keys); die();
+        $n = strlen($label);
+        foreach ($keys as $k){
+            if (stristr($k, $label)){
+                $list = explode('/', substr($k, $n));
+                unset ($list[0]);
+                $i = sizeof($list);
+                array_push($d, $i);
+                if (!isset($p[$i]))
+                    $p[$i] = array();
+                array_push($p[$i], $k);
+            }
+        }
+        asort($d);//ordino il mio array di distanze
+        foreach ($d as $indice) {
+            foreach ($p[$indice] as $tag) {
+                $temp = array_reverse($this->index[$tag][self::$siocPost]);
+                if ($limite != 'all' && 
+                        sizeof($temp) > $limite)
+                    return array_merge($posts, array_slice($temp, 0, $limite));
+                else {
+                    $posts = array_merge ($posts, $temp);
+                    if ($limite != 'all')
+                        $limite -= sizeof($temp);
+                }
+            }
+        }//print_r($posts); die();
+        return $posts;
     }
     
+//    public function getPostsFromThes($path, $limite, $specific = FALSE){
+//        $pIDs = array();
+//        //print_r($this->index); die();
+//        for ($i=sizeof($path);$i>0;$i--){
+//            if ($limite == 0)
+//                break;
+//            //$mandrakata = .implode('/', array_slice($path, 0, $i));
+//            //echo $mandrakata; die();
+//            if (isset($this->index[$mandrakata])){
+//                //qui se è settato il termine, mi aspetto che abbia dei sioc:Post associati
+//                $nposts = sizeof($this->index[$mandrakata][self::$siocPost]);
+//                if ($limite != 'all' && 
+//                        $nposts>$limite){
+//                    $limite--;
+//                    $posts = array_slice($this->index[$mandrakata][self::$siocPost], 0, $limite);
+//                } else
+//                    $posts = $this->index[$mandrakata][self::$siocPost];
+//                foreach ($posts as $id)
+//                    array_push($pIDs, $id);
+//                
+//                if ($limite != 'all' && 
+//                        $nposts>$limite)
+//                    break;
+//            }
+//            if ($specific === TRUE)
+//                break;
+//        }
+//        return $pIDs;
+//    }
+//    
     public function getPostsByCtag($term, $limite){
         $pIDs = array();
         $label = 'http://ltw1102.web.cs.unibo.it/tags/'.$term;

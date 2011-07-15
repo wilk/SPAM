@@ -12,9 +12,6 @@
 // @param focus: model of focus article
 // @param focusIndex: index focus article model
 function requestSearchArticles (store, focus, focusIndex) {
-	// Clean the store
-	store.removeAll ();
-	
 	// Setup loading mask to the center region
 	Ext.getCmp('centReg').setLoading (true);
 
@@ -25,6 +22,9 @@ function requestSearchArticles (store, focus, focusIndex) {
 		url: store.getProxy().url,
 		dataType: "xml",
 		success: function (xml) {
+			// Clean the store
+			store.removeAll ();
+			
 			// TODO: check if xml is empty
 			// Check every posts
 			$(xml).find('post').each (function () {
@@ -50,6 +50,26 @@ function requestSearchArticles (store, focus, focusIndex) {
 					else if ($(this).attr ('rev') == 'tweb:dislike') {
 						ifLikeDislike = -1;
 					}
+					
+					// Find media resources (video/audio/image)
+					switch ($(this).attr ('resource')) {
+						case 'video':
+							var srcRes = $(this).attr ('src');
+//							var tagHtml = '<iframe width="425" height="349" src="'+ srcRes +'" frameborder="0" allowfullscreen></iframe>';
+							var tagHtml = '<object width="425" height="349" src="'+ srcRes +'"></iframe>';
+							$(this).text (tagHtml);
+							break;
+						case 'audio':
+							var srcRes = $(this).attr ('src');
+							var tagHtml = '<iframe width="200" height="100" src="'+ srcRes +'" frameborder="0" allowfullscreen></iframe>';
+							$(this).text (tagHtml);
+							break;
+						case 'image':
+							var srcRes = $(this).attr ('src');
+							var tagHtml = '<img src="' + srcRes + '" />';
+							$(this).text (tagHtml);
+							break;
+					}
 				});
 				
 				// Add article to the store
@@ -57,6 +77,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 					affinity: parseInt ($(this).find('affinity').text ()) ,
 					// TODO: bug with reading tags
 					article: $(this).find('article').text () ,
+//					article: $(this).find('article').html () ,
 					resource: $(this).find('article').attr ('resource') ,
 					about: $(this).find('article').attr ('about') ,
 					like: numLike ,
@@ -119,9 +140,6 @@ function checkIfUserLogged () {
 // @brief Retrieve 10 recent articles
 // @param store: update the recent articles store
 function retrieveRecentArticles (store) {
-	// Clean the store
-	store.removeAll ();
-	
 	// Set URL dinamically
 	store.getProxy().url = urlServerLtw + 'search/10/recent';
 	
@@ -132,6 +150,9 @@ function retrieveRecentArticles (store) {
 		url: store.getProxy().url,
 		dataType: "xml",
 		success: function (xml) {
+			// Clean the store
+			store.removeAll ();
+			
 			// Check every posts
 			$(xml).find('post').each (function () {
 				var numLike, numDislike;
@@ -156,13 +177,26 @@ function retrieveRecentArticles (store) {
 					else if ($(this).attr ('rev') == 'tweb:dislike') {
 						ifLikeDislike = -1;
 					}
+					
+//					switch ($(this).attr ('resource')) {
+//						case 'video':
+//							$(this).replaceWith ('<iframe width="425" height="349" src="'+ $(this).attr ('src') +'" frameborder="0" allowfullscreen></iframe>');
+//							break;
+//						case 'audio':
+//							$(this).replaceWith ('<iframe width="200" height="100" src="'+ $(this).attr ('src') +'" frameborder="0" allowfullscreen></iframe>');
+//							break;
+//						case 'image':
+//							$(this).replaceWith ('<img src="'+ $(this).attr ('src') +'" />');
+//							break;
+//					}
 				});
-			
+				
 				// Add article to the store
 				store.add ({
 					affinity: parseInt ($(this).find('affinity').text ()) ,
 					// TODO: bug with reading tags
 					article: $(this).find('article').text () ,
+//					article: $(this).find('article').html () ,
 					resource: $(this).find('article').attr ('resource') ,
 					about: $(this).find('article').attr ('about') ,
 					like: numLike ,

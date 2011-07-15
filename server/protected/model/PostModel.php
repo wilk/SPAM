@@ -167,7 +167,7 @@ class PostModel {
                         } else if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://www.w3.org/2004/02/skos/core#Concept') {
                             $tagList[$i] = $index[$i];
                         }
-                    }
+                    } //print_r($tagList); die();
                     $tesauro = new ThesModel(TRUE);
                     $tesauro->addPost2Thes($tagList, $this->postID);
                 }
@@ -229,7 +229,7 @@ class PostModel {
                 return array();
             $this->index = array_reverse($this->index, TRUE);
             if ($lim != 'all' &&
-                  is_numeric($lim) && 
+                    is_numeric($lim) &&
                     sizeof($this->index) > $lim)
                 $this->index = array_slice($this->index, 0, $lim, TRUE);
             foreach ($this->index as $k => $post) {

@@ -25,6 +25,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		var followersStore;
 		var isFollowed;
 		var focusUser;
+		var focusWindow;
 		
 		this.control ({
 			// Window render
@@ -78,6 +79,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			val = 0;
 		}
 		
+		// Setup loading mask
+		focusWindow.setLoading (true);
+		
 		// Ajax request
 		Ext.Ajax.request ({
 			url: urlServerLtw + 'setlike' ,
@@ -129,6 +133,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				
 				// Update likeOrDislike with new value to avoid another GET of article
 				likeOrDislike = parseInt (val);
+				
+				// Unset loading mask
+				focusWindow.setLoading (false);
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
@@ -137,6 +144,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 					buttons: Ext.Msg.OK,
 					icon: Ext.Msg.ERROR
 				});
+				
+				// Unset loading mask
+				focusWindow.setLoading (false);
 			}
 		});
 	} ,
@@ -144,6 +154,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// @brief Set Follow
 	setFollow: function (button, event, val) {
 		var postData = focusModel.get ('resource');
+		
+		// Setup loading mask
+		focusWindow.setLoading (true);
 		
 		// Ajax request
 		Ext.Ajax.request ({
@@ -194,6 +207,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 						followersStore.sort ('follower' , 'ASC');
 					}
 				});
+				
+				// Unset loading mask
+				focusWindow.setLoading (false);
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
@@ -202,6 +218,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 					buttons: Ext.Msg.OK,
 					icon: Ext.Msg.ERROR
 				});
+				
+				// Unset loading mask
+				focusWindow.setLoading (false);
 			}
 		});
 	} ,
@@ -231,6 +250,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	respam: function (button, event) {
 		var postData = focusModel.get ('about');
 		
+		// Setup loading mask
+		focusWindow.setLoading (true);
+		
 		// Ajax request
 		Ext.Ajax.request ({
 			url: urlServerLtw + 'respam' ,
@@ -247,6 +269,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 					buttons: Ext.Msg.OK,
 					icon: Ext.Msg.INFO
 				});
+				
+				// Unset loading mask
+				focusWindow.setLoading (false);
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
@@ -255,12 +280,16 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 					buttons: Ext.Msg.OK,
 					icon: Ext.Msg.ERROR
 				});
+				
+				// Unset loading mask
+				focusWindow.setLoading (false);
 			}
 		});
 	} ,
 	
 	// @brief Initialize vars and window layout, even geolocation
 	initFocusWindow: function (win) {
+		focusWindow = win;
 		// Getting model associated with
 		indexModel = win.down('button[tooltip="focusModelIndex"]').getText ();
 		focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];

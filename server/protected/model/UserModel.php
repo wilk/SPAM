@@ -106,6 +106,7 @@ class UserModel {
         if (isset($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows'])) {
             $a = array();
             foreach ($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#follows'] as $v) {
+                //TOFIX: rimuovere il primo / della stringa
                 array_push($a, (strstr($v, '/')));
             }
             return $a;

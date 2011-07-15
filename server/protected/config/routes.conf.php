@@ -96,7 +96,9 @@ $route['*']['/logout'] = array('ErrorController', 'notSupport');
 $route['post']['/post'] = array('PostController', 'createPost');
 //Ricevi post
 $route['get']['/post/:serverID/:userID/:postID'] = array('PostController', 'sendPost');
+$route['head']['/post/:serverID/:userID/:postID'] = array('PostController', 'sendPost');
 $route['get']['/post/:serverID/:userID/:postID/:type'] = array('PostController', 'sendPost');
+$route['head']['/post/:serverID/:userID/:postID/:type'] = array('PostController', 'sendPost');
 $route['get']['/postserver/:userID/:postID'] = array('PostController', 'sendPost');
 //Path con post metodo non supportato
 $route['*']['/post'] = array('ErrorController', 'notSupport');

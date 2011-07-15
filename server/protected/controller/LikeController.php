@@ -51,7 +51,7 @@ class LikeController extends DooController {
         $serverID = $_POST['serverID'];
         $userID = $_POST['userID'];
         $postID = $_POST['postID'];
-        $value = intval($_POST['value']);
+        $value = intval(urldecode($_POST['value']));
         if ($value != 1 && $value != 0 && $value != -1)
             return ErrorController::badReq('Il value può essere:-1 || 0 || 1. Altri valori non sono ammessi!!');
         if ($serverID == "Spammers") {

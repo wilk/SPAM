@@ -4,8 +4,8 @@ include_once 'protected/model/ThesModel.php';
 include_once 'protected/controller/ErrorController.php';
 
 class TesauroController extends DooController {
-    
-       public function beforeRun($resource, $action) {
+
+    public function beforeRun($resource, $action) {
         session_name("ltwlogin");
         session_start();
         if (!(isset($_SESSION['user']['username']))) {
@@ -29,22 +29,22 @@ class TesauroController extends DooController {
     }
 
     public function addTerm() {
-        if (!(isset ($_POST['parentterm']))||!(isset ($_POST['term']))){
-            return ErrorController::badReq("Sia parentterm che term devono essere specificati");
+        if (!(isset($_POST['parentterm'])) || !(isset($_POST['term'])) || $_POST['parentterm'] == "" || $_POST['term'] == "") {
+            return ErrorController::badReq("Sia parentterm che term devono essere specificati e non nulli, se non ti sta bene vai altrove!!");
         }
-        $parent= strtolower($_POST['parentterm']);
-        $term=strtolower(str_replace(" ", "_", $_POST['term']));
-        if ($parent==$term){
+        $parent = strtolower($_POST['parentterm']);
+        $term = strtolower(str_replace(" ", "_", $_POST['term']));
+        if ($parent == $term) {
             return ErrorController::badReq("I termini non possono essere uguali");
         }
         $thes = new ThesModel();
         $parentPath = $thes->returnPath($parent);
         if ($parentPath == false)
             return ErrorController::badReq("Il parentterm non esiste nel tesauro");
-        if (count($parentPath)<3)
-                return ErrorController::badReq("Il parenterm non è una foglia del tesauro condiviso");
+        if (count($parentPath) < 3)
+            return ErrorController::badReq("Il parenterm non è una foglia del tesauro condiviso");
         $termPath = $thes->returnPath($term);
-        if ($termPath!= false){
+        if ($termPath != false) {
             return ErrorController::badReq("Il term esiste già! Non è possibile aggiungere termini con lo stesso label!");
         }
         if (!$thes->extendThes(implode('/', $parentPath), $term))
@@ -54,6 +54,7 @@ class TesauroController extends DooController {
     /*
      * Ritorna il tesauro condiviso più l'esteso in formato rdf/xml
      */
+
     public function sendThesaurus() {
         $thes = new ThesModel();
         $tesauro = $thes->getTesauro();

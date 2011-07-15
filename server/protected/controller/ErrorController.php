@@ -27,7 +27,7 @@ Also check out the links page for a list of URLs available in this demo.</p>';
     public static function notFound($msg) {
         header('Status: 404');
         header('HTTP/1.1 404');
-        die ($msg);
+        die (htmlentities($msg, null, 'utf-8'));
     }
 
     public function notSupport() {

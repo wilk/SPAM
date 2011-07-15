@@ -198,7 +198,7 @@ class SearchController extends DooController {
                     ErrorController::notFound ("Il termine non è presente nel tesauro.\n");
                 
                 $tesauro = new ThesModel(TRUE);//oggetto del tesapost
-                $pIDs = $tesauro->getPostsFromThes($pathTerm, $limite, TRUE);
+                $pIDs = $tesauro->getPostsFromThes($pathTerm, $limite);
                             
                 $posts; 
                 $post = new PostModel();
@@ -209,7 +209,7 @@ class SearchController extends DooController {
                     foreach ($posts as $post){
                         $nodo['articolo'] = $post;
                         $nodo['peso'] = strtotime($post[key($post)]['http://purl.org/dc/terms/created'][0]);
-                        //print_r($nodo); die();
+                        print_r($nodo); die();
                         array_push($this->listaPost, $nodo);
                         array_push($this->toMerge, $nodo['peso']);
                     }
@@ -240,7 +240,7 @@ class SearchController extends DooController {
                     } else 
                         return 500;
                 }
-
+                $this->calcWeigth();
                 $this->sortPost($limite);
                 $this->displayPosts();
                 break;

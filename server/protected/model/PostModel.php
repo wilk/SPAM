@@ -161,13 +161,13 @@ class PostModel {
                     foreach ($risorsa as $i) {
                         if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://commontag.org/ns#Tag') {
                             $label = $index[$i]['http://commontag.org/ns#label'][0];
-                            $ctagResource = 'http://ltwt1102.web.cs.unibo.it/tags/' . $label;
+                            $ctagResource = 'http://ltw1102.web.cs.unibo.it/tags/' . $label;
                             $customized[$this->postID]['sioc:topic'][] = $ctagResource;
                             $tagList[$ctagResource] = $index[$i];
                         } else if ($index[$i]['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://www.w3.org/2004/02/skos/core#Concept') {
                             $tagList[$i] = $index[$i];
                         }
-                    } print_r($tagList); die();
+                    } //print_r($tagList); die();
                     $tesauro = new ThesModel(TRUE);
                     $tesauro->addPost2Thes($tagList, $this->postID);
                 }

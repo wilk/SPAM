@@ -4,6 +4,7 @@ include_once 'protected/module/arc/ARC2.php';
 
 class PostView {
     /* prende in input il post come array e lo ritorna in html+rdfa */
+
     //TODO: Aggiungere stampa geotag
 
     public static function renderPost($p, $myUser=null) {
@@ -76,7 +77,7 @@ class PostView {
             strstr($key, '/'),
             $authorPost,
             $p[$key]['http://purl.org/dc/terms/created'][0],
-            html_entity_decode($p[$key]['http://rdfs.org/sioc/ns#content'][0],ENT_QUOTES, 'UTF-8'),
+            html_entity_decode($p[$key]['http://rdfs.org/sioc/ns#content'][0], ENT_COMPAT, 'UTF-8'),
             $userPref,
             "<span property=\"tweb:countLike\" content=\"" . $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countLike'][0] . "\" />",
             "<span property=\"tweb:countDislike\" content=\"" . $p[$key]['http://vitali.web.cs.unibo.it/vocabulary/countDislike'][0] . "\" />",
@@ -108,19 +109,19 @@ class PostView {
         $dom = new DOMDocument('1.0', 'utf-8');
         $archive = $dom->appendChild($dom->createElement('archive'));
         /* $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><archive></archive>'); */
-        foreach ($m as /*$k => */$post) {
+        foreach ($m as /* $k => */$post) {
 //            $myPost = $xml->addChild('post');
 //            $myPost->addChild('content', 'text/html; charset=UTF8');
 //            $myPost->addChild('affinity', rand(3, 13));
             $myPost = $archive->appendChild($dom->createElement('post'));
             $myPost->appendChild($dom->createElement('content', 'text/html; charset=UTF8'));
-            
+
             if (isset($post['peso']))
                 $weight = $post['peso'];
             else
                 $weight = rand(1, 20);
             $myPost->appendChild($dom->createElement('affinity', $weight));
-            
+
             if (is_string($post['articolo']))
                 $content = $post['articolo'];
             else

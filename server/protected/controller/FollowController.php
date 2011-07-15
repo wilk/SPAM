@@ -38,12 +38,12 @@ class FollowController extends DooController {
 
     public function setFollow() {
         //Controllo che tutte le variabili post siano state inviate
-        if (!(isset($_POST['serverID'])))
-            return ErrorController::badReq('Il serverID deve essere specificato!!');
-        if (!(isset($_POST['userID'])))
-            return ErrorController::badReq('Il userID deve essere specificato!!');
-        if (!(isset($_POST['value'])))
-            return ErrorController::badReq('Il value deve essere specificato!!');
+        if (!(isset($_POST['serverID'])) || $_POST['serverID']=="")
+            return ErrorController::badReq('Il serverID deve essere specificato e non deve essere vuoto!!');
+        if (!(isset($_POST['userID']))|| $_POST['userID']=="")
+            return ErrorController::badReq('L\' userID deve essere specificato e non deve essere vuoto!!');
+        if (!(isset($_POST['value']))|| $_POST['value']=="")
+            return ErrorController::badReq('Il value deve essere specificato e non deve essere vuoto!!');
         $value = intval($_POST['value']);
         if ($value != 1 && $value != 0)
             return ErrorController::badReq('Il value può essere: 0 o 1. Altri valori non sono ammessi!!');

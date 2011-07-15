@@ -37,7 +37,7 @@ class PostController extends DooController {
     /*
      * Crea un nuovo post aggiungendolo al file data/posts.rdf e aggiunge un riferimento al post
      * nel file data/users.rdf nella descrizione dell'utente.
-     * Il contenuto del post puÃ² essere passato o come variabile POST o tramite variabile interna.
+     * Il contenuto del post può essere passato o come variabile POST o tramite variabile interna.
      */
 
     public function createPost($content = null) {
@@ -49,8 +49,8 @@ class PostController extends DooController {
                 $mycontent = $_POST['article'];
                 if ($mycontent=="")
                     ErrorController::badReq ("Se non hai niente da scrivere non inviare il post!!");
-                if (strpos($mycontent, "<[CDATA["))
-                    ErrorController::badReq ("Non sabotarci il lavoro. Leva il CDATA!");
+//                if (strpos($mycontent, "<[CDATA["))
+//                    ErrorController::badReq ("Non sabotarci il lavoro. Leva il CDATA!");
                 //Arrichisco article con i ns e il typeof
                 //La funzione è brutta ma veloce
                 $replace = "<article\n\rxmlns:sioc=\"http://rdfs.org/sioc/ns#\"\n\rxmlns:ctag=\"http://commontag.org/ns#\"\n\rxmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"\n\rtypeof=\"sioc:Post\">";
@@ -152,11 +152,11 @@ class PostController extends DooController {
      */
 
     public function createRespam() {
-        if (!(isset($_POST['serverID'])))
+        if (!(isset($_POST['serverID'])) || $_POST['serverID']=="")
             return ErrorController::badReq('Il serverID deve essere specificato!!');
-        if (!(isset($_POST['userID'])))
-            return ErrorController::badReq('Il userID deve essere specificato!!');
-        if (!(isset($_POST['postID'])))
+        if (!(isset($_POST['userID'])) || $_POST['userID']=="")
+            return ErrorController::badReq('L\' userID deve essere specificato!!');
+        if (!(isset($_POST['postID']))|| $_POST['postID']=="")
             return ErrorController::badReq('Il postID deve essere specificato!!');
         $serverID = $_POST['serverID'];
         $userID = $_POST['userID'];
@@ -215,14 +215,14 @@ class PostController extends DooController {
      */
 
     public function createReply() {
-        if (!(isset($_POST['article'])))
-            return ErrorController::badReq('L\' article deve essere specificato!!');
-        if (!(isset($_POST['serverID'])))
-            return ErrorController::badReq('Il serverID deve essere specificato!!');
-        if (!(isset($_POST['userID'])))
-            return ErrorController::badReq('Il userID deve essere specificato!!');
-        if (!(isset($_POST['postID'])))
-            return ErrorController::badReq('Il postID deve essere specificato!!');
+        if (!(isset($_POST['article']))|| $_POST['article']=="")
+            return ErrorController::badReq('L\' article deve essere specificato e non può essere vuoto!!');
+        if (!(isset($_POST['serverID']))|| $_POST['serverID']=="")
+            return ErrorController::badReq('Il serverID deve essere specificato e non può essere vuoto!!');
+        if (!(isset($_POST['userID']))|| $_POST['userID']=="")
+            return ErrorController::badReq('L\' userID deve essere specificato e non può essere vuoto!!');
+        if (!(isset($_POST['postID']))|| $_POST['postID']=="")
+            return ErrorController::badReq('Il postID deve essere specificato e non può essere vuoto!!');
         $sID = $_POST['serverID'];
         $uID = $_POST['userID'];
         $pID = $_POST['postID'];
@@ -235,7 +235,7 @@ class PostController extends DooController {
                 list($tag, $s, $u, $p) = split('/', $risorsa);
                 $this->articolo->addHasReply($resource);
             } else
-                return ErrorController::notFound('Il post non esiste e non Ã¨ possibile creare una risposta');
+                return ErrorController::notFound('Il post non esiste e non è possibile creare una risposta');
         }else {
             $this->createPost();
             $risorsa = $this->articolo->addReplyOf($resource);
@@ -253,20 +253,21 @@ class PostController extends DooController {
             }
             return ErrorController::notFound('Il server non esiste');
         }
+        return 201;
     }
 
     public function hasReply() {
         $this->articolo = new PostModel();
-        if (!(isset($_POST['serverID'])))
-            return ErrorController::badReq('Il serverID deve essere specificato!!');
-        if (!(isset($_POST['userID'])))
-            return ErrorController::badReq('Il userID deve essere specificato!!');
-        if (!(isset($_POST['postID'])))
-            return ErrorController::badReq('Il postID deve essere specificato!!');
-        if (!(isset($_POST['userID2Up'])))
-            return ErrorController::badReq('Il userID2Up deve essere specificato!!');
-        if (!(isset($_POST['postID2Up'])))
-            return ErrorController::badReq('Il postID2Up deve essere specificato!!');
+        if (!(isset($_POST['serverID'])) || $_POST['serverID']=="")
+            return ErrorController::badReq('Il serverID deve essere specificato e non può essere vuoto!!');
+        if (!(isset($_POST['userID']))|| $_POST['userID']=="")
+            return ErrorController::badReq('Il userID deve essere specificato e non può essere vuoto!!');
+        if (!(isset($_POST['postID']))|| $_POST['postID']=="")
+            return ErrorController::badReq('Il postID deve essere specificato e non può essere vuoto!!');
+        if (!(isset($_POST['userID2Up']))|| $_POST['userID2Up']=="")
+            return ErrorController::badReq('Il userID2Up deve essere specificato e non può essere vuoto!!');
+        if (!(isset($_POST['postID2Up']))|| $_POST['postID2Up']=="")
+            return ErrorController::badReq('Il postID2Up deve essere specificato e non può essere vuoto!!');
         $serverID = $_POST['serverID'];
         $userID = $_POST['userID'];
         $postID = $_POST['postID'];

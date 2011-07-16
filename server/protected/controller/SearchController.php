@@ -11,6 +11,8 @@ class SearchController extends DooController {
     
     private $listaPost = array();
     private $toMerge = array();
+    static $from = "2011/01/01 00:00:00";
+    private $salt;
     private $request;
     private $SRV;
 
@@ -188,6 +190,7 @@ class SearchController extends DooController {
                 if (!(isset ($this->params['var1'])))
                         //BAD REQUEST
                         return 400;
+                $this->salt = strtotime("now")-strtotime(self::$from);
                 $termine = $this->params['var1'];
                 $tesauro = new ThesModel();//oggetto del tesauro
                 $pathTerm = $tesauro->returnPath($termine);
@@ -207,11 +210,11 @@ class SearchController extends DooController {
                     foreach ($posts as $post){
                         $nodo['articolo'] = $post;
                         $nodo['peso'] = strtotime($post[key($post)]['http://purl.org/dc/terms/created'][0]);
-                        print_r($nodo); die();
+                        $nodo['peso'] += $this->salt*$this->calcWeight($post, $pathTerm);
                         array_push($this->listaPost, $nodo);
                         array_push($this->toMerge, $nodo['peso']);
                     }
-                }
+                } //print_r($this->listaPost); die();
 
                 if ($extRequest === FALSE) {
                     $servers;
@@ -224,7 +227,7 @@ class SearchController extends DooController {
                         $badServer = array();
                         foreach ($servers as $value) {
                             if ($value['code'] === 200)
-                                $this->parseEXTContent($value['data']);
+                                $this->parseEXTContent($value['data'], $pathTerm);
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
                             
@@ -290,23 +293,36 @@ class SearchController extends DooController {
     
     private function calcWeight($articolo, $term){
         $arr = array();
+        
         if (!is_string($articolo))
-            $articolo = $articolo[key($articolo)]['http://rdfs.org/sioc/ns#content'];
+            $articolo = html_entity_decode ($articolo[key($articolo)]['http://rdfs.org/sioc/ns#content'][0], ENT_QUOTES, 'utf-8');
+        
         $html = str_get_html($articolo);
-        foreach ($html->find("span[tipeof=skos:Concept]") as $tag)
-            array_push($arr, $a[$tag->about]);
+        foreach ($html->find("span[typeof=skos:Concept]") as $tag)
+            $arr[$tag->about] = 0;
+
         foreach($arr as $tag => $peso){
             $termtmp = $term;
-            while(TRUE){
+            $none = 0;
+            $lenght = sizeof($termtmp);
+            while($none<$termtmp){
                 $term2search = '/'.implode('/', $termtmp);
+                //echo $term2search; echo $tag; die();
                 if(stristr($tag, $term2search)){
-                    $avanzati = sizeof(explode('/', substr($tag, 0, strlen($term2search))))-1;
-                    $totali = sizeof($termtmp);
-                    $peso = 1-($none/$lenght)-($avanzati/$totali);
-                    //TODO
+                    $avanzati = sizeof(explode('/', substr($tag, strlen($term2search))))-1;
+                    $totali = sizeof(explode('/', $tag))-1;
+                    $arr[$tag] = 1-($none/$lenght)-($avanzati/$totali);
+                    break;
+                } else {
+                    $none++;
+                    array_pop($termtmp);
                 }
             }
+            if ($arr[$tag] == 0)
+                $arr[$tag] -= $none;
         }
+        arsort($arr, SORT_NUMERIC);
+        return current($arr);
     }
     
     private function sortPost($limite){
@@ -396,11 +412,13 @@ class SearchController extends DooController {
 
     }
     
-    private function parseEXTContent($toParse){
+    private function parseEXTContent($toParse, $pathTerm = NULL){
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo){
             $node['articolo'] = $articolo->outertext;
             $node['peso'] = strtotime($articolo->content);
+            if ($pathTerm)
+                $node['peso'] += $this->salt*$this->calcWeight($articolo->innertext, $pathTerm);
             array_push($this->listaPost, $node);
             array_push($this->toMerge, $node['peso']);
         }

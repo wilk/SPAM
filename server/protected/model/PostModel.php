@@ -116,7 +116,7 @@ class PostModel {
         $parsedArray = $parser->getSimpleIndex();
         //print_r($parsedArray);die();
         $html = str_get_html($data);
-        $testoHTML = htmlspecialchars($html->find('article', 0)->innertext, ENT_QUOTES, 'UTF-8');
+        $testoHTML = htmlentities($html->find('article', 0)->innertext, ENT_COMPAT, 'UTF-8');
         /* questo controllo serve quando ricevo da client e non so nulla del messaggio,
          * quindi il mio array sarà vuoto: lo creo mettendo solo il testo del messaggio;
          * ci penserà la initNewPost ad arricchirlo.
@@ -225,7 +225,7 @@ class PostModel {
             }
         }
         else if ($lim != NULL) {//altrimenti pusho i post che trovo
-            if ($lim == 0)
+            if (is_numeric($lim) && $lim == 0)
                 return array();
             $this->index = array_reverse($this->index, TRUE);
             if ($lim != 'all' &&
@@ -233,13 +233,7 @@ class PostModel {
                     sizeof($this->index) > $lim)
                 $this->index = array_slice($this->index, 0, $lim, TRUE);
             foreach ($this->index as $k => $post) {
-                //if ($post['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0] == 'http://rdfs.org/sioc/ns#Post')
-                if ($lim == 0)
-                    break;
-                if ($lim == 'all' || $lim > 0)
                     array_push($lista, $this->getPost($k));
-                if ($lim != 'all')
-                    $lim--;
             }
         }
         //print_r($lista);

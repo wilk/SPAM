@@ -31,7 +31,7 @@ function htInjection (text, store) {
 			var wordToSearch = words[i].slice (1, words[i].length);
 			
 			// Search punctuation into the hashtag
-			var indexPunctuation = wordToSearch.search (/[\.,-\/!?$%\^&\*;:{}=\-_`~()]/g);
+			var indexPunctuation = wordToSearch.search (/[\.,-\/!?$%\^&\*;:{}=\-`~()]/g);
 			
 			if (indexPunctuation != -1) {
 				// Punctuation of the word

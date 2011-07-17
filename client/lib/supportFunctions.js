@@ -50,34 +50,12 @@ function requestSearchArticles (store, focus, focusIndex) {
 					else if ($(this).attr ('rev') == 'tweb:dislike') {
 						ifLikeDislike = -1;
 					}
-					
-					// Find media resources (video/audio/image)
-					switch ($(this).attr ('resource')) {
-						case 'video':
-							var srcRes = $(this).attr ('src');
-//							var tagHtml = '<iframe width="425" height="349" src="'+ srcRes +'" frameborder="0" allowfullscreen></iframe>';
-							var tagHtml = '<object width="425" height="349" src="'+ srcRes +'"></iframe>';
-							$(this).text (tagHtml);
-							break;
-						case 'audio':
-							var srcRes = $(this).attr ('src');
-							var tagHtml = '<iframe width="200" height="100" src="'+ srcRes +'" frameborder="0" allowfullscreen></iframe>';
-							$(this).text (tagHtml);
-							break;
-						case 'image':
-							var srcRes = $(this).attr ('src');
-							var tagHtml = '<img src="' + srcRes + '" />';
-							$(this).text (tagHtml);
-							break;
-					}
 				});
 				
 				// Add article to the store
 				store.add ({
 					affinity: parseInt ($(this).find('affinity').text ()) ,
-					// TODO: bug with reading tags
-					article: $(this).find('article').text () ,
-//					article: $(this).find('article').html () ,
+					article: tag2string ($(this).find('article')[0]) ,
 					resource: $(this).find('article').attr ('resource') ,
 					about: $(this).find('article').attr ('about') ,
 					like: numLike ,
@@ -177,26 +155,13 @@ function retrieveRecentArticles (store) {
 					else if ($(this).attr ('rev') == 'tweb:dislike') {
 						ifLikeDislike = -1;
 					}
-					
-//					switch ($(this).attr ('resource')) {
-//						case 'video':
-//							$(this).replaceWith ('<iframe width="425" height="349" src="'+ $(this).attr ('src') +'" frameborder="0" allowfullscreen></iframe>');
-//							break;
-//						case 'audio':
-//							$(this).replaceWith ('<iframe width="200" height="100" src="'+ $(this).attr ('src') +'" frameborder="0" allowfullscreen></iframe>');
-//							break;
-//						case 'image':
-//							$(this).replaceWith ('<img src="'+ $(this).attr ('src') +'" />');
-//							break;
-//					}
 				});
 				
 				// Add article to the store
 				store.add ({
 					affinity: parseInt ($(this).find('affinity').text ()) ,
-					// TODO: bug with reading tags
-					article: $(this).find('article').text () ,
-//					article: $(this).find('article').html () ,
+					article: tag2string ($(this).find('article')[0]) ,
+					articleText: $(this).find('article').text () ,
 					resource: $(this).find('article').attr ('resource') ,
 					about: $(this).find('article').attr ('about') ,
 					like: numLike ,
@@ -245,4 +210,36 @@ InsertAtCursorTextareaPlugin = function () {
 			}
 		}
 	}
+}
+
+// @brief Convert a tag Element into a string
+// @param tag: tag to convert
+// @return Tag converted
+function tag2string (tag) {
+	var articleString = '';
+	
+	for (var i = 0; i < tag.childNodes.length; i++) {
+		// TextNode
+		if (tag.childNodes[i].nodeType == 3) {
+			articleString += tag.childNodes[i].nodeValue;
+		}
+		// TagNode
+		else if (tag.childNodes[i].nodeType == 1) {
+			// E.g.: '<a '
+			articleString += '<' + tag.childNodes[i].nodeName + ' ';
+			
+			// Attributes
+			for (var j = 0; j < tag.childNodes[i].attributes.length; j++) {
+				articleString += tag.childNodes[i].attributes[j].name + '="' + tag.childNodes[i].attributes[j].value + '" ';
+			}
+			
+			// Check for nested tags (e.g. <i>ciao <b>mamma</b></i>)
+			articleString += '>' + tag2string (tag.childNodes[i]);
+			
+			// Close TagNode
+			articleString += '</' + tag.childNodes[i].nodeName + '>';
+		}
+	}
+	
+	return articleString;
 }

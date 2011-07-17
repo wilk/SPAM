@@ -14,8 +14,8 @@
 function disposeArticles (store, focus, focusIndex) {
 	var ARTICLE_WINDOW_WIDTH = 150;
 	var ARTICLE_WINDOW_HEIGHT = 100;
-	var ARTICLE_FOCUS_WINDOW_WIDTH = 200;
-	var ARTICLE_FOCUS_WINDOW_HEIGHT = 150;
+	var ARTICLE_FOCUS_WINDOW_WIDTH = 225;
+	var ARTICLE_FOCUS_WINDOW_HEIGHT = 175;
 
 	// Degree of every articles
 	var degree = 0;

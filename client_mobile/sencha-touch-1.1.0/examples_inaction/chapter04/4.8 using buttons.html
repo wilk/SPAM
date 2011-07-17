@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Panels</title>
+    <link rel="stylesheet" href="../../sencha-touch-1.1.0/resources/css/sencha-touch.css" type="text/css">
+    <script type="text/javascript" src="../../sencha-touch-1.1.0/sencha-touch-debug-w-comments.js"></script>
+
+<script type="text/javascript">
+
+Ext.setup({
+    onReady: function() {
+
+        var tbar = {
+            xtype    : 'toolbar',
+            dock     : 'top',
+            defaults : {
+                iconMask  : true
+            },
+            items : [
+                {
+                    text      : 'delete',
+                    iconCls   : 'delete',
+                    iconAlign : 'left',
+                    cls       : 'x-button-decline',
+                    ui        : 'forward'
+                },
+                {
+                    text      : 'organize',
+                    iconCls   : 'organize',
+                    iconAlign : 'right',
+                    cls       : 'x-button-forward',
+                    ui        : 'confirm'
+                }
+            ]
+        };
+
+        var bbar = {
+            xtype    : 'toolbar',
+            dock     : 'bottom',
+            height   : 60,
+            defaults : {
+                iconMask : true
+            },
+            items : [
+                {
+                    iconCls   : 'refresh',
+                    iconAlign : 'top',
+                    ui        : 'plain'
+                },
+                {
+                    text      : 'search',
+                    iconCls   : 'search',
+                    ui        : 'drastic',
+                    iconAlign : 'bottom'
+                }
+            ]
+        };
+
+        new Ext.Panel({
+            fullscreen  : true,
+            defaultType : 'button',
+            defaults    : {
+                width    : 150,
+                iconMask : true
+            },
+            layout : {
+                type : 'vbox',
+                pack : 'center'
+            },
+            dockedItems : [
+                tbar,
+                bbar
+            ],
+            items : [
+                {
+                    text      : 'generic'
+                },
+                {
+                    text      : 'compose',
+                    iconCls   : 'compose',
+                    iconAlign : 'right',
+                    ui        : 'action'
+                },
+                {
+                    text    : 'star',
+                    iconCls : 'star',
+                    ui      : 'confirm'
+                }
+            ]
+        });
+    }
+});
+
+
+
+</script>
+
+</head>
+<body></body>
+</html>

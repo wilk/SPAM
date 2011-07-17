@@ -1,0 +1,74 @@
+mspam.views.PostAction=Ext.extend(Ext.ActionSheet,{
+
+	layout:{
+		type:'vbox',
+		pack:'center',
+		align:'stetch'
+	},
+
+	items:[
+		{
+			text:'I like it',
+			ui:'confirm',
+			handler:function(){
+				Ext.dispatch({
+					controller:'PostAction',
+					action:'setLike',
+					value:'+1'
+				})
+			}
+		},
+		{
+			text:"Reset my previous like choice",
+			handler:function(){
+				Ext.dispatch({
+					controller:'PostAction',
+					action:'setLike',
+					value:'0'
+				})
+			}
+		},
+		{
+			text:"I don't like it",
+			ui:'decline',
+			handler:function(){
+				Ext.dispatch({
+					controller:'PostAction',
+					action:'setLike',
+					value:'-1'
+				})
+			}
+		},
+		{
+			text:'Replay',
+			handler:function(){
+				Ext.dispatch({
+					controller:'PostAction',
+					action:'replayToPost'
+				})
+			}
+		},
+		{
+			text:'Respam',
+			handler:function(){
+				Ext.dispatch({
+					controller:'PostAction',
+					action:'respamPost'
+				})
+			}
+		},
+		{
+			text:'Back',
+			ui:'decline',
+			handler:function(){
+				Ext.dispatch({
+					controller:'PostAction',
+					action:'destroySheet',
+					view:this.up('postAction')
+				})
+			}
+		}
+	]
+
+});
+Ext.reg('postAction',mspam.views.PostAction);

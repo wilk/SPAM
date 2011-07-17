@@ -26,7 +26,7 @@ class SearchController extends DooController {
                 setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]
                 );
             }
-            //termino la sessione
+//termino la sessione
             session_destroy();
             session_name("nologin");
             session_start();
@@ -35,11 +35,11 @@ class SearchController extends DooController {
         else
             $role = $_SESSION['user']['group'];
 
-        //if not login, group = anonymous
-        //$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
-        //check against the ACL rules
+//if not login, group = anonymous
+//$role = (isset($_SESSION['user']['group'])) ? $_SESSION['user']['group'] : 'anonymous';
+//check against the ACL rules
         if ($rs = $this->acl()->process($role, $resource, $action)) {
-            //echo $role .' is not allowed for '. $resource . ' '. $action;
+//echo $role .' is not allowed for '. $resource . ' '. $action;
             return $rs;
         }
     }
@@ -52,7 +52,7 @@ class SearchController extends DooController {
 
     public function searchMain($extRequest = FALSE) {
         if (!(isset($this->params['limit'])) || !(isset($this->params['type'])))
-        //BAD REQUEST
+//BAD REQUEST
             return 400;
         $limite = $this->params['limit'];
         $tipo = $this->params['type'];
@@ -74,7 +74,7 @@ class SearchController extends DooController {
         switch ($tipo) {
             case $types[0]: //author
                 if (!(isset($this->params['var1'])) || !(isset($this->params['var2'])))
-                //BAD REQUEST
+//BAD REQUEST
                     return 400;
                 $srv = $this->params['var1'];
                 $usr = urldecode($this->params['var2']);
@@ -118,7 +118,7 @@ class SearchController extends DooController {
                                 $posts = $this->parseEXTContent($XMLresult);
                         }
                     }
-                    //qui devo ordinare la mia lista
+//qui devo ordinare la mia lista
                     $this->sortPost($limite);
                     $this->displayPosts();
                 } else
@@ -150,7 +150,7 @@ class SearchController extends DooController {
                     foreach ($posts as $post) {
                         $nodo['articolo'] = $post;
                         $nodo['peso'] = strtotime($post[key($post)]['http://purl.org/dc/terms/created'][0]);
-                        //print_r($nodo); die();
+//print_r($nodo); die();
                         array_push($this->listaPost, $nodo);
                         array_push($this->toMerge, $nodo['peso']);
                     }
@@ -173,10 +173,10 @@ class SearchController extends DooController {
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
 
-                            //$test[] = $value['url'].' => '.$value['code']."\n";
+//$test[] = $value['url'].' => '.$value['code']."\n";
                         }
-                        //print_r($test);die();
-                        //qui fanculizzo i server
+//print_r($test);die();
+//qui fanculizzo i server
                         /* if (count($badServer))
                           $this->funcoolizer($badServer);
                          */
@@ -190,13 +190,13 @@ class SearchController extends DooController {
 
             case $types[3]: //related
                 if (!(isset($this->params['var1'])))
-                //BAD REQUEST
+//BAD REQUEST
                     return 400;
                 $this->salt = strtotime("now") - strtotime(self::$from);
                 $termine = $this->params['var1'];
                 $tesauro = new ThesModel(); //oggetto del tesauro
                 $pathTerm = $tesauro->returnPath($termine);
-                //$pIDs = 0;
+//$pIDs = 0;
                 if ($pathTerm === false)
                     ErrorController::notFound("Il termine non è presente nel tesauro.\n");
 
@@ -233,27 +233,27 @@ class SearchController extends DooController {
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
 
-                            //$test[] = $value['url'].' => '.$value['code']."\n";
+//$test[] = $value['url'].' => '.$value['code']."\n";
                         }
-                        //print_r($test);die();
-                        //qui fanculizzo i server
+//print_r($test);die();
+//qui fanculizzo i server
                         /* if (count($badServer))
                           $this->funcoolizer($badServer);
                          */
                     } else
                         return 500;
                 }
-                //$this->calcWeight();
+//$this->calcWeight();
                 $this->sortPost($limite);
                 $this->displayPosts();
                 break;
 
             case $types[4]: //fulltext
                 if (!(isset($this->params['var1'])))
-                //BAD REQUEST
+//BAD REQUEST
                     ErrorController::badReq("Devi specificare il testo da cercare!!");
                 $stringToSearch = urldecode($this->params['var1']);
-                //Inizializzo il timer e inizio a cercare in locale
+//Inizializzo il timer e inizio a cercare in locale
                 $mtime = microtime();
                 $mtime = explode(' ', $mtime);
                 $mtime = $mtime[1] + $mtime[0];
@@ -262,7 +262,7 @@ class SearchController extends DooController {
                 print_r($listOfWords);
                 $post = new PostModel();
                 $allPost = $post->getPostArray(NULL, 'all');
-                //$listPost = array();
+//$listPost = array();
                 foreach ($allPost as $i => $pID) {
                     $postContentHTML = str_get_html(html_entity_decode($pID[key($pID)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
                     $content = $postContentHTML->plaintext;
@@ -325,9 +325,9 @@ class SearchController extends DooController {
                 $endtime = $mtime;
                 $totaltime = ($endtime - $starttime);
                 print "Tempo trascorso $totaltime\n\r";
-                //print_r($listPost);
-                //die();
-                //Eseguo richiesta esterna
+//                print_r($this->listaPost);
+//                die();
+//Eseguo richiesta esterna
                 if ($extRequest === FALSE) {
                     $servers;
                     $this->initServers($servers);
@@ -345,16 +345,28 @@ class SearchController extends DooController {
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
 
-                            //$test[] = $value['url'].' => '.$value['code']."\n";
+//$test[] = $value['url'].' => '.$value['code']."\n";
                         }
-                        //print_r($test);die();
-                        //qui fanculizzo i server
+//print_r($test);die();
+//qui fanculizzo i server
                         /* if (count($badServer))
                           $this->funcoolizer($badServer);
                          */
                     } else
                         return 500;
                 }
+                print "numero di elementi in listapost: " . count($this->listaPost) . "\n\r";
+                $i = count($this->listaPost);
+                for ($i; $i > 0; $i--) {
+                    foreach ($this->listaPost[$i] as $key=> $post){
+                        print ("\n\rla key è: $key e il peso è: " .$post['peso']);
+                        $arrayPesi[$key]=$post['peso'];
+                        $arrayPost[$key]=$post['post'];
+                    }
+                    array_multisort($arrayPesi, SORT_DESC,$this->listaPost[$i]);
+                }
+                print_r($this->listaPost);
+                die();
                 ErrorController::notImpl();
                 break;
 
@@ -362,7 +374,7 @@ class SearchController extends DooController {
                 if (!(isset($this->params['var1'])) ||
                         !(isset($this->params['var2'])) ||
                         !(isset($this->params['var3'])))
-                //BAD REQUEST
+//BAD REQUEST
                     return 400;
                 ErrorController::notImpl();
                 break;
@@ -412,7 +424,7 @@ class SearchController extends DooController {
             $lenght = sizeof($termtmp);
             while ($none < $termtmp) {
                 $term2search = '/' . implode('/', $termtmp);
-                //echo $term2search; echo $tag; die();
+//echo $term2search; echo $tag; die();
                 if (stristr($tag, $term2search)) {
                     $avanzati = sizeof(explode('/', substr($tag, strlen($term2search)))) - 1;
                     $totali = sizeof(explode('/', $tag)) - 1;
@@ -464,7 +476,7 @@ class SearchController extends DooController {
         /* $this->load()->helper('DooRestClient');
           $request = new DooRestClient; */
         $url = $this->SRV->getUrl($server);
-        //echo $url, $method; die();
+//echo $url, $method; die();
         $this->request->connect_to($url . $method)
                 ->accept(DooRestClient::XML)
                 ->get();
@@ -503,12 +515,12 @@ class SearchController extends DooController {
         do
             curl_multi_exec($mh, $running); while ($running > 0);
 
-        // get the result and save it in the result ARRAY
+// get the result and save it in the result ARRAY
         foreach ($hArr as $k => $h) {
             $servers[$k]['data'] = curl_multi_getcontent($h);
             $servers[$k]['code'] = curl_getinfo($h, CURLINFO_HTTP_CODE);
         }
-        //close all the connections
+//close all the connections
         foreach ($hArr as $k => $h)
             curl_multi_remove_handle($mh, $h);
 
@@ -529,11 +541,13 @@ class SearchController extends DooController {
         }
     }
 
-    //Usata per la fulltext
+//Usata per la fulltext
     private function parseEXTContent2($toParse, $listOfWords) {
-//        print_r ($toParse);die();
+        print ("L'xml che mi arriva:\n\r");
+        print_r($toParse);
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
+            $content = $articolo->plaintext;
             $findTerm = 0;
             $matchEsatto = 0;
             $matchParziale = 0;
@@ -576,18 +590,74 @@ class SearchController extends DooController {
 //                    print ("$matchParziale\n\r");
 //                    print (time());
 //                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
-                $tempo = time() - strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
+                $tempo = time() - strtotime($articolo->content);
 //                    print ("Differenza di tempo è:$tempo\n\r");
                 $peso = (($matchEsatto + ($matchParziale * 0.5))) * 1000 / $tempo;
 //                    print $peso;
 //                    print "Termini trovati $findTerm";
                 $this->listaPost[$findTerm][] = array(
-                    "post" => $pID,
+                    "post" => $articolo->outertext,
                     "peso" => $peso,
                 );
             }
         }
     }
+
+//    private function pesoFullText($postContentHTML,$listOfWords) {
+//        $content = $postContentHTML->plaintext;
+//        $findTerm = 0;
+//        $matchEsatto = 0;
+//        $matchParziale = 0;
+//        $wordInContent = $this->utf8_str_word_count($content, 1);
+//        print_r($wordInContent);
+//        foreach ($listOfWords as $indice => $word) {
+//            $find = false;
+//            if (strlen((string) $word) > 1) {
+//                if (stristr((string) $word, "'") !== false) {
+//                    $word = explode("'", (string) $word);
+//                    $word = $word[1];
+//                }
+//                print "Sto cercando questo termine: $word\n\r";
+//                foreach ($wordInContent as $indice => $thisWord) {
+//                    if (stristr((string) $thisWord, "'") !== false) {
+//                        $thisWord = explode("'", (string) $thisWord);
+//                        $thisWord = $thisWord[1];
+//                    }
+//                    print "Sto controllando questo termine: $thisWord\n\r";
+//                    if (strtolower((string) $thisWord) == strtolower((string) $word)) {
+//                        print ("trovato il match di $word con $thisWord\n\r");
+//                        $matchEsatto++;
+//                        $find = true;
+//                        print ("numero di matchEsatti: $matchEsatto\n\r");
+//                    } else if (stristr((string) $thisWord, (string) $word)) {
+//                        print ("trovata l'occorrenza di $word in $thisWord\n\r");
+//                        $matchParziale++;
+//                        $find = true;
+//                        print ("numero di matchParziali: $matchParziale\n\r");
+//                    }
+//                }
+//                if ($find) {
+//                    $findTerm++;
+//                }
+//            }
+//        }
+//        print ("totale termini trovati: $findTerm\n\r");
+//        if ($findTerm != 0) {
+////                    print ("$matchEsatto\n\r");
+////                    print ("$matchParziale\n\r");
+////                    print (time());
+////                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
+//            $tempo = time() - strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
+////                    print ("Differenza di tempo è:$tempo\n\r");
+//            $peso = (($matchEsatto + ($matchParziale * 0.5))) * 1000 / $tempo;
+////                    print $peso;
+////                    print "Termini trovati $findTerm";
+//            $this->listaPost[$findTerm][] = array(
+//                "post" => $pID,
+//                "peso" => $peso,
+//            );
+//        }
+//    }
 
     private function rcvFromINTServer($usr, $countPost) {
         $post = new PostModel();

@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Chapter 7 - Listing 7.8</title>
+	<link rel="stylesheet" href="sencha/resources/css/sencha-touch.css" type="text/css">
+    <script src="sencha/sencha-touch-debug.js"></script>
+	<script type="text/javascript">
+	/*
+		Sample code for loading and saving forms.
+		This sample requires the "formload.json" and "success.json" files.
+	*/
+
+		Ext.setup({
+		    onReady: function() {
+				// setup the model. This is needed so we can load the form
+				// Notice the use of the proxy option. This is currently undocumented but works.
+				// future versions of SenchaTouch will document this once code from Ext4 has been
+				// ported over.
+				var personModel = Ext.regModel('person', {
+					fields : [
+						"firstname", "lastname", "description",
+						"size", "partydate"
+					],
+					proxy: {
+						type: 'ajax',			// perform an ajax load for the data
+						url : 'formload.json',	// get the data from this url. a static file
+						reader: 'json'			// let the proxy know the data is json formatted
+					}
+				});
+		
+				var fieldset1 = {
+					xtype  : 'fieldset',
+					title  : 'Personal Info',
+					instructions: "Tell us who you are.<br />The more detail the better",
+					items  : [
+						{
+							xtype: 'textfield',
+							label: 'First',
+							name:'firstname',
+							placeHolder: "Enter your first name"
+						},{
+							xtype: 'textfield',
+							label: 'Last',
+							name:'lastname',
+							placeHolder: "Enter your last name"
+						}
+					]						
+				};	
+		
+				var fieldset2 = {
+					xtype  : 'fieldset',
+					title  : 'Party Info',
+					instructions: "Describe your party so people know what they're attending",
+					items  : [
+						{
+							xtype: "textareafield",
+							name: "description",
+							label: "Description",
+							required: true
+						}				
+					]
+				};
+				
+				var fieldset3 = {
+					xtype  : 'fieldset',
+					title  : 'Party Size',
+					instructions: "Tell us how many people you're bringing",
+					items  : [{
+						xtype: 'radiofield',
+						name: 'size',
+						label: 'Just Me',
+						value: 'small'
+					},{
+						xtype: 'radiofield',
+						name: 'size',
+						label: 'A few people',
+						value: 'medium'
+					},{
+						xtype: 'radiofield',
+						name: 'size',
+						label: "What's my limit?",
+						value: 'large'
+					}]
+				};
+	
+				var fieldset4 = {
+					xtype  : 'fieldset',
+					title  : 'Dates',
+					instructions: "When is this happening?",
+					items  : [{
+						xtype: 'datepickerfield',
+						label:'Party Date',
+						name:'partydate'
+					}]
+				};
+	
+		        var myPanel = new Ext.form.FormPanel({
+		            fullscreen  : true,
+					scroll      : "vertical",
+		            layout      : {
+		                type  : 'hbox',
+		                align : 'stretch'
+		            },
+		            defaults    : {
+		                flex : 1,
+		                style : 'padding: 5px;'
+		            },
+		            dockedItems : [
+		                {
+		                    xtype : 'toolbar',
+		                    title : 'Party Organizer 2000',
+		                    dock : 'top',
+							items: [
+							// button to load the form
+							{
+			                    xtype : 'button',
+			                    text  : 'Load Form',
+								handler: formLoad
+			                },
+							// button to save the form
+							{
+			                    xtype : 'button',
+			                    text  : 'Submit Form',
+								handler: formSubmit
+			                }
+							]
+		                }
+		            ],
+		            items : [
+		                {
+							xtype  : 'container',
+							items  : [
+								fieldset1,
+								fieldset2,
+							]
+						},{
+							xtype  : 'container',
+							items  : [
+								fieldset3,
+								fieldset4,
+						
+							]
+						}
+		            ]
+		        });
+
+				// handle loading the form. This method is triggered by the load button
+				function formLoad() {
+					// use the model to load data. The "123" is the ID of the record.
+					// In this case, it is a dummy number. if you had a real backend though,
+					// you would want this so you know which record to load
+					personModel.load(123, {
+						success: function(theRecord) {
+							// on a successfull load, take the record we got from the backend
+							// (the record is an instance of our model), and load it into the form
+							myPanel.load(theRecord);
+						}
+					});
+				}
+
+				// handle submitting the form. This method is triggered by the submit button
+				function formSubmit() {
+					// calling the submit function works the same as the Ext.Ajax function.
+					// we give it a url, a waitMsg, which only flashes for a split second since the 
+					// load is so fast, and event handlers.
+					myPanel.submit({
+						url: "success.json",
+						waitMsg: "submitting...",
+						success: function(form, response, responseText) {
+							// YAY! our form submitted. Tell the user
+							Ext.Msg.alert("Success", response.msg);
+						},
+						failure: function(form, response, responseText) {
+							// OH NOES. The submit failed. Tell the user
+							Ext.Msg.alert("Failure", response.msg);
+						}
+					})
+				}
+		
+
+			} // end on ready
+		}); // end setup
+
+	</script>
+
+</head>
+<body></body>
+</html>

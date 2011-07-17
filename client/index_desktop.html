@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta equiv-http="Content-Type" content="text/html; charset=UTF-8" />
+		<title>SPAM :: Social Production of Audiovisual Microblogs</title>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"> </script>
+		<script type="text/javascript" src="lib/hashtagInjection.js"> </script>
+		<script type="text/javascript" src="lib/disposeArticles.js"> </script>
+		<script type="text/javascript" src="lib/parserToRead.js"> </script>
+		<script type="text/javascript" src="lib/findSpanTags.js"> </script>
+		<script type="text/javascript" src="lib/supportFunctions.js"> </script>
+		<script type="text/javascript" src="lib/parser.js"> </script>
+		<script type="text/javascript" src="jquery/jquery-1.6.1.js"> </script>
+	<!--	<script type="text/javascript" src="jquery/auto.js"> </script>-->
+		<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
+		<script type="text/javascript" src="ext/ext-all-debug.js"> </script>
+		<script type="text/javascript" src="app.js"> </script>
+		<script type="text/javascript">
+			// Global variable for checking geolocation supports
+			var browserGeoSupportFlag = new Boolean ();
+			var googleMap;
+			//var urlServerLtw = 'http://ltw1102.web.cs.unibo.it/';
+			var urlServerLtw = '';
+		
+			// Import any class of ExtJS 4
+			Ext.require (['*']);
+		
+			// Set loading configuration
+			Ext.Loader.setConfig ({
+				enabled : true
+			});
+		
+			// When the page is loaded
+			Ext.onReady (function () {
+				// To avoid AJAX request problems
+				Ext.Ajax.useDefaultXhrHeader = false;
+		
+				// Check if user agent support geolocation
+				browserGeoSupportFlag = (navigator.geolocation) ? true : false;
+			
+				// Thesaurus request
+				// Recent posts
+				// Geo Location
+			});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

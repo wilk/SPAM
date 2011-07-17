@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Panels</title>
+    <link rel="stylesheet" href="../../sencha-touch-1.1.0/resources/css/sencha-touch.css" type="text/css">
+    <script type="text/javascript" src="../../sencha-touch-1.1.0/sencha-touch-debug-w-comments.js"></script>
+
+<script type="text/javascript">
+
+Ext.setup({
+    onReady: function() {
+
+        var genButtons =  function() {
+            return [
+                {
+                    text : 'action',
+                    ui   : 'action'
+                },
+                {
+                    text : 'action-round',
+                    ui   : 'action-round'
+                },
+                {
+                    text : 'action-small',
+                    ui   : 'action-small'
+                },
+                {
+                    text : 'confirm',
+                    ui   : 'confirm'
+                },
+                {
+                    text : 'confirm-round',
+                    ui   : 'confirm-round'
+                },
+                {
+                    text : 'confirm-small',
+                    ui   : 'confirm-small'
+                },
+                {
+                    text : 'decline',
+                    ui   : 'decline'
+                },
+                {
+                    text : 'decline-small',
+                    ui   : 'decline-small'
+                },
+                {
+                    text : 'decline-round',
+                    ui   : 'decline-round'
+                },
+                {
+                    text : 'normal',
+                    ui   : 'normal'
+                },
+                {
+                    text : 'round',
+                    ui   : 'round'
+                },
+                {
+                    text : 'small',
+                    ui   : 'small'
+                },
+                {
+                    text : 'back',
+                    ui   : 'back'
+                },
+                {
+                    text : 'forward',
+                    ui   : 'forward'
+                }
+            ];
+        };
+
+        var tbar1 = {
+            xtype  : 'toolbar',
+            dock   : 'top',
+            title  : 'Sencha Touch Button UI palette'
+        };
+
+        var tbar2 = {
+            xtype  : 'toolbar',
+            dock   : 'top',
+            items  : genButtons(),
+            scroll : {
+                direction     :'horizontal',
+                useIndicators : false
+            }
+        };
+
+
+        var bbar = {
+            height : 25,
+            dock   : 'bottom',
+            style  : 'font-size: .6em;',
+            flex   : 1,
+            ui     : 'action',
+            text   : 'Brought to you by the Sencha Touch in Action team!',
+            handler : function() {
+                window.location = 'http://manning.com/garcia2'
+            }
+        };
+
+        new Ext.Panel({
+            fullscreen  : true,
+            style       : 'background-color: #CCF;',
+            defaultType : 'button',
+            items       :  genButtons(),
+            scroll      : 'vertical',
+            defaults    : {
+                width     : 175,
+                iconAlign : 'left',
+                iconMask  : true
+            },
+            layout      : {
+                type : 'vbox',
+                pack : 'center'
+            },
+            dockedItems : [
+                tbar1,
+                tbar2,
+                bbar
+            ]
+        });
+
+    }
+});
+
+</script>
+
+</head>
+<body></body>
+</html>

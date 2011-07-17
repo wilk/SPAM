@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Chapter 7 - Listing 7.2</title>
+	<link rel="stylesheet" href="sencha/resources/css/sencha-touch.css" type="text/css">
+    <script src="sencha/sencha-touch.js"></script>
+	<script type="text/javascript">
+	/*
+		Sample code to dynamically load a select field.
+		This sample requires the "getPersons.json" file which contains the data to load.
+	*/
+		Ext.setup({
+		    onReady: function() {
+			
+				// define the model for our data
+				Ext.regModel('person', {
+		            fields : ['name','pID']
+		        });
+
+				// define a store that will load & contain the data
+				var peopleStore = new Ext.data.JsonStore({
+					model: 'person',
+					proxy: {
+						type  : 'ajax',
+						url: 'getPersons.json',
+						reader: {
+							type: 'json',
+							root: 'data'
+						},
+						idProperty: 'pID',
+					},
+					autoLoad : true
+				});
+
+				// build the form with the select field that points to the store
+		        var myPanel = new Ext.form.FormPanel({
+		            fullscreen  : true,
+		            dockedItems : [
+		                {
+		                    xtype : 'toolbar',
+		                    title : 'Tell us about yourself.',
+		                    dock : 'top'
+		                }
+		            ],
+		            items : [
+						{
+							xtype: 'selectfield',
+							label: 'Select',
+							valueField: 'pID',
+							displayField: 'name',
+							store: peopleStore
+		            	}
+					]
+		        });
+		
+			} // end onReady()
+		}); // end setup()
+
+	</script>
+
+</head>
+<body></body>
+</html>

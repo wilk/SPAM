@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Chapter 7 - Listing 7.9, 7.10, 7.11</title>
+    <link rel="stylesheet" href="sencha/resources/css/sencha-touch.css" type="text/css">
+    <script src="sencha/sencha-touch.js"></script>
+	<style>
+		.invite-list .status {
+			display: inline-block;
+			vertical-align: middle;
+			width: 20px;
+			height: 20px;
+			border-radius: 10px;
+			margin-right: 10px;
+		}
+		
+		.invite-list .status-decline {
+			background-color: red;
+		}
+		
+		.invite-list .status-undecided {
+			background-color: grey;
+		}
+		
+		.invite-list .status-accept {
+			background-color: green;
+		}
+	</style>
+	<script>
+	/*
+		Sample code to bind a form to a list via the use of a sheet.
+	*/
+
+		Ext.setup({
+		    onReady: function() {
+				// setup the model for the list.
+		        Ext.regModel('invite-list', {
+		            fields : ['firstName', 'lastName', 'inviteStatus']
+		        });
+		
+				// create some dummy data
+		        var inviteData = [
+				    {
+						firstName : 'Jay',
+						lastName  : 'Garcia',
+						inviteStatus  : 'decline'
+					}, {
+						firstName : 'Anthony',
+						lastName  : 'DeMoss',
+						inviteStatus  : 'undecided'
+					}, {
+						firstName : 'Sebastian',
+						lastName  : 'Stirling',
+						inviteStatus  : 'accept'
+					}
+				];		
+		
+				// create a store for our dummy data. The list needs this to show the data
+		        var theListStore = new Ext.data.JsonStore({
+		            model    : 'invite-list',
+		            data     : inviteData,
+		            autoLoad : true
+		        });
+
+				// the panel that contains our list.
+				// when a list item is clicked, we call the showInviteSheet function.
+				// The custom template allows us to show extra data and do some styling.
+		        var myPanel = new Ext.Panel({
+		            fullscreen  : true,
+		            dockedItems : [
+		                {
+				            xtype   : 'toolbar',
+				            dock    : 'top',
+				            title   : 'Party Invitation Manager'
+				        }
+		            ],
+		            layout : 'fit',
+		            items  : [
+		                {
+		                    xtype     : 'list',
+							cls			:'invite-list',
+		                    store     : theListStore,
+		                    itemTpl   : '<span class="status status-{inviteStatus}" title="{inviteStatus}"></span>{lastName}, {firstName}' ,
+		                    listeners : {
+		                        itemtap : showInviteSheet
+		                    }
+		                }
+		            ]
+		        });
+		
+				// declare the popup that contains the form to edit the list data.
+				// this will be shown from the showInviteSheet function, and loaded
+				// with the data from the list item.
+				var invitePopup = new Ext.Sheet({
+					centered: true,
+					dockedItems: [{
+						xtype: 'toolbar',
+						itemId:'title',
+						dock: 'top',
+						title: 'Edit Invitee'
+					},{
+						xtype: 'toolbar',
+						dock: 'bottom',
+						items: [{
+							xtype: 'spacer'
+						},{
+							ui: 'confirm',
+							text: 'Save',
+							handler: function(){
+								// get a handle on the form in the sheet
+								var inviteForm = invitePopup.down('#invite-form');
+								// update the underlying record of the form with the latest data
+								// that is currently in the form. This posts the data back to the list
+								// because we have the record as a reference.
+								inviteForm.updateRecord(inviteForm.record);
+								// hide the popup again since we are done
+								invitePopup.hide();
+							}
+						},{
+							ui: 'default',
+							text: 'Cancel',
+							handler: function(){
+								// since the user doesn't want to do anything with this record
+								// simply hide the popup.
+								invitePopup.hide();
+							}
+						}]
+					}],
+		            items : [
+		                {
+		                    xtype  : 'form',
+							itemId: 'invite-form',
+							items: [{
+								xtype: 'textfield',
+								label: "First",
+								name: "firstName",
+								placeHolder: "Enter First Name Here"
+							},{
+								xtype: 'textfield',
+								label: "Last",
+								name: "lastName",
+								placeHolder: "Enter First Name Here"
+							},{
+								xtype: "selectfield",
+								label: "Status",
+								name: "inviteStatus",
+								placeholder: "nothing",
+							 	options: [
+									{ 
+										text: 'Undecided',  
+										value: 'undecided'
+									}, { 
+										text: 'Accepted',  
+										value: 'accept'
+									}, {
+										text: 'Declined', 
+										value: 'decline'
+									}
+		                        ]
+							}]
+		                }
+		            ]
+		        });
+		
+				// handle showing the invite popup, and loading it with the right record from
+				// the list. "thisView" is a reference to the list, "idx" is the index of the record
+				// that was clicked.
+				function showInviteSheet(thisView, idx) {
+					// since we're told the index of the clicked list item, we must retrieve the 
+					// actual record from the store using the index
+		            var rec = thisView.store.getAt(idx);		
+		
+					// now that we have the record, get a handle on the form, and load the record into it
+					invitePopup.down("#invite-form").load(rec);
+		
+					// since we want to be user-friendly, we get a handle on the form, and change it's
+					// to reflect that of the invitee being edited
+		            invitePopup.getComponent('title').setTitle('Edit - '+rec.get('lastName') + ', '+rec.get('firstName'));
+		
+					// of course, we need to show the popup so the user can interact with it
+		            invitePopup.show();
+		        };
+		    }
+		});
+	</script>
+</head>
+<body></body>
+</html>

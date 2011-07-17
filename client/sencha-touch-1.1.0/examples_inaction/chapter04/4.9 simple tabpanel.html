@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Panels</title>
+    <link rel="stylesheet" href="../../sencha-touch-1.1.0/resources/css/sencha-touch.css" type="text/css">
+    <script type="text/javascript" src="../../sencha-touch-1.1.0/sencha-touch-debug-w-comments.js"></script>
+
+<script type="text/javascript">
+
+Ext.setup({
+    onReady: function() {
+
+
+        new Ext.TabPanel({
+            fullscreen          : true,
+            cardSwitchAnimation : 'cube',
+            ui                  : 'light',
+            tabBar              : {
+                dock   : 'top',
+                layout : {
+                    pack : 'center'
+                }
+            },
+            items : [
+                 {
+                    style  : 'background-color: #FCC;',
+                    html   : 'Panel 1',
+                    title  : 'Users'
+                },
+                {
+                    style  : 'background-color: #CFC;',
+                    html   : 'Panel 2',
+                    title  : 'Admins'
+                },
+                {
+                    style : 'background-color: #CCF;',
+                    html  : 'Panel 3',
+                    title : 'Locations'
+                }
+            ]
+
+        });
+    }
+});
+
+
+
+</script>
+
+</head>
+<body></body>
+</html>

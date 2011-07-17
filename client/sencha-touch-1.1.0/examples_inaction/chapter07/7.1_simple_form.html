@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
+    <title>Chapter 7 - Listing 7.1</title>
+	<link rel="stylesheet" href="../sencha/touch-1.0.2/resources/css/sencha-touch.css" type="text/css">
+	<script type="text/javascript" src="../sencha/touch-1.0.2/sencha-touch-debug.js"></script>    
+
+	<script type="text/javascript">
+	/*
+		Sample code for a simple form
+	*/
+
+		Ext.setup({
+		    glossOnIcon: false,
+		    icon: 'icon.png',
+			tabletStartupScreen: 'tablet_startup.png',
+		    phoneStartupScreen: 'phone_startup.png',
+
+		    onReady: function() {
+				
+				var myPanel = new Ext.form.FormPanel({
+					fullscreen: true,
+					items: [
+						{
+							xtype: "textfield",
+							label: "First",
+							name: "firstName",
+							placeHolder: "Enter First Name Here"
+						}, {
+							xtype: "textfield",
+							label: "Last",
+							name: "lastName",
+							placeHolder: "Enter Last Name Here"
+						}, {
+							xtype: "selectfield",
+							label: "Status",
+							name: "inviteStatus",
+							placeholder: "nothing",
+						 	options: [
+								{ 
+									text: 'Undecided',  
+									value: 'undecided'
+								}, { 
+									text: 'Accepted',  
+									value: 'accept'
+								}, {
+									text: 'Declined', 
+									value: 'decline'
+								}
+	                        ]
+						}
+					]
+				}); // end myPanel
+							
+		    } // end onReady()
+		}); // end setup()
+
+	</script>
+</head>
+<body></body>
+</html>

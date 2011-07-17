@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
+    <title>Chapter 3 - Listing 3.4</title>
+	<link rel="stylesheet" href="../sencha/touch-1.0.2/resources/css/sencha-touch.css" type="text/css">
+	<script type="text/javascript" src="../sencha/touch-1.0.2/sencha-touch-debug.js"></script>    
+
+	<script type="text/javascript">
+	/*
+		Sample code for Fit layout
+	*/
+
+		Ext.setup({
+		    glossOnIcon: false,
+		    icon: 'icon.png',
+			tabletStartupScreen: 'tablet_startup.png',
+		    phoneStartupScreen: 'phone_startup.png',
+
+		    onReady: function() {	
+				        
+				var myPanel = new Ext.Panel({
+				    fullscreen: true,
+					layout: 'fit',
+					dockedItems: [
+						{
+							dock : 'top',
+							xtype: 'toolbar',
+							title: 'Fit Layout'
+						}
+					],
+					items:[
+						{
+							xtype: 'panel',
+							style: 'background-color: pink; padding:20px',
+							html: 'I Fit in my parent'
+						}
+					]
+				});
+				
+		    } // end onReady()
+		}); // end setup()
+
+	</script>
+</head>
+<body></body>
+</html>

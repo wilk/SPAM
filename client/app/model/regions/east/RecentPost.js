@@ -24,6 +24,10 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 		name: 'article' ,
 		type: 'string'
 	} , {
+		// Content of article without tags, text only
+		name: 'articleText' ,
+		type: 'string'
+	} , {
 		// The owner of article
 		name: 'resource' ,
 		type: 'string'

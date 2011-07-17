@@ -25,7 +25,7 @@ Ext.define ('SC.view.regions.east.RecentPost' , {
 	// Body
 	columns: [{
 		header: 'Articles' ,
-		dataIndex: 'article' ,
+		dataIndex: 'articleText' ,
 		flex: 1
 	}]
 });

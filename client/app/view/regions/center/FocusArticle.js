@@ -14,8 +14,8 @@ Ext.define ('SC.view.regions.center.FocusArticle' , {
 	store: 'regions.center.Articles' ,
 	
 	// Configuration
-	height: 300 ,
-	width: 400 ,
+	height: 350 ,
+	width: 450 ,
 	autoWidth: true ,
 	autoHeight: true ,
 	bodyPadding: 5 ,

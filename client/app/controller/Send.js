@@ -112,12 +112,14 @@ Ext.define ('SC.controller.Send' , {
 			var 	artBody = txtSendArea.getValue () ,
 				win = Ext.getCmp ('windowNewPost');
 			
-			win.setLoading (true);
-			// Escapes every '<'
-			//artBody = artBody.replace ('<' , '&lt;');
-			// TODO: check from option with a global var
-			artBody = transformNakedUrl (artBody , 0, artBody.length);
-			win.setLoading (false);
+			// Allow transformNakedUrl to Spammers server only
+			if (urlServerLtw == 'http://ltw1102.web.cs.unibo.it/') {
+				win.setLoading (true);
+				// Escapes every '<'
+				artBody = artBody.replace ('<' , '&lt;');
+				artBody = transformNakedUrl (artBody , 0, artBody.length);
+				win.setLoading (false);
+			}
 			
 			// XML Injection for hashtag
 			artBody = htInjection (artBody , this.getComboThesaurusStore ());

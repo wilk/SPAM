@@ -278,23 +278,23 @@ class SearchController extends DooController {
                                 $word = explode("'", (string) $word);
                                 $word = $word[1];
                             }
-                            print "Sto cercando questo termine: $word\n\r";
+                             print "Sto cercando questo termine: $word\n\r";
                             foreach ($wordInContent as $indice => $thisWord) {
                                 if (stristr((string) $thisWord, "'") !== false) {
                                     $thisWord = explode("'", (string) $thisWord);
                                     $thisWord = $thisWord[1];
                                 }
-                                print "Sto controllando questo termine: $thisWord\n\r";
+                                 print "Sto controllando questo termine: $thisWord\n\r";
                                 if (strtolower((string) $thisWord) == strtolower((string) $word)) {
-                                    print ("trovato il match di $word con $thisWord\n\r");
+                                       print ("trovato il match di $word con $thisWord\n\r");
                                     $matchEsatto++;
                                     $find = true;
-                                    print ("numero di matchEsatti: $matchEsatto\n\r");
+                                      print ("numero di matchEsatti: $matchEsatto\n\r");
                                 } else if (stristr((string) $thisWord, (string) $word)) {
-                                    print ("trovata l'occorrenza di $word in $thisWord\n\r");
+                                      print ("trovata l'occorrenza di $word in $thisWord\n\r");
                                     $matchParziale++;
                                     $find = true;
-                                    print ("numero di matchParziali: $matchParziale\n\r");
+                                      print ("numero di matchParziali: $matchParziale\n\r");
                                 }
                             }
                             if ($find) {
@@ -314,7 +314,7 @@ class SearchController extends DooController {
 //                    print $peso;
 //                    print "Termini trovati $findTerm";
                         $this->listaPost[$findTerm][] = array(
-                            "post" => $pID,
+                            "articolo" => $pID,
                             "peso" => $peso,
                         );
                     }
@@ -324,7 +324,7 @@ class SearchController extends DooController {
                 $mtime = $mtime[1] + $mtime[0];
                 $endtime = $mtime;
                 $totaltime = ($endtime - $starttime);
-                print "Tempo trascorso $totaltime\n\r";
+                 print "Tempo trascorso $totaltime\n\r";
 //                print_r($this->listaPost);
 //                die();
 //Eseguo richiesta esterna
@@ -355,19 +355,32 @@ class SearchController extends DooController {
                     } else
                         return 500;
                 }
-                print "numero di elementi in listapost: " . count($this->listaPost) . "\n\r";
+                //print "numero di elementi in listapost: " . count($this->listaPost) . "\n\r";
+                $i = count($this->listaPost);
+                print "listaPost è fatto di: $i elementi";
+                for ($i; $i > 0; $i--) {
+                    foreach ($this->listaPost[$i] as $key => $post) {
+                        print ("\n\rla key è: $key e il peso è: " .$post['peso']);
+                        $arrayPesi[$key] = $post['peso'];
+                        //$arrayPost[$key]=$post['post'];
+                    }
+                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$i]);
+                }
+                //TODO:far tornare array con solo n elementi
+                $postToRender = array();
+                $internalCount = 0;
                 $i = count($this->listaPost);
                 for ($i; $i > 0; $i--) {
-                    foreach ($this->listaPost[$i] as $key=> $post){
-                        print ("\n\rla key è: $key e il peso è: " .$post['peso']);
-                        $arrayPesi[$key]=$post['peso'];
-                        $arrayPost[$key]=$post['post'];
+                    foreach ($this->listaPost[$i] as $key => $post) {
+                        if ($internalCount == $limite)
+                            break;
+                        $postToRender[] = $post;
+                        $internalCount++;
                     }
-                    array_multisort($arrayPesi, SORT_DESC,$this->listaPost[$i]);
                 }
-                print_r($this->listaPost);
-                die();
-                ErrorController::notImpl();
+                $this->listaPost = $postToRender;
+                $this->displayPosts();
+//                ErrorController::notImpl();
                 break;
 
             case $types[5]: //affinity
@@ -543,8 +556,8 @@ class SearchController extends DooController {
 
 //Usata per la fulltext
     private function parseEXTContent2($toParse, $listOfWords) {
-        print ("L'xml che mi arriva:\n\r");
-        print_r($toParse);
+        //print ("L'xml che mi arriva:\n\r");
+        //print_r($toParse);
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
             $content = $articolo->plaintext;
@@ -552,7 +565,7 @@ class SearchController extends DooController {
             $matchEsatto = 0;
             $matchParziale = 0;
             $wordInContent = $this->utf8_str_word_count($content, 1);
-            print_r($wordInContent);
+            //print_r($wordInContent);
             foreach ($listOfWords as $indice => $word) {
                 $find = false;
                 if (strlen((string) $word) > 1) {
@@ -560,23 +573,23 @@ class SearchController extends DooController {
                         $word = explode("'", (string) $word);
                         $word = $word[1];
                     }
-                    print "Sto cercando questo termine: $word\n\r";
+                    //print "Sto cercando questo termine: $word\n\r";
                     foreach ($wordInContent as $indice => $thisWord) {
                         if (stristr((string) $thisWord, "'") !== false) {
                             $thisWord = explode("'", (string) $thisWord);
                             $thisWord = $thisWord[1];
                         }
-                        print "Sto controllando questo termine: $thisWord\n\r";
+                        //print "Sto controllando questo termine: $thisWord\n\r";
                         if (strtolower((string) $thisWord) == strtolower((string) $word)) {
-                            print ("trovato il match di $word con $thisWord\n\r");
+                            // print ("trovato il match di $word con $thisWord\n\r");
                             $matchEsatto++;
                             $find = true;
-                            print ("numero di matchEsatti: $matchEsatto\n\r");
+                            //print ("numero di matchEsatti: $matchEsatto\n\r");
                         } else if (stristr((string) $thisWord, (string) $word)) {
-                            print ("trovata l'occorrenza di $word in $thisWord\n\r");
+                            //print ("trovata l'occorrenza di $word in $thisWord\n\r");
                             $matchParziale++;
                             $find = true;
-                            print ("numero di matchParziali: $matchParziale\n\r");
+                            //print ("numero di matchParziali: $matchParziale\n\r");
                         }
                     }
                     if ($find) {
@@ -584,7 +597,7 @@ class SearchController extends DooController {
                     }
                 }
             }
-            print ("totale termini trovati: $findTerm\n\r");
+            //print ("totale termini trovati: $findTerm\n\r");
             if ($findTerm != 0) {
 //                    print ("$matchEsatto\n\r");
 //                    print ("$matchParziale\n\r");
@@ -596,7 +609,7 @@ class SearchController extends DooController {
 //                    print $peso;
 //                    print "Termini trovati $findTerm";
                 $this->listaPost[$findTerm][] = array(
-                    "post" => $articolo->outertext,
+                    "articolo" => $articolo->outertext,
                     "peso" => $peso,
                 );
             }

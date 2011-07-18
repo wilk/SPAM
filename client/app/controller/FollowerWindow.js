@@ -54,7 +54,7 @@ Ext.define ('SC.controller.FollowerWindow' , {
 		
 		// Ajax request
 		Ext.Ajax.request ({
-			url: urlServerLtw + 'setfollow' ,
+			url: optionSin.getUrlServerLtw () + 'setfollow' ,
 			// Sending server and user ID of this article
 			params: { 
 				serverID: document.getElementById('followerUserServer').innerHTML ,
@@ -66,7 +66,7 @@ Ext.define ('SC.controller.FollowerWindow' , {
 				storeFollowers.removeAll ();
 				
 				// Update URL
-				storeFollowers.getProxy().url = urlServerLtw + 'followers';
+				storeFollowers.getProxy().url = optionSin.getUrlServerLtw () + 'followers';
 				
 				// Reload followers store to refresh user panel
 				storeFollowers.load (function (record, option, success) {
@@ -116,7 +116,7 @@ Ext.define ('SC.controller.FollowerWindow' , {
 		winFollower.hide ();
 		
 		// Set appropriate URL
-		storeArticles.getProxy().url = urlServerLtw + 'search/10/author/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
+		storeArticles.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/author/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
 		
 		// Retrieve articles
 		requestSearchArticles (storeArticles, null, 0);

@@ -64,7 +64,7 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 	// REST Proxy for REST requests
 	proxy: {
 		type: 'rest' ,
-		url: urlServerLtw + 'search/10/recent' ,
+		url: optionSin.getUrlServerLtw () + 'search/10/recent/' ,
 		
 		// To avoid url problems with other federated servers
 		filterParam: null ,

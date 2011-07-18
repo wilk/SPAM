@@ -120,7 +120,7 @@ function checkIfUserLogged () {
 // @param store: update the recent articles store
 function retrieveRecentArticles (store) {
 	// Set URL dinamically
-	store.getProxy().url = urlServerLtw + 'search/10/recent';
+	store.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/recent/';
 	
 	// Make an AJAX request with JQuery to read XML structure (ExtJS can't read XML with mixed content model)
 	$.ajax({

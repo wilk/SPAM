@@ -36,7 +36,7 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 		var model = store.getRange()[index];
 		
 		// Set appropriate URL
-		store.getProxy().url = urlServerLtw + 'search/5/affinity' + model.get ('about');
+		store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/affinity' + model.get ('about');
 	
 		// Retrieve articles
 		requestSearchArticles (store, model, index);

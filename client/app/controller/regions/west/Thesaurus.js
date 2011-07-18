@@ -41,7 +41,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		var storeComboThesaurus = this.getComboThesaurusStore ();
 		
 		// Choose which thesaurus to load (shared or extended)
-		var urlThesaurus = (checkIfUserLogged () ? urlServerLtw + 'thesaurus' : 'app/data/tesauro.xml');
+		var urlThesaurus = (checkIfUserLogged () ? optionSin.getUrlServerLtw () + 'thesaurus' : 'app/data/tesauro.xml');
 		
 		// set namespaces
 		skosNS = 'http://www.w3.org/2004/02/skos/core#';
@@ -113,6 +113,14 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 				append (child[i].object, node);
 			}
 		}
+		
+		// Set addterm button visibile if user is already logged in, otherwise set hidden
+		if (checkIfUserLogged ()) {
+			Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
+		}
+		else {
+			Ext.getCmp('btnThesaurusAddTerm').setVisible (false);
+		}
 	} ,
 	
 	// @brief Starts a search related to a term just db clicked by the user
@@ -120,7 +128,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		var storeArticle = this.getRegionsCenterArticlesStore ();
 		
 		// Set appropriate URL
-		storeArticle.getProxy().url = urlServerLtw + 'search/5/related/' + record.get ('text');
+		storeArticle.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/related/' + record.get ('text');
 	
 		// Retrieve articles
 		requestSearchArticles (store, null, 0);

@@ -16,7 +16,7 @@ function htInjection (text, store) {
 		spanHTExternal = '<span typeof="ctag:Tag" property="ctag:label">' ,
 		spanClose = '</span>';
 		
-	var extendedNS = urlServerLtw + 'thesaurus';
+	var extendedNS = optionSin.getPureUrlServerLtw () + 'thesaurus';
 	var sharedNS = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
 	
 	// All words without spaces

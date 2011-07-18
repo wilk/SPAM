@@ -20,7 +20,7 @@ Ext.define ('SC.model.regions.west.Followers' , {
 	// REST Proxy for REST requests
 	proxy: {
 		type: 'rest' ,
-		url: urlServerLtw + 'followers' ,
+		url: optionSin.getUrlServerLtw () + 'followers' ,
 		
 		// To avoid url problems with other federated servers
 		filterParam: null ,

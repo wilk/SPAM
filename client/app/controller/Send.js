@@ -100,9 +100,6 @@ Ext.define ('SC.controller.Send' , {
 	
 	// @brief Send the article
 	sendPost : function (button) {
-		// TODO: parsing text to finding hashtag
-		// TODO: hashtag autocomplete
-		
 		// Articles store
 		var store = this.getRegionsCenterArticlesStore ();
 		
@@ -113,7 +110,7 @@ Ext.define ('SC.controller.Send' , {
 				win = Ext.getCmp ('windowNewPost');
 			
 			// Allow transformNakedUrl to Spammers server only
-			if (urlServerLtw == 'http://ltw1102.web.cs.unibo.it/') {
+			if (optionSin.getUrlServerLtw () == 'http://ltw1102.web.cs.unibo.it/') {
 				win.setLoading (true);
 				// TODO: Escapes every '<'
 				//artBody = artBody.replace ('<' , '\<');
@@ -159,7 +156,7 @@ Ext.define ('SC.controller.Send' , {
 			
 			// If it's a reply, setup url and params of the ajax request
 			if (replySin.isReplying ()) {
-				ajaxUrl = urlServerLtw + 'replyto';
+				ajaxUrl = optionSin.getUrlServerLtw () + 'replyto';
 				ajaxParams = {
 					serverID : replySin.getServerID () ,
 					userID : replySin.getUserID () ,
@@ -168,7 +165,7 @@ Ext.define ('SC.controller.Send' , {
 				}
 			}
 			else {
-				ajaxUrl = urlServerLtw + 'post';
+				ajaxUrl = optionSin.getUrlServerLtw () + 'post';
 				ajaxParams = {
 					article : article
 				}
@@ -191,7 +188,7 @@ Ext.define ('SC.controller.Send' , {
 					}
 					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = urlServerLtw + 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);

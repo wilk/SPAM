@@ -29,7 +29,7 @@ Ext.define ('SC.controller.regions.Center' , {
 	setArtDisp : function (region) {
 		var store = this.getRegionsCenterArticlesStore ();
 
-		store.getProxy().url = urlServerLtw + 'search/10/recent';
+		store.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/recent/';
 		
 		requestSearchArticles (store, null, 0);
 	}

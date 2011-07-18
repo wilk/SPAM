@@ -19,12 +19,14 @@
 			// Global variable for checking geolocation supports
 			var browserGeoSupportFlag = new Boolean ();
 			var googleMap;
-			//var urlServerLtw = 'http://ltw1102.web.cs.unibo.it/';
-			var urlServerLtw = '';
 			
 			// Initialize singletons
 			var replySin = SingletonReply.getInstance ();
 			var errorSin = SingletonErrors.getInstance ();
+			var optionSin = SingletonOption.getInstance ();
+			
+			// Setup default urls
+			optionSin.resetOption ();
 		
 			// Import any class of ExtJS 4
 			Ext.require (['*']);

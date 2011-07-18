@@ -92,7 +92,7 @@ Ext.define ('SC.controller.regions.North' , {
 
 					// AJAX request to login
 					Ext.Ajax.request ({
-						url: urlServerLtw + 'login' ,
+						url: optionSin.getUrlServerLtw () + 'login' ,
 						method: 'POST' ,
 						// TODO: yep? -> withCredentials: true ,
 						params: { username: txtUser } ,
@@ -115,9 +115,6 @@ Ext.define ('SC.controller.regions.North' , {
 	
 								bNewPost.setVisible (true);
 						
-								// Show button to add new terms to the thesaurus
-								Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
-								
 								// Request extended thesaurus
 								Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
 							}
@@ -164,7 +161,7 @@ Ext.define ('SC.controller.regions.North' , {
 			// AJAX request to logout
 			Ext.Ajax.request ({
 				method: 'POST' ,
-				url: urlServerLtw + 'logout' ,
+				url: optionSin.getUrlServerLtw () + 'logout' ,
 				success: function () {
 					btnLogin.setText ('Login');
 		
@@ -182,9 +179,6 @@ Ext.define ('SC.controller.regions.North' , {
 						Ext.getCmp('winFocusArticle').setVisible (false);
 						Ext.getCmp('winFocusArticle').setVisible (true);
 					}
-					
-					// Hide button to add new terms to the thesaurus
-					Ext.getCmp('btnThesaurusAddTerm').setVisible (false);
 					
 					// Request shared thesaurus
 					Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');

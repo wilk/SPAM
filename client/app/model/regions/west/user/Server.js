@@ -17,7 +17,7 @@ Ext.define ('SC.model.regions.west.user.Server', {
 	
 	proxy: {
 		type: 'rest' ,
-		url: urlServerLtw + 'servers' ,
+		url: optionSin.getUrlServerLtw () + 'servers' ,
 		
 		// To avoid url problems with other federated servers
 		filterParam: null ,

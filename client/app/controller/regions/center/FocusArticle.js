@@ -84,7 +84,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		
 		// Ajax request
 		Ext.Ajax.request ({
-			url: urlServerLtw + 'setlike' ,
+			url: optionSin.getUrlServerLtw () + 'setlike' ,
 			// Sending server, user and post ID of this article
 			params: {
 				serverID: focusModel.get ('server') ,
@@ -159,7 +159,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		
 		// Ajax request
 		Ext.Ajax.request ({
-			url: urlServerLtw + 'setfollow' ,
+			url: optionSin.getUrlServerLtw () + 'setfollow' ,
 			// Sending server and user ID of this article
 			params: { 
 				serverID: focusModel.get ('server') ,
@@ -182,7 +182,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				followersStore.removeAll ();
 				
 				// Update proxy url
-				followersStore.getProxy().url = urlServerLtw + 'followers';
+				followersStore.getProxy().url = optionSin.getUrlServerLtw () + 'followers';
 				
 				// Reload followers store to refresh user panel
 				followersStore.load (function (record, option, success) {
@@ -245,7 +245,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		
 		// Ajax request
 		Ext.Ajax.request ({
-			url: urlServerLtw + 'respam' ,
+			url: optionSin.getUrlServerLtw () + 'respam' ,
 			// Sending server and user ID of this article
 			params: { 
 				serverID: focusModel.get ('server') ,

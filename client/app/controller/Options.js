@@ -86,11 +86,15 @@ Ext.define ('SC.controller.Options' , {
 			
 			// Local requests
 			if (record.get ('serverID') == 'Spammers') {
-				urlServerLtw = record.get ('serverURL');
+				optionSin.setUrlServerLtw (record.get ('serverURL'));
+				optionSin.setPureUrlServerLtw (record.get ('serverURL'));
+				optionSin.setServerID (record.get ('serverID'));
 			}
 			// Cross requests (http://ltw1102.web.cs.unibo.it/federated-servers/serverID/)
 			else {
-				urlServerLtw = 'http://ltw1102.web.cs.unibo.it/federated-servers/' + record.get ('serverID') + '/';
+				optionSin.setUrlServerLtw ('http://ltw1102.web.cs.unibo.it/federated-servers/' + record.get ('serverID') + '/');
+				optionSin.setPureUrlServerLtw (record.get ('serverURL'));
+				optionSin.setServerID (record.get ('serverID'));
 			}
 			
 			Ext.Msg.show ({
@@ -110,8 +114,7 @@ Ext.define ('SC.controller.Options' , {
 		txtServerUrl.setValue ('Spammers');
 		
 		// Get the associated field of serverID (e.g. Spammers -> ltw1102.web.cs.unibo.it)
-		var record = this.getServerStore.findRecord ('serverID' , txtServerUrl.getValue ());
-		urlServerLtw = record.get ('serverURL');
+		optionSin.resetOption ();
 		
 		Ext.Msg.show ({
 			title: 'Success.',
@@ -217,7 +220,7 @@ Ext.define ('SC.controller.Options' , {
 		
 			Ext.Ajax.request ({
 				method: 'POST' ,
-				url: urlServerLtw + 'servers' ,
+				url: optionSin.getUrlServerLtw () + 'server' ,
 				params: {servers : serverList} ,
 				success: function (response) {
 					Ext.Msg.show ({

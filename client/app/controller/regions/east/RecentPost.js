@@ -42,7 +42,7 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 	// Display articles when someone dclick on this article
 	displayArticle: function (view, record, item, index, event) {
 		// Set appropriate URL
-		store.getProxy().url = urlServerLtw + 'search/5/affinity' + record.get ('about');
+		store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/affinity' + record.get ('about');
 	
 		// Retrieve articles
 		requestSearchArticles (store, record, index);

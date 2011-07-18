@@ -127,7 +127,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 			switch (sCombo.getValue ()) {
 				case 'Author' :
 					// Set appropriate URL
-					store.getProxy().url = urlServerLtw + 'search/' + limit + '/author' + sTextfield.getValue ();
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/author' + sTextfield.getValue ();
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
@@ -135,35 +135,23 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					break;
 				case 'Following' :
 					// Set appropriate URL
-					store.getProxy().url = urlServerLtw + 'search/' + limit + '/following';
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/following';
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
 					
 					break;
 				case 'Recent' :
-					// TODO: check if is it possible to search by recent without terms
-//					if (text.isValid ()) {
-						// Set appropriate URL
-						store.getProxy().url = urlServerLtw + 'search/' + limit + '/recent/' + sTextfield.getValue ();
+					// Set appropriate URL
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/recent/' + sTextfield.getValue ();
 					
-						// Retrieve articles
-						requestSearchArticles (store, null, 0);
-//					}
-					// If textfield is empty, return an error
-//					else {
-//						Ext.Msg.show ({
-//							title: 'Error ' ,
-//							msg: 'You must specify the term to search.' ,
-//							buttons: Ext.Msg.OK,
-//							icon: Ext.Msg.ERROR
-//						});
-//					}
+					// Retrieve articles
+					requestSearchArticles (store, null, 0);
 					break;
 				case 'Related' :
 					if (sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = urlServerLtw + 'search/' + limit + '/related/' + sTextfield.getValue ();
+						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/related/' + sTextfield.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);
@@ -181,7 +169,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 				case 'Fulltext' :
 					if (sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = urlServerLtw + 'search/' + limit + '/fulltext/' + sTextfield.getValue ();
+						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/fulltext/' + sTextfield.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);
@@ -200,7 +188,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 				case 'Affinity' :
 					if (sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = urlServerLtw + 'search/' + limit + '/affinity' + sTextfield.getValue ();
+						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/affinity' + sTextfield.getValue ();
 					
 						// Retrieve articles
 						requestSearchArticles (store, null, 0);

@@ -93,8 +93,6 @@ Ext.define ('SC.controller.SendResource' , {
 	
 	// @brief Send the article
 	sendPost : function (button) {
-		// TODO: hashtag autocomplete
-		
 		// Articles store
 		var store = this.getRegionsCenterArticlesStore ();
 		
@@ -141,7 +139,7 @@ Ext.define ('SC.controller.SendResource' , {
 			
 			// If it's a reply, setup url and params of the ajax request
 			if (replySin.isReplying ()) {
-				ajaxUrl = urlServerLtw + 'replyto';
+				ajaxUrl = optionSin.getUrlServerLtw () + 'replyto';
 				ajaxParams = {
 					serverID : replySin.getServerID () ,
 					userID : replySin.getUserID () ,
@@ -150,7 +148,7 @@ Ext.define ('SC.controller.SendResource' , {
 				}
 			}
 			else {
-				ajaxUrl = urlServerLtw + 'post';
+				ajaxUrl = optionSin.getUrlServerLtw () + 'post';
 				ajaxParams = {
 					article : article
 				}
@@ -173,7 +171,7 @@ Ext.define ('SC.controller.SendResource' , {
 					}
 					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = urlServerLtw + 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);

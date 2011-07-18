@@ -11,8 +11,8 @@ Ext.define ('SC.controller.AddTerm' , {
 	
 	// Views
 	views: ['AddTerm'] ,
-	stores: ['ComboThesaurus'] ,
-	models: ['ComboThesaurus'] ,
+	stores: ['ComboThesaurus' , 'Server'] ,
+	models: ['ComboThesaurus' , 'Server'] ,
 			
 	// Configuration
 	init: function () {
@@ -69,9 +69,16 @@ Ext.define ('SC.controller.AddTerm' , {
 			// Check if the parent term is present into the thesaurus
 			if (termToCheck != null) {
 			
-				// Check if the parent term is a leaf
-				if (termToCheck.get ('isLeaf')) {
-				
+				// Check if term belongs to the shared thesaurus and check if it's a leaf (with magic number 3 (depth))
+				if ((termToCheck.get ('ns') == 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus') && (termToCheck.get('path').split('/').length < 4)) {
+					Ext.Msg.show ({
+						title: 'Error' ,
+						msg: cValue + ' is not a leaf. Please choose a leaf.' ,
+						buttons: Ext.Msg.OK,
+						icon: Ext.Msg.ERROR
+					});
+				}
+				else {				
 					termToCheck = storeComboThesaurus.findRecord ('term' , tValue);
 					
 					// Check if term is present into thesaurus
@@ -79,7 +86,7 @@ Ext.define ('SC.controller.AddTerm' , {
 				
 						// AJAX request to send new term to add
 						Ext.Ajax.request ({
-							url: urlServerLtw + 'addterm' ,
+							url: optionSin.getUrlServerLtw () + 'addterm' ,
 							method: 'POST' ,
 							params: {
 								parentterm : cValue ,
@@ -117,14 +124,6 @@ Ext.define ('SC.controller.AddTerm' , {
 							icon: Ext.Msg.ERROR
 						});
 					}
-				}
-				else {
-					Ext.Msg.show ({
-						title: 'Error' ,
-						msg: cValue + ' is not a leaf. Please choose a leaf.' ,
-						buttons: Ext.Msg.OK,
-						icon: Ext.Msg.ERROR
-					});
 				}
 			}
 			else {

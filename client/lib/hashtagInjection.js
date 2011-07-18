@@ -45,7 +45,6 @@ function htInjection (text, store) {
 			var recordOfTerm = store.findRecord ('term' , wordToSearch);
 			
 			if (recordOfTerm != null) {
-				// TODO: problem with terms with punctuation (like ansi_c)
 				// Handle the appropriate namespace
 				switch (recordOfTerm.get ('ns')) {
 					// If hashtag belongs to the extended thesaurus, set as extended

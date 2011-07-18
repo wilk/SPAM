@@ -49,6 +49,9 @@ Ext.define ('SC.controller.regions.North' , {
 	
 	// New post handler
 	sendNewPost : function (button) {
+		// Reset reply singleton
+		replySin.setToReply (false);
+		
 		var selectPostWindow = Ext.getCmp ('windowSelectPost');
 		selectPostWindow.show ();
 	} ,
@@ -91,7 +94,7 @@ Ext.define ('SC.controller.regions.North' , {
 					Ext.Ajax.request ({
 						url: urlServerLtw + 'login' ,
 						method: 'POST' ,
-						withCredentials: true ,
+						// TODO: yep? -> withCredentials: true ,
 						params: { username: txtUser } ,
 						success: function (response) {
 							// If server sets his cookies
@@ -129,8 +132,8 @@ Ext.define ('SC.controller.regions.North' , {
 						} ,
 						failure: function (error) {
 							Ext.Msg.show ({
-								title: 'Error ' + error.status ,
-								msg: error.responseText ,
+								title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+								msg: errorSin.getErrorText (error.status) ,
 								buttons: Ext.Msg.OK,
 								icon: Ext.Msg.ERROR
 							});
@@ -188,8 +191,8 @@ Ext.define ('SC.controller.regions.North' , {
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({
-							title: 'Error ' + error.status ,
-							msg: error.responseText ,
+							title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+							msg: errorSin.getErrorText (error.status) ,
 							buttons: Ext.Msg.OK,
 							icon: Ext.Msg.ERROR
 						});

@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="lib/findSpanTags.js"> </script>
 		<script type="text/javascript" src="lib/supportFunctions.js"> </script>
 		<script type="text/javascript" src="lib/parser.js"> </script>
+		<script type="text/javascript" src="lib/singletons.js"> </script>
 		<script type="text/javascript" src="jquery/jquery-1.6.1.js"> </script>
 		<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
 		<script type="text/javascript" src="ext/ext-all-debug.js"> </script>
@@ -20,6 +21,10 @@
 			var googleMap;
 			//var urlServerLtw = 'http://ltw1102.web.cs.unibo.it/';
 			var urlServerLtw = '';
+			
+			// Initialize singletons
+			var replySin = SingletonReply.getInstance ();
+			var errorSin = SingletonErrors.getInstance ();
 		
 			// Import any class of ExtJS 4
 			Ext.require (['*']);

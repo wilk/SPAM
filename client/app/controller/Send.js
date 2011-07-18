@@ -98,7 +98,7 @@ Ext.define ('SC.controller.Send' , {
 		txtSendArea.getFocusEl().setSelectionRange (len, len);
 	} ,
 	
-	// @brief
+	// @brief Send the article
 	sendPost : function (button) {
 		// TODO: parsing text to finding hashtag
 		// TODO: hashtag autocomplete
@@ -115,8 +115,8 @@ Ext.define ('SC.controller.Send' , {
 			// Allow transformNakedUrl to Spammers server only
 			if (urlServerLtw == 'http://ltw1102.web.cs.unibo.it/') {
 				win.setLoading (true);
-				// Escapes every '<'
-				artBody = artBody.replace ('<' , '&lt;');
+				// TODO: Escapes every '<'
+				//artBody = artBody.replace ('<' , '\<');
 				artBody = transformNakedUrl (artBody , 0, artBody.length);
 				win.setLoading (false);
 			}
@@ -154,10 +154,30 @@ Ext.define ('SC.controller.Send' , {
 			// Complete article building
 			article += artFooter;
 			
+			var ajaxUrl;
+			var ajaxParams;
+			
+			// If it's a reply, setup url and params of the ajax request
+			if (replySin.isReplying ()) {
+				ajaxUrl = urlServerLtw + 'replyto';
+				ajaxParams = {
+					serverID : replySin.getServerID () ,
+					userID : replySin.getUserID () ,
+					postID : replySin.getPostID () ,
+					article : article
+				}
+			}
+			else {
+				ajaxUrl = urlServerLtw + 'post';
+				ajaxParams = {
+					article : article
+				}
+			}
+			
 			// AJAX Request
 			Ext.Ajax.request ({
-				url: urlServerLtw + 'post' ,
-				params: { article: article } ,
+				url: ajaxUrl ,
+				params: ajaxParams ,
 				success: function (response) {
 					// On success, close window and display last 5 posts of the user
 					win.close ();
@@ -178,8 +198,8 @@ Ext.define ('SC.controller.Send' , {
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({
-						title: 'Error ' + error.status ,
-						msg: error.responseText ,
+						title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+						msg: errorSin.getErrorText (error.status) ,
 						buttons: Ext.Msg.OK,
 						icon: Ext.Msg.ERROR
 					});

@@ -62,7 +62,8 @@ function requestSearchArticles (store, focus, focusIndex) {
 					dislike: numDislike ,
 					setlike: ifLikeDislike ,
 					user: $(this).find('article').attr('resource').split('/')[2] ,
-					server: $(this).find('article').attr('resource').split('/')[1]
+					server: $(this).find('article').attr('resource').split('/')[1] ,
+					post: $(this).find('article').attr('about').split('/')[3]
 				});
 			});
 			
@@ -87,8 +88,8 @@ function requestSearchArticles (store, focus, focusIndex) {
 		} ,
 		error: function (xhr, type, text) {
 			Ext.Msg.show ({
-				title: type,
-				msg: text ,
+				title: xhr.status + ' ' + errorSin.getErrorTitle (xhr.status) ,
+				msg: errorSin.getErrorText (xhr.status) ,
 				buttons: Ext.Msg.OK,
 				icon: Ext.Msg.ERROR
 			});
@@ -168,18 +169,10 @@ function retrieveRecentArticles (store) {
 					dislike: numDislike ,
 					setlike: ifLikeDislike ,
 					user: $(this).find('article').attr('resource').split("/")[2] ,
-					server: $(this).find('article').attr('resource').split('/')[1]
+					server: $(this).find('article').attr('resource').split('/')[1] ,
+					post: $(this).find('article').attr('about').split('/')[3]
 				});
 			});
-		} ,
-		error: function (xhr, type, text) {
-			// TODO: yep?
-//			Ext.Msg.show ({
-//				title: type,
-//				msg: text ,
-//				buttons: Ext.Msg.OK,
-//				icon: Ext.Msg.ERROR
-//			});
 		}
 	});
 }

@@ -99,10 +99,10 @@ Ext.define ('SC.controller.AddTerm' , {
 								// Reload thesaurus panel
 								Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
 							} ,
-							failure: function (response) {
+							failure: function (error) {
 								Ext.Msg.show ({
-									title: 'Error ' + response.status ,
-									msg: response.responseText ,
+									title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+									msg: errorSin.getErrorText (error.status) ,
 									buttons: Ext.Msg.OK,
 									icon: Ext.Msg.ERROR
 								});

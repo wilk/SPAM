@@ -87,10 +87,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			url: urlServerLtw + 'setlike' ,
 			// Sending server, user and post ID of this article
 			params: {
-				// TODO: use focusModel.get ('user') and focusModel.get ('server')
-				serverID: postData.split("/")[1] ,
-				userID: postData.split("/")[2] ,
-				postID: postData.split("/")[3] ,
+				serverID: focusModel.get ('server') ,
+				userID: focusModel.get ('user') ,
+				postID: focusModel.get ('post') ,
 				value: encodeURIComponent (val)
 			} ,
 			success: function (response) {
@@ -139,8 +138,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
-					title: 'Error ' + error.status ,
-					msg: error.responseText ,
+					title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+					msg: errorSin.getErrorText (error.status) ,
 					buttons: Ext.Msg.OK,
 					icon: Ext.Msg.ERROR
 				});
@@ -163,8 +162,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			url: urlServerLtw + 'setfollow' ,
 			// Sending server and user ID of this article
 			params: { 
-				serverID: postData.split("/")[1] ,
-				userID: postData.split("/")[2] ,
+				serverID: focusModel.get ('server') ,
+				userID: focusModel.get ('user') ,
 				value: val
 			} ,
 			success: function (response) {
@@ -192,8 +191,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 						// If 404 is returned, ignore it because or user isn't logged in or hasn't followers
 						if (err.status != 404) {
 							Ext.Msg.show ({
-								title: 'Error ' + err.status,
-								msg: 'Something bad happened during retrieve the followers list!' ,
+								title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+								msg: errorSin.getErrorText (error.status) ,
 								buttons: Ext.Msg.OK,
 								icon: Ext.Msg.ERROR
 							});
@@ -213,8 +212,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
-					title: 'Error ' + error.status ,
-					msg: error.responseText ,
+					title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+					msg: errorSin.getErrorText (error.status) ,
 					buttons: Ext.Msg.OK,
 					icon: Ext.Msg.ERROR
 				});
@@ -225,25 +224,16 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		});
 	} ,
 	
-	// @brief Reply
-	// TODO: all
+	// @brief Reply to a post
 	reply: function (button, event) {
-//		var dataToReply = focusModel.get ('article');
-//		var ownerOfReply = focusModel.get ('user');
-//		var winSend = Ext.getCmp ('windowNewPost');
-//		var taReply = winSend.down ('#txtAreaReply');
-//		
-//		var tpl = Ext.create ('Ext.form.Label' , {
-//			text: dataToReply ,
-//			flex: 0.5
-//		});
-//		
-//		//taReply.setValue (dataToReply);
-//		//taReply.setVisible (true);
-//		
-//		winSend.insert (0, tpl);
-//		
-//		winSend.show ();
+		// Setup reply singleton
+		replySin.setToReply (true);
+		replySin.setServerID (focusModel.get ('server'));
+		replySin.setUserID (focusModel.get ('user'));
+		replySin.setPostID (focusModel.get ('post'));
+		
+		// Show select window
+		Ext.getCmp('windowSelectPost').show ();
 	} ,
 	
 	// @brief Respam
@@ -258,9 +248,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			url: urlServerLtw + 'respam' ,
 			// Sending server and user ID of this article
 			params: { 
-				serverID: postData.split("/")[1] ,
-				userID: postData.split("/")[2] ,
-				postID: postData.split("/")[3]
+				serverID: focusModel.get ('server') ,
+				userID: focusModel.get ('user') ,
+				postID: focusModel.get ('post')
 			} ,
 			success: function (response) {
 				Ext.Msg.show ({
@@ -275,8 +265,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({
-					title: 'Error ' + error.status ,
-					msg: error.responseText ,
+					title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+					msg: errorSin.getErrorText (error.status) ,
 					buttons: Ext.Msg.OK,
 					icon: Ext.Msg.ERROR
 				});

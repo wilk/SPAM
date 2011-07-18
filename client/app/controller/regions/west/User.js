@@ -60,8 +60,8 @@ Ext.define ('SC.controller.regions.west.User' , {
 					// If 404 is returned, ignore it because or user isn't logged in or hasn't followers
 					if (err.status != 404) {
 						Ext.Msg.show ({
-							title: 'Error ' + err.status,
-							msg: 'Something bad happened during retrieve the followers list!' ,
+							title: err.status + ' ' + errorSin.getErrorTitle (err.status) ,
+							msg: errorSin.getErrorText (err.status) ,
 							buttons: Ext.Msg.OK,
 							icon: Ext.Msg.ERROR
 						});
@@ -98,8 +98,8 @@ Ext.define ('SC.controller.regions.west.User' , {
 					var err = option.getError ();
 					
 					Ext.Msg.show ({
-						title: 'Error ' + err.status,
-						msg: 'Something bad happened during retrieve the federated servers list!' ,
+						title: err.status + ' ' + errorSin.getErrorTitle (err.status) ,
+						msg: errorSin.getErrorText (err.status) ,
 						buttons: Ext.Msg.OK,
 						icon: Ext.Msg.ERROR
 					});

@@ -229,8 +229,8 @@ Ext.define ('SC.controller.Options' , {
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({
-						title: 'Error ' + error.status,
-						msg: error.responseText ,
+						title: error.status + ' ' + errorSin.getErrorTitle (error.status) ,
+						msg: errorSin.getErrorText (error.status) ,
 						buttons: Ext.Msg.OK,
 						icon: Ext.Msg.ERROR
 					});

@@ -40,6 +40,10 @@ Ext.define ('SC.model.regions.center.Articles' , {
 		name: 'server' ,
 		type: 'string'
 	} , {
+		// The ID of article (only postID)
+		name: 'post' ,
+		type: 'string'
+	} , {
 		// If setlike or dislike
 		name: 'setlike' ,
 		type: 'int'

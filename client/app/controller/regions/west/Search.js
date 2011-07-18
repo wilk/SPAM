@@ -85,7 +85,7 @@ Ext.define ('SC.controller.regions.west.Search' , {
 				sTextfield.setVisible (false);
 				break;
 			case 'Recent':
-				sTextfield.setRawValue ('Term of Thesaurus');
+				sTextfield.reset ();
 				sTextfield.setVisible (true);
 				break;
 			case 'Related':

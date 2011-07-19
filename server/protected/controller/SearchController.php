@@ -498,7 +498,7 @@ class SearchController extends DooController {
                 if (stristr($tag, $term2search)) {
                     $avanzati = sizeof(explode('/', substr($tag, strlen($term2search)))) - 1;
                     $totali = sizeof(explode('/', $tag)) - 1;
-                    $arr[$tag] = 1 - ($none / $lenght) - ($avanzati / $totali);
+                    $arr[$tag] = 1 - round(($none / $lenght), 2) - round(($avanzati / $totali), 2);
                     break;
                 } else {
                     $none++;

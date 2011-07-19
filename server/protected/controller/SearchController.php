@@ -348,7 +348,7 @@ class SearchController extends DooController {
                         !(isset($this->params['var3'])))
                 //BAD REQUEST
                     return 400;
-                ErrorController::notImpl();
+//                ErrorController::notImpl();
 //                break;
                 $srv = urldecode($this->params['var1']);
                 $usr = urldecode($this->params['var2']);
@@ -468,7 +468,6 @@ class SearchController extends DooController {
                         return 500;
                 }
                 print "uscito dalla richiesta..muoio!\n\r";
-                die();
                 print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
                 print_r($this->listaPost);
                 die();

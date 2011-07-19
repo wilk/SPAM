@@ -123,6 +123,7 @@ $route['get']['/search/:limit/:type/:var1/:var2'] = array('SearchController', 's
 $route['get']['/searchserver/:limit/:type/:var1/:var2'] = array('SearchController', 'searchServer');
 
 $route['get']['/search/:limit/:type/:var1/:var2/:var3'] = array('SearchController', 'searchMain');
+$route['get']['/searchserver/:limit/:type/:var1/:var2/:var3/:k/:j'] = array('SearchController', 'searchServer');
 //Path con search metodo non supportato
 $route['*']['/search/:limit/:type'] = array('ErrorController', 'notSupport');
 $route['*']['/searchserver/:limit/:type'] = array('ErrorController', 'notSupport');

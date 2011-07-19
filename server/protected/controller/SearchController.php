@@ -259,29 +259,29 @@ class SearchController extends DooController {
                 $mtime = $mtime[1] + $mtime[0];
                 $starttime = $mtime;
                 $listOfWords = $this->utf8_str_word_count($stringToSearch, 1);
-					$listOfWords= array_unique($listOfWords);
+                $listOfWords = array_unique($listOfWords);
                 //print_r($listOfWords);
                 $post = new PostModel();
                 $allPost = $post->getPostArray(NULL, 'all');
 //$listPost = array();
                 foreach ($allPost as $i => $pID) {
                     $postContentHTML = str_get_html(html_entity_decode($pID[key($pID)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
-						$findTerm;
-						$creato=$pID[key($pID)]["http://purl.org/dc/terms/created"][0];						
-						$myPeso=$this->pesoFullText($postContentHTML,$listOfWords,$findTerm,$creato);
-						if ($findTerm != 0){
+                    $findTerm;
+                    $creato = $pID[key($pID)]["http://purl.org/dc/terms/created"][0];
+                    $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato);
+                    if ($findTerm != 0) {
                         $this->listaPost[$findTerm][] = array(
                             "articolo" => $pID,
                             "peso" => $myPeso,
                         );
-                        }
                     }
+                }
                 $mtime = microtime();
                 $mtime = explode(" ", $mtime);
                 $mtime = $mtime[1] + $mtime[0];
                 $endtime = $mtime;
                 $totaltime = ($endtime - $starttime);
-                 //print "Tempo trascorso $totaltime\n\r";
+                //print "Tempo trascorso $totaltime\n\r";
 //                print_r($this->listaPost);
 //                die();
 //Eseguo richiesta esterna
@@ -316,9 +316,9 @@ class SearchController extends DooController {
                 $c = count($this->listaPost);
                 //print "listaPost è fatto di: $c elementi";
                 //print_r($this->listaPost);die();
-                for ($i=$c; $i > 0; $i--) {
-		$arrayPesi=array();
-                    foreach ($this->listaPost[$i] as $key => $post) {		
+                for ($i = $c; $i > 0; $i--) {
+                    $arrayPesi = array();
+                    foreach ($this->listaPost[$i] as $key => $post) {
                         //print ("\n\rla key è: $key e il peso è: " .$post['peso']);
                         $arrayPesi[$key] = $post['peso'];
                         //$arrayPost[$key]=$post['post'];
@@ -329,9 +329,9 @@ class SearchController extends DooController {
                 $postToRender = array();
                 $internalCount = 0;
                 $i = count($this->listaPost);
-                for ($i; $i > 0; $i--) {           	
+                for ($i; $i > 0; $i--) {
                     foreach ($this->listaPost[$i] as $key => $post) {
-                        if ($limite !="all" && $internalCount == $limite)
+                        if ($limite != "all" && $internalCount == $limite)
                             break;
                         $postToRender[] = $post;
                         $internalCount++;
@@ -346,47 +346,67 @@ class SearchController extends DooController {
                 if (!(isset($this->params['var1'])) ||
                         !(isset($this->params['var2'])) ||
                         !(isset($this->params['var3'])))
-						  //BAD REQUEST
+                //BAD REQUEST
                     return 400;
-                ErrorController::notImpl();
-                break;
- /*               $srv = $this->params['var1'];
+//                ErrorController::notImpl();
+//                break;
+                $srv = $this->params['var1'];
                 $usr = $this->params['var2'];
                 $pid = $this->params['var3'];
                 $content;
-                if ($srv == 'Spammers'){
-                	$post = new PostModel();
-                	$ID = 'spam:/'.implode('/', array($srv, $usr, $pid));
-                	if(!$post->postExist($ID))
-                		ErrorController::notFound('Questo post non esiste!!');
-                	$art = $post->getPost($ID);
-                	$content = $art[key($art)]['http://rdfs.org/sioc/ns#content'][0];
+                $post = new PostModel();
+                if ($srv == 'Spammers') {
+                    $ID = 'spam:/' . implode('/', array($srv, $usr, $pid));
+                    if (!$post->postExist($ID))
+                        ErrorController::notFound('Questo post non esiste!!');
+                    $art = $post->getPost($ID);
+                    $content = $art[key($art)]['http://rdfs.org/sioc/ns#content'][0];
                 } else {
-                	$url = $this->getUrl($srv);
-        				$this->request->connect_to($url . $method)
-                		  ->accept(DooRestClient::HTML)
-                       - if ($srv == 'Spammers'){
-                	$post = new PostModel();
-                	$ID = 'spam:/'.implode('/', array($srv, $usr, $pid));
-                	if(!$post->postExist($ID))
-                		ErrorController::notFound('Questo post non esiste!!');
-                	$art = $post->getPost($ID);
-                	$content = $art[key($art)]['http://rdfs.org/sioc/ns#content'][0];
-                } else {>get();
-        			 	if (!$this->request->isSuccess()){
-          			  header("Status:".$this->request->resultCode());
-          			  die("C\'è stato un problema nella ricezione del post dall\'esterno.");
-          			}
-          			$content = str_get_html($this->request->result());
-          			$content->find('article', 0)->innertext;
-       			 }//l'articolo da affinare!
-       			 $html = str_get_html($content);
-       			 $arr;
-       			 foreach ($html->find("span[typeof=skos:Concept]") as $tag){
-					 	$arr[$tag->about] = 0;
-       			 }
-   */    			 
-       			 
+                    $url = $this->SRV->getUrl($srv);
+                    //print "Il server è:$url\n\r";
+                    $this->request->connect_to("$url/postserver/$usr/$pid")
+                            ->accept(DooRestClient::HTML)
+                            ->get();
+                    if (!$this->request->isSuccess()) {
+                        header("Status:" . $this->request->resultCode());
+                        die("C'è stato un problema nella ricezione del post dall'esterno.");
+                    }
+                    $content = str_get_html($this->request->result());
+                    $content = $content->find('article', 0)->innertext;
+                }//l'articolo da affinare!
+                $html = str_get_html($content);
+                $arr;
+                foreach ($html->find("span[typeof=skos:Concept]") as $tag) {
+                    $arr[$tag->about] = 0;
+                }
+                //Peso i post del nostro server
+                $allPost = $post->getPostArray(NULL, 'all');
+                foreach ($allPost as $i => $pID) {                
+                    //print "Il mio post $postContentHTML";die();
+                    //print "questo è l'articolo:\n\r";
+                    //print_r ($pID);
+                    //print "\n\r";
+                    foreach ($arr as $key => $peso) {
+                        $pathTerm= explode('/',$key);
+                        unset ($pathTerm[0]);
+                        $arr[$key]=$this->calcWeight($pID, $pathTerm);
+                        //print "Il peso per $key è: $arr[$key]\n\r";
+                    }
+                    //print "il peso totale per questo articolo è:".array_sum($arr)."\n\r";
+                    $sumPeso=array_sum($arr);
+                    //Se il peso è positivo allora considero l'articolo
+                    if ($sumPeso>0){
+                    $this->listaPost[]=array(
+                        "articolo"=>$pID,
+                        "peso"=> $sumPeso,
+                    );
+                    }
+                }
+                print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
+                print_r ($this->listaPost);
+                die();
+
+
             default: //beh, altrimenti errore
                 ErrorController::notImpl();
                 break;
@@ -475,9 +495,9 @@ class SearchController extends DooController {
     private function displayPosts() {
         if (sizeof($this->listaPost) == 0)
             ErrorController::notFound("La ricerca non ha prodotto risultati.\n");
-            if (isset($_SESSION['username']['user']))
-        			$XMLPosts = PostView::renderMultiplePost($this->listaPost,$_SESSION['username']['user']);
-        		$XMLPosts = PostView::renderMultiplePost($this->listaPost);
+        if (isset($_SESSION['username']['user']))
+            $XMLPosts = PostView::renderMultiplePost($this->listaPost, $_SESSION['username']['user']);
+        $XMLPosts = PostView::renderMultiplePost($this->listaPost);
         $this->setContentType('xml');
         print $XMLPosts;
     }
@@ -554,71 +574,71 @@ class SearchController extends DooController {
         //print_r($toParse);
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
-        		$findTerm;
-        		$creato=$articolo->content;
-            $myPeso=$this->pesoFullText($articolo, $listOfWords,$findTerm,$creato);
-            if($findTerm != 0){
+            $findTerm;
+            $creato = $articolo->content;
+            $myPeso = $this->pesoFullText($articolo, $listOfWords, $findTerm, $creato);
+            if ($findTerm != 0) {
                 $this->listaPost[$findTerm][] = array(
                     "articolo" => $articolo->outertext,
                     "peso" => $myPeso,
                 );
-                }
             }
+        }
     }
 
-	private function pesoFullText($articolo, $listOfWords,&$findTerm,$creato){			
-	$content = $articolo->plaintext;
-            $findTerm = 0;
-            $matchEsatto = 0;
-            $matchParziale = 0;
-            $wordInContent = $this->utf8_str_word_count($content, 1);
-            //print_r($wordInContent);
-            foreach ($listOfWords as $indice => $word) {
-                $find = false;
-                if (strlen((string) $word) > 1) {
-                    if (stristr((string) $word, "'") !== false) {
-                        $word = explode("'", (string) $word);
-                        $word = $word[1];
+    private function pesoFullText($articolo, $listOfWords, &$findTerm, $creato) {
+        $content = $articolo->plaintext;
+        $findTerm = 0;
+        $matchEsatto = 0;
+        $matchParziale = 0;
+        $wordInContent = $this->utf8_str_word_count($content, 1);
+        //print_r($wordInContent);
+        foreach ($listOfWords as $indice => $word) {
+            $find = false;
+            if (strlen((string) $word) > 1) {
+                if (stristr((string) $word, "'") !== false) {
+                    $word = explode("'", (string) $word);
+                    $word = $word[1];
+                }
+                //print "Sto cercando questo termine: $word\n\r";
+                foreach ($wordInContent as $indice => $thisWord) {
+                    if (stristr((string) $thisWord, "'") !== false) {
+                        $thisWord = explode("'", (string) $thisWord);
+                        $thisWord = $thisWord[1];
                     }
-                    //print "Sto cercando questo termine: $word\n\r";
-                    foreach ($wordInContent as $indice => $thisWord) {
-                        if (stristr((string) $thisWord, "'") !== false) {
-                            $thisWord = explode("'", (string) $thisWord);
-                            $thisWord = $thisWord[1];
-                        }
-                        //print "Sto controllando questo termine: $thisWord\n\r";
-                        if (strtolower((string) $thisWord) == strtolower((string) $word)) {
-                            // print ("trovato il match di $word con $thisWord\n\r");
-                            $matchEsatto++;
-                            $find = true;
-                            //print ("numero di matchEsatti: $matchEsatto\n\r");
-                        } else if (stristr((string) $thisWord, (string) $word)) {
-                            //print ("trovata l'occorrenza di $word in $thisWord\n\r");
-                            $matchParziale++;
-                            $find = true;
-                            //print ("numero di matchParziali: $matchParziale\n\r");
-                        }
-                    }
-                    if ($find) {
-                        $findTerm++;
+                    //print "Sto controllando questo termine: $thisWord\n\r";
+                    if (strtolower((string) $thisWord) == strtolower((string) $word)) {
+                        // print ("trovato il match di $word con $thisWord\n\r");
+                        $matchEsatto++;
+                        $find = true;
+                        //print ("numero di matchEsatti: $matchEsatto\n\r");
+                    } else if (stristr((string) $thisWord, (string) $word)) {
+                        //print ("trovata l'occorrenza di $word in $thisWord\n\r");
+                        $matchParziale++;
+                        $find = true;
+                        //print ("numero di matchParziali: $matchParziale\n\r");
                     }
                 }
+                if ($find) {
+                    $findTerm++;
+                }
             }
-            //print ("totale termini trovati: $findTerm\n\r");
-            if ($findTerm != 0) {
+        }
+        //print ("totale termini trovati: $findTerm\n\r");
+        if ($findTerm != 0) {
 //                    print ("$matchEsatto\n\r");
 //                    print ("$matchParziale\n\r");
 //                    print (time());
 //                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
-					
-                $tempo = time() - strtotime($creato);
-                   //print ("Differenza di tempo è:$tempo\n\r");
-                  $peso = (((($matchEsatto + ($matchParziale * 0.5))) * 1000) / ($tempo/3600))* ($findTerm*$findTerm);
+
+            $tempo = time() - strtotime($creato);
+            //print ("Differenza di tempo è:$tempo\n\r");
+            $peso = (((($matchEsatto + ($matchParziale * 0.5))) * 1000) / ($tempo / 3600)) * ($findTerm * $findTerm);
 //                    print $peso;
 //                    print "Termini trovati $findTerm";
-		return $peso;
-            }
-}
+            return $peso;
+        }
+    }
 
     private function rcvFromINTServer($usr, $countPost) {
         $post = new PostModel();

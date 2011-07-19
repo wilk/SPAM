@@ -135,11 +135,6 @@ Ext.define ('SC.view.Options' , {
 					html: '<h1>email : cvitale@cs.unibo.it</h1>'
 				}]
 			}]
-		} , {
-			// Tab Help
-			title: 'Help' ,
-			bodyPadding: 10 ,
-			html: 'RTFM'
 		}]
 	}]
 });

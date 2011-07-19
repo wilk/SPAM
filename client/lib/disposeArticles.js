@@ -58,6 +58,9 @@ function disposeArticles (store, focus, focusIndex) {
 		
 		// Counter for generate random id of articles
 		var j=0;
+		
+		// The post with greater z-index is the more recent
+		store.sort ('affinity' , 'ASC');
 	
 		// Create a window for any articles
 		store.each (function (record) {

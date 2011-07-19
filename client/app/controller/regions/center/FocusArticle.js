@@ -66,8 +66,6 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				click : this.respam
 			}
 		});
-	
-		console.log ('Controller Focus Article started.');
 	} ,
 	
 	// @brief Set Like
@@ -305,11 +303,15 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		}
 		
 		// Check if browser can support geolocation to prevent useless operations
-		if (browserGeoSupportFlag) {
-			// Set new coords
-			var latlng = new google.maps.LatLng (focusModel.get ('glLat'), focusModel.get ('glLong'));
-			googleMap.setCenter (latlng);
-			googleMap.setZoom (5);
+		if (geolocSin.isSupported ()) {
+			// If location is (0.0 , 0.0), do not zoom
+			if (!((focusModel.get ('glLat') == 0) && (focusModel.get ('glLong') == 0))) {
+				// Set new coords
+				var latlng = new google.maps.LatLng (focusModel.get ('glLat'), focusModel.get ('glLong'));
+				var gMap = geolocSin.getMap ();
+				gMap.setCenter (latlng);
+				gMap.setZoom (5);
+			}
 		}
 		
 		// If user set like, change the icon of 'I like' button
@@ -381,11 +383,12 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// @brief Setup default values
 	setupDefaults: function (win) {
 		// Check if browser can support geolocation to prevent useless operations
-		if (browserGeoSupportFlag) {
+		if (geolocSin.isSupported ()) {
 			// Set default coords and zoom
-			var latlng = new google.maps.LatLng (0, 0);
-			googleMap.setCenter (latlng);
-			googleMap.setZoom (0);
+			var latlng = new google.maps.LatLng (0.0, 0.0);
+			var gMap = geolocSin.getMap ();
+			gMap.setCenter (latlng);
+			gMap.setZoom (0);
 		}
 	}
 });

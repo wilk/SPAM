@@ -31,8 +31,6 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 				}
 			}
 		});
-	
-		console.log ('Controller Thesaurus started.');
 	} ,
 	
 	// @brief Load the thesaurus in his tree panel

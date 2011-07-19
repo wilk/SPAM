@@ -21,13 +21,12 @@ Ext.define ('SC.controller.regions.east.GeoLocation' , {
 				afterrender : this.initGeolocation
 			}
 		});
-		console.log ('Controller GeoLocation started.');
 	} ,
 	
 	// Initialize geolocation panel
 	initGeolocation: function (geoPanel) {
 		// If browser supports geolocation, setup default
-		if (browserGeoSupportFlag) {
+		if (geolocSin.isSupported ()) {
 			try {
 				var latlng = new google.maps.LatLng(0, 0);
 				var myOptions = {
@@ -35,7 +34,7 @@ Ext.define ('SC.controller.regions.east.GeoLocation' , {
 					center: latlng,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
-				googleMap = new google.maps.Map(document.getElementById("geoloc"), myOptions);
+				geolocSin.setMap (document.getElementById ("geoloc"), myOptions);
 			}
 			// If something goes wrong, alert user
 			catch (error) {

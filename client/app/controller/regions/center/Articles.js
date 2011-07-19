@@ -24,8 +24,6 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 				click : this.setFocus
 			} 
 		});
-	
-		console.log ('Controller Articles started.');
 	} ,
 	
 	// @brief Set focus on this article

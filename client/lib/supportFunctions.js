@@ -25,57 +25,71 @@ function requestSearchArticles (store, focus, focusIndex) {
 			// Clean the store
 			store.removeAll ();
 			
-			// TODO: check if xml is empty
-			// Check every posts
-			$(xml).find('post').each (function () {
-				var numLike, numDislike;
-				var ifLikeDislike = 0;
-				var geoLat = 0.0;
-				var geoLong = 0.0;
+			try {
+				// Check every posts
+				$(xml).find('post').each (function () {
+					var numLike, numDislike;
+					var ifLikeDislike = 0;
+					var geoLat = 0.0;
+					var geoLong = 0.0;
+					var userID = $(this).find('article').attr('resource');
 				
-				// Find like and dislike counter plus setlike of the user
-				$(this).find('article').find('span').each (function () {
-					// Find like counter
-					if ($(this).attr ('property') == 'tweb:countLike') {
-						numLike = parseInt ($(this).attr ('content'));
-					}
+					// Find like and dislike counter plus setlike of the user
+					$(this).find('article').find('span').each (function () {
+						// Find like counter
+						if ($(this).attr ('property') == 'tweb:countLike') {
+							numLike = parseInt ($(this).attr ('content'));
+						}
 					
-					// Find dislike counter
-					if ($(this).attr ('property') == 'tweb:countDislike') {
-						numDislike = parseInt ($(this).attr ('content'));
-					}
+						// Find dislike counter
+						if ($(this).attr ('property') == 'tweb:countDislike') {
+							numDislike = parseInt ($(this).attr ('content'));
+						}
 					
-					// Find setlike/setdislike of the user
-					if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
-						ifLikeDislike = 1;
-					}
-					else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
-						ifLikeDislike = -1;
-					}
+						// Find setlike/setdislike of the user
+						if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
+							ifLikeDislike = 1;
+						}
+						else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
+							ifLikeDislike = -1;
+						}
 					
-					// Find geolocation coords
-					if ($(this).attr ('id') == 'geolocationspan') {
-						geoLong = $(this).attr ('long');
-						geoLat = $(this).attr ('lat');
-					}
-				});
+						// Find geolocation coords
+						if ($(this).attr ('id') == 'geolocationspan') {
+							geoLong = ($(this).attr ('long') != null ? $(this).attr ('long') : 0.0);
+							geoLat = ($(this).attr ('lat') != null ? $(this).attr ('lat') : 0.0);
+							if (!((geoLong == 0) && (geoLat == 0))) {
+								var mapLatLng = new google.maps.LatLng (geoLat, geoLong);
+								geolocSin.addMarker (mapLatLng, userID);
+							}
+						}
+					});
 				
-				// Add article to the store
-				store.add ({
-					affinity: parseInt ($(this).find('affinity').text ()) ,
-					article: tag2string ($(this).find('article')[0]) ,
-					resource: $(this).find('article').attr ('resource') ,
-					about: $(this).find('article').attr ('about') ,
-					like: numLike ,
-					dislike: numDislike ,
-					setlike: ifLikeDislike ,
-					user: $(this).find('article').attr('resource').split('/')[2] ,
-					server: $(this).find('article').attr('resource').split('/')[1] ,
-					post: $(this).find('article').attr('about').split('/')[3] ,
-					glLat: geoLat ,
-					glLong: geoLong
+					// Add article to the store
+					store.add ({
+						affinity: parseInt ($(this).find('affinity').text ()) ,
+						article: tag2string ($(this).find('article')[0]) ,
+						resource: $(this).find('article').attr ('resource') ,
+						about: $(this).find('article').attr ('about') ,
+						like: numLike ,
+						dislike: numDislike ,
+						setlike: ifLikeDislike ,
+						user: $(this).find('article').attr('resource').split('/')[2] ,
+						server: $(this).find('article').attr('resource').split('/')[1] ,
+						post: $(this).find('article').attr('about').split('/')[3] ,
+						glLat: geoLat ,
+						glLong: geoLong
+					});
 				});
-			});
+			}
+			catch (err) {
+				Ext.Msg.show ({
+					title: 'Error' ,
+					msg: 'Something bad happened while reading the XML. Maybe is non well-formed.' ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
+			}
 			
 			// Before dispose the retrieved articles, kill the old windows
 			var winFocus = Ext.getCmp ('winFocusArticle');
@@ -142,58 +156,68 @@ function retrieveRecentArticles (store) {
 			// Clean the store
 			store.removeAll ();
 			
-			// Check every posts
-			$(xml).find('post').each (function () {
-				var numLike, numDislike;
-				var ifLikeDislike = 0;
-				var geoLat = 0.0;
-				var geoLong = 0.0;
+			try {
+				// Check every posts
+				$(xml).find('post').each (function () {
+					var numLike, numDislike;
+					var ifLikeDislike = 0;
+					var geoLat = 0.0;
+					var geoLong = 0.0;
+					var userID = $(this).find('article').attr('resource');
 				
-				// Find like and dislike counter plus setlike of the user
-				$(this).find('article').find('span').each (function () {
-					// Find like counter
-					if ($(this).attr ('property') == 'tweb:countLike') {
-						numLike = parseInt ($(this).attr ('content'));
-					}
+					// Find like and dislike counter plus setlike of the user
+					$(this).find('article').find('span').each (function () {
+						// Find like counter
+						if ($(this).attr ('property') == 'tweb:countLike') {
+							numLike = parseInt ($(this).attr ('content'));
+						}
 				
-					// Find dislike counter
-					if ($(this).attr ('property') == 'tweb:countDislike') {
-						numDislike = parseInt ($(this).attr ('content'));
-					}
+						// Find dislike counter
+						if ($(this).attr ('property') == 'tweb:countDislike') {
+							numDislike = parseInt ($(this).attr ('content'));
+						}
 					
-					// Find setlike/setdislike of the user
-					if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
-						ifLikeDislike = 1;
-					}
-					else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
-						ifLikeDislike = -1;
-					}
+						// Find setlike/setdislike of the user
+						if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
+							ifLikeDislike = 1;
+						}
+						else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
+							ifLikeDislike = -1;
+						}
 					
-					// Find geolocation coords
-					if ($(this).attr ('id') == 'geolocationspan') {
-						geoLong = $(this).attr ('long');
-						geoLat = $(this).attr ('lat');
-					}
+						// Find geolocation coords
+						if ($(this).attr ('id') == 'geolocationspan') {
+							geoLong = ($(this).attr ('long') != null ? $(this).attr ('long') : 0.0);
+							geoLat = ($(this).attr ('lat') != null ? $(this).attr ('lat') : 0.0);
+							if (!((geoLong == 0) && (geoLat == 0))) {
+								var mapLatLng = new google.maps.LatLng (geoLat, geoLong);
+								geolocSin.addMarker (mapLatLng, userID);
+							}
+						}
 					
+					});
+				
+					// Add article to the store
+					store.add ({
+						affinity: parseInt ($(this).find('affinity').text ()) ,
+						article: tag2string ($(this).find('article')[0]) ,
+						articleText: $(this).find('article').text () ,
+						resource: $(this).find('article').attr ('resource') ,
+						about: $(this).find('article').attr ('about') ,
+						like: numLike ,
+						dislike: numDislike ,
+						setlike: ifLikeDislike ,
+						user: $(this).find('article').attr('resource').split("/")[2] ,
+						server: $(this).find('article').attr('resource').split('/')[1] ,
+						post: $(this).find('article').attr('about').split('/')[3] ,
+						glLat: geoLat ,
+						glLong: geoLong
+					});
 				});
-				
-				// Add article to the store
-				store.add ({
-					affinity: parseInt ($(this).find('affinity').text ()) ,
-					article: tag2string ($(this).find('article')[0]) ,
-					articleText: $(this).find('article').text () ,
-					resource: $(this).find('article').attr ('resource') ,
-					about: $(this).find('article').attr ('about') ,
-					like: numLike ,
-					dislike: numDislike ,
-					setlike: ifLikeDislike ,
-					user: $(this).find('article').attr('resource').split("/")[2] ,
-					server: $(this).find('article').attr('resource').split('/')[1] ,
-					post: $(this).find('article').attr('about').split('/')[3] ,
-					glLat: geoLat ,
-					glLong: geoLong
-				});
-			});
+			}
+			catch (err) {
+				// To avoid errors
+			}
 		}
 	});
 }
@@ -217,9 +241,6 @@ InsertAtCursorTextareaPlugin = function () {
 					var startPos = text_field.selectionStart;
 					var endPos = text_field.selectionEnd;
 					text_field.value = text_field.value.substring (0, startPos) + v + text_field.value.substring (endPos, text_field.value.length);
-
-					//this.getFocusEl().focus ();
-					//this.getFocusEl().setSelectionRange (endPos + v.length, endPos + v.length);
 				}
 			}
 		}

@@ -36,8 +36,6 @@ Ext.define ('SC.controller.SelectPost' , {
 				click : this.resourceHandler
 			}
 		});
-		
-		console.log ('Controller SelectPost started');
 	} ,
 	
 	// @brief Setup windowSendResource with the right entry

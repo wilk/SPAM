@@ -43,8 +43,6 @@ Ext.define ('SC.controller.AddTerm' , {
 				}
 			}
 		});
-		
-		console.log ('Controller AddTerm started.');
 	} ,
 	
 	// @brief Initialize local variables

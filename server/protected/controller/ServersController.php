@@ -44,7 +44,7 @@ class ServersController extends DooController {
     public function rewriteServersList() {
         if (!isset($_POST['servers'])|| ($_POST['servers'])=="")
             return ErrorController::badReq ('La lista dei server è necessaria');
-        $newServersList = $_POST['servers'];
+        $newServersList = stripslashes($_POST['servers']);
         libxml_use_internal_errors(true);
         $xdoc = new DomDocument;
         $xmlschema = 'data/servers.xsd';

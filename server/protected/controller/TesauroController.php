@@ -32,8 +32,8 @@ class TesauroController extends DooController {
         if (!(isset($_POST['parentterm'])) || !(isset($_POST['term'])) || $_POST['parentterm'] == "" || $_POST['term'] == "") {
             return ErrorController::badReq("Sia parentterm che term devono essere specificati e non nulli, se non ti sta bene vai altrove!!");
         }
-        $parent = strtolower($_POST['parentterm']);
-        $term = strtolower(str_replace(" ", "_", $_POST['term']));
+        $parent = stripslashes(strtolower($_POST['parentterm']));
+        $term = stripcslashes(strtolower(str_replace(" ", "_", $_POST['term'])));
         if ($parent == $term) {
             return ErrorController::badReq("I termini non possono essere uguali");
         }

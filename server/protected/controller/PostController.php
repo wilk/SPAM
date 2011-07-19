@@ -46,7 +46,7 @@ class PostController extends DooController {
         $this->articolo = new PostModel();
         if ($content == null) {
             if (isset($_POST['article'])) {
-                $mycontent = $_POST['article'];
+                $mycontent = stripcslashes($_POST['article']);
                 if ($mycontent=="")
                     ErrorController::badReq ("Se non hai niente da scrivere non inviare il post!!");
 //                if (strpos($mycontent, "<[CDATA["))
@@ -244,14 +244,14 @@ class PostController extends DooController {
             $request = new DooRestClient;
             $servers = new SRVModel($request);
             $url = $servers->getUrl($sID);
-            if ($url) {
+            if ($url != false) {
                 $request->connect_to($url . '/hasreply')
                         ->data(array('serverID' => $s, 'userID' => $u, 'postID' => $p, 'userID2Up' => $uID, 'postID2Up' => $pID))
                         ->post();
                 if (!($request->isSuccess()))
                     return $request->resultCode();
-            }
-            return ErrorController::notFound('Il server non esiste');
+            } else
+            	return ErrorController::notFound('Il server non esiste');
         }
         return 201;
     }

@@ -59,6 +59,14 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 		// Dislike counter
 		name: 'dislike' ,
 		type: 'int'
+	} , {
+		// Geolocation Latitude
+		name: 'glLat' ,
+		type: 'double'
+	} , {
+		// Geolocation Longitude
+		name: 'glLong' ,
+		type: 'double'
 	}] ,
 	
 	// REST Proxy for REST requests

@@ -155,6 +155,7 @@ var SingletonOption = (function () {
 	// Server url without credentials (http://ltw1102.web.cs.unibo.it/)
 	var pureUrlServerLtw = '';
 	var serverID = '';
+	var currentUser = '';
 	
 	function init () {
 		return {
@@ -168,6 +169,9 @@ var SingletonOption = (function () {
 			getServerID : function () {
 				return serverID;
 			} ,
+			getCurrentUser : function () {
+				return currentUser;
+			} ,
 			
 			// Setters
 			setUrlServerLtw : function (url) {
@@ -179,6 +183,9 @@ var SingletonOption = (function () {
 			setServerID : function (id) {
 				serverID = id;
 			} ,
+			setCurrentUser : function (id) {
+				currentUser = id;
+			} ,
 			
 			// Reset variables (urls and id)
 			resetOption : function () {
@@ -187,6 +194,9 @@ var SingletonOption = (function () {
 				urlServerLtw = '';
 				pureUrlServerLtw = '';
 				serverID = 'Spammers';
+			} ,
+			resetCurrentUser : function () {
+				currentUser = '';
 			}
 		}
 	}

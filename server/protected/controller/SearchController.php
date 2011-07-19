@@ -361,7 +361,7 @@ class SearchController extends DooController {
                     if (!$post->postExist($ID))
                         ErrorController::notFound('Questo post non esiste!!');
                     $art = $post->getPost($ID);
-                    $content = $art[key($art)]['http://rdfs.org/sioc/ns#content'][0];
+                    $content = html_entity_decode($art[key($art)]['http://rdfs.org/sioc/ns#content'][0],ENT_COMPAT,'UTF-8');
                     $timeOfPost = $art[key($art)]["http://purl.org/dc/terms/created"][0];
                 } else {
                     $url = $this->SRV->getUrl($srv);
@@ -377,37 +377,63 @@ class SearchController extends DooController {
                     $timeOfPost = $content->find('article', 0)->content;
                     $content = $content->find('article', 0)->innertext;
                 }//l'articolo da affinare!
+                //print ("$content\n\r");
                 $html = str_get_html($content);
-                $arr;
+                $arr = array();
                 foreach ($html->find("span[typeof=skos:Concept]") as $tag) {
                     $arr[$tag->about] = 0;
                 }
+                //print_r ($arr);
                 //Peso i post del nostro server
                 $allPost = $post->getPostArray(NULL, 'all');
+//                print (key($art));
+//                $key=array_search(key($art),$allPost[]);
+//                print "La chiave è: $key\n\r";
+//                unset($allPost[$key]);
+//                print"tutti i post\n\r";
+                //print_r($allPost);              
+                if (isset($art)){
+                    foreach ($allPost as $key=>$myPost){
+                        //print key($myPost)." questo è mypost mentre art vale ".key($art)."\n\r";
+                        if (key($myPost)==key($art)){
+                            //print "c'èèèè";
+                            unset ($allPost[$key]);
+                            break;
+                        }
+                }
+                }
+//                print_r($allPost);
+//                die();
                 foreach ($allPost as $i => $pID) {
                     //print "Il mio post $postContentHTML";die();
-                    //print "questo è l'articolo:\n\r";
+                    print "questo è l'articolo:\n\r";
                     //print_r ($pID);
                     //print "\n\r";
                     foreach ($arr as $key => $peso) {
                         $pathTerm = explode('/', $key);
                         unset($pathTerm[0]);
+//                        print "Stampo il pathterm come array:\n\r";
+//                        print_r ($pathTerm);
+//                        print "\n\r";
                         $arr[$key] = $this->calcWeight($pID, $pathTerm);
                         //print "Il peso per $key è: $arr[$key]\n\r";
                     }
-                    //print "il peso totale per questo articolo è:".array_sum($arr)."\n\r";
+                    print "il peso totale per questo articolo è:".array_sum($arr)."\n\r";
                     $sumPeso = array_sum($arr);
-                    $tempoPostConfrontato = strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
-                    $tempoPostConfronto = strtotime($timeOfPost);
-//                    print("Il peso degli hashtag è:$sumPeso\n\r");
-//                    print("tempo del post di confronto:".strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0])."\n\r");
-//                    print("Tempo del post di riferimento:" .strtotime($timeOfPost)."\n\r");
-                    if ($tempoPostConfrontato >= $tempoPostConfronto)
-                        $realPeso = ($sumPeso * 1000) / (($tempoPostConfrontato - $tempoPostConfronto) / 3600);
-                    else
-                        $realPeso= ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
                     //Se il peso è positivo allora considero l'articolo
                     if ($sumPeso > 0) {
+                        $tempoPostConfrontato = strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
+                        $tempoPostConfronto = strtotime($timeOfPost);
+                        if ($tempoPostConfrontato >= $tempoPostConfronto)
+                            $realPeso = ($sumPeso * 1000) / (($tempoPostConfrontato - $tempoPostConfronto) / 3600);
+                        else
+                            $realPeso= ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
+                        $numDislike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+                        $numLike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+                        if ($numDislike > $numLike)
+                            $realPeso = $realPeso / ($numDislike - $numLike);
+                        else if ($numLike > $numDislike)
+                            $realPeso = $realPeso * ($numLike - $numDislike);                       
                         $this->listaPost[] = array(
                             "articolo" => $pID,
                             "peso" => $realPeso,

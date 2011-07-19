@@ -348,12 +348,13 @@ class SearchController extends DooController {
                         !(isset($this->params['var3'])))
                 //BAD REQUEST
                     return 400;
-//                ErrorController::notImpl();
+                //ErrorController::notImpl();
 //                break;
                 $srv = $this->params['var1'];
                 $usr = $this->params['var2'];
                 $pid = $this->params['var3'];
                 $content;
+                $timeOfPost;
                 $post = new PostModel();
                 if ($srv == 'Spammers') {
                     $ID = 'spam:/' . implode('/', array($srv, $usr, $pid));
@@ -361,6 +362,7 @@ class SearchController extends DooController {
                         ErrorController::notFound('Questo post non esiste!!');
                     $art = $post->getPost($ID);
                     $content = $art[key($art)]['http://rdfs.org/sioc/ns#content'][0];
+                    $timeOfPost = $art[key($art)]["http://purl.org/dc/terms/created"][0];
                 } else {
                     $url = $this->SRV->getUrl($srv);
                     //print "Il server è:$url\n\r";
@@ -372,6 +374,7 @@ class SearchController extends DooController {
                         die("C'è stato un problema nella ricezione del post dall'esterno.");
                     }
                     $content = str_get_html($this->request->result());
+                    $timeOfPost = $content->find('article', 0)->content;
                     $content = $content->find('article', 0)->innertext;
                 }//l'articolo da affinare!
                 $html = str_get_html($content);
@@ -381,29 +384,38 @@ class SearchController extends DooController {
                 }
                 //Peso i post del nostro server
                 $allPost = $post->getPostArray(NULL, 'all');
-                foreach ($allPost as $i => $pID) {                
+                foreach ($allPost as $i => $pID) {
                     //print "Il mio post $postContentHTML";die();
                     //print "questo è l'articolo:\n\r";
                     //print_r ($pID);
                     //print "\n\r";
                     foreach ($arr as $key => $peso) {
-                        $pathTerm= explode('/',$key);
-                        unset ($pathTerm[0]);
-                        $arr[$key]=$this->calcWeight($pID, $pathTerm);
+                        $pathTerm = explode('/', $key);
+                        unset($pathTerm[0]);
+                        $arr[$key] = $this->calcWeight($pID, $pathTerm);
                         //print "Il peso per $key è: $arr[$key]\n\r";
                     }
                     //print "il peso totale per questo articolo è:".array_sum($arr)."\n\r";
-                    $sumPeso=array_sum($arr);
+                    $sumPeso = array_sum($arr);
+                    $tempoPostConfrontato = strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
+                    $tempoPostConfronto = strtotime($timeOfPost);
+//                    print("Il peso degli hashtag è:$sumPeso\n\r");
+//                    print("tempo del post di confronto:".strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0])."\n\r");
+//                    print("Tempo del post di riferimento:" .strtotime($timeOfPost)."\n\r");
+                    if ($tempoPostConfrontato >= $tempoPostConfronto)
+                        $realPeso = ($sumPeso * 1000) / (($tempoPostConfrontato - $tempoPostConfronto) / 3600);
+                    else
+                        $realPeso= ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
                     //Se il peso è positivo allora considero l'articolo
-                    if ($sumPeso>0){
-                    $this->listaPost[]=array(
-                        "articolo"=>$pID,
-                        "peso"=> $sumPeso,
-                    );
+                    if ($sumPeso > 0) {
+                        $this->listaPost[] = array(
+                            "articolo" => $pID,
+                            "peso" => $realPeso,
+                        );
                     }
                 }
                 print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
-                print_r ($this->listaPost);
+                print_r($this->listaPost);
                 die();
 
 

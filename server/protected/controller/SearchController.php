@@ -51,10 +51,10 @@ class SearchController extends DooController {
     /* il booleano $extRequest viene settano nel route a TRUE se si tratta di /searchserver */
 
     public function searchMain($extRequest = FALSE) {
-        if (!(isset($this->params['limit'])) || !(isset($this->params['type'])))
-//BAD REQUEST
-            return 400;
         $limite = $this->params['limit'];
+        if ($limite != 'all' && !is_numeric($limite))
+            //BAD REQUEST
+            return 400;
         $tipo = $this->params['type'];
 
         /* Qui definisco i tipi di ricerca */
@@ -431,8 +431,6 @@ class SearchController extends DooController {
                                 $this->parseEXTContent3($value['data'], $arr, $tempoPostConfronto);
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
-                            else
-                                print $value['code'] . "\n\r";
 //$test[] = $value['url'].' => '.$value['code']."\n";
                         }
 //print_r($test);die();
@@ -444,9 +442,12 @@ class SearchController extends DooController {
                         return 500;
                 }
                 //print "uscito dalla richiesta..muoio!\n\r";
-                print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
-                print_r($this->listaPost);
-                die();
+//                print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
+//                print_r($this->listaPost);
+//                die();
+                $this->sortPost($limite);
+                $this->displayPosts();
+                break;
 
 
             default: //beh, altrimenti errore
@@ -498,7 +499,7 @@ class SearchController extends DooController {
                 if (stristr($tag, $term2search)) {
                     $avanzati = sizeof(explode('/', substr($tag, strlen($term2search)))) - 1;
                     $totali = sizeof(explode('/', $tag)) - 1;
-                    $arr[$tag] = 1 - round(($none / $lenght), 2) - round(($avanzati / $totali), 2);
+                    $arr[$tag] = 1 - ($none / $lenght) - ($avanzati / $totali);
                     break;
                 } else {
                     $none++;
@@ -518,8 +519,8 @@ class SearchController extends DooController {
         if (!isset($this->toMerge))
             ErrorController::internalError();
         arsort($this->toMerge, SORT_NUMERIC);
-        if ($limite != 'all')
-            $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
+        if ($limite != "all")
+        $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
         $temp = array();
         foreach ($toRender as $k => $n)
             array_push($temp, $this->listaPost[$k]);
@@ -574,6 +575,7 @@ class SearchController extends DooController {
                 "Content-Type: application/xml; charset=utf-8"
             ));
             curl_setopt($h, CURLOPT_TIMEOUT, 3);
+
             array_push($hArr, $h);
         }
 
@@ -643,7 +645,6 @@ class SearchController extends DooController {
             $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
             $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
             $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike);
-
         }
     }
 
@@ -675,7 +676,10 @@ class SearchController extends DooController {
                 $realPeso = $realPeso * ($numLike - $numDislike);
             $this->listaPost[] = array(
                 "articolo" => $articolo,
-                "peso" => $realPeso,
+                "peso" => round($realPeso,5),
+            );
+            $this->toMerge[]=array(
+                "peso"=>round($realPeso,5),
             );
         }
     }
@@ -730,7 +734,7 @@ class SearchController extends DooController {
             $peso = (((($matchEsatto + ($matchParziale * 0.5))) * 1000) / ($tempo / 3600)) * ($findTerm * $findTerm);
 //                    print $peso;
 //                    print "Termini trovati $findTerm";
-            return $peso;
+            return round($peso,5);
         }
     }
 

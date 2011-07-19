@@ -350,9 +350,9 @@ class SearchController extends DooController {
                     return 400;
                 //ErrorController::notImpl();
 //                break;
-                $srv = $this->params['var1'];
-                $usr = $this->params['var2'];
-                $pid = $this->params['var3'];
+                $srv = urldecode($this->params['var1']);
+                $usr = urldecode($this->params['var2']);
+                $pid = urldecode($this->params['var3']);
                 $content;
                 $timeOfPost;
                 $post = new PostModel();
@@ -361,7 +361,7 @@ class SearchController extends DooController {
                     if (!$post->postExist($ID))
                         ErrorController::notFound('Questo post non esiste!!');
                     $art = $post->getPost($ID);
-                    $content = html_entity_decode($art[key($art)]['http://rdfs.org/sioc/ns#content'][0],ENT_COMPAT,'UTF-8');
+                    $content = html_entity_decode($art[key($art)]['http://rdfs.org/sioc/ns#content'][0], ENT_COMPAT, 'UTF-8');
                     $timeOfPost = $art[key($art)]["http://purl.org/dc/terms/created"][0];
                 } else {
                     $url = $this->SRV->getUrl($srv);
@@ -392,21 +392,22 @@ class SearchController extends DooController {
 //                unset($allPost[$key]);
 //                print"tutti i post\n\r";
                 //print_r($allPost);              
-                if (isset($art)){
-                    foreach ($allPost as $key=>$myPost){
+                $tempoPostConfronto = strtotime($timeOfPost);
+                if (isset($art)) {
+                    foreach ($allPost as $key => $myPost) {
                         //print key($myPost)." questo è mypost mentre art vale ".key($art)."\n\r";
-                        if (key($myPost)==key($art)){
+                        if (key($myPost) == key($art)) {
                             //print "c'èèèè";
-                            unset ($allPost[$key]);
+                            unset($allPost[$key]);
                             break;
                         }
-                }
+                    }
                 }
 //                print_r($allPost);
 //                die();
                 foreach ($allPost as $i => $pID) {
                     //print "Il mio post $postContentHTML";die();
-                    print "questo è l'articolo:\n\r";
+                    //print "questo è l'articolo:\n\r";
                     //print_r ($pID);
                     //print "\n\r";
                     foreach ($arr as $key => $peso) {
@@ -418,12 +419,11 @@ class SearchController extends DooController {
                         $arr[$key] = $this->calcWeight($pID, $pathTerm);
                         //print "Il peso per $key è: $arr[$key]\n\r";
                     }
-                    print "il peso totale per questo articolo è:".array_sum($arr)."\n\r";
+//                    print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
                     $sumPeso = array_sum($arr);
                     //Se il peso è positivo allora considero l'articolo
                     if ($sumPeso > 0) {
                         $tempoPostConfrontato = strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
-                        $tempoPostConfronto = strtotime($timeOfPost);
                         if ($tempoPostConfrontato >= $tempoPostConfronto)
                             $realPeso = ($sumPeso * 1000) / (($tempoPostConfrontato - $tempoPostConfronto) / 3600);
                         else
@@ -433,13 +433,42 @@ class SearchController extends DooController {
                         if ($numDislike > $numLike)
                             $realPeso = $realPeso / ($numDislike - $numLike);
                         else if ($numLike > $numDislike)
-                            $realPeso = $realPeso * ($numLike - $numDislike);                       
+                            $realPeso = $realPeso * ($numLike - $numDislike);
                         $this->listaPost[] = array(
                             "articolo" => $pID,
                             "peso" => $realPeso,
                         );
                     }
                 }
+                print "Adesso parte la richiesta esterna\n\r";
+                if ($extRequest === FALSE) {
+                    $servers;
+                    $this->initServers($servers);
+
+                    $metodo = '/' . $tipo;
+                    $metodo .= '/' . $this->params['var1'].'/'.$this->params['var2'].'/'.$this->params['var3'].'/1/1';
+//                    print "$metodo\n\r";
+                    if ($this->rcvFromEXTServers($servers, $limite, $metodo)) {
+
+                        $badServer = array();
+                        foreach ($servers as $value) {
+                            if ($value['code'] === 200)
+                                $this->parseEXTContent3($value['data'], $arr, $tempoPostConfronto);
+                            else if ($value['code'] === 500)
+                                array_push($badServer, $value['name']);
+                            else print $value['code']."\n\r";
+//$test[] = $value['url'].' => '.$value['code']."\n";
+                        }
+//print_r($test);die();
+//qui fanculizzo i server
+                        /* if (count($badServer))
+                          $this->funcoolizer($badServer);
+                         */
+                    } else
+                        return 500;
+                }
+                print "uscito dalla richiesta..muoio!\n\r";
+                die();
                 print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
                 print_r($this->listaPost);
                 die();
@@ -560,6 +589,7 @@ class SearchController extends DooController {
         foreach ($servers as $k => $server) {
 
             $url = $server['url'] . 'searchserver/' . $limite . $metodo;
+            print "il mio url è: $url\n\r";
             $h = curl_init();
             curl_setopt($h, CURLOPT_URL, $url);
             curl_setopt($h, CURLOPT_HEADER, 0);
@@ -567,7 +597,7 @@ class SearchController extends DooController {
             curl_setopt($h, CURLOPT_HTTPHEADER, array(
                 "Content-Type: application/xml; charset=utf-8"
             ));
-            curl_setopt($h, CURLOPT_TIMEOUT, 3);
+            curl_setopt($h, CURLOPT_TIMEOUT, 2);
 
             array_push($hArr, $h);
         }
@@ -624,7 +654,56 @@ class SearchController extends DooController {
         }
     }
 
-    private function pesoFullText($articolo, $listOfWords, &$findTerm, $creato) {
+    //Usata per l'affinity
+    private function parseEXTContent3($toParse, $arr, $tempoPostConfronto) {
+        print ("L'xml che mi arriva:\n\r");
+        print_r($toParse);
+        $html = str_get_html($toParse);
+        foreach ($html->find('article') as $articolo) {
+            $tempoPostConfrontato = strtotime($articolo->content);
+            $numDislike = $articolo->find('span[tweb:countDislike]')->content;
+            $numLike = $articolo->find('span[tweb:countLike]')->content;
+            print $numDislike;
+            die();
+        }
+    }
+
+    private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike) {
+        foreach ($arr as $key => $peso) {
+            $pathTerm = explode('/', $key);
+            unset($pathTerm[0]);
+//                        print "Stampo il pathterm come array:\n\r";
+//                        print_r ($pathTerm);
+//                        print "\n\r";
+            $arr[$key] = $this->calcWeight($articolo, $pathTerm);
+            //print "Il peso per $key è: $arr[$key]\n\r";
+        }
+//                    print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
+        $sumPeso = array_sum($arr);
+        //Se il peso è positivo allora considero l'articolo
+        if ($sumPeso > 0) {
+            //$tempoPostConfrontato = strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
+            //$tempoPostConfronto = strtotime($timeOfPost);
+            if ($tempoPostConfrontato >= $tempoPostConfronto)
+                $realPeso = ($sumPeso * 1000) / (($tempoPostConfrontato - $tempoPostConfronto) / 3600);
+            else
+                $realPeso= ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
+//            $numDislike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+//            $numLike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+            if ($numDislike > $numLike)
+                $realPeso = $realPeso / ($numDislike - $numLike);
+            else if ($numLike > $numDislike)
+                $realPeso = $realPeso * ($numLike - $numDislike);
+            $this->listaPost[] = array(
+                "articolo" => $articolo,
+                "peso" => $realPeso,
+            );
+        }
+    }
+
+    private
+
+    function pesoFullText($articolo, $listOfWords, &$findTerm, $creato) {
         $content = $articolo->plaintext;
         $findTerm = 0;
         $matchEsatto = 0;
@@ -678,7 +757,9 @@ class SearchController extends DooController {
         }
     }
 
-    private function rcvFromINTServer($usr, $countPost) {
+    private
+
+    function rcvFromINTServer($usr, $countPost) {
         $post = new PostModel();
         $postIDs = $usr->getPosts($countPost);
         $posts = $post->getPostArray($postIDs);

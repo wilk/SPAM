@@ -348,7 +348,7 @@ class SearchController extends DooController {
                         !(isset($this->params['var3'])))
                 //BAD REQUEST
                     return 400;
-                //ErrorController::notImpl();
+                ErrorController::notImpl();
 //                break;
                 $srv = urldecode($this->params['var1']);
                 $usr = urldecode($this->params['var2']);
@@ -589,7 +589,7 @@ class SearchController extends DooController {
         foreach ($servers as $k => $server) {
 
             $url = $server['url'] . 'searchserver/' . $limite . $metodo;
-            print "il mio url è: $url\n\r";
+            //print "il mio url è: $url\n\r";
             $h = curl_init();
             curl_setopt($h, CURLOPT_URL, $url);
             curl_setopt($h, CURLOPT_HEADER, 0);
@@ -661,8 +661,8 @@ class SearchController extends DooController {
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
             $tempoPostConfrontato = strtotime($articolo->content);
-            $numDislike = $articolo->find('span[tweb:countDislike]')->content;
-            $numLike = $articolo->find('span[tweb:countLike]')->content;
+            $numDislike = $articolo->find('span[tweb:countDislike]',0)->content;
+            $numLike = $articolo->find('span[tweb:countLike]',0)->content;
             print $numDislike;
             die();
         }

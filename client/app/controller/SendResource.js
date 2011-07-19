@@ -102,6 +102,9 @@ Ext.define ('SC.controller.SendResource' , {
 			var 	artBody = txtResDes.getValue () ,
 				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />';
 			
+			// Escapes every '<'
+			artBody = artBody.replace ('<' , '&lt;');
+			
 			artBody = htInjection (artBody , this.getComboThesaurusStore ());
 			
 			// XML Injection
@@ -112,7 +115,7 @@ Ext.define ('SC.controller.SendResource' , {
 				try {
 					navigator.geolocation.getCurrentPosition (function (position) {
 						// If geolocation was retrieved successfully, setup geolocation span
-						geoLocSpan = '<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.latitude + '" />';
+						geoLocSpan = '<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.longitude + '" />';
 					} , function () {
 						// TODO: better error message
 						// otherwise, setup with 0,0 position
@@ -208,6 +211,8 @@ Ext.define ('SC.controller.SendResource' , {
 		
 		// If browser do not support geolocation, hide the checkbox
 		if ((browserGeoSupportFlag))
+			chkBoxGeoLoc.setVisible (true);
+		else
 			chkBoxGeoLoc.setVisible (false);
 		
 		sendResourceComboHashtag = winRes.down ('#sendResourceComboHashtag');
@@ -215,6 +220,8 @@ Ext.define ('SC.controller.SendResource' , {
 		MAXCHARS = 140;
 		artHeader = '<article>';
 		artFooter = '</article>';
+		
+		sendGeoLocSpan = '';
 	} ,
 	
 	// @brief Reset fields

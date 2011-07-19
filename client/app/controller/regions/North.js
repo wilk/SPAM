@@ -94,7 +94,6 @@ Ext.define ('SC.controller.regions.North' , {
 					Ext.Ajax.request ({
 						url: optionSin.getUrlServerLtw () + 'login' ,
 						method: 'POST' ,
-						// TODO: yep? -> withCredentials: true ,
 						params: { username: txtUser } ,
 						success: function (response) {
 							// If server sets his cookies
@@ -117,6 +116,9 @@ Ext.define ('SC.controller.regions.North' , {
 						
 								// Request extended thesaurus
 								Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
+								
+								// Save username of current user
+								optionSin.setCurrentUser (txtUser);
 							}
 							else {
 								Ext.Msg.show ({
@@ -182,6 +184,9 @@ Ext.define ('SC.controller.regions.North' , {
 					
 					// Request shared thesaurus
 					Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
+					
+					// Reset to null username of the user
+					optionSin.resetCurrentUser ();
 				} ,
 				failure: function (error) {
 					Ext.Msg.show ({

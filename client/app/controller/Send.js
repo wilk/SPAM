@@ -109,11 +109,12 @@ Ext.define ('SC.controller.Send' , {
 			var 	artBody = txtSendArea.getValue () ,
 				win = Ext.getCmp ('windowNewPost');
 			
+			// Escapes every '<'
+			artBody = artBody.replace ('<' , '&lt;');
+			
 			// Allow transformNakedUrl to Spammers server only
 			if (optionSin.getUrlServerLtw () == 'http://ltw1102.web.cs.unibo.it/') {
 				win.setLoading (true);
-				// TODO: Escapes every '<'
-				//artBody = artBody.replace ('<' , '\<');
 				artBody = transformNakedUrl (artBody , 0, artBody.length);
 				win.setLoading (false);
 			}
@@ -129,7 +130,7 @@ Ext.define ('SC.controller.Send' , {
 				try {
 					navigator.geolocation.getCurrentPosition (function (position) {
 						// If geolocation was retrieved successfully, setup geolocation span
-						sendGeoLocSpan = '<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.latitude + '" />';
+						sendGeoLocSpan = '<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.longitude + '" />';
 					} , function () {
 						// TODO: better error message
 						// otherwise, setup with 0,0 position
@@ -142,7 +143,7 @@ Ext.define ('SC.controller.Send' , {
 					Ext.Msg.show ({
 						title: 'Error' ,
 						msg: 'An error occurred during setup geolocation: article will be sent without geolocation.' ,
-						buttons: Ext.Msg.OK,
+						buttons: Ext.Msg.OK ,
 						icon: Ext.Msg.ERROR
 					});
 				}
@@ -222,11 +223,15 @@ Ext.define ('SC.controller.Send' , {
 		
 		// If browser do not support geolocation, hide the checkbox
 		if ((browserGeoSupportFlag))
+			chkSendBoxGeoLoc.setVisible (true);
+		else
 			chkSendBoxGeoLoc.setVisible (false);
 		
 		MAXCHARS = 140;
 		artHeader = '<article>';
 		artFooter = '</article>';
+		
+		sendGeoLocSpan = '';
 	} ,
 	
 	// @brief Reset text area of the new post

@@ -4,15 +4,676 @@
   xmlns:dcterms="http://purl.org/dc/terms/"
   xmlns:tweb="http://vitali.web.cs.unibo.it/vocabulary/">
 
-  <rdf:Description rdf:about="spam:/Spammers/riccardo/14724">
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/18158">
     <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
-    <sioc:Post>
-nuovo giro nuova corsa #hasttag
-</sioc:Post>
     <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
-    <dcterms:created>2011-06-10T00:27:00+02:00</dcterms:created>
+    <dcterms:created>2011-06-27T01:23:38+02:00</dcterms:created>
     <tweb:countLike>0</tweb:countLike>
     <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltwt1102.web.cs.unibo.it/tags/hashtag"/>
+    <sioc:content>
+   &amp;lt;div about=&amp;quot;/tw12/pippo/11&amp;quot;&amp;gt;
+      Testo di un post contenente
+      &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;hashtag&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;,
+      altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio 
+      &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#
+      &amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; 
+         about=&amp;quot;/sport/calcio/portiere&amp;quot; 
+         rel=&amp;quot;skos:inScheme&amp;quot;
+         resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;portiere&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;)
+      o del tesauro esteso (ad esempio
+      &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#
+      &amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; 
+         about=&amp;quot;/sport/calcio/portiere/roma&amp;quot; 
+         rel=&amp;quot;skos:inScheme&amp;quot;
+         resource=&amp;quot;http://ltwxxxx.web.cs.unibo.it/thesaurus&amp;quot;&amp;gt;roma&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;)
+      e altro html sparso (ad esempio, &amp;lt;a href=&amp;quot;http://www.example.com&amp;quot;&amp;gt;link&amp;lt;/a&amp;gt;)
+      &amp;lt;span property=&amp;quot;tweb:countLike&amp;quot; content=&amp;quot;1&amp;quot; /&amp;gt;
+      &amp;lt;span property=&amp;quot;tweb:countDislike&amp;quot; content=&amp;quot;5&amp;quot; /&amp;gt;
+&amp;lt;ul rel=&amp;quot;tweb:like&amp;quot;&amp;gt;
+&amp;lt;li resource=&amp;quot;/tw14/pluto&amp;quot; /&amp;gt;
+&amp;lt;li resource=&amp;quot;/tw14/gino&amp;quot; /&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;ul rel=&amp;quot;sioc:has_reply&amp;quot;&amp;gt;
+&amp;lt;li resource=&amp;quot;/tw14/pluto/555&amp;quot; /&amp;gt;
+&amp;lt;li resource=&amp;quot;/tw14/gino/4158&amp;quot; /&amp;gt;
+&amp;lt;/ul&amp;gt;
+   &amp;lt;/div&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers//backslash/25997">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers//backslash"/>
+    <dcterms:created>2011-06-29T19:47:14+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+prova di un articolo scritto da &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;backslash&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/例白/20985">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/例白"/>
+    <dcterms:created>2011-06-29T20:09:24+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+ｐろヴぁ
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/例白/3727">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/例白"/>
+    <dcterms:created>2011-06-29T20:09:49+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+知りp路ヴィ亜も
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/例白/9579">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/例白"/>
+    <dcterms:created>2011-06-29T20:10:25+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+利p炉ヴぉsc利ヴぇん毒亜l個さぢstらの
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/例白/27884">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/例白"/>
+    <dcterms:created>2011-06-30T11:58:58+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+p炉ヴぉ亜sc利ヴぇれ運亜rちこぉ今儀あっぽねせ
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/例白/6529">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/例白"/>
+    <dcterms:created>2011-06-30T12:06:33+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+Questo lo scrivo in ita ma con caratteri strani! ø├ÄX
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/21206">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-05T11:07:55+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>Testo di un post contenente &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;hashtag&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;,altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/sport/calcio/portiere&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;portiere&amp;lt;/span&amp;gt; &amp;lt;/span&amp;gt;) </sioc:content>
+    <tweb:respamOf rdf:resource="spam:/TangoWhiskey/thesave/3"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/6386">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-05T11:32:46+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+post di prova &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;prova&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; e inserisco tag &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;informatica&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/9684">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-05T22:51:25+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+Scrivo un articolo..
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/8704">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-06T15:40:19+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>Testo di un post contenente &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;hashtag&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;,altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/sport/calcio/portiere&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;portiere&amp;lt;/span&amp;gt; &amp;lt;/span&amp;gt;) </sioc:content>
+    <tweb:respamOf rdf:resource="spam:/TangoWhiskey/thesave/3"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/9319">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-06T15:52:56+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltwt1102.web.cs.unibo.it/tags/hashtag"/>
+    <sioc:content>Testo di un post contenente &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;hashtag&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;,altri hashtag che si riferiscono a concetti del tesauro condiviso (ad esempio &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/sport/calcio/portiere&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;portiere&amp;lt;/span&amp;gt; &amp;lt;/span&amp;gt;) </sioc:content>
+    <tweb:respamOf rdf:resource="spam:/TangoWhiskey/thesave/3"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/20420">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-06T15:54:14+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>&amp;lt;span resource=&amp;quot;video&amp;quot; src=&amp;quot;http://www.example.com/video.ogv&amp;quot;/&amp;gt; </sioc:content>
+    <tweb:respamOf rdf:resource="spam:/TangoWhiskey/thesave/4"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/11617">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-07T16:06:06+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+Scrivo un articolo con hashtag del tesauro &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/sport/calcio&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;calcio&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; e un commontag &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;blog&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/25059">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-07T16:20:27+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltwt1102.web.cs.unibo.it/tags/blog"/>
+    <sioc:content>
+post con &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;blog&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; e &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/sport/calcio&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;calcio&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/18397">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-07T16:23:13+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltwt1102.web.cs.unibo.it/tags/cazzate"/>
+    <sioc:content>
+Semplice post in cui parlo di &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;informatica&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; e di &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;cazzate&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; varie giusto per passare il tempo
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/7893">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-09T11:33:23+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+provo a scrivere un fottuto post con due hashtag uno del tesauro &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;informatica&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; e uno di tipo ctag &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;palle&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/21162">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-09T11:39:29+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+post con hashtag &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;palle&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/26994">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-09T11:52:12+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltwt1102.web.cs.unibo.it/tags/palle"/>
+    <sioc:content>
+scrivo post con hashtag &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;palle&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; visto che me le sono fracassate con questo progetto!
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/24584">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-09T18:59:58+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+Questo client mi mette i brividi!
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/例白/25026">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/例白"/>
+    <dcterms:created>2011-07-10T12:06:24+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+Questo client mi mette i brividi!
+</sioc:content>
+    <tweb:respamOf rdf:resource="spam:/Spammers/riccardo/24584"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/26034">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-10T18:09:46+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+scrivo un link www.facebook.com  me lo converte?
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/20398">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-10T18:10:20+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+e solo scrivo con http://www.facebook.com
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/5234">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-10T18:12:37+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+Questo client mi mette i brividi!
+</sioc:content>
+    <tweb:respamOf rdf:resource="spam:/Spammers/riccardo/24584"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/25112">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-11T22:19:35+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+to piace questo elemento.
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/7018">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-13T23:26:02+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltwt1102.web.cs.unibo.it/tags/sintetico"/>
+    <sioc:content>
+&amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;sintetico&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; come il campo e come sto cazzo!
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo/9904">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/riccardo"/>
+    <dcterms:created>2011-07-14T23:28:36+02:00</dcterms:created>
+    <tweb:countLike>1</tweb:countLike>
+    <tweb:countDislike>1</tweb:countDislike>
+    <sioc:content>
+scrivo un post con il + come carattere
+</sioc:content>
+    <tweb:like rdf:resource="spam:/Spammers/pippo"/>
+    <tweb:dislike rdf:resource="spam:/Spammers/れいじろ"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/16029">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-15T17:47:46+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltw1102.web.cs.unibo.it/tags/gatto"/>
+    <sioc:content>
+scrivo un post con un ctag &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;gatto&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; e un hashtag del tesauro &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/sport/tennis/erba&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;erba&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/12699">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T11:57:48+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+l'uccisione della programmazione
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/12845">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T11:58:32+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+&amp;quot;credo&amp;quot; che sia valido
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/6683">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T12:34:48+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+pippo,scrive un post per vedere cosa succede!Devo considerare la punteggiatura nella ricerca! ok? &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/letteratura/tipologia/poesia&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;poesia&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/24097">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T12:35:34+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+e se scrivo più volte lo stesso termine tipo termine e ancora termine?
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/20281">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T12:36:48+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+se scrivo 3 è maggiore di 2 ??
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/22087">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T12:53:14+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+(provo) anche con le parentesi!
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/7855">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T15:47:03+02:00</dcterms:created>
+    <tweb:countLike>1</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+provo a scrive un articolo con parole e sti cazzi!
+</sioc:content>
+    <tweb:like rdf:resource="spam:/Spammers/Pippo"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/13553">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T20:43:24+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+&amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;informatica&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; un post del cazzo
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/7523">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T22:25:11+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltw1102.web.cs.unibo.it/tags/pippo"/>
+    <sioc:content>
+&amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica/linguaggi/ansi_c&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;ansi&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;_c e hashtag a cazzo &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;pippo&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/950">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-16T23:11:16+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltw1102.web.cs.unibo.it/tags/dolore"/>
+    <sioc:content>
+e lo colp&amp;igrave; proprio l&amp;igrave; dove non batte il sole! CHE DOLORE! &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;dolore&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/20077">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-17T00:02:25+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+devo scrivere un post con il termine &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;informatica&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; per fare una prova
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/21082">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-17T23:42:38+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:topic rdf:resource="http://ltw1102.web.cs.unibo.it/tags/youtube"/>
+    <sioc:content>
+video preso da &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;ctag:Tag&amp;quot; property=&amp;quot;ctag:label&amp;quot;&amp;gt;youtube&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;span resource=&amp;quot;video&amp;quot; src=&amp;quot;http://www.youtube.com/watch?v=DRN3XsGst5w&amp;amp;feature=feedrec_grec_index&amp;quot; /&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/15426">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T00:18:43+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+sta minchia di post!
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/27155">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T00:53:37+0200</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+santissima data!
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/10004">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T00:54:22+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+ancora con data! fuckkk
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/9516">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T00:54:23+02:00</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+ancora con data! fuckkk
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/2004">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T00:56:17Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+data di sto cazzo!!
+
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/32288">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>11-07-19T07:40:18Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+nuova prova per la data ..
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/9082">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T07:40:56Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+riprova
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/21871">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T09:49:16Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+santo post con data spero esatta!
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/2590">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T10:40:02Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+giusto per essere il primo
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/10850">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T11:21:26Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+hashtag del tesauro &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/sport/pallavolo/allenatore&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;allenatore&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/2118">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T11:31:30Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+devo dire che la &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/musica/genere/classica&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;classica&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; si lascia ascoltare!
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/26885">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T12:16:14Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+&amp;amp;lt; sembra che sia stato fixato! vediamo un p&amp;ograve;.
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/22332">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T12:17:24Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+La geolocation funge ora?
+
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/4746">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T12:18:13Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+ma mi localizzi?
+
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/9116">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T12:19:31Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+localizzami santo dio!
+
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/31957">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T13:16:09Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>0</tweb:countDislike>
+    <sioc:content>
+scrivo un post che parla di &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica/linguaggi&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;linguaggi&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt; in particolare &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica/linguaggi/ansi_c&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;ansi_c&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/pippo/25111">
+    <rdf:type rdf:resource="http://rdfs.org/sioc/ns#Post"/>
+    <sioc:has_creator rdf:resource="spam:/Spammers/pippo"/>
+    <dcterms:created>2011-07-19T13:16:41Z</dcterms:created>
+    <tweb:countLike>0</tweb:countLike>
+    <tweb:countDislike>2</tweb:countDislike>
+    <sioc:content>
+mi sono scordato di &amp;lt;span rel=&amp;quot;sioc:topic&amp;quot;&amp;gt;#&amp;lt;span typeof=&amp;quot;skos:Concept&amp;quot; about=&amp;quot;/informatica&amp;quot; rel=&amp;quot;skos:inScheme&amp;quot; resource=&amp;quot;http://vitali.web.cs.unibo.it/TechWeb11/thesaurus&amp;quot;&amp;gt;informatica&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+</sioc:content>
+    <tweb:dislike rdf:resource="spam:/Spammers/riccardo"/>
+    <tweb:dislike rdf:resource="spam:/Spammers/reijiro"/>
   </rdf:Description>
 
 </rdf:RDF>

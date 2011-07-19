@@ -518,7 +518,8 @@ class SearchController extends DooController {
         if (!isset($this->toMerge))
             ErrorController::internalError();
         arsort($this->toMerge, SORT_NUMERIC);
-        $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
+        if ($limite != 'all')
+            $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
         $temp = array();
         foreach ($toRender as $k => $n)
             array_push($temp, $this->listaPost[$k]);
@@ -573,7 +574,6 @@ class SearchController extends DooController {
                 "Content-Type: application/xml; charset=utf-8"
             ));
             curl_setopt($h, CURLOPT_TIMEOUT, 3);
-
             array_push($hArr, $h);
         }
 
@@ -643,6 +643,7 @@ class SearchController extends DooController {
             $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
             $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
             $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike);
+
         }
     }
 

@@ -27,7 +27,6 @@ Ext.define ('SC.view.SelectPost' , {
 	items: [{
 		xtype: 'buttongroup' ,
 		columns: 5 ,
-		// TODO: insert text after button icon, align on bottom
 		items: [{
 			// Text
 			id: 'btnPostText' ,

@@ -50,16 +50,16 @@ Ext.define ('SC.controller.SendResource' , {
 			// Combo Hashtag
 			'#sendResourceComboHashtag': {
 				select: this.getHashtag
+			} ,
+			// Geolocation Checkbox
+			'#chkResGeoLoc': {
+				click: this.getGeoPosition
 			}
 		});
-	
-		console.log ('Controller SendResource started.');
 	} ,
 	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
-	// TODO: pasted text!!!
-	// TODO: cancel/delete keys aren't captured by chrome
 	checkChars : function (txtarea, e) {
 			// Get the lenght
 		var	numChar = txtarea.getValue().length ,
@@ -110,29 +110,8 @@ Ext.define ('SC.controller.SendResource' , {
 			// XML Injection
 			var article = artHeader + '\n' + artBody + '\n' + artResource + '\n';
 			
-			// Check geolocation
-			if (chkBoxGeoLoc.getValue () && browserGeoSupportFlag) {
-				try {
-					navigator.geolocation.getCurrentPosition (function (position) {
-						// If geolocation was retrieved successfully, setup geolocation span
-						geoLocSpan = '<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.longitude + '" />';
-					} , function () {
-						// TODO: better error message
-						// otherwise, setup with 0,0 position
-						geoLocSpan = '<span id="geolocationspan" long="0" lat="0" />';
-					});
-				
-					article += geoLocSpan + '\n';
-				}
-				catch (err) {
-					Ext.Msg.show ({
-						title: 'Error' ,
-						msg: 'An error occurred during geolocation setup: article will be sent without geolocation.' ,
-						buttons: Ext.Msg.OK,
-						icon: Ext.Msg.ERROR
-					});
-				}
-			}
+			// Add geolocation
+			article += geolocSin.getSpan ();
 			
 			// Complete article building
 			article += artFooter;
@@ -210,7 +189,7 @@ Ext.define ('SC.controller.SendResource' , {
 		btnGhost = Ext.getCmp ('resBtnGhost');
 		
 		// If browser do not support geolocation, hide the checkbox
-		if ((browserGeoSupportFlag))
+		if (geolocSin.isSupported ())
 			chkBoxGeoLoc.setVisible (true);
 		else
 			chkBoxGeoLoc.setVisible (false);
@@ -220,8 +199,6 @@ Ext.define ('SC.controller.SendResource' , {
 		MAXCHARS = 140;
 		artHeader = '<article>';
 		artFooter = '</article>';
-		
-		sendGeoLocSpan = '';
 	} ,
 	
 	// @brief Reset fields
@@ -230,5 +207,40 @@ Ext.define ('SC.controller.SendResource' , {
 		txtResDes.reset ();
 		chkBoxGeoLoc.reset ();
 		lblResCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
+	} ,
+	
+	// @brief Retrieve geolocation of the user device
+	getGeoPosition : function (cb) {
+		if (cb.getValue () && geolocSin.isSupported ()) {
+			// Mask the window
+			winRes.setLoading ('Retrieving geolocation of your device ...');
+			try {
+				navigator.geolocation.getCurrentPosition (function (position) {
+					// If geolocation was retrieved successfully, setup geolocation span
+					geolocSin.setSpan ('<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.longitude + '" />');
+					winRes.setLoading (false);
+				} , function () {
+					// otherwise, setup with 0,0 position
+					geolocSin.setSpan ('<span id="geolocationspan" long="0.0" lat="0.0" />');
+					winRes.setLoading (false);
+				});
+			}
+			catch (err) {
+				Ext.Msg.show ({
+					title: 'Error' ,
+					msg: 'An error occurred during setup geolocation: article will be sent without geolocation.' ,
+					buttons: Ext.Msg.OK ,
+					icon: Ext.Msg.ERROR
+				});
+				
+				// Reset Geolocation
+				geolocSin.setSpan ('');
+				winRes.setLoading (false);
+			}
+		}
+		else {
+			// Send an empty string
+			sendGeoLocSpan = '';
+		}
 	}
 });

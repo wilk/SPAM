@@ -34,8 +34,6 @@ Ext.define ('SC.controller.regions.west.User' , {
 				itemdblclick : this.showProfileWindow
 			}
 		});
-		
-		console.log ('Controller User started');
 	} ,
 	
 	// Load the followers store

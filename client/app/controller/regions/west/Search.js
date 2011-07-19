@@ -60,8 +60,6 @@ Ext.define ('SC.controller.regions.west.Search' , {
 				}
 			}
 		});
-	
-		console.log ('Controller Search started.');
 	} ,
 	
 	// @brief Initialize variables

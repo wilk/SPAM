@@ -43,8 +43,6 @@ Ext.define ('SC.controller.regions.North' , {
 				click : this.showOptions
 			}
 		});
-		
-		console.log ('Controller North started.');
 	} ,
 	
 	// New post handler

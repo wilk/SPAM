@@ -212,3 +212,72 @@ var SingletonOption = (function () {
 		}
 	}
 })();
+
+// @brief Singleton for geolocation
+// @return Unique instance
+var SingletonGeolocation = (function () {
+	var istantiated;
+	var geoSpan;
+	var googleMap;
+	var browserGeoSupportFlag;
+	
+	function init () {
+		return {
+			// Getters
+			getSpan : function () {
+				return geoSpan;
+			} ,
+			getMap : function () {
+				return googleMap;
+			} ,
+			
+			// Setters
+			setSpan : function (tag) {
+				geoSpan = tag;
+			} ,
+			setMap : function (el, opt) {
+				googleMap = new google.maps.Map (el, opt);
+			} ,
+			
+			// Initialize geolocation if the browser supports it
+			initialize : function () {
+				browserGeoSupportFlag = (navigator.geolocation) ? true : false;
+				geoSpan = '';
+			} ,
+			isSupported : function () {
+				return browserGeoSupportFlag;
+			} ,
+			// Add a marker to the map
+			addMarker : function (pos, owner) {
+				if (pos != null) {
+					var marker = new google.maps.Marker ({
+						position: pos ,
+						map: googleMap ,
+						title: owner
+					});
+					// Attach the click event
+					google.maps.event.addListener(marker, 'click', this.showCoords);
+				}
+			} ,
+			showCoords : function (event) {
+				Ext.Msg.show ({
+					title: 'Coords' ,
+					msg: 'Latitude : ' + event.latLng.lat () + '<br />Longitude : ' + event.latLng.lng () ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.INFO
+				});
+			}
+		}
+	}
+	
+	return {
+		// Return the current istantiee
+		getInstance : function () {
+			if (!istantiated) {
+				istantiated = init ();
+			}
+			
+			return istantiated;
+		}
+	}
+})();

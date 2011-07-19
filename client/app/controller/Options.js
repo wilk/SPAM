@@ -49,8 +49,6 @@ Ext.define ('SC.controller.Options' , {
 				activate : this.showAddDelColumn
 			}
 		});
-
-		console.log ('Controller Options started.');
 	} ,
 	
 	// @brief Initialize variables

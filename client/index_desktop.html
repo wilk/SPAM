@@ -12,20 +12,21 @@
 		<script type="text/javascript" src="lib/singletons.js"> </script>
 		<script type="text/javascript" src="jquery/jquery-1.6.1.js"> </script>
 		<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
+		<link rel="icon" type="image/png" href="ext/resources/images/icon.png" />
 		<script type="text/javascript" src="ext/ext-all-debug.js"> </script>
 		<script type="text/javascript" src="app.js"> </script>
 		<script type="text/javascript">
-			// Global variable for checking geolocation supports
-			var browserGeoSupportFlag = new Boolean ();
-			var googleMap;
-			
 			// Initialize singletons
 			var replySin = SingletonReply.getInstance ();
 			var errorSin = SingletonErrors.getInstance ();
 			var optionSin = SingletonOption.getInstance ();
+			var geolocSin = SingletonGeolocation.getInstance ();
 			
 			// Setup default urls
 			optionSin.resetOption ();
+			
+			// Setup geolocation
+			geolocSin.initialize ();
 		
 			// Import any class of ExtJS 4
 			Ext.require (['*']);
@@ -39,9 +40,6 @@
 			Ext.onReady (function () {
 				// To avoid AJAX request problems
 				Ext.Ajax.useDefaultXhrHeader = false;
-		
-				// Check if user agent support geolocation
-				browserGeoSupportFlag = (navigator.geolocation) ? true : false;
 			});
 		</script>
 	</head>

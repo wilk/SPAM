@@ -28,15 +28,16 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 				itemdblclick: this.displayArticle
 			}
 		});
-		console.log ('Controller RecentPost started.');
 	} ,
 	
 	// Retrieve every 5 seconds the 10 more recent posts
 	initRecentPostPanel: function (panel) {
 		storeRecentPost = this.getRegionsEastRecentPostStore ();
 		
+		retrieveRecentArticles (storeRecentPost);
+		
 		// Every 5 secs refresh the recent articles list
-		setInterval ('retrieveRecentArticles (storeRecentPost)', 10000);
+		setInterval ('retrieveRecentArticles (storeRecentPost)', 30000);
 	} ,
 	
 	// Display articles when someone dclick on this article

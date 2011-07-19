@@ -13,12 +13,9 @@ Ext.define ('SC.view.regions.west.Search' , {
 	
 	// Configuration
 	title: 'Search' ,
-//	autoWidth: true ,
-//	width:'100%',
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 2 ,
-//	anchor: '100%' ,
 	layout: 'anchor' ,
 	
 	// Body
@@ -37,11 +34,8 @@ Ext.define ('SC.view.regions.west.Search' , {
 			'Related' ,
 			'Fulltext'
 		] ,
-//		queryMode: 'local' ,
 		value: 'Fulltext' ,
 		allowBlank: false
-		
-//		typeAhead: true
 	} , {
 		xtype: 'numberfield' ,
 		id: 'numberSearch' ,

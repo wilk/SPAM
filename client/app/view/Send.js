@@ -23,38 +23,21 @@ Ext.define ('SC.view.Send' , {
 	modal: true ,
 	bodyPadding: 10 ,
 	closeAction: 'hide' ,
-	// Horizontal box layout
-//	layout: {
-//		type: 'vbox' ,
-//		pack: 'start' ,
-//		align: 'stretch'
-//	} ,
 	layout: 'anchor' ,
 	
 	// Body
-	items: [
-		// TODO: textarea to display the content of an article to reply
-//	{
-//		xtype: 'textareafield' ,
-//		id: 'txtAreaReply' ,
-//		flex: 1 ,
-//		disable: true ,
-//		hidden: true
-//	} , 
-	{
-		// TODO: use htmleditor instead of normal textarea
+	items: [{
 		// Text area
 		xtype: 'textareafield' ,
-		//xtype: 'htmleditor' ,
 		id: 'txtAreaSend' ,
 		inputId: 'taSend' ,
-//		flex: 1 ,
 		anchor: '100% 89%' ,
 		emptyText: 'Type you text here ...' ,
 		allowBlank: false ,
 		enforceMaxLenght: true ,
 		maxLenght: 140 ,
 		enableKeyEvents: true ,
+		// Autocomplete plugin for textarea
 		plugins: new InsertAtCursorTextareaPlugin ()
 	} , {
 		// Combo Hashtag

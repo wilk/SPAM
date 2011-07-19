@@ -22,7 +22,6 @@ Ext.define ('SC.controller.regions.Center' , {
 				afterrender : this.setArtDisp
 			}
 		});
-		console.log ('Controller Center started.');
 	} ,
 
 	// Display 10 recent posts

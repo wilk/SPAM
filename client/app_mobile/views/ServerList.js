@@ -5,26 +5,26 @@ mspam.views.ServerList=Ext.extend(Ext.Panel,{
 	dockedItems:[{
 		xtype:'toolbar',
 		dock:'top',
-		title:'Mspam'
-	},
-	{
-		text:'Back',
-			ui:'back',
-			handler:function(){
-				Ext.dispatch({
-					controller:'Server',
-					action:'close'
-				});
-			}
+		title:'Mspam',
+		items:[{
+			text:'Back',
+				ui:'back',
+				handler:function(){
+					Ext.dispatch({
+						controller:'Server',
+						action:'closeServerList'
+					});
+				}
+				}]
 	}],
 	
-	items:[{
-	
-		xtype:'list',
-		itemId:'serverlist',
-		itemTpl:'{serverID}'
-	
-	}]
+//	items:[{
+//	
+//		xtype:'list',
+//		itemId:'serverlist',
+//		itemTpl:'{serverID}'
+//	
+//	}]
 
 //	store:new Ext.data.Store({
 //		autoLoad:true,

@@ -38,7 +38,8 @@ this.dockedItems=[{
 			handler:function(){
 				Ext.dispatch({
 					controller:'menu',
-					action:'showSettingsSheet'
+					action:'showSettingsSheet',
+					view:this.up('post')
 				})
 			}
 		},

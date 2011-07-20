@@ -75,7 +75,7 @@ class LikeController extends DooController {
                 $request->connect_to($url . '/propagatelike')
                         ->data(array('serverID1' => "Spammers", 'userID1' => $_SESSION['user']['username'],
                             'value' => $_POST['value'],
-                            'serverID2' => $serverID, 'userID2Up' => $userID, 'postID2Up' => $postID))
+                            'serverID2' => $serverID, 'userID2' => $userID, 'postID2' => $postID))
                         ->post();
                 if (!($request->isSuccess())) {
                     return $request->resultCode();
@@ -110,7 +110,7 @@ class LikeController extends DooController {
         $userID1 = $_POST['userID1'];
         $userID2 = $_POST['userID2'];
         $postID2 = $_POST['postID2'];
-        $value = $_POST['value'];
+        $value = urldecode($_POST['value']);
         $this->articolo = new PostModel();
         $p = 'spam:/Spammers' . '/' . $userID2 . '/' . $postID2;
         if ($this->articolo->postExist($p))

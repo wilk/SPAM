@@ -1,7 +1,7 @@
 Ext.regController('search',{
 
 	showSearchForm:function(options){
-		postview=options.view;
+		this.postview=options.view;
 		if(!this.searchform){
 			this.searchform=this.render({xtype:'search'});
 		}
@@ -122,8 +122,8 @@ Ext.regController('search',{
 	},
 	
 	previousView:function(){
-		if(postview){
-			this.application.viewport.setActiveItem(postview);
+		if(this.postview){
+			this.application.viewport.setActiveItem(this.postview);
 		}
 		else{
 			Ext.dispatch({

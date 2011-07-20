@@ -111,12 +111,40 @@ function requestSearchArticles (store, focus, focusIndex) {
 			disposeArticles (store, focus, focusIndex);
 		} ,
 		error: function (xhr, type, text) {
-			Ext.Msg.show ({
-				title: xhr.status + ' ' + errorSin.getErrorTitle (xhr.status) ,
-				msg: errorSin.getErrorText (xhr.status) ,
-				buttons: Ext.Msg.OK,
-				icon: Ext.Msg.ERROR
-			});
+			if ((xhr.status == 404) && (focus != null)) {
+				// Clean the store
+				store.removeAll ();
+				
+				// Add the focus to the store
+				store.add (focus);
+				
+				// Before dispose the retrieved articles, kill the old windows
+				var winFocus = Ext.getCmp ('winFocusArticle');
+	
+				// Kills focus window
+				if (winFocus != null)
+					winFocus.destroy ();
+	
+				// And then kills the other windows
+				while (!(articleSin.isEmpty ())) {
+					var idToRem = articleSin.remArticleIDs ();
+					var win = Ext.getCmp (idToRem);
+					if (win != null) {
+						win.destroy ();
+					}
+				}
+			
+				// Dispose retrieved articles
+				disposeArticles (store, focus, focusIndex);
+			}
+			else {
+				Ext.Msg.show ({
+					title: xhr.status + ' ' + errorSin.getErrorTitle (xhr.status) ,
+					msg: errorSin.getErrorText (xhr.status) ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
+			}
 			
 			// Unset loading mask to the center region
 			Ext.getCmp('centReg').setLoading (false);

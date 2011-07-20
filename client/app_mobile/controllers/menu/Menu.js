@@ -1,6 +1,8 @@
 Ext.regController('menu',{
 
-	showSettingsSheet:function(){
+	showSettingsSheet:function(options){
+//	console.log(options.view);
+		this.prevView=options.view;
 	
 		var loginstore=Ext.StoreMgr.get('loginstore');
 		
@@ -41,24 +43,64 @@ Ext.regController('menu',{
 									})
 								}
 						}
-					},{
+					},
+					{
+						text:'New post',
+						itemId:'newpost',
+						scope:this,
+						handler:function(){
+							this.settings.hide();
+							
+							Ext.dispatch({
+							
+								controller:'sendpost',
+								action:'showNewPost',
+								view:this.prevView
+							
+							})
+						}
+					},
+					{
+						text:'Server',
+						scope:this,
+						handler:function(){
+							this.settings.hide();
+							
+							Ext.dispatch({
+								controller:'Server',
+								action:'renderServerList',
+								view:this.prevView
+							});
+						}
+					},
+					{
+						text:'Thesaurus',
+						scope:this,
+						handler:function(){
+							this.settings.hide();
+							
+							Ext.dispatch({
+								controller:'thesaurus',
+								action:'renderme',
+								view:this.prevView
+							});
+						}
+					},
+					{
 					
 						text:'Close',
 						ui:'decline',
 						scope:this,
 						handler:function(){this.settings.hide();}
 						
-					},
-					{
-						text:'server',
-						handler:function(){
-							Ext.dispatch({
-								controller:'Server',
-								action:'prova'
-							});
-						}
 					}]
 				});
+				
+				if(Ext.StoreMgr.get('loginstore').getCount()==0){
+				
+					this.settings.remove('newpost');
+				
+				}
 				
 				this.settings.show();
 	}

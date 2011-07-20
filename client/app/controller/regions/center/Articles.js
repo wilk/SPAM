@@ -29,12 +29,15 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	// @brief Set focus on this article
 	setFocus: function (button, event) {
 		// Get model, store and index of this article
-		var index = button.up('window').down('button[tooltip="index"]').getText ();
-		var store = this.getRegionsCenterArticlesStore();
+		// About = /serverID/userID/postID
+		var about = button.up('window').down('button[tooltip="index"]').getText ();
+		var store = this.getRegionsCenterArticlesStore ();
+		// Index of the appropriate model
+		var index = store.find ('about' , about);
 		var model = store.getRange()[index];
 		
 		// Set appropriate URL
-		store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/affinity' + model.get ('about');
+		store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/affinity' + about;
 	
 		// Retrieve articles
 		requestSearchArticles (store, model, index);

@@ -19,6 +19,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// Configuration
 	init: function () {
 		var indexModel;
+		var aboutModel;
 		var focusModel;
 		var likeOrDislike;
 		var counterLike, counterDislike, pBarValue;
@@ -279,7 +280,10 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	initFocusWindow: function (win) {
 		focusWindow = win;
 		// Getting model associated with
-		indexModel = win.down('button[tooltip="focusModelIndex"]').getText ();
+		// About = /serverID/userID/postID
+		aboutModel = win.down('button[tooltip="focusModelIndex"]').getText ();
+		// Index of the appropriate model
+		indexModel = this.getRegionsCenterArticlesStore().find ('about' , aboutModel);
 		focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
 		followersStore = this.getRegionsWestFollowersStore ();
 		

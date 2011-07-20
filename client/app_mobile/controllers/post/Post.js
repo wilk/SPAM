@@ -79,6 +79,7 @@ Ext.regController('Post',{
 					scope:this,
 					handler:function(){
 						this.setLike(+1);
+						this.actions.hide();
 					}
 				},
 				{
@@ -87,6 +88,7 @@ Ext.regController('Post',{
 					scope:this,
 					handler:function(){
 						this.setLike(0);
+						this.actions.hide();
 					}
 				},
 				{
@@ -96,12 +98,14 @@ Ext.regController('Post',{
 					scope:this,
 					handler:function(){
 						this.setLike(-1);
+						this.actions.hide();
 					}
 				},
 				{
 					text:'Replay',
 					scope:this,
 					handler:function(){
+						this.actions.hide();
 						this.replayToPost();
 					}
 				},
@@ -110,6 +114,7 @@ Ext.regController('Post',{
 					scope:this,
 					handler:function(){
 						this.respamPost();
+						this.actions.hide();
 					}
 				},
 				{
@@ -221,7 +226,15 @@ Ext.regController('Post',{
 	},
 	
 	replayToPost:function(){
-		alert('function not already implemented');
+		
+		Ext.dispatch({
+			controller:'sendpost',
+			action:'showNewPost',
+			serverID:serverId,
+			userID:userId,
+			postID:postId,
+			view:this.post
+		})
 	}
 
 });

@@ -5,21 +5,23 @@ Ext.regModel("Server",{
 		name: 'serverID' ,
 		mapping: '@serverID',
 //		convert:function(v,r){Ext.DomQuery.select('*@serverID');}
+	},
+	{
+		name:'serverURL',
+		mapping:'@serverURL'
+	},
+	{
+		name:'enabled'
 	} ],
 	
 	proxy: {
 		
 		type: 'ajax',
-		url: 'lib/serv.xml',
+		url: 'servers',
 		reader:{
 			type:'xml',
 			root:'servers',
 			record:'server'
-		},
-		writer:{
-			type:'xml',
-			documentRoot:'servers',
-			record:'[server]'
 		}
 	}
 });

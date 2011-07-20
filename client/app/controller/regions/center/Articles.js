@@ -19,6 +19,12 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	// Configuration
 	init: function () {
 		this.control ({
+			'articles' : {
+				destroy : function (win) {
+					// Remove the article ID from the article singleton
+					articleSin.remArticleFromID (win.getId ());
+				}
+			} ,
 			// Focus button
 			'articles button[tooltip="Focus"]' : {
 				click : this.setFocus

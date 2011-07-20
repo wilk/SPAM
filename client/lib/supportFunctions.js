@@ -98,13 +98,13 @@ function requestSearchArticles (store, focus, focusIndex) {
 			if (winFocus != null)
 				winFocus.destroy ();
 	
-			var win;
-			var j = 0;
-	
 			// And then kills the other windows
-			while ((win = Ext.getCmp ('articles'+j)) != null) {
-				win.destroy ();
-				j++;
+			while (!(articleSin.isEmpty ())) {
+				var idToRem = articleSin.remArticleIDs ();
+				var win = Ext.getCmp (idToRem);
+				if (win != null) {
+					win.destroy ();
+				}
 			}
 			
 			// Dispose retrieved articles

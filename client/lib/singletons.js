@@ -281,3 +281,57 @@ var SingletonGeolocation = (function () {
 		}
 	}
 })();
+
+// @brief Singleton for article windows
+// @return Unique instance
+var SingletonArticle = (function () {
+	var istantiated;
+	var storeArticleIDs = new Array ();
+	
+	function init () {
+		return {
+			// Getters
+			getArticleIDs : function () {
+				return storeArticleIDs;
+			} ,
+			
+			// Add a new ID of article window
+			addArticleIDs : function (id) {
+				storeArticleIDs.push (id);
+			} ,
+			// Remove an ID of a specified article
+			remArticleFromID : function (id) {
+				var sentinel = false;
+				// Find index of the ID to remove
+				for (var i = 0; i < storeArticleIDs.length; i++) {
+					if (storeArticleIDs[i] == id) {
+						sentinel = true;
+						break;
+					}
+				}
+				// Remove it if is found
+				if (sentinel) {
+					storeArticleIDs.splice (i, 1, id);
+				}
+			} ,
+			remArticleIDs : function () {
+				return storeArticleIDs.pop ();
+			} ,
+			// Return true if the array is empty, false instead
+			isEmpty : function () {
+				return (storeArticleIDs.length < 1 ? true : false);
+			}
+		}
+	}
+	
+	return {
+		// Return the current istantiee
+		getInstance : function () {
+			if (!istantiated) {
+				istantiated = init ();
+			}
+			
+			return istantiated;
+		}
+	}
+})();

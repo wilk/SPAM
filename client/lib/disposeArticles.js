@@ -91,6 +91,8 @@ function disposeArticles (store, focus, focusIndex) {
 			
 				degree += radCounter;
 				
+				articleSin.addArticleIDs ('articles' + j);
+				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
 					title: '<span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,

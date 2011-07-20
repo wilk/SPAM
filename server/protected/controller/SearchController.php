@@ -52,9 +52,8 @@ class SearchController extends DooController {
 
     public function searchMain($extRequest = FALSE) {
         $limite = $this->params['limit'];
-        if ($limite != 'all' && !is_numeric($limite))
-            //BAD REQUEST
-            return 400;
+        if ($limite != "all" && !is_numeric($limite))
+            ErrorController::badReq ("O numeri o all altro non è consentito");
         $tipo = $this->params['type'];
 
         /* Qui definisco i tipi di ricerca */
@@ -442,7 +441,7 @@ class SearchController extends DooController {
                         return 500;
                 }
                 //print "uscito dalla richiesta..muoio!\n\r";
-               // print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
+                // print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
                 $this->sortPost($limite);
                 $this->displayPosts();
                 break;
@@ -519,6 +518,8 @@ class SearchController extends DooController {
         arsort($this->toMerge, SORT_DESC);
         if ($limite != "all")
             $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
+        else
+            $toRender= $this->toMerge;
         $temp = array();
         foreach ($toRender as $k => $n)
             array_push($temp, $this->listaPost[$k]);

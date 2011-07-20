@@ -53,7 +53,7 @@ class SearchController extends DooController {
     public function searchMain($extRequest = FALSE) {
         $limite = $this->params['limit'];
         if ($limite != "all" && !is_numeric($limite))
-            ErrorController::badReq ("O numeri o all altro non è consentito");
+            ErrorController::badReq ("O numeri o 'all' altro non è consentito");
         $tipo = $this->params['type'];
 
         /* Qui definisco i tipi di ricerca */
@@ -364,6 +364,7 @@ class SearchController extends DooController {
                     $timeOfPost = $art[key($art)]["http://purl.org/dc/terms/created"][0];
                 } else {
                     $url = $this->SRV->getUrl($srv);
+                    if ($url){
                     //print "Il server è:$url\n\r";
                     $this->request->connect_to("$url/postserver/$usr/$pid")
                             ->accept(DooRestClient::HTML)
@@ -375,7 +376,9 @@ class SearchController extends DooController {
                     $content = str_get_html($this->request->result());
                     $timeOfPost = $content->find('article', 0)->content;
                     $content = $content->find('article', 0)->innertext;
-                }//l'articolo da affinare!
+                }else
+                ErrorController::notFound("il server non esiste");
+                }////l'articolo da affinare!
                 //print ("$content\n\r");
                 $html = str_get_html($content);
                 $arr = array();
@@ -547,6 +550,7 @@ class SearchController extends DooController {
 
     private function rcvFromEXTServer($server, $method) {
         $url = $this->SRV->getUrl($server);
+        if ($url){
         $this->request->connect_to($url . $method)
                 ->accept(DooRestClient::XML)
                 ->get();
@@ -554,6 +558,8 @@ class SearchController extends DooController {
             return $this->request->result();
         else
             return $this->request->resultCode();
+    }
+    else        ErrorController::notFound ("il server non esiste");
     }
 
     private function rcvFromEXTServers(&$servers, $limite, $metodo) {

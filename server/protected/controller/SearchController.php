@@ -442,9 +442,7 @@ class SearchController extends DooController {
                         return 500;
                 }
                 //print "uscito dalla richiesta..muoio!\n\r";
-//                print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
-//                print_r($this->listaPost);
-//                die();
+               // print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
                 $this->sortPost($limite);
                 $this->displayPosts();
                 break;
@@ -518,9 +516,9 @@ class SearchController extends DooController {
             ErrorController::notFound("La ricerca non ha prodotto risultati.\n");
         if (!isset($this->toMerge))
             ErrorController::internalError();
-        arsort($this->toMerge, SORT_NUMERIC);
+        arsort($this->toMerge, SORT_DESC);
         if ($limite != "all")
-        $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
+            $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
         $temp = array();
         foreach ($toRender as $k => $n)
             array_push($temp, $this->listaPost[$k]);
@@ -676,10 +674,10 @@ class SearchController extends DooController {
                 $realPeso = $realPeso * ($numLike - $numDislike);
             $this->listaPost[] = array(
                 "articolo" => $articolo,
-                "peso" => round($realPeso,5),
+                "peso" => round($realPeso, 5),
             );
-            $this->toMerge[]=array(
-                "peso"=>round($realPeso,5),
+            $this->toMerge[] = array(
+                "peso" => round($realPeso, 5),
             );
         }
     }
@@ -734,7 +732,7 @@ class SearchController extends DooController {
             $peso = (((($matchEsatto + ($matchParziale * 0.5))) * 1000) / ($tempo / 3600)) * ($findTerm * $findTerm);
 //                    print $peso;
 //                    print "Termini trovati $findTerm";
-            return round($peso,5);
+            return round($peso, 5);
         }
     }
 

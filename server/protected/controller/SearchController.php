@@ -105,7 +105,7 @@ class SearchController extends DooController {
                         ErrorController::notFound('Attualmente non ci sono utenti seguiti.');
                     foreach ($follows as $follow) {
                         $posts;
-                        list($domain, $srv, $usr) = explode('/', $follow);
+                        list($srv, $usr) = explode('/', $follow);
                         if ($srv == 'Spammers') {//richiesta interna
                             $utente = new UserModel($usr);
                             $this->rcvFromINTServer($utente, $limite);
@@ -559,7 +559,6 @@ class SearchController extends DooController {
         else
             return $this->request->resultCode();
     }
-    else        ErrorController::notFound ("il server non esiste");
     }
 
     private function rcvFromEXTServers(&$servers, $limite, $metodo) {
@@ -579,7 +578,7 @@ class SearchController extends DooController {
             curl_setopt($h, CURLOPT_HTTPHEADER, array(
                 "Content-Type: application/xml; charset=utf-8"
             ));
-            curl_setopt($h, CURLOPT_TIMEOUT, 3);
+            curl_setopt($h, CURLOPT_TIMEOUT, 2);
 
             array_push($hArr, $h);
         }

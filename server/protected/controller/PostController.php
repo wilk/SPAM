@@ -232,14 +232,14 @@ class PostController extends DooController {
             if ($this->articolo->postExist($resource)) {
                 $this->createPost();
                 $risorsa = $this->articolo->addReplyOf($resource);
-                list($tag, $s, $u, $p) = split('/', $risorsa);
+                list($tag, $s, $u, $p) = explode('/', $risorsa);
                 $this->articolo->addHasReply($resource);
             } else
                 return ErrorController::notFound('Il post non esiste e non è possibile creare una risposta');
         }else {
             $this->createPost();
             $risorsa = $this->articolo->addReplyOf($resource);
-            list($tag, $s, $u, $p) = split('/', $risorsa);
+            list($tag, $s, $u, $p) = explode('/', $risorsa);
             $this->load()->helper('DooRestClient');
             $request = new DooRestClient;
             $servers = new SRVModel($request);

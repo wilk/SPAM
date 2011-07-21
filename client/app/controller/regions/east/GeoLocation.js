@@ -30,8 +30,8 @@ Ext.define ('SC.controller.regions.east.GeoLocation' , {
 			try {
 				var latlng = new google.maps.LatLng(0, 0);
 				var myOptions = {
-					zoom: 0,
-					center: latlng,
+					zoom: 0 ,
+					center: latlng ,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 				geolocSin.setMap (document.getElementById ("geoloc"), myOptions);
@@ -41,7 +41,7 @@ Ext.define ('SC.controller.regions.east.GeoLocation' , {
 				Ext.Msg.show ({
 					title: 'Error' ,
 					msg: error.description ,
-					buttons: Ext.Msg.OK,
+					buttons: Ext.Msg.OK ,
 					icon: Ext.Msg.ERROR
 				});
 			}

@@ -37,7 +37,7 @@ mspam.views.Home=Ext.extend(Ext.Panel,{
 		xtype:'toolbar',
 		dock:'top',
 		ui:'light',
-		title:'Mspam',
+		title:'Spam',
 		items:[
 		{
 			xtype:'spacer'

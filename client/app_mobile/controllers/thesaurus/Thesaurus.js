@@ -78,8 +78,34 @@ Ext.regController('thesaurus',{
 		var children=thesaurus.Match(null,subjects[0].subject,skosNS+'narrower',null);
 		if(!children.length){
 		//ADD TERM HERE IS NOT A BAD THING
-			Ext.Msg.alert('Thesaurus','This is the last term');
+//			Ext.Msg.alert('Thesaurus','This is the last term');
 			
+			Ext.Msg.prompt('Add definition','Do you want to add a new tag',function(butt, text){
+				
+				if(butt!='cancel'){
+					
+					Ext.Ajax.request({
+						
+						url:'addterm',
+						method:'post',
+						params:{parentterm:prefvalue,
+								term:text
+						},
+						success:function(){
+							Ext.dispatch({
+								
+								controller:'thesaurus',
+								action:'getThesaurus',
+								
+							});
+						}
+						
+					});
+					
+				}
+			
+			});
+						
 		}
 		else{
 		
@@ -108,7 +134,16 @@ Ext.regController('thesaurus',{
 		var checktop=thesaurus.Match(null,null,skosNS+'hasTopConcept',subjects[0].subject);
 		
 		if(checktop.length!=0){
-			this.application.viewport.setActiveItem(this.previousView);
+			
+			if(this.previousView){
+				this.application.viewport.setActiveItem(this.previousView);
+			}
+			else{
+				Ext.dispatch({
+					controller:'Home',
+					action:'renderHome'
+				})
+			}
 		}
 		else
 		{

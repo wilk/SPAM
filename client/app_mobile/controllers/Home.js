@@ -86,7 +86,7 @@ Ext.regController('Home',{
 							}
 							if( $(this).attr('resource')=='image' )
 							{
-								html+='<img src="'+$(this).attr('src')+'"'+'/>';
+								html+='<img src="'+$(this).attr('src')+'"'+'height="50%" width:"50%"'+'/>';
 							}
 						});
 						

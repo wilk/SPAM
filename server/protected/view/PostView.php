@@ -5,7 +5,7 @@ include_once 'protected/module/arc/ARC2.php';
 class PostView {
     /* prende in input il post come array e lo ritorna in html+rdfa */
 
-    //TODO: Aggiungere stampa geotag
+    
 
     public static function renderPost($p, $myUser=null) {
         //Definisco template di un articolo HTML standard da inviare
@@ -105,7 +105,7 @@ class PostView {
 
     /* il parametro $m è un array multiplo di post */
 
-    public static function renderMultiplePost($m) {
+    public static function renderMultiplePost($m,$myUser = null) {
         $dom = new DOMDocument('1.0', 'utf-8');
         $archive = $dom->appendChild($dom->createElement('archive'));
         /* $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><archive></archive>'); */
@@ -122,10 +122,11 @@ class PostView {
                 $weight = rand(1, 20);
             $myPost->appendChild($dom->createElement('affinity', $weight));
 
-            if (is_string($post['articolo']))
-                $content = $post['articolo'];
+            if (is_string($post['articolo'])){
+                $content = $post['articolo'];					
+	    }
             else
-                $content = self::renderPost($post['articolo']);
+                $content = self::renderPost($post['articolo'],$myUser);
 
             $article = $dom->createTextNode($content);
             $myPost->appendChild($article);

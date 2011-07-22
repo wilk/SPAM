@@ -37,8 +37,6 @@ Ext.define ('SC.controller.FollowerWindow' , {
 				click : this.startAuthorSearch
 			}
 		});
-		
-		console.log ('Controller FollowerWindow started');
 	} ,
 	
 	// @brief Initialize variables

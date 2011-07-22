@@ -49,8 +49,6 @@ Ext.define ('SC.controller.Options' , {
 				activate : this.showAddDelColumn
 			}
 		});
-
-		console.log ('Controller Options started.');
 	} ,
 	
 	// @brief Initialize variables
@@ -220,7 +218,7 @@ Ext.define ('SC.controller.Options' , {
 		
 			Ext.Ajax.request ({
 				method: 'POST' ,
-				url: optionSin.getUrlServerLtw () + 'server' ,
+				url: optionSin.getUrlServerLtw () + 'servers' ,
 				params: {servers : serverList} ,
 				success: function (response) {
 					Ext.Msg.show ({

@@ -53,6 +53,13 @@ function disposeArticles (store, focus, focusIndex) {
 				
 			focus = allRecord[focusIndex];
 		}
+		// Add the focus to the store
+		else {
+			store.add (focus);
+		}
+		
+		// The post with greater z-index is the more recent
+		store.sort ('affinity' , 'ASC');
 		
 		radCounter = 360 / store.count ();
 		
@@ -72,11 +79,6 @@ function disposeArticles (store, focus, focusIndex) {
 			// Don't manage the focus article
 			if (record != focus) {
 			
-				// Searching model ID of this article
-				for (var i = 0; i < store.count (); i++) {
-					if (allRecord[i] == record) break;
-				}
-		
 				var cosX = Math.cos (degree * (Math.PI/180));
 				var sinY = Math.sin (degree * (Math.PI/180));
 			
@@ -89,6 +91,8 @@ function disposeArticles (store, focus, focusIndex) {
 			
 				degree += radCounter;
 				
+				articleSin.addArticleIDs ('articles' + j);
+				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
 					title: '<span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,
@@ -98,9 +102,9 @@ function disposeArticles (store, focus, focusIndex) {
 					y: y ,
 					
 					items: [{
-						// Saves model ID of this article
+						// Saves information about this article (/serverID/userID/postID) in a hidden button
 						xtype: 'button' ,
-						text: i ,
+						text: record.get ('about') ,
 						tooltip: 'index' ,
 						hidden: true
 					}] ,
@@ -151,7 +155,7 @@ function disposeArticles (store, focus, focusIndex) {
 			xtype: 'button' ,
 			tooltip: 'focusModelIndex' ,
 			hidden: true ,
-			text: focusIndex
+			text: focus.get ('about')
 		}] ,
 	
 		// Docked Items

@@ -90,7 +90,7 @@ class UserModel {
     public function getPosts($c) {
         $postsUtente = array_reverse($this->index[$this->usrLabel]['http://rdfs.org/sioc/ns#Post'], TRUE);
         $size = sizeof($postsUtente);
-        if ($size < $c)
+        if ($c == 'all' || $size < $c)
             return $postsUtente;
         else
             return array_slice($postsUtente, 0, $c, TRUE);

@@ -19,6 +19,7 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// Configuration
 	init: function () {
 		var indexModel;
+		var aboutModel;
 		var focusModel;
 		var likeOrDislike;
 		var counterLike, counterDislike, pBarValue;
@@ -66,8 +67,6 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				click : this.respam
 			}
 		});
-	
-		console.log ('Controller Focus Article started.');
 	} ,
 	
 	// @brief Set Like
@@ -281,7 +280,10 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	initFocusWindow: function (win) {
 		focusWindow = win;
 		// Getting model associated with
-		indexModel = win.down('button[tooltip="focusModelIndex"]').getText ();
+		// About = /serverID/userID/postID
+		aboutModel = win.down('button[tooltip="focusModelIndex"]').getText ();
+		// Index of the appropriate model
+		indexModel = this.getRegionsCenterArticlesStore().find ('about' , aboutModel);
 		focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
 		followersStore = this.getRegionsWestFollowersStore ();
 		
@@ -305,15 +307,14 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		}
 		
 		// Check if browser can support geolocation to prevent useless operations
-		if (browserGeoSupportFlag) {
-			// Set new coords
-			var coords = findGeoLocation (focusModel.get ('article'));
-			
-			// Check if geolocation span tag exists
-			if (coords != null) {
-				var latlng = new google.maps.LatLng (coords.lat, coords.lng);
-				googleMap.setCenter (latlng);
-				googleMap.setZoom (5);
+		if (geolocSin.isSupported ()) {
+			// If location is (0.0 , 0.0), do not zoom
+			if (!((focusModel.get ('glLat') == 0) && (focusModel.get ('glLong') == 0))) {
+				// Set new coords
+				var latlng = new google.maps.LatLng (focusModel.get ('glLat'), focusModel.get ('glLong'));
+				var gMap = geolocSin.getMap ();
+				gMap.setCenter (latlng);
+				gMap.setZoom (5);
 			}
 		}
 		
@@ -386,11 +387,12 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	// @brief Setup default values
 	setupDefaults: function (win) {
 		// Check if browser can support geolocation to prevent useless operations
-		if (browserGeoSupportFlag) {
+		if (geolocSin.isSupported ()) {
 			// Set default coords and zoom
-			var latlng = new google.maps.LatLng (0, 0);
-			googleMap.setCenter (latlng);
-			googleMap.setZoom (0);
+			var latlng = new google.maps.LatLng (0.0, 0.0);
+			var gMap = geolocSin.getMap ();
+			gMap.setCenter (latlng);
+			gMap.setZoom (0);
 		}
 	}
 });

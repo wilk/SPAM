@@ -21,28 +21,27 @@ Ext.define ('SC.controller.regions.east.GeoLocation' , {
 				afterrender : this.initGeolocation
 			}
 		});
-		console.log ('Controller GeoLocation started.');
 	} ,
 	
 	// Initialize geolocation panel
 	initGeolocation: function (geoPanel) {
 		// If browser supports geolocation, setup default
-		if (browserGeoSupportFlag) {
+		if (geolocSin.isSupported ()) {
 			try {
 				var latlng = new google.maps.LatLng(0, 0);
 				var myOptions = {
-					zoom: 0,
-					center: latlng,
+					zoom: 0 ,
+					center: latlng ,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
-				googleMap = new google.maps.Map(document.getElementById("geoloc"), myOptions);
+				geolocSin.setMap (document.getElementById ("geoloc"), myOptions);
 			}
 			// If something goes wrong, alert user
 			catch (error) {
 				Ext.Msg.show ({
 					title: 'Error' ,
 					msg: error.description ,
-					buttons: Ext.Msg.OK,
+					buttons: Ext.Msg.OK ,
 					icon: Ext.Msg.ERROR
 				});
 			}

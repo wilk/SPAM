@@ -122,24 +122,19 @@ Ext.define ('SC.view.Options' , {
 					bodyPadding: 10
 				} ,
 				items: [{
-					title: 'Vincenzo Ferrari' ,
-					html: '<h1>email : ferrari@cs.unibo.it</h1>'
+					title: '<b>Vincenzo Ferrari</b>' ,
+					html: '<table><tr><td rowspan="6" style="padding-right: 2px"><img style="border:1px solid black" src="ext/resources/images/spammers/wilk.jpg" alt="Wilk" /></td></tr><tr><td><b>Nick :</b></td><td><i>Wilk</i></td></tr><tr><td><b>Email :</b></td><td><i>ferrari@cs.unibo.it</i></td></tr><tr><td><b>Level :</b></td><td><i>Advanced Spammer</i></td></tr></table><p><b>Description :</b><br /><i>Born spammer, Wilk improved his spammersness in years and years of spamming. Now he\'s a master of the spam and if you are lucky enough to meet him you\'ll hear SPAM SPAM SPAM.</i></p>'
 				} , {
-					title: 'Riccardo Statuto' ,
-					html: '<h1>email : statuto@cs.unibo.it</h1>'
+					title: '<b>Riccardo Statuto</b>' ,
+					html: '<table><tr><td rowspan="6" style="padding-right: 2px"><img style="border:1px solid black" src="ext/resources/images/profile.png" alt="Ricky" /></td></tr><tr><td><b>Nick :</b></td><td><i>Ricky</i></td></tr><tr><td><b>Email :</b></td><td><i>statuto@cs.unibo.it</i></td></tr><tr><td><b>Level :</b></td><td><i>Newbie Spammer</i></td></tr></table><p><b>Description :</b><br /><i>Ricky has made the server-side but he\'s still a newbie in the art of spamming.</i></p>'
 				} , {
-					title: 'Stefano Sgarlata' ,
-					html: '<h1>email : sgarlats@cs.unibo.it</h1>'
+					title: '<b>Stefano Sgarlata</b>' ,
+					html: '<table><tr><td rowspan="6" style="padding-right: 2px"><img style="border:1px solid black" src="ext/resources/images/profile.png" alt="Ste" /></td></tr><tr><td><b>Nick :</b></td><td><i>Ste</i></td></tr><tr><td><b>Email :</b></td><td><i>sgarlats@cs.unibo.it</i></td></tr><tr><td><b>Level :</b></td><td><i>Newbie Spammer</i></td></tr></table><p><b>Description :</b><br /><i>Ste has made the mobile with Sencha Touch but he\'s still a newbie in the art of spamming too.</i></p>'
 				} , {
-					title: 'Clemente Vitale' ,
-					html: '<h1>email : cvitale@cs.unibo.it</h1>'
+					title: '<b>Clemente Vitale</b>' ,
+					html: '<table><tr><td rowspan="6" style="padding-right: 2px"><img style="border:1px solid black" src="ext/resources/images/profile.png" alt="Cle" /></td></tr><tr><td><b>Nick :</b></td><td><i>Cle</i></td></tr><tr><td><b>Email :</b></td><td><i>cvitale@cs.unibo.it</i></td></tr><tr><td><b>Level :</b></td><td><i>Newbie Spammer</i></td></tr></table><p><b>Description :</b><br /><i>Cle has made the server-side with Ricky but he\'s still a newbie in the art of spamming too.</i></p>'
 				}]
 			}]
-		} , {
-			// Tab Help
-			title: 'Help' ,
-			bodyPadding: 10 ,
-			html: 'RTFM'
 		}]
 	}]
 });

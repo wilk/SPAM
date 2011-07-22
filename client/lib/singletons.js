@@ -155,6 +155,7 @@ var SingletonOption = (function () {
 	// Server url without credentials (http://ltw1102.web.cs.unibo.it/)
 	var pureUrlServerLtw = '';
 	var serverID = '';
+	var currentUser = '';
 	
 	function init () {
 		return {
@@ -168,6 +169,9 @@ var SingletonOption = (function () {
 			getServerID : function () {
 				return serverID;
 			} ,
+			getCurrentUser : function () {
+				return currentUser;
+			} ,
 			
 			// Setters
 			setUrlServerLtw : function (url) {
@@ -179,6 +183,9 @@ var SingletonOption = (function () {
 			setServerID : function (id) {
 				serverID = id;
 			} ,
+			setCurrentUser : function (id) {
+				currentUser = id;
+			} ,
 			
 			// Reset variables (urls and id)
 			resetOption : function () {
@@ -187,6 +194,132 @@ var SingletonOption = (function () {
 				urlServerLtw = '';
 				pureUrlServerLtw = '';
 				serverID = 'Spammers';
+			} ,
+			resetCurrentUser : function () {
+				currentUser = '';
+			}
+		}
+	}
+	
+	return {
+		// Return the current istantiee
+		getInstance : function () {
+			if (!istantiated) {
+				istantiated = init ();
+			}
+			
+			return istantiated;
+		}
+	}
+})();
+
+// @brief Singleton for geolocation
+// @return Unique instance
+var SingletonGeolocation = (function () {
+	var istantiated;
+	var geoSpan;
+	var googleMap;
+	var browserGeoSupportFlag;
+	
+	function init () {
+		return {
+			// Getters
+			getSpan : function () {
+				return geoSpan;
+			} ,
+			getMap : function () {
+				return googleMap;
+			} ,
+			
+			// Setters
+			setSpan : function (tag) {
+				geoSpan = tag;
+			} ,
+			setMap : function (el, opt) {
+				googleMap = new google.maps.Map (el, opt);
+			} ,
+			
+			// Initialize geolocation if the browser supports it
+			initialize : function () {
+				browserGeoSupportFlag = (navigator.geolocation) ? true : false;
+				geoSpan = '';
+			} ,
+			isSupported : function () {
+				return browserGeoSupportFlag;
+			} ,
+			// Add a marker to the map
+			addMarker : function (pos, owner) {
+				if (pos != null) {
+					var marker = new google.maps.Marker ({
+						position: pos ,
+						map: googleMap ,
+						title: owner
+					});
+					// Attach the click event
+					google.maps.event.addListener(marker, 'click', this.showCoords);
+				}
+			} ,
+			showCoords : function (event) {
+				Ext.Msg.show ({
+					title: 'Coords' ,
+					msg: 'Latitude : ' + event.latLng.lat () + '<br />Longitude : ' + event.latLng.lng () ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.INFO
+				});
+			}
+		}
+	}
+	
+	return {
+		// Return the current istantiee
+		getInstance : function () {
+			if (!istantiated) {
+				istantiated = init ();
+			}
+			
+			return istantiated;
+		}
+	}
+})();
+
+// @brief Singleton for article windows
+// @return Unique instance
+var SingletonArticle = (function () {
+	var istantiated;
+	var storeArticleIDs = new Array ();
+	
+	function init () {
+		return {
+			// Getters
+			getArticleIDs : function () {
+				return storeArticleIDs;
+			} ,
+			
+			// Add a new ID of article window
+			addArticleIDs : function (id) {
+				storeArticleIDs.push (id);
+			} ,
+			// Remove an ID of a specified article
+			remArticleFromID : function (id) {
+				var sentinel = false;
+				// Find index of the ID to remove
+				for (var i = 0; i < storeArticleIDs.length; i++) {
+					if (storeArticleIDs[i] == id) {
+						sentinel = true;
+						break;
+					}
+				}
+				// Remove it if is found
+				if (sentinel) {
+					storeArticleIDs.splice (i, 1, id);
+				}
+			} ,
+			remArticleIDs : function () {
+				return storeArticleIDs.pop ();
+			} ,
+			// Return true if the array is empty, false instead
+			isEmpty : function () {
+				return (storeArticleIDs.length < 1 ? true : false);
 			}
 		}
 	}

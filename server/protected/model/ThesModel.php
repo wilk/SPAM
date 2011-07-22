@@ -303,7 +303,7 @@ class ThesModel {
             //die('non ci siamo');
         $c = sizeof($this->index[$label][self::$siocPost]);
         //print_r($this->index[$label][self::$siocPost]); die();
-        if ($c < $limite)
+        if ($limite == 'all' || $c < $limite)
             return $this->index[$label][self::$siocPost];
         $limite--;
         return array_slice($this->index[$label][self::$siocPost], 0, $limite);

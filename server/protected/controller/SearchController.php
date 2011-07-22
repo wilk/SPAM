@@ -51,10 +51,9 @@ class SearchController extends DooController {
     /* il booleano $extRequest viene settano nel route a TRUE se si tratta di /searchserver */
 
     public function searchMain($extRequest = FALSE) {
-        if (!(isset($this->params['limit'])) || !(isset($this->params['type'])))
-//BAD REQUEST
-            return 400;
         $limite = $this->params['limit'];
+        if ($limite != "all" && !is_numeric($limite))
+            ErrorController::badReq ("O numeri o 'all' altro non è consentito");
         $tipo = $this->params['type'];
 
         /* Qui definisco i tipi di ricerca */
@@ -106,7 +105,7 @@ class SearchController extends DooController {
                         ErrorController::notFound('Attualmente non ci sono utenti seguiti.');
                     foreach ($follows as $follow) {
                         $posts;
-                        list($domain, $srv, $usr) = explode('/', $follow);
+                        list($srv, $usr) = explode('/', $follow);
                         if ($srv == 'Spammers') {//richiesta interna
                             $utente = new UserModel($usr);
                             $this->rcvFromINTServer($utente, $limite);
@@ -243,7 +242,7 @@ class SearchController extends DooController {
                     } else
                         return 500;
                 }
-//$this->calcWeight();
+//					 $this->calcWeight();
                 $this->sortPost($limite);
                 $this->displayPosts();
                 break;
@@ -259,63 +258,20 @@ class SearchController extends DooController {
                 $mtime = $mtime[1] + $mtime[0];
                 $starttime = $mtime;
                 $listOfWords = $this->utf8_str_word_count($stringToSearch, 1);
-                print_r($listOfWords);
+                $listOfWords = array_unique($listOfWords);
+                //print_r($listOfWords);
                 $post = new PostModel();
                 $allPost = $post->getPostArray(NULL, 'all');
 //$listPost = array();
                 foreach ($allPost as $i => $pID) {
                     $postContentHTML = str_get_html(html_entity_decode($pID[key($pID)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
-                    $content = $postContentHTML->plaintext;
-                    $findTerm = 0;
-                    $matchEsatto = 0;
-                    $matchParziale = 0;
-                    $wordInContent = $this->utf8_str_word_count($content, 1);
-                    print_r($wordInContent);
-                    foreach ($listOfWords as $indice => $word) {
-                        $find = false;
-                        if (strlen((string) $word) > 1) {
-                            if (stristr((string) $word, "'") !== false) {
-                                $word = explode("'", (string) $word);
-                                $word = $word[1];
-                            }
-                             print "Sto cercando questo termine: $word\n\r";
-                            foreach ($wordInContent as $indice => $thisWord) {
-                                if (stristr((string) $thisWord, "'") !== false) {
-                                    $thisWord = explode("'", (string) $thisWord);
-                                    $thisWord = $thisWord[1];
-                                }
-                                 print "Sto controllando questo termine: $thisWord\n\r";
-                                if (strtolower((string) $thisWord) == strtolower((string) $word)) {
-                                       print ("trovato il match di $word con $thisWord\n\r");
-                                    $matchEsatto++;
-                                    $find = true;
-                                      print ("numero di matchEsatti: $matchEsatto\n\r");
-                                } else if (stristr((string) $thisWord, (string) $word)) {
-                                      print ("trovata l'occorrenza di $word in $thisWord\n\r");
-                                    $matchParziale++;
-                                    $find = true;
-                                      print ("numero di matchParziali: $matchParziale\n\r");
-                                }
-                            }
-                            if ($find) {
-                                $findTerm++;
-                            }
-                        }
-                    }
-                    print ("totale termini trovati: $findTerm\n\r");
+                    $findTerm;
+                    $creato = $pID[key($pID)]["http://purl.org/dc/terms/created"][0];
+                    $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato);
                     if ($findTerm != 0) {
-//                    print ("$matchEsatto\n\r");
-//                    print ("$matchParziale\n\r");
-//                    print (time());
-//                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
-                        $tempo = time() - strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
-//                    print ("Differenza di tempo è:$tempo\n\r");
-                        $peso = (($matchEsatto + ($matchParziale * 0.5))) * 1000 / $tempo;
-//                    print $peso;
-//                    print "Termini trovati $findTerm";
                         $this->listaPost[$findTerm][] = array(
                             "articolo" => $pID,
-                            "peso" => $peso,
+                            "peso" => $myPeso,
                         );
                     }
                 }
@@ -324,7 +280,7 @@ class SearchController extends DooController {
                 $mtime = $mtime[1] + $mtime[0];
                 $endtime = $mtime;
                 $totaltime = ($endtime - $starttime);
-                 print "Tempo trascorso $totaltime\n\r";
+                //print "Tempo trascorso $totaltime\n\r";
 //                print_r($this->listaPost);
 //                die();
 //Eseguo richiesta esterna
@@ -356,11 +312,13 @@ class SearchController extends DooController {
                         return 500;
                 }
                 //print "numero di elementi in listapost: " . count($this->listaPost) . "\n\r";
-                $i = count($this->listaPost);
-                print "listaPost è fatto di: $i elementi";
-                for ($i; $i > 0; $i--) {
+                $c = count($this->listaPost);
+                //print "listaPost è fatto di: $c elementi";
+                //print_r($this->listaPost);die();
+                for ($i = $c; $i > 0; $i--) {
+                    $arrayPesi = array();
                     foreach ($this->listaPost[$i] as $key => $post) {
-                        print ("\n\rla key è: $key e il peso è: " .$post['peso']);
+                        //print ("\n\rla key è: $key e il peso è: " .$post['peso']);
                         $arrayPesi[$key] = $post['peso'];
                         //$arrayPost[$key]=$post['post'];
                     }
@@ -372,7 +330,7 @@ class SearchController extends DooController {
                 $i = count($this->listaPost);
                 for ($i; $i > 0; $i--) {
                     foreach ($this->listaPost[$i] as $key => $post) {
-                        if ($internalCount == $limite)
+                        if ($limite != "all" && $internalCount == $limite)
                             break;
                         $postToRender[] = $post;
                         $internalCount++;
@@ -387,10 +345,110 @@ class SearchController extends DooController {
                 if (!(isset($this->params['var1'])) ||
                         !(isset($this->params['var2'])) ||
                         !(isset($this->params['var3'])))
-//BAD REQUEST
+                //BAD REQUEST
                     return 400;
-                ErrorController::notImpl();
+//                ErrorController::notImpl();
+//                break;
+                $srv = urldecode($this->params['var1']);
+                $usr = urldecode($this->params['var2']);
+                $pid = urldecode($this->params['var3']);
+                $content;
+                $timeOfPost;
+                $post = new PostModel();
+                if ($srv == 'Spammers') {
+                    $ID = 'spam:/' . implode('/', array($srv, $usr, $pid));
+                    if (!$post->postExist($ID))
+                        ErrorController::notFound('Questo post non esiste!!');
+                    $art = $post->getPost($ID);
+                    $content = html_entity_decode($art[key($art)]['http://rdfs.org/sioc/ns#content'][0], ENT_COMPAT, 'UTF-8');
+                    $timeOfPost = $art[key($art)]["http://purl.org/dc/terms/created"][0];
+                } else {
+                    $url = $this->SRV->getUrl($srv);
+                    if ($url){
+                    //print "Il server è:$url\n\r";
+                    $this->request->connect_to("$url/postserver/$usr/$pid")
+                            ->accept(DooRestClient::HTML)
+                            ->get();
+                    if (!$this->request->isSuccess()) {
+                        header("Status:" . $this->request->resultCode());
+                        die("C'è stato un problema nella ricezione del post dall'esterno.");
+                    }
+                    $content = str_get_html($this->request->result());
+                    $timeOfPost = $content->find('article', 0)->content;
+                    $content = $content->find('article', 0)->innertext;
+                }else
+                ErrorController::notFound("il server non esiste");
+                }////l'articolo da affinare!
+                //print ("$content\n\r");
+                $html = str_get_html($content);
+                $arr = array();
+                foreach ($html->find("span[typeof=skos:Concept]") as $tag) {
+                    $arr[$tag->about] = 0;
+                }
+                //print_r ($arr);
+                //Peso i post del nostro server
+                $allPost = $post->getPostArray(NULL, 'all');
+//                print (key($art));
+//                $key=array_search(key($art),$allPost[]);
+//                print "La chiave è: $key\n\r";
+//                unset($allPost[$key]);
+//                print"tutti i post\n\r";
+                //print_r($allPost);              
+                $tempoPostConfronto = strtotime($timeOfPost);
+                if (isset($art)) {
+                    foreach ($allPost as $key => $myPost) {
+                        //print key($myPost)." questo è mypost mentre art vale ".key($art)."\n\r";
+                        if (key($myPost) == key($art)) {
+                            //print "c'èèèè";
+                            unset($allPost[$key]);
+                            break;
+                        }
+                    }
+                }
+//                print_r($allPost);
+//                die();
+                foreach ($allPost as $i => $pID) {
+                    //print "Il mio post $postContentHTML";die();
+                    //print "questo è l'articolo:\n\r";
+                    //print_r ($pID);
+                    //print "\n\r";
+                    $tempoPostConfrontato = strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
+                    $numDislike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+                    $numLike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+                    $this->pesoAffinity($pID, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike);
+                }
+//                print "Adesso parte la richiesta esterna\n\r";
+                if ($extRequest === FALSE) {
+                    $servers;
+                    $this->initServers($servers);
+
+                    $metodo = '/' . $tipo;
+                    $metodo .= '/' . $this->params['var1'] . '/' . $this->params['var2'] . '/' . $this->params['var3'] . '/1/1';
+//                    print "$metodo\n\r";
+                    if ($this->rcvFromEXTServers($servers, $limite, $metodo)) {
+
+                        $badServer = array();
+                        foreach ($servers as $value) {
+                            if ($value['code'] === 200)
+                                $this->parseEXTContent3($value['data'], $arr, $tempoPostConfronto);
+                            else if ($value['code'] === 500)
+                                array_push($badServer, $value['name']);
+//$test[] = $value['url'].' => '.$value['code']."\n";
+                        }
+//print_r($test);die();
+//qui fanculizzo i server
+                        /* if (count($badServer))
+                          $this->funcoolizer($badServer);
+                         */
+                    } else
+                        return 500;
+                }
+                //print "uscito dalla richiesta..muoio!\n\r";
+                // print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
+                $this->sortPost($limite);
+                $this->displayPosts();
                 break;
+
 
             default: //beh, altrimenti errore
                 ErrorController::notImpl();
@@ -460,8 +518,11 @@ class SearchController extends DooController {
             ErrorController::notFound("La ricerca non ha prodotto risultati.\n");
         if (!isset($this->toMerge))
             ErrorController::internalError();
-        arsort($this->toMerge, SORT_NUMERIC);
-        $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
+        arsort($this->toMerge, SORT_DESC);
+        if ($limite != "all")
+            $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
+        else
+            $toRender= $this->toMerge;
         $temp = array();
         foreach ($toRender as $k => $n)
             array_push($temp, $this->listaPost[$k]);
@@ -480,16 +541,16 @@ class SearchController extends DooController {
     private function displayPosts() {
         if (sizeof($this->listaPost) == 0)
             ErrorController::notFound("La ricerca non ha prodotto risultati.\n");
+        if (isset($_SESSION['username']['user']))
+            $XMLPosts = PostView::renderMultiplePost($this->listaPost, $_SESSION['username']['user']);
         $XMLPosts = PostView::renderMultiplePost($this->listaPost);
         $this->setContentType('xml');
         print $XMLPosts;
     }
 
     private function rcvFromEXTServer($server, $method) {
-        /* $this->load()->helper('DooRestClient');
-          $request = new DooRestClient; */
         $url = $this->SRV->getUrl($server);
-//echo $url, $method; die();
+        if ($url){
         $this->request->connect_to($url . $method)
                 ->accept(DooRestClient::XML)
                 ->get();
@@ -497,6 +558,7 @@ class SearchController extends DooController {
             return $this->request->result();
         else
             return $this->request->resultCode();
+    }
     }
 
     private function rcvFromEXTServers(&$servers, $limite, $metodo) {
@@ -508,6 +570,7 @@ class SearchController extends DooController {
         foreach ($servers as $k => $server) {
 
             $url = $server['url'] . 'searchserver/' . $limite . $metodo;
+            //print "il mio url è: $url\n\r";
             $h = curl_init();
             curl_setopt($h, CURLOPT_URL, $url);
             curl_setopt($h, CURLOPT_HEADER, 0);
@@ -560,119 +623,128 @@ class SearchController extends DooController {
         //print_r($toParse);
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
-            $content = $articolo->plaintext;
-            $findTerm = 0;
-            $matchEsatto = 0;
-            $matchParziale = 0;
-            $wordInContent = $this->utf8_str_word_count($content, 1);
-            //print_r($wordInContent);
-            foreach ($listOfWords as $indice => $word) {
-                $find = false;
-                if (strlen((string) $word) > 1) {
-                    if (stristr((string) $word, "'") !== false) {
-                        $word = explode("'", (string) $word);
-                        $word = $word[1];
-                    }
-                    //print "Sto cercando questo termine: $word\n\r";
-                    foreach ($wordInContent as $indice => $thisWord) {
-                        if (stristr((string) $thisWord, "'") !== false) {
-                            $thisWord = explode("'", (string) $thisWord);
-                            $thisWord = $thisWord[1];
-                        }
-                        //print "Sto controllando questo termine: $thisWord\n\r";
-                        if (strtolower((string) $thisWord) == strtolower((string) $word)) {
-                            // print ("trovato il match di $word con $thisWord\n\r");
-                            $matchEsatto++;
-                            $find = true;
-                            //print ("numero di matchEsatti: $matchEsatto\n\r");
-                        } else if (stristr((string) $thisWord, (string) $word)) {
-                            //print ("trovata l'occorrenza di $word in $thisWord\n\r");
-                            $matchParziale++;
-                            $find = true;
-                            //print ("numero di matchParziali: $matchParziale\n\r");
-                        }
-                    }
-                    if ($find) {
-                        $findTerm++;
-                    }
-                }
-            }
-            //print ("totale termini trovati: $findTerm\n\r");
+            $findTerm;
+            $creato = $articolo->content;
+            $myPeso = $this->pesoFullText($articolo, $listOfWords, $findTerm, $creato);
             if ($findTerm != 0) {
-//                    print ("$matchEsatto\n\r");
-//                    print ("$matchParziale\n\r");
-//                    print (time());
-//                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
-                $tempo = time() - strtotime($articolo->content);
-//                    print ("Differenza di tempo è:$tempo\n\r");
-                $peso = (($matchEsatto + ($matchParziale * 0.5))) * 1000 / $tempo;
-//                    print $peso;
-//                    print "Termini trovati $findTerm";
                 $this->listaPost[$findTerm][] = array(
                     "articolo" => $articolo->outertext,
-                    "peso" => $peso,
+                    "peso" => $myPeso,
                 );
             }
         }
     }
 
-//    private function pesoFullText($postContentHTML,$listOfWords) {
-//        $content = $postContentHTML->plaintext;
-//        $findTerm = 0;
-//        $matchEsatto = 0;
-//        $matchParziale = 0;
-//        $wordInContent = $this->utf8_str_word_count($content, 1);
-//        print_r($wordInContent);
-//        foreach ($listOfWords as $indice => $word) {
-//            $find = false;
-//            if (strlen((string) $word) > 1) {
-//                if (stristr((string) $word, "'") !== false) {
-//                    $word = explode("'", (string) $word);
-//                    $word = $word[1];
-//                }
-//                print "Sto cercando questo termine: $word\n\r";
-//                foreach ($wordInContent as $indice => $thisWord) {
-//                    if (stristr((string) $thisWord, "'") !== false) {
-//                        $thisWord = explode("'", (string) $thisWord);
-//                        $thisWord = $thisWord[1];
-//                    }
-//                    print "Sto controllando questo termine: $thisWord\n\r";
-//                    if (strtolower((string) $thisWord) == strtolower((string) $word)) {
-//                        print ("trovato il match di $word con $thisWord\n\r");
-//                        $matchEsatto++;
-//                        $find = true;
-//                        print ("numero di matchEsatti: $matchEsatto\n\r");
-//                    } else if (stristr((string) $thisWord, (string) $word)) {
-//                        print ("trovata l'occorrenza di $word in $thisWord\n\r");
-//                        $matchParziale++;
-//                        $find = true;
-//                        print ("numero di matchParziali: $matchParziale\n\r");
-//                    }
-//                }
-//                if ($find) {
-//                    $findTerm++;
-//                }
-//            }
-//        }
-//        print ("totale termini trovati: $findTerm\n\r");
-//        if ($findTerm != 0) {
-////                    print ("$matchEsatto\n\r");
-////                    print ("$matchParziale\n\r");
-////                    print (time());
-////                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
-//            $tempo = time() - strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
-////                    print ("Differenza di tempo è:$tempo\n\r");
-//            $peso = (($matchEsatto + ($matchParziale * 0.5))) * 1000 / $tempo;
-////                    print $peso;
-////                    print "Termini trovati $findTerm";
-//            $this->listaPost[$findTerm][] = array(
-//                "post" => $pID,
-//                "peso" => $peso,
-//            );
-//        }
-//    }
+    //Usata per l'affinity
+    private function parseEXTContent3($toParse, $arr, $tempoPostConfronto) {
+        //print ("L'xml che mi arriva:\n\r");
+        //print_r($toParse);
+        $html = str_get_html($toParse);
+        foreach ($html->find('article') as $articolo) {
+//            print "L'articolo é:\n\r".$articolo->outertext."\n\r";
+//            print "blabla bla";
+            $tempoPostConfrontato = strtotime($articolo->content);
+//            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
+//            print "Tempo articolo: $tempoPostConfronto\n\r";
+            $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
+            $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
+            $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike);
+        }
+    }
 
-    private function rcvFromINTServer($usr, $countPost) {
+    private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike) {
+        foreach ($arr as $key => $peso) {
+            $pathTerm = explode('/', $key);
+            unset($pathTerm[0]);
+//                        print "Stampo il pathterm come array:\n\r";
+//                        print_r ($pathTerm);
+//                        print "\n\r";
+            $arr[$key] = $this->calcWeight($articolo, $pathTerm);
+            //print "Il peso per $key è: $arr[$key]\n\r";
+        }
+//        print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
+        $sumPeso = array_sum($arr);
+        //Se il peso è positivo allora considero l'articolo
+        if ($sumPeso > 0 && $tempoPostConfrontato != $tempoPostConfronto) {
+            //$tempoPostConfrontato = strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
+            //$tempoPostConfronto = strtotime($timeOfPost);
+            if ($tempoPostConfrontato > $tempoPostConfronto)
+                $realPeso = ($sumPeso * 1000) / (($tempoPostConfrontato - $tempoPostConfronto) / 3600);
+            else
+                $realPeso= ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
+//            $numDislike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+//            $numLike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+            if ($numDislike > $numLike)
+                $realPeso = $realPeso / ($numDislike - $numLike);
+            else if ($numLike > $numDislike)
+                $realPeso = $realPeso * ($numLike - $numDislike);
+            $this->listaPost[] = array(
+                "articolo" => $articolo,
+                "peso" => round($realPeso, 5),
+            );
+            $this->toMerge[] = array(
+                "peso" => round($realPeso, 5),
+            );
+        }
+    }
+
+    private function pesoFullText($articolo, $listOfWords, &$findTerm, $creato) {
+        $content = $articolo->plaintext;
+        $findTerm = 0;
+        $matchEsatto = 0;
+        $matchParziale = 0;
+        $wordInContent = $this->utf8_str_word_count($content, 1);
+        //print_r($wordInContent);
+        foreach ($listOfWords as $indice => $word) {
+            $find = false;
+            if (strlen((string) $word) > 1) {
+                if (stristr((string) $word, "'") !== false) {
+                    $word = explode("'", (string) $word);
+                    $word = $word[1];
+                }
+                //print "Sto cercando questo termine: $word\n\r";
+                foreach ($wordInContent as $indice => $thisWord) {
+                    if (stristr((string) $thisWord, "'") !== false) {
+                        $thisWord = explode("'", (string) $thisWord);
+                        $thisWord = $thisWord[1];
+                    }
+                    //print "Sto controllando questo termine: $thisWord\n\r";
+                    if (strtolower((string) $thisWord) == strtolower((string) $word)) {
+                        // print ("trovato il match di $word con $thisWord\n\r");
+                        $matchEsatto++;
+                        $find = true;
+                        //print ("numero di matchEsatti: $matchEsatto\n\r");
+                    } else if (stristr((string) $thisWord, (string) $word)) {
+                        //print ("trovata l'occorrenza di $word in $thisWord\n\r");
+                        $matchParziale++;
+                        $find = true;
+                        //print ("numero di matchParziali: $matchParziale\n\r");
+                    }
+                }
+                if ($find) {
+                    $findTerm++;
+                }
+            }
+        }
+        //print ("totale termini trovati: $findTerm\n\r");
+        if ($findTerm != 0) {
+//                    print ("$matchEsatto\n\r");
+//                    print ("$matchParziale\n\r");
+//                    print (time());
+//                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
+
+            $tempo = time() - strtotime($creato);
+            //print ("Differenza di tempo è:$tempo\n\r");
+            $peso = (((($matchEsatto + ($matchParziale * 0.5))) * 1000) / ($tempo / 3600)) * ($findTerm * $findTerm);
+//                    print $peso;
+//                    print "Termini trovati $findTerm";
+            return round($peso, 5);
+        }
+    }
+
+    private
+
+    function rcvFromINTServer($usr, $countPost) {
         $post = new PostModel();
         $postIDs = $usr->getPosts($countPost);
         $posts = $post->getPostArray($postIDs);

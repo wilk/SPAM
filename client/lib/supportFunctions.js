@@ -25,47 +25,71 @@ function requestSearchArticles (store, focus, focusIndex) {
 			// Clean the store
 			store.removeAll ();
 			
-			// TODO: check if xml is empty
-			// Check every posts
-			$(xml).find('post').each (function () {
-				var numLike, numDislike;
-				var ifLikeDislike = 0;
+			try {
+				// Check every posts
+				$(xml).find('post').each (function () {
+					var numLike, numDislike;
+					var ifLikeDislike = 0;
+					var geoLat = 0.0;
+					var geoLong = 0.0;
+					var userID = $(this).find('article').attr('resource');
 				
-				// Find like and dislike counter plus setlike of the user
-				$(this).find('article').find('span').each (function () {
-					// Find like counter
-					if ($(this).attr ('property') == 'tweb:countLike') {
-						numLike = parseInt ($(this).attr ('content'));
-					}
+					// Find like and dislike counter plus setlike of the user
+					$(this).find('article').find('span').each (function () {
+						// Find like counter
+						if ($(this).attr ('property') == 'tweb:countLike') {
+							numLike = parseInt ($(this).attr ('content'));
+						}
 					
-					// Find dislike counter
-					if ($(this).attr ('property') == 'tweb:countDislike') {
-						numDislike = parseInt ($(this).attr ('content'));
-					}
+						// Find dislike counter
+						if ($(this).attr ('property') == 'tweb:countDislike') {
+							numDislike = parseInt ($(this).attr ('content'));
+						}
 					
-					// Find setlike/setdislike of the user
-					if ($(this).attr ('rev') == 'tweb:like') {
-						ifLikeDislike = 1;
-					}
-					else if ($(this).attr ('rev') == 'tweb:dislike') {
-						ifLikeDislike = -1;
-					}
-				});
+						// Find setlike/setdislike of the user
+						if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
+							ifLikeDislike = 1;
+						}
+						else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
+							ifLikeDislike = -1;
+						}
+					
+						// Find geolocation coords
+						if ($(this).attr ('id') == 'geolocationspan') {
+							geoLong = ($(this).attr ('long') != null ? $(this).attr ('long') : 0.0);
+							geoLat = ($(this).attr ('lat') != null ? $(this).attr ('lat') : 0.0);
+							if (!((geoLong == 0) && (geoLat == 0))) {
+								var mapLatLng = new google.maps.LatLng (geoLat, geoLong);
+								geolocSin.addMarker (mapLatLng, userID);
+							}
+						}
+					});
 				
-				// Add article to the store
-				store.add ({
-					affinity: parseInt ($(this).find('affinity').text ()) ,
-					article: tag2string ($(this).find('article')[0]) ,
-					resource: $(this).find('article').attr ('resource') ,
-					about: $(this).find('article').attr ('about') ,
-					like: numLike ,
-					dislike: numDislike ,
-					setlike: ifLikeDislike ,
-					user: $(this).find('article').attr('resource').split('/')[2] ,
-					server: $(this).find('article').attr('resource').split('/')[1] ,
-					post: $(this).find('article').attr('about').split('/')[3]
+					// Add article to the store
+					store.add ({
+						affinity: parseInt ($(this).find('affinity').text ()) ,
+						article: tag2string ($(this).find('article')[0]) ,
+						resource: $(this).find('article').attr ('resource') ,
+						about: $(this).find('article').attr ('about') ,
+						like: numLike ,
+						dislike: numDislike ,
+						setlike: ifLikeDislike ,
+						user: $(this).find('article').attr('resource').split('/')[2] ,
+						server: $(this).find('article').attr('resource').split('/')[1] ,
+						post: $(this).find('article').attr('about').split('/')[3] ,
+						glLat: geoLat ,
+						glLong: geoLong
+					});
 				});
-			});
+			}
+			catch (err) {
+				Ext.Msg.show ({
+					title: 'Error' ,
+					msg: 'Something bad happened while reading the XML. Maybe is non well-formed.' ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
+			}
 			
 			// Before dispose the retrieved articles, kill the old windows
 			var winFocus = Ext.getCmp ('winFocusArticle');
@@ -74,25 +98,53 @@ function requestSearchArticles (store, focus, focusIndex) {
 			if (winFocus != null)
 				winFocus.destroy ();
 	
-			var win;
-			var j = 0;
-	
 			// And then kills the other windows
-			while ((win = Ext.getCmp ('articles'+j)) != null) {
-				win.destroy ();
-				j++;
+			while (!(articleSin.isEmpty ())) {
+				var idToRem = articleSin.remArticleIDs ();
+				var win = Ext.getCmp (idToRem);
+				if (win != null) {
+					win.destroy ();
+				}
 			}
 			
 			// Dispose retrieved articles
 			disposeArticles (store, focus, focusIndex);
 		} ,
 		error: function (xhr, type, text) {
-			Ext.Msg.show ({
-				title: xhr.status + ' ' + errorSin.getErrorTitle (xhr.status) ,
-				msg: errorSin.getErrorText (xhr.status) ,
-				buttons: Ext.Msg.OK,
-				icon: Ext.Msg.ERROR
-			});
+			if ((xhr.status == 404) && (focus != null)) {
+				// Clean the store
+				store.removeAll ();
+				
+				// Add the focus to the store
+				store.add (focus);
+				
+				// Before dispose the retrieved articles, kill the old windows
+				var winFocus = Ext.getCmp ('winFocusArticle');
+	
+				// Kills focus window
+				if (winFocus != null)
+					winFocus.destroy ();
+	
+				// And then kills the other windows
+				while (!(articleSin.isEmpty ())) {
+					var idToRem = articleSin.remArticleIDs ();
+					var win = Ext.getCmp (idToRem);
+					if (win != null) {
+						win.destroy ();
+					}
+				}
+			
+				// Dispose retrieved articles
+				disposeArticles (store, focus, focusIndex);
+			}
+			else {
+				Ext.Msg.show ({
+					title: xhr.status + ' ' + errorSin.getErrorTitle (xhr.status) ,
+					msg: errorSin.getErrorText (xhr.status) ,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
+			}
 			
 			// Unset loading mask to the center region
 			Ext.getCmp('centReg').setLoading (false);
@@ -132,47 +184,68 @@ function retrieveRecentArticles (store) {
 			// Clean the store
 			store.removeAll ();
 			
-			// Check every posts
-			$(xml).find('post').each (function () {
-				var numLike, numDislike;
-				var ifLikeDislike = 0;
+			try {
+				// Check every posts
+				$(xml).find('post').each (function () {
+					var numLike, numDislike;
+					var ifLikeDislike = 0;
+					var geoLat = 0.0;
+					var geoLong = 0.0;
+					var userID = $(this).find('article').attr('resource');
 				
-				// Find like and dislike counter plus setlike of the user
-				$(this).find('article').find('span').each (function () {
-					// Find like counter
-					if ($(this).attr ('property') == 'tweb:countLike') {
-						numLike = parseInt ($(this).attr ('content'));
-					}
+					// Find like and dislike counter plus setlike of the user
+					$(this).find('article').find('span').each (function () {
+						// Find like counter
+						if ($(this).attr ('property') == 'tweb:countLike') {
+							numLike = parseInt ($(this).attr ('content'));
+						}
 				
-					// Find dislike counter
-					if ($(this).attr ('property') == 'tweb:countDislike') {
-						numDislike = parseInt ($(this).attr ('content'));
-					}
+						// Find dislike counter
+						if ($(this).attr ('property') == 'tweb:countDislike') {
+							numDislike = parseInt ($(this).attr ('content'));
+						}
+					
+						// Find setlike/setdislike of the user
+						if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
+							ifLikeDislike = 1;
+						}
+						else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
+							ifLikeDislike = -1;
+						}
+					
+						// Find geolocation coords
+						if ($(this).attr ('id') == 'geolocationspan') {
+							geoLong = ($(this).attr ('long') != null ? $(this).attr ('long') : 0.0);
+							geoLat = ($(this).attr ('lat') != null ? $(this).attr ('lat') : 0.0);
+							if (!((geoLong == 0) && (geoLat == 0))) {
+								var mapLatLng = new google.maps.LatLng (geoLat, geoLong);
+								geolocSin.addMarker (mapLatLng, userID);
+							}
+						}
+					
+					});
 				
-					// Find setlike/setdislike of the user
-					if ($(this).attr ('rev') == 'tweb:like') {
-						ifLikeDislike = 1;
-					}
-					else if ($(this).attr ('rev') == 'tweb:dislike') {
-						ifLikeDislike = -1;
-					}
+					// Add article to the store
+					store.add ({
+						affinity: parseInt ($(this).find('affinity').text ()) ,
+						article: tag2string ($(this).find('article')[0]) ,
+						articleText: $(this).find('article').text () ,
+						resource: $(this).find('article').attr ('resource') ,
+						about: $(this).find('article').attr ('about') ,
+						like: numLike ,
+						dislike: numDislike ,
+						setlike: ifLikeDislike ,
+						user: $(this).find('article').attr('resource').split("/")[2] ,
+						server: $(this).find('article').attr('resource').split('/')[1] ,
+						post: $(this).find('article').attr('about').split('/')[3] ,
+						glLat: geoLat ,
+						glLong: geoLong
+					});
 				});
-				
-				// Add article to the store
-				store.add ({
-					affinity: parseInt ($(this).find('affinity').text ()) ,
-					article: tag2string ($(this).find('article')[0]) ,
-					articleText: $(this).find('article').text () ,
-					resource: $(this).find('article').attr ('resource') ,
-					about: $(this).find('article').attr ('about') ,
-					like: numLike ,
-					dislike: numDislike ,
-					setlike: ifLikeDislike ,
-					user: $(this).find('article').attr('resource').split("/")[2] ,
-					server: $(this).find('article').attr('resource').split('/')[1] ,
-					post: $(this).find('article').attr('about').split('/')[3]
-				});
-			});
+			}
+			catch (err) {
+				// To avoid errors
+			}
 		}
 	});
 }
@@ -196,9 +269,6 @@ InsertAtCursorTextareaPlugin = function () {
 					var startPos = text_field.selectionStart;
 					var endPos = text_field.selectionEnd;
 					text_field.value = text_field.value.substring (0, startPos) + v + text_field.value.substring (endPos, text_field.value.length);
-
-					//this.getFocusEl().focus ();
-					//this.getFocusEl().setSelectionRange (endPos + v.length, endPos + v.length);
 				}
 			}
 		}
@@ -235,4 +305,136 @@ function tag2string (tag) {
 	}
 	
 	return articleString;
+}
+
+// @brief Transforms naked link in resource (<span resource ...>) or in a link element (<a ...>)
+// @param article: body of article
+// @param startPoint: start point to read (for recursive issue)
+// @param artLen: default article length
+// @return The article modified
+// TODO: problem with clones (http://www.img.com/img , http://www.img.com/img)
+function transformNakedUrl (article, startPoint, artLen) {
+	var urlArt;
+	var urlArtStart = article.indexOf ('http://' , startPoint);
+	
+	// Check 'www' if there's no 'http'
+	if (urlArtStart == -1) {
+		urlArtStart = article.indexOf ('www' , startPoint);
+	}
+	
+	// If an url was found
+	if (urlArtStart != -1) {
+		var urlArtEnd = article.indexOf (' ', urlArtStart + 7);
+	
+		// Check if article is finished
+		if (urlArtEnd != -1) {
+			urlArt = article.slice (urlArtStart , urlArtEnd);
+		}
+		// If it is, use article.length instead of urlArtEnd to avoid space problems
+		else {
+			urlArtEnd = artLen;
+			urlArt = article.slice (urlArtStart , article.length);
+		}
+		
+		// JQuery to make sync request
+		$.ajax ({
+			type: 'POST' ,
+			url: 'proxy' ,
+			data: {url:urlArt} ,
+			// Synchronous request
+			async: false ,
+			success: function (data, status, xhr) {
+				// Theme for audio/video/image link
+				var urlVideoToReplace = article.replace (urlArt , '<span resource="video" src="'+ urlArt +'" />');
+				var urlAudioToReplace = article.replace (urlArt , '<span resource="audio" src="'+ urlArt +'" />');
+				var urlImageToReplace = article.replace (urlArt , '<span resource="image" src="'+ urlArt +'" />');
+				
+				switch (data) {
+					// Video
+					case 'video/ogg':
+						article = urlVideoToReplace;
+						break;
+					case 'video/mpeg':
+						article = urlVideoToReplace;
+						break;
+					case 'video/mp4':
+						article = urlVideoToReplace;
+						break;
+					case 'video/quicktime':
+						article = urlVideoToReplace;
+						break;
+					case 'video/webm':
+						article = urlVideoToReplace;
+						break;
+					case 'video/x-ms-wmv':
+						article = urlVideoToReplace;
+						break;
+					// Audio
+					case 'audio/ogg':
+						article = urlAudioToReplace;
+						break;
+					case 'audio/mpeg':
+						article = urlAudioToReplace;
+						break;
+					case 'audio/mp4':
+						article = urlAudioToReplace;
+						break;
+					case 'audio/vorbis':
+						article = urlAudioToReplace;
+						break;
+					case 'audio/x-ms-wma':
+						article = urlAudioToReplace;
+						break;
+					case 'audio/webm':
+						article = urlAudioToReplace;
+						break;
+					// Image
+					case 'image/gif':
+						article = urlImageToReplace;
+						break;
+					case 'image/jpeg':
+						article = urlImageToReplace;
+						break;
+					case 'image/png':
+						article = urlImageToReplace;
+						break;
+					case 'image/svg':
+						article = urlImageToReplace;
+						break;
+					case 'image/tiff':
+						article = urlImageToReplace;
+						break;
+					// Text
+					default:
+						article = article.replace (urlArt , '<a href="'+ urlArt +'">' + urlArt + '</a>');
+						break;
+				}
+				
+				// Check if there are other links
+				if (urlArtEnd < artLen) {
+					article = transformNakedUrl (article , urlArtEnd, artLen);
+				}
+				else {
+					return article;
+				}
+			} ,
+			// If there are some problems (like method not implemented, treat it as a naked link)
+			error: function (xhr, errorType, text) {
+				article = article.replace (urlArt , '<a href="'+ urlArt +'">' + urlArt + '</a>');
+				
+				// Check if there are other links
+				if (urlArtEnd < artLen) {
+					article = transformNakedUrl (article , urlArtEnd, artLen);
+				}
+				else {
+					return article;
+				}
+			}
+		});
+	}
+	else {
+		return article;
+	}
+	
+	return article;
 }

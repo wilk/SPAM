@@ -140,7 +140,7 @@ class PostModel {
         $pre = array();
         $pre['rdf:type'][] = 'sioc:Post';
         $pre['sioc:has_creator'][] = $usrResource;
-        $pre['dcterms:created'][] = date(DATE_ATOM);
+        $pre['dcterms:created'][] = Date("Y-m-d\TH:i:s\Z");
         $pre['tweb:countLike'][] = 0;
         $pre['tweb:countDislike'][] = 0;
         /* questi non se li caga

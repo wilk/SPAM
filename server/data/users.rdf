@@ -1,12 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:foaf="http://xmlns.com/foaf/0.1/"
-  xmlns:tweb="http://vitali.web.cs.unibo.it/vocabulary/"
-  xmlns:sioc="http://rdfs.org/sioc/ns#">
+  xmlns:sioc="http://rdfs.org/sioc/ns#"
+  xmlns:tweb="http://vitali.web.cs.unibo.it/vocabulary/">
+
+  <rdf:Description rdf:about="spam:/Spammers/riccardo">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <foaf:nick>riccardo</foaf:nick>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/18158"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/15925"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/9684"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/11617"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/25059"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/18397"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/7893"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/21162"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/26994"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/24584"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/25112"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/7018"/>
+    <sioc:Post rdf:resource="spam:/Spammers/riccardo/9904"/>
+    <sioc:follows rdf:resource="spam:/TangoWhiskey/thesave"/>
+    <tweb:server>ArBaKaMa</tweb:server>
+    <tweb:server>BedCompany</tweb:server>
+    <tweb:server>Capo_Oro</tweb:server>
+    <tweb:server>FreeWeb</tweb:server>
+    <tweb:server>ModernFamily</tweb:server>
+    <tweb:server>NetForce</tweb:server>
+    <tweb:server>NotFound</tweb:server>
+    <tweb:server>RucolaIPM</tweb:server>
+    <tweb:server>Spammers</tweb:server>
+    <tweb:server>TangoWhiskey</tweb:server>
+    <tweb:server>TapiriSoft</tweb:server>
+    <tweb:server>TerSoft</tweb:server>
+    <tweb:server>Twenty</tweb:server>
+    <tweb:server>VoglioLaurearmi</tweb:server>
+  </rdf:Description>
 
   <rdf:Description rdf:about="spam:/Spammers/pippo">
     <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
     <foaf:nick>pippo</foaf:nick>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/21206"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/6386"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/8704"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/9319"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/20420"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/26034"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/20398"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/5234"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/16029"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/12699"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/12845"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/6683"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/24097"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/20281"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/22087"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/7855"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/13553"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/7523"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/950"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/20077"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/21082"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/15426"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/27155"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/10004"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/9516"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/2004"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/32288"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/9082"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/21871"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/2590"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/10850"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/2118"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/26885"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/22332"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/4746"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/9116"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/31957"/>
+    <sioc:Post rdf:resource="spam:/Spammers/pippo/25111"/>
+    <sioc:follows rdf:resource="spam:/Spammers/riccardo"/>
+    <tweb:server>ArBaKaMa</tweb:server>
+    <tweb:server>BedCompany</tweb:server>
+    <tweb:server>Capo_Oro</tweb:server>
+    <tweb:server>FreeWeb</tweb:server>
+    <tweb:server>ModernFamily</tweb:server>
+    <tweb:server>NetForce</tweb:server>
+    <tweb:server>NotFound</tweb:server>
+    <tweb:server>RucolaIPM</tweb:server>
+    <tweb:server>Spammers</tweb:server>
+    <tweb:server>TangoWhiskey</tweb:server>
+    <tweb:server>TapiriSoft</tweb:server>
+    <tweb:server>TerSoft</tweb:server>
+    <tweb:server>Twenty</tweb:server>
+    <tweb:server>Tайбердег</tweb:server>
+    <tweb:server>VoglioLaurearmi</tweb:server>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/例白">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <foaf:nick>例白</foaf:nick>
+    <sioc:Post rdf:resource="spam:/Spammers/例白/20985"/>
+    <sioc:Post rdf:resource="spam:/Spammers/例白/3727"/>
+    <sioc:Post rdf:resource="spam:/Spammers/例白/9579"/>
+    <sioc:Post rdf:resource="spam:/Spammers/例白/27884"/>
+    <sioc:Post rdf:resource="spam:/Spammers/例白/6529"/>
+    <sioc:Post rdf:resource="spam:/Spammers/例白/25026"/>
+    <tweb:server>ArBaKaMa</tweb:server>
+    <tweb:server>BedCompany</tweb:server>
+    <tweb:server>Capo_Oro</tweb:server>
+    <tweb:server>FreeWeb</tweb:server>
+    <tweb:server>ModernFamily</tweb:server>
+    <tweb:server>NetForce</tweb:server>
+    <tweb:server>NotFound</tweb:server>
+    <tweb:server>RucolaIPM</tweb:server>
+    <tweb:server>Spammers</tweb:server>
+    <tweb:server>TangoWhiskey</tweb:server>
+    <tweb:server>TapiriSoft</tweb:server>
+    <tweb:server>TerSoft</tweb:server>
+    <tweb:server>Twenty</tweb:server>
+    <tweb:server>VoglioLaurearmi</tweb:server>
+    <sioc:follows rdf:resource="spam:/Spammers/riccardo"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/çamon">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <foaf:nick>çamon</foaf:nick>
     <tweb:server>Tайбердег</tweb:server>
     <tweb:server>RucolaIPM</tweb:server>
     <tweb:server>TerSoft</tweb:server>
@@ -24,9 +142,9 @@
     <tweb:server>ModernFamily</tweb:server>
   </rdf:Description>
 
-  <rdf:Description rdf:about="spam:/Spammers/riccardo">
+  <rdf:Description rdf:about="spam:/Spammers/れいじろ">
     <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
-    <foaf:nick>riccardo</foaf:nick>
+    <foaf:nick>れいじろ</foaf:nick>
     <tweb:server>Tайбердег</tweb:server>
     <tweb:server>RucolaIPM</tweb:server>
     <tweb:server>TerSoft</tweb:server>
@@ -42,7 +160,48 @@
     <tweb:server>Capo_Oro</tweb:server>
     <tweb:server>Twenty</tweb:server>
     <tweb:server>ModernFamily</tweb:server>
-    <sioc:Post rdf:resource="spam:/Spammers/riccardo/14724"/>
+    <sioc:follows rdf:resource="spam:/Spammers/riccardo"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/Pippo">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <foaf:nick>Pippo</foaf:nick>
+    <tweb:server>Tайбердег</tweb:server>
+    <tweb:server>RucolaIPM</tweb:server>
+    <tweb:server>TerSoft</tweb:server>
+    <tweb:server>FreeWeb</tweb:server>
+    <tweb:server>NotFound</tweb:server>
+    <tweb:server>BedCompany</tweb:server>
+    <tweb:server>VoglioLaurearmi</tweb:server>
+    <tweb:server>Spammers</tweb:server>
+    <tweb:server>TapiriSoft</tweb:server>
+    <tweb:server>ArBaKaMa</tweb:server>
+    <tweb:server>NetForce</tweb:server>
+    <tweb:server>TangoWhiskey</tweb:server>
+    <tweb:server>Capo_Oro</tweb:server>
+    <tweb:server>Twenty</tweb:server>
+    <tweb:server>ModernFamily</tweb:server>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="spam:/Spammers/reijiro">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <foaf:nick>reijiro</foaf:nick>
+    <tweb:server>Tайбердег</tweb:server>
+    <tweb:server>RucolaIPM</tweb:server>
+    <tweb:server>TerSoft</tweb:server>
+    <tweb:server>FreeWeb</tweb:server>
+    <tweb:server>NotFound</tweb:server>
+    <tweb:server>BedCompany</tweb:server>
+    <tweb:server>VoglioLaurearmi</tweb:server>
+    <tweb:server>Spammers</tweb:server>
+    <tweb:server>TapiriSoft</tweb:server>
+    <tweb:server>ArBaKaMa</tweb:server>
+    <tweb:server>NetForce</tweb:server>
+    <tweb:server>TangoWhiskey</tweb:server>
+    <tweb:server>Capo_Oro</tweb:server>
+    <tweb:server>Twenty</tweb:server>
+    <tweb:server>ModernFamily</tweb:server>
+    <tweb:server>JDTeam</tweb:server>
   </rdf:Description>
 
 </rdf:RDF>

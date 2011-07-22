@@ -25,6 +25,7 @@ Ext.define ('SC.controller.Send' , {
 		var sendGeoLocSpan;
 		var hashtagArray = new Array ();
 		var sendComboHashtag;
+		var sendWindow;
 		
 		this.control ({
 			// Reset field when it's showed
@@ -50,25 +51,23 @@ Ext.define ('SC.controller.Send' , {
 			'#sendComboHashtag': {
 				select: this.getHashtag ,
 				keypress: function (combo, e) {
-					// TODO: chromium doesn't handle e.getKey () in this case. WTF?
 					if (e.getKey () == e.ENTER) {
 						if (combo.getValue () != null)
 							this.getHashtag (combo);
 					}
 				}
+			} ,
+			// Geolocation Checkbox
+			'#chkSendGeoLoc': {
+				change: this.getGeoPosition
 			}
 		});
-		
-		console.log ('Controller Send started.');
 	} ,
 	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
-	// TODO: pasted text!!!
-	// TODO: cancel/delete keys aren't captured by chrome
 	checkChars : function (ta, event) {
 		var 	// Get the lenght
-			//numChar = txtarea.getValue().length ,
 			numChar = ta.getValue().length ,
 			// And the difference
 			diffCount = MAXCHARS - numChar;
@@ -94,7 +93,7 @@ Ext.define ('SC.controller.Send' , {
 		// To avoid Opera's bullshit
 		var len = txtSendArea.getFocusEl().length;
 		
-		// TODO: problem with IE and Chromium
+		// TODO: problem with IE, Chromium and Firefox too
 		txtSendArea.getFocusEl().setSelectionRange (len, len);
 	} ,
 	
@@ -109,11 +108,12 @@ Ext.define ('SC.controller.Send' , {
 			var 	artBody = txtSendArea.getValue () ,
 				win = Ext.getCmp ('windowNewPost');
 			
+			// Escapes every '<'
+			artBody = artBody.replace ('<' , '&lt;');
+			
 			// Allow transformNakedUrl to Spammers server only
 			if (optionSin.getUrlServerLtw () == 'http://ltw1102.web.cs.unibo.it/') {
 				win.setLoading (true);
-				// TODO: Escapes every '<'
-				//artBody = artBody.replace ('<' , '\<');
 				artBody = transformNakedUrl (artBody , 0, artBody.length);
 				win.setLoading (false);
 			}
@@ -124,29 +124,8 @@ Ext.define ('SC.controller.Send' , {
 			// XML Injection
 			var article = artHeader + '\n' + artBody + '\n';
 		
-			// Check geolocation
-			if (chkSendBoxGeoLoc.getValue () && browserGeoSupportFlag) {
-				try {
-					navigator.geolocation.getCurrentPosition (function (position) {
-						// If geolocation was retrieved successfully, setup geolocation span
-						sendGeoLocSpan = '<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.latitude + '" />';
-					} , function () {
-						// TODO: better error message
-						// otherwise, setup with 0,0 position
-						sendGeoLocSpan = '<span id="geolocationspan" long="0" lat="0" />';
-					});
-				
-					article += sendGeoLocSpan + '\n';
-				}
-				catch (err) {
-					Ext.Msg.show ({
-						title: 'Error' ,
-						msg: 'An error occurred during setup geolocation: article will be sent without geolocation.' ,
-						buttons: Ext.Msg.OK,
-						icon: Ext.Msg.ERROR
-					});
-				}
-			}
+			// Setup geolocation
+			article += geolocSin.getSpan ();
 			
 			// Complete article building
 			article += artFooter;
@@ -215,13 +194,16 @@ Ext.define ('SC.controller.Send' , {
 	
 	// @brief initialize fields and local variables
 	initFields: function (win) {
+		sendWindow = win;
 		txtSendArea = win.down ('#txtAreaSend');
 		lblSendCount = win.down ('#sendCharCounter');
 		chkSendBoxGeoLoc = win.down ('#chkSendGeoLoc');
 		sendComboHashtag = win.down ('#sendComboHashtag');
 		
 		// If browser do not support geolocation, hide the checkbox
-		if ((browserGeoSupportFlag))
+		if (geolocSin.isSupported ())
+			chkSendBoxGeoLoc.setVisible (true);
+		else
 			chkSendBoxGeoLoc.setVisible (false);
 		
 		MAXCHARS = 140;
@@ -236,5 +218,40 @@ Ext.define ('SC.controller.Send' , {
 		sendComboHashtag.reset ();
 		
 		lblSendCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
+	} ,
+	
+	// @brief Retrieve geolocation of the user device
+	getGeoPosition : function (cb) {
+		if (cb.getValue () && geolocSin.isSupported ()) {
+			// Mask the window
+			sendWindow.setLoading ('Retrieving geolocation of your device ...');
+			try {
+				navigator.geolocation.getCurrentPosition (function (position) {
+					// If geolocation was retrieved successfully, setup geolocation span
+					geolocSin.setSpan ('<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.longitude + '" />');
+					sendWindow.setLoading (false);
+				} , function () {
+					// otherwise, setup with 0,0 position
+					geolocSin.setSpan ('<span id="geolocationspan" long="0.0" lat="0.0" />');
+					sendWindow.setLoading (false);
+				});
+			}
+			catch (err) {
+				Ext.Msg.show ({
+					title: 'Error' ,
+					msg: 'An error occurred during setup geolocation: article will be sent without geolocation.' ,
+					buttons: Ext.Msg.OK ,
+					icon: Ext.Msg.ERROR
+				});
+				
+				// Reset Geolocation
+				geolocSin.setSpan ('');
+				sendWindow.setLoading (false);
+			}
+		}
+		else {
+			// Send an empty string
+			sendGeoLocSpan = '';
+		}
 	}
 });

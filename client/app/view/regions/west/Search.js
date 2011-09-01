@@ -13,10 +13,12 @@ Ext.define ('SC.view.regions.west.Search' , {
 	
 	// Configuration
 	title: 'Search' ,
+	id: 'panelSearch' ,
 	collapsible: true ,
 	animCollapse: true ,
 	bodyPadding: 2 ,
 	layout: 'anchor' ,
+	height: 160 ,
 	
 	// Body
 	items: [{
@@ -39,7 +41,7 @@ Ext.define ('SC.view.regions.west.Search' , {
 	} , {
 		xtype: 'numberfield' ,
 		id: 'numberSearch' ,
-		value: 1 ,
+		value: 10 ,
 		minValue: 1 ,
 		allowBlank: false ,
 		anchor: '100%'
@@ -48,7 +50,8 @@ Ext.define ('SC.view.regions.west.Search' , {
 		xtype: 'checkboxfield' ,
 		boxLabel: 'Maximum limit' ,
 		id: 'checkBoxSearch' ,
-		padding: '0 0 2 5'
+		padding: '0 0 2 5' ,
+		anchor: '100%'
 	} , {
 		xtype: 'textfield' ,
 		id: 'textSearch' ,

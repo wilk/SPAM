@@ -14,10 +14,10 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 	views: ['regions.east.RecentPost'] ,
 	
 	// Models
-	models: ['regions.east.RecentPost'] ,
+	models: ['regions.east.RecentPost' , 'regions.center.Articles'] ,
 	
 	// Stores
-	stores: ['regions.east.RecentPost'] ,
+	stores: ['regions.east.RecentPost' , 'regions.center.Articles'] ,
 	
 	// Configuration
 	init: function () {
@@ -37,11 +37,14 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 		retrieveRecentArticles (storeRecentPost);
 		
 		// Every 5 secs refresh the recent articles list
-		setInterval ('retrieveRecentArticles (storeRecentPost)', 30000);
+		setInterval ('retrieveRecentArticles (storeRecentPost)', 15000);
 	} ,
 	
 	// Display articles when someone dclick on this article
 	displayArticle: function (view, record, item, index, event) {
+		// Articles store instead of recent post store
+		var storeArticles = this.getRegionsCenterArticlesStore ();
+		
 		// Set appropriate URL
 		store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/affinity' + record.get ('about');
 	

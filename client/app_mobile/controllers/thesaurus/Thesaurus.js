@@ -79,32 +79,32 @@ Ext.regController('thesaurus',{
 		if(!children.length){
 		//ADD TERM HERE IS NOT A BAD THING
 //			Ext.Msg.alert('Thesaurus','This is the last term');
-			
-			Ext.Msg.prompt('Add definition','Do you want to add a new tag',function(butt, text){
-				
-				if(butt!='cancel'){
-					
-					Ext.Ajax.request({
-						
-						url:'addterm',
-						method:'post',
-						params:{parentterm:prefvalue,
-								term:text
-						},
-						success:function(){
-							Ext.dispatch({
-								
-								controller:'thesaurus',
-								action:'getThesaurus',
-								
-							});
-						}
-						
-					});
-					
-				}
-			
-			});
+			this.addTerm(prefvalue);
+//			Ext.Msg.prompt('Add definition','Do you want to add a new tag',function(butt, text){
+//				
+//				if(butt!='cancel'){
+//					
+//					Ext.Ajax.request({
+//						
+//						url:'addterm',
+//						method:'post',
+//						params:{parentterm:prefvalue,
+//								term:text
+//						},
+//						success:function(){
+//							Ext.dispatch({
+//								
+//								controller:'thesaurus',
+//								action:'getThesaurus',
+//								
+//							});
+//						}
+//						
+//					});
+//					
+//				}
+//			
+//			});
 						
 		}
 		else{
@@ -121,7 +121,55 @@ Ext.regController('thesaurus',{
 			this.thesaurusstore.sync();
 		}
 		
-		this.render(this.thesauruslist);
+//		this.render(this.thesauruslist);
+	
+	},
+	
+	addTerm:function(parent){
+	
+//		var prefvalue=options.prefvalue;
+		
+		if(Ext.StoreMgr.get('loginstore').getCount()!=0){
+		
+			Ext.Msg.prompt('Add definition','Do you want to add a new tag',function(butt, text){
+				
+				if(butt!='cancel'){
+					
+					Ext.Ajax.request({
+						
+						url:'addterm',
+						method:'post',
+						params:{parentterm:parent,
+								term:text
+						},
+						success:function(){
+							Ext.dispatch({
+								
+								controller:'thesaurus',
+								action:'getThesaurus',
+								
+							});
+						}
+						
+					});
+					
+				}
+			
+			});
+		
+		}
+		else{
+		
+			Ext.Msg.prompt('Login','This is the last term of the thesaurus, if you want to add a new term you must to login first',function(butt, text){
+								if(butt!='cancel'){
+									Ext.dispatch({
+										controller:'Login',
+										action:'loginUser',
+										name:text
+									});
+								}
+			},this);		
+		}
 	
 	},
 	

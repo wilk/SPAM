@@ -30,7 +30,8 @@ mspam.views.SendPost=Ext.extend(Ext.form.FormPanel,{
 		items:[{
 			xtype:'textareafield',
 			name:'newpost',
-			itemId:'newpost'
+			itemId:'newpost',
+			autoComplete:true
 		}]
 	},{
 		

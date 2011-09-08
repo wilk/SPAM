@@ -26,7 +26,7 @@ Ext.regController('sendpost',{
 		}
 		else{
 		
-			var preabout='<span rel="sioc:topic">#<span typeof="skosConcept" about="';
+			var preabout='<span rel="sioc:topic">#<span typeof="skos:Concept" about="';
 			var postabout='" rel="skos:inScheme" resource="';
 			var postinscheme='">';
 			var closespans='</span></span>';
@@ -76,7 +76,19 @@ Ext.regController('sendpost',{
 			}while(hashtags!=null)
 		
 		}
-			this.sendPost(post);
+		
+		Ext.Ajax.request({
+		
+			url:'http://muza-chan.net/aj/poze-weblog/tanuki-01.jpg',
+			method:'head',
+			success:function(res,obj){console.log(res, obj);},
+			failure:function(res,obj){console.log(res, obj);}
+			
+		
+		});
+		
+//			this.sendPost(post);
+console.log(post);
 	
 	},
 	

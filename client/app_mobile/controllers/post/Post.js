@@ -29,25 +29,25 @@ Ext.regController('Post',{
 		
 		this.post.doComponentLayout();
 		
-		var pos=this.post;
-		$(article).find('span').each(function(){
-		//		console.log(article);
-		//console.log($(article).find('span').attr('audio'));
-				if( $(this).attr('resource')=='audio')
-				{
-		//			console.log(pos);
-					pos.add({xtype:'audio',url:$(this).attr('src')});
-				}
-				if( $(this).attr('resource')=='video')
-				{
-					pos.add({xtype:'video',url:$(this).attr('src')});
-				}
-		//		if( $(this).attr('resource')=='image' )
-		//		{
-		//			html+='<img src="'+$(this).attr('src')+'"'+'/>';
-		//		}
-		//console.log(this.post);
-		});
+//		var pos=this.post;
+//		$(article).find('span').each(function(){
+//		//		console.log(article);
+//		//console.log($(article).find('span').attr('audio'));
+//				if( $(this).attr('resource')=='audio')
+//				{
+//		//			console.log(pos);
+//					pos.add({xtype:'audio',url:$(this).attr('src')});
+//				}
+//				if( $(this).attr('resource')=='video')
+//				{
+//					pos.add({xtype:'video',url:$(this).attr('src')});
+//				}
+//		//		if( $(this).attr('resource')=='image' )
+//		//		{
+//		//			html+='<img src="'+$(this).attr('src')+'"'+'/>';
+//		//		}
+//		//console.log(this.post);
+//		});
 //		console.log(this.post);
 		this.application.viewport.setActiveItem(this.post);
 	

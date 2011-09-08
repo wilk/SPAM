@@ -66,7 +66,7 @@ Ext.regController('Home',{
 						}
 						else if ($(this).attr ('rev') == 'tweb:dislike') {
 							ifLikeDislike = -1;
-						}
+						}	
 					});
 				
 				
@@ -78,15 +78,19 @@ Ext.regController('Home',{
 						$(this).find('span').each(function(){
 							if( $(this).attr('resource')=='audio' )
 							{
-								html+='<audio src="'+$(this).attr('src')+'"'+'controls="controls"'+'preload="none"'+'/>';
+//								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/play.png"'+'onclick="this.play();"'+'/>';
+//								html+='<a href="'+$(this).attr('src')+'"'+'>'+'<img src="lib_mobile/play.png" onclick="this.play();"/>'+'</a>';
+								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/play.png"'+'controls="controls"'+'preload="none" onclick="this.play();"'+'/>';
 							}
 							if( $(this).attr('resource')=='video' )
 							{
-								html+='<video src="'+$(this).attr('src')+'"'+'controls="controls"'+'preload="none"'+'/>';
+								html+='<a href="'+$(this).attr('src')+'"'+'>'+'<img src="lib_mobile/video.png"/>'+'</a>';
+//							html+='<iframe src='+'"'+$(this).attr('src')+'"'+'>'+'</iframe>';
+//								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/video.png"'+'onclick="this.play();"'+'/>';
 							}
 							if( $(this).attr('resource')=='image' )
 							{
-								html+='<img src="'+$(this).attr('src')+'"'+'height="50%" width:"50%"'+'/>';
+								html+='<img src="'+$(this).attr('src')+'"'+'height="20%" width:"20%"'+'/>';
 							}
 						});
 						
@@ -104,7 +108,7 @@ Ext.regController('Home',{
 						dislike: numDislike ,
 						setlike: ifLikeDislike ,
 						user: $(this).find('article').attr('resource').split("/")[2],
-						html:html
+						html:'<p>'+html+'<p>'
 					});
 					
 //					console.log($(this).find('article').attr ('resource'));

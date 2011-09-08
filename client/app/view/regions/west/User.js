@@ -36,13 +36,12 @@ Ext.define ('SC.view.regions.west.User' , {
 		}]
 	} , {
 		// Followers grid
-		// TODO: header is hidden BUG BUG
 		xtype: 'grid' ,
 		title: 'Followers' ,
 		id: 'userFollowersGrid' ,
 		store: 'regions.west.Followers' ,
 		autoScroll: true ,
-		layout: 'anchor' ,
+		forceFit: true ,
 		border: 0 ,
 		columns: [{
 			header: 'Your Friends' ,

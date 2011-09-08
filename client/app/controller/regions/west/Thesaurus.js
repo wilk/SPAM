@@ -50,7 +50,10 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		myRDF = new RDF ();
 		myRDF.getRDFURL (urlThesaurus, function () {
 			// get root node to append all chileds
-			var root = storeThesaurus.getRootNode ();
+			var root = (storeThesaurus.getRootNode ()) ? storeThesaurus.getRootNode () : storeThesaurus.setRootNode ({
+					text: 'Thesaurus' ,
+					expanded: true
+				});
 			
 			// Clear previous storeThesaurus and refresh treepanel
 			while (root.firstChild) {

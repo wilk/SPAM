@@ -14,7 +14,7 @@ Ext.define ('SC.view.regions.North' , {
 	// Configuration
 	height: 30 ,
 	region: 'north' ,
-	html: '<h1 style="font-size: 16px; color: #fff; font-weight: normal; padding: 5px 10px;">SPAM :: Social Production of Audiovisual Microblogs</h1>' ,
+	html: '<h1 id="headerTitle" onclick="clickTitle ();" style="font-size: 16px; color: #fff; font-weight: normal; padding: 5px 10px;">SPAM :: Social Production of Audiovisual Microblogs</h1>' ,
 	style: {
 		background: '#7F99BE url(ext/resources/images/layout-browser-hd-bg.gif) repeat-x center'
 	} ,

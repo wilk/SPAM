@@ -3,6 +3,10 @@
 	<head>
 		<meta equiv-http="Content-Type" content="text/html; charset=UTF-8" />
 		<title>SPAM :: Social Production of Audiovisual Microblogs</title>
+		<link rel="icon" type="image/png" href="ext/resources/images/icon.png" />
+		<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
+		<script type="text/javascript" src="ext/ext-all-debug.js"> </script>
+<!--		<script type="text/javascript" src="ext/ext-all.js"> </script>-->
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"> </script>
 		<script type="text/javascript" src="lib/hashtagInjection.js"> </script>
 		<script type="text/javascript" src="lib/disposeArticles.js"> </script>
@@ -10,19 +14,9 @@
 		<script type="text/javascript" src="lib/supportFunctions.js"> </script>
 		<script type="text/javascript" src="lib/parser.js"> </script>
 		<script type="text/javascript" src="lib/singletons.js"> </script>
-		<script type="text/javascript" src="jquery/jquery-1.6.1.js"> </script>
-		<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
-		<link rel="icon" type="image/png" href="ext/resources/images/icon.png" />
-		<script type="text/javascript" src="ext/ext-all-debug.js"> </script>
+		<script type="text/javascript" src="jquery/jquery-1.6.2.min.js"> </script>
 		<script type="text/javascript" src="app.js"> </script>
 		<script type="text/javascript">
-			// Initialize singletons
-			var replySin = SingletonReply.getInstance ();
-			var errorSin = SingletonErrors.getInstance ();
-			var optionSin = SingletonOption.getInstance ();
-			var geolocSin = SingletonGeolocation.getInstance ();
-			var articleSin = SingletonArticle.getInstance ();
-			
 			// Setup default urls
 			optionSin.resetOption ();
 			
@@ -36,11 +30,12 @@
 			Ext.Loader.setConfig ({
 				enabled : true
 			});
-		
+			
 			// When the page is loaded
 			Ext.onReady (function () {
 				// To avoid AJAX request problems
 				Ext.Ajax.useDefaultXhrHeader = false;
+				
 			});
 		</script>
 	</head>

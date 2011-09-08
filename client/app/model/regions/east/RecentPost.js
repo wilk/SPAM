@@ -67,27 +67,5 @@ Ext.define ('SC.model.regions.east.RecentPost' , {
 		// Geolocation Longitude
 		name: 'glLong' ,
 		type: 'double'
-	}] ,
-	
-	// REST Proxy for REST requests
-	proxy: {
-		type: 'rest' ,
-		url: optionSin.getUrlServerLtw () + 'search/10/recent/' ,
-		
-		// To avoid url problems with other federated servers
-		filterParam: null ,
-		groupParam: null ,
-		limitParam: null ,
-		noCache: false ,
-		pageParam: null ,
-		simpleSortMode: false ,
-		sortParam: null ,
-		startParam: null ,
-		
-		reader: {
-			type: 'xml' ,
-			root: 'archive' ,
-			record: 'post'
-		}
-	}
+	}]
 });

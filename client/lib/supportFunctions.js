@@ -107,6 +107,9 @@ function requestSearchArticles (store, focus, focusIndex) {
 				}
 			}
 			
+			// Unset loading mask to the Search Panel
+			Ext.getCmp('panelSearch').setLoading (false);
+			
 			// Dispose retrieved articles
 			disposeArticles (store, focus, focusIndex);
 		} ,
@@ -148,6 +151,9 @@ function requestSearchArticles (store, focus, focusIndex) {
 			
 			// Unset loading mask to the center region
 			Ext.getCmp('centReg').setLoading (false);
+			
+			// Unset loading mask to the Search Panel
+			Ext.getCmp('panelSearch').setLoading (false);
 		}
 	});
 }
@@ -155,56 +161,64 @@ function requestSearchArticles (store, focus, focusIndex) {
 // @brief Check if user is already logged-in or not.
 // @return True if it's logged, false if not.
 function checkIfUserLogged () {
+	var ris = false;
+	
 	// If there is server cookie
 	if (Ext.util.Cookies.get ('ltwlogin') != null)
 	{
 		// And if there is client cookie
 		if (Ext.util.Cookies.get ('SPAMlogin') != null) {
 	
-			return true;
+			ris = true;
 		}
 	}
 	
-	return false;
+	return ris;
 }
 
 // @brief Retrieve 10 recent articles
 // @param store: update the recent articles store
 function retrieveRecentArticles (store) {
-	// Set URL dinamically
-	store.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/recent/';
-	
 	// Make an AJAX request with JQuery to read XML structure (ExtJS can't read XML with mixed content model)
 	$.ajax({
 		type: 'GET',
 		// Uses url of the store
-		url: store.getProxy().url,
+		url: optionSin.getUrlServerLtw () + 'search/10/recent/' ,
 		dataType: "xml",
 		success: function (xml) {
 			// Clean the store
-			store.removeAll ();
+			// TODO: bug with store.removeAll(). There are some problems with store.add afterwards
+			if (store.getCount () > 0) {
+				for (var i=0; i < store.getCount (); i++) {
+					store.removeAt (i);
+				}
+			}
 			
-			try {
-				// Check every posts
-				$(xml).find('post').each (function () {
+			// Articles are added all together at the end
+			var recArtArray = new Array ();
+			
+			// Check every posts
+			$(xml).find('post').each (function () {
+				try {
+				
 					var numLike, numDislike;
 					var ifLikeDislike = 0;
 					var geoLat = 0.0;
 					var geoLong = 0.0;
 					var userID = $(this).find('article').attr('resource');
-				
+			
 					// Find like and dislike counter plus setlike of the user
 					$(this).find('article').find('span').each (function () {
 						// Find like counter
 						if ($(this).attr ('property') == 'tweb:countLike') {
 							numLike = parseInt ($(this).attr ('content'));
 						}
-				
+			
 						// Find dislike counter
 						if ($(this).attr ('property') == 'tweb:countDislike') {
 							numDislike = parseInt ($(this).attr ('content'));
 						}
-					
+				
 						// Find setlike/setdislike of the user
 						if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
 							ifLikeDislike = 1;
@@ -212,7 +226,7 @@ function retrieveRecentArticles (store) {
 						else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
 							ifLikeDislike = -1;
 						}
-					
+				
 						// Find geolocation coords
 						if ($(this).attr ('id') == 'geolocationspan') {
 							geoLong = ($(this).attr ('long') != null ? $(this).attr ('long') : 0.0);
@@ -222,11 +236,11 @@ function retrieveRecentArticles (store) {
 								geolocSin.addMarker (mapLatLng, userID);
 							}
 						}
-					
-					});
 				
-					// Add article to the store
-					store.add ({
+					});
+					
+					// Add article to the array
+					recArtArray.push (Ext.create ('SC.model.regions.east.RecentPost' , {
 						affinity: parseInt ($(this).find('affinity').text ()) ,
 						article: tag2string ($(this).find('article')[0]) ,
 						articleText: $(this).find('article').text () ,
@@ -240,12 +254,19 @@ function retrieveRecentArticles (store) {
 						post: $(this).find('article').attr('about').split('/')[3] ,
 						glLat: geoLat ,
 						glLong: geoLong
-					});
-				});
-			}
-			catch (err) {
-				// To avoid errors
-			}
+					}));
+			
+				}
+				catch (err) {
+					// Let's continue the loop
+				}
+			});
+			
+			// Add articles to the store
+			store.insert (0, recArtArray);
+		} ,
+		error: function (xhr, type, text) {
+			// Do nothing
 		}
 	});
 }
@@ -437,4 +458,12 @@ function transformNakedUrl (article, startPoint, artLen) {
 	}
 	
 	return article;
+}
+
+// @brief Launch a recent search when the title SPAM is clicked
+// @return void
+function clickTitle () {
+	var store = Ext.create ('SC.store.regions.center.Articles');
+	store.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/recent/';
+	requestSearchArticles (store, null, 0);
 }

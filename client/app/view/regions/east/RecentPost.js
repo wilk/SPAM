@@ -15,8 +15,9 @@ Ext.define ('SC.view.regions.east.RecentPost' , {
 	
 	// Configuration
 	title: 'Recent Post' ,
-	autoWidth: true ,
-	height: 265 ,
+	id: 'gridRecentArticle' ,
+	height: 260 ,
+	scroll: false ,
 	collapsible: true ,
 	animCollapse: true ,
 	anchor: '100%' ,

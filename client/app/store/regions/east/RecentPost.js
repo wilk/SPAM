@@ -10,7 +10,5 @@
 Ext.define ('SC.store.regions.east.RecentPost' , {
 	extend: 'Ext.data.Store' ,
 	
-	model: 'SC.model.regions.east.RecentPost' ,
-	
-	autoLoad: true
+	model: 'SC.model.regions.east.RecentPost'
 });

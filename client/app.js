@@ -28,5 +28,9 @@ Ext.application ({
 		'Options' ,
 		'AddTerm' ,
 		'FollowerWindow'
-	]
+	] ,
+	
+	launch: function () {
+		Ext.create ('SC.view.Viewport');
+	}
 });

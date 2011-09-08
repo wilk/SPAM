@@ -168,14 +168,14 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			success: function (response) {
 				// On follow: hides follow button and shows the unfollow
 				// On unfollow: hides unfollow button and shows the follow
-				if (val) {
-					button.setVisible (false);
-					button.up('window').down('button[tooltip="Unfollow"]').setVisible (true);
-				}
-				else {
-					button.setVisible (false);
-					button.up('window').down('button[tooltip="Follow"]').setVisible (true);
-				}
+//				if (val) {
+//					button.setVisible (false);
+//					button.up('window').down('button[tooltip="Unfollow"]').setVisible (true);
+//				}
+//				else {
+//					button.setVisible (false);
+//					button.up('window').down('button[tooltip="Follow"]').setVisible (true);
+//				}
 				
 				// Clean the store
 				followersStore.removeAll ();
@@ -204,6 +204,9 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 						// Ascendent sort for followers
 						followersStore.sort ('follower' , 'ASC');
 					}
+					
+					// Refresh articles windows
+					refreshArticlesWin ();
 				});
 				
 				// Unset loading mask
@@ -281,7 +284,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		focusWindow = win;
 		// Getting model associated with
 		// About = /serverID/userID/postID
-		aboutModel = win.down('button[tooltip="focusModelIndex"]').getText ();
+//		aboutModel = win.down('button[tooltip="focusModelIndex"]').getText ();
+		aboutModel = articleSin.getFocusModelID ();
 		// Index of the appropriate model
 		indexModel = this.getRegionsCenterArticlesStore().find ('about' , aboutModel);
 		focusModel = this.getRegionsCenterArticlesStore().getRange()[indexModel];
@@ -329,49 +333,53 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 		
 		// Check if user is already logged-in: if he is, show every buttons
 		// If there is server cookie
-		if (Ext.util.Cookies.get ('ltwlogin') != null)
-		{
+//		if (Ext.util.Cookies.get ('ltwlogin') != null)
+//		{
 			// And if there is client cookie
-			if (Ext.util.Cookies.get ('SPAMlogin') != null) {
-				// Hide setlike buttons because user can't set like/dislike on his own post
-				if (focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
-					win.down('button[tooltip="I Like"]').setVisible (true);
-					win.down('button[tooltip="I Dislike"]').setVisible (true);
-					win.down('button[tooltip="Respam"]').setVisible (true);
+//			if (Ext.util.Cookies.get ('SPAMlogin') != null) {
+			
+		if (checkIfUserLogged ()) {
+			// Hide setlike buttons because user can't set like/dislike on his own post
+			if (focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
+				win.down('button[tooltip="I Like"]').setVisible (true);
+				win.down('button[tooltip="I Dislike"]').setVisible (true);
+				win.down('button[tooltip="Respam"]').setVisible (true);
+			}
+			
+			win.down('button[tooltip="Reply"]').setVisible (true);
+			
+			isFollowed = false;
+			
+			// If there are followers
+			if (followersStore.getCount () != 0) {
+				// Find if user of the focus article is already followed
+				followersStore.each (function (record) {
+					// TODO: check if this check is correct
+					if ('/' + record.get ('follower') == focusModel.get ('resource')) {
+						isFollowed = true;
+					}
+				});
+			}
+//			else {
+//				isFollowed = false;
+//			}
+			
+			// Hide setfollow buttons because user can't set follow/unfollow himself
+			if (focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
+				// If user is already followed, shows the unfollow button
+				if (isFollowed) {
+					win.down('button[tooltip="Unfollow"]').setVisible (true);
+					win.down('button[tooltip="Follow"]').setVisible (false);
 				}
-				
-				win.down('button[tooltip="Reply"]').setVisible (true);
-				
-				isFollowed = false;
-				
-				// If there are followers
-				if (followersStore.getCount () != 0) {
-					// Find if user of the focus article is already followed
-					followersStore.each (function (record) {
-						if (record.get ('follower') == focusModel.get ('resource')) {
-							isFollowed = true;
-						}
-					});
-				}
+				// Otherwise shows the follow button
 				else {
-					isFollowed = false;
-				}
-				
-				// Hide setfollow buttons because user can't set follow/unfollow himself
-				if (focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
-					// If user is already followed, shows the unfollow button
-					if (isFollowed) {
-						win.down('button[tooltip="Unfollow"]').setVisible (true);
-						win.down('button[tooltip="Follow"]').setVisible (false);
-					}
-					// Otherwise shows the follow button
-					else {
-						win.down('button[tooltip="Follow"]').setVisible (true);
-						win.down('button[tooltip="Unfollow"]').setVisible (false);
-					}
+					win.down('button[tooltip="Follow"]').setVisible (true);
+					win.down('button[tooltip="Unfollow"]').setVisible (false);
 				}
 			}
 		}
+//			}
+//		}
 		// Otherwise, hide buttons
 		// This option is for refresh by login/logout
 		else {
@@ -394,5 +402,8 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 			gMap.setCenter (latlng);
 			gMap.setZoom (0);
 		}
+		
+		// Reset model id of the focus
+		articleSin.resetFocusModelID ();
 	}
 });

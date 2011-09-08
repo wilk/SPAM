@@ -172,13 +172,8 @@ Ext.define ('SC.controller.regions.North' , {
 		
 					bNewPost.setVisible (false);
 					
-					var winFocus = Ext.getCmp('winFocusArticle');
-					
-					if (winFocus != null) {
-						// Refresh focus window
-						Ext.getCmp('winFocusArticle').setVisible (false);
-						Ext.getCmp('winFocusArticle').setVisible (true);
-					}
+					// Refresh articles windows
+					refreshArticlesWin ();
 					
 					// Request shared thesaurus
 					Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');

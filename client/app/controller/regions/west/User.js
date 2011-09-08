@@ -41,6 +41,7 @@ Ext.define ('SC.controller.regions.west.User' , {
 		var storeFollowers = this.getRegionsWestFollowersStore ();
 		var storeServer = this.getRegionsWestUserServerStore ();
 		var winFocus = Ext.getCmp ('winFocusArticle');
+		var centerReg = Ext.getCmp ('centReg');
 		
 		storeArticles = this.getRegionsCenterArticlesStore ();
 		
@@ -65,19 +66,13 @@ Ext.define ('SC.controller.regions.west.User' , {
 						});
 					}
 					else {
-						// Refresh focus window
-						if (winFocus != undefined) {
-							winFocus.setVisible (false);
-							winFocus.setVisible (true);
-						}
+						// Refresh articles windows
+						refreshArticlesWin ();
 					}
 				}
 				else {
-					// Refresh focus window
-					if (winFocus != undefined) {
-						winFocus.setVisible (false);
-						winFocus.setVisible (true);
-					}
+					// Refresh articles windows
+					refreshArticlesWin ();
 					
 					// Ascendent sort for followers
 					storeFollowers.sort ('follower' , 'ASC');

@@ -92,20 +92,22 @@ function requestSearchArticles (store, focus, focusIndex) {
 			}
 			
 			// Before dispose the retrieved articles, kill the old windows
-			var winFocus = Ext.getCmp ('winFocusArticle');
-	
-			// Kills focus window
-			if (winFocus != null)
-				winFocus.destroy ();
-	
-			// And then kills the other windows
-			while (!(articleSin.isEmpty ())) {
-				var idToRem = articleSin.remArticleIDs ();
-				var win = Ext.getCmp (idToRem);
-				if (win != null) {
-					win.destroy ();
-				}
-			}
+			destroyArticleWindows ();
+//			var winFocus = Ext.getCmp ('winFocusArticle');
+//	
+//			// Kills focus window
+//			if (winFocus != null)
+//				winFocus.destroy ();
+//	
+//			// And then kills the other windows
+//			while (!(articleSin.isEmpty ())) {
+////				var idToRem = articleSin.remArticleIDs ();
+//				var winToRem = articleSin.delLastArticle ();
+//				var win = Ext.getCmp (winToRem.ID);
+//				if (win != null) {
+//					win.destroy ();
+//				}
+//			}
 			
 			// Unset loading mask to the Search Panel
 			Ext.getCmp('panelSearch').setLoading (false);
@@ -122,20 +124,21 @@ function requestSearchArticles (store, focus, focusIndex) {
 				store.add (focus);
 				
 				// Before dispose the retrieved articles, kill the old windows
-				var winFocus = Ext.getCmp ('winFocusArticle');
-	
-				// Kills focus window
-				if (winFocus != null)
-					winFocus.destroy ();
-	
-				// And then kills the other windows
-				while (!(articleSin.isEmpty ())) {
-					var idToRem = articleSin.remArticleIDs ();
-					var win = Ext.getCmp (idToRem);
-					if (win != null) {
-						win.destroy ();
-					}
-				}
+				destroyArticleWindows ();
+//				var winFocus = Ext.getCmp ('winFocusArticle');
+//	
+//				// Kills focus window
+//				if (winFocus != null)
+//					winFocus.destroy ();
+//	
+//				// And then kills the other windows
+//				while (!(articleSin.isEmpty ())) {
+//					var idToRem = articleSin.remArticleIDs ();
+//					var win = Ext.getCmp (idToRem);
+//					if (win != null) {
+//						win.destroy ();
+//					}
+//				}
 			
 				// Dispose retrieved articles
 				disposeArticles (store, focus, focusIndex);
@@ -463,7 +466,73 @@ function transformNakedUrl (article, startPoint, artLen) {
 // @brief Launch a recent search when the title SPAM is clicked
 // @return void
 function clickTitle () {
-	var store = Ext.create ('SC.store.regions.center.Articles');
-	store.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/recent/';
-	requestSearchArticles (store, null, 0);
+	// TODO: use Ext.getStore (storeId); instead of creates a new one
+//	var store = Ext.create ('SC.store.regions.center.Articles');
+//	store.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/recent/';
+//	requestSearchArticles (store, null, 0);
+}
+
+// @brief Destroy article windows
+// @return void
+function destroyArticleWindows () {
+	// Retrieve the window of focus article
+	var winFocus = Ext.getCmp ('winFocusArticle');
+
+	// Kills focus window
+	if (winFocus != null)
+		winFocus.destroy ();
+
+	// And then kills the other windows
+	while (!(articleSin.isEmpty ())) {
+		var winToRem = articleSin.delLastArticle ();
+		var win = Ext.getCmp (winToRem.ID);
+		
+		if (win != null) {
+			win.destroy ();
+		}
+	}
+}
+
+// @brief Refresh each article window
+// @return void
+function refreshArticlesWin () {
+	var arts = articleSin.getArticles ();
+	var winFocus = Ext.getCmp ('winFocusArticle');
+	var centerReg = Ext.getCmp ('centReg');
+	
+	try {
+		// Set loading mask to the center region
+		centerReg.setLoading (true);
+		
+		// If it's iterable, iterates
+		if (Ext.isIterable (arts)) {
+			Ext.iterate (arts, function (item, index, myself) {
+				// Refresh the right window
+				// Note: show event doesn't work
+				Ext.getCmp(item.ID).setVisible (false);
+				Ext.getCmp(item.ID).setVisible (true);
+			});
+		}
+		
+		// Refresh focus window
+		if (winFocus != undefined) {
+			winFocus.setVisible (false);
+			winFocus.setVisible (true);
+		}
+	
+		// Unset loading mask to the center region
+		centerReg.setLoading (false);
+	}
+	// If something goes wrong, set the loading mask off
+	catch (err) {
+		// Unset loading mask to the center region
+		centerReg.setLoading (false);
+		
+		Ext.Msg.show ({
+			title: err.name ,
+			msg: err.message ,
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.ERROR
+		});
+	}
 }

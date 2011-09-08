@@ -17,3 +17,8 @@
 - quando si è disconnessi la recent non deve ritornare un 500 ma i post del server locale e se questi non ci sono 404
 - come gestire l'errore di un reader xml a cui viene passato del testo (text/html)
 - inserire tutti i bottoni del focus anche negli altri articoli
+
+Errori
+- txtSendArea.getFocusEl().setSelectionRange is not a function (send.js 97)
+- il controller degli articoli normale funziona solo con l'ultimo... cazzo!
+- lo scope della funzione scazza quando si entra in altre funzioni. usare il me = this

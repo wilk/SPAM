@@ -70,6 +70,7 @@ function disposeArticles (store, focus, focusIndex) {
 		store.each (function (record) {
 			var winAff = record.get ('affinity');
 			var strWinAff = winAff.toString ();
+			// TODO: fix this stuff because 1198 is greater then 1099
 			// Check if affinity value is greater then 99. If is it, keep the last two figures (1099 -> 99)
 			if (strWinAff.length > 2) {
 				winAff = parseInt (strWinAff.slice (strWinAff.length - 2, strWinAff.length));
@@ -91,7 +92,8 @@ function disposeArticles (store, focus, focusIndex) {
 			
 				degree += radCounter;
 				
-				articleSin.addArticleIDs ('articles' + j);
+				// Saves information in the articles singleton
+				articleSin.addArticle ('articles' + j, record.get ('about'));
 				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
@@ -99,28 +101,7 @@ function disposeArticles (store, focus, focusIndex) {
 					html: parseToRead (record.get ('article')) ,
 					id: 'articles' + j ,
 					x: x ,
-					y: y ,
-					
-					items: [{
-						// Saves information about this article (/serverID/userID/postID) in a hidden button
-						xtype: 'button' ,
-						text: record.get ('about') ,
-						tooltip: 'index' ,
-						hidden: true
-					}] ,
-					
-					dockedItems: [{
-						xtype: 'toolbar' ,
-						dock: 'bottom' ,
-						ui: 'footer' ,
-						// Only focus button
-						items: ['->' , {
-							// Button focus
-							cls: 'x-btn-icon' ,
-							icon: 'ext/resources/images/btn-icons/focus.png' ,
-							tooltip: 'Focus'
-						} , '->']
-					}]
+					y: y
 				});
 		
 				// Add win to center region
@@ -140,6 +121,9 @@ function disposeArticles (store, focus, focusIndex) {
 		}
 	}
 	
+	// Saves infos of focus article in article singleton
+	articleSin.setFocusModelID (focus.get ('about'));
+	
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {
 		// Author is /serverID/userID, so split and take only userID
@@ -147,64 +131,7 @@ function disposeArticles (store, focus, focusIndex) {
 		html: parseToRead (focus.get ('article')) ,
 		x: focusX ,
 		y: focusY ,
-		id: 'winFocusArticle' ,
-		
-		// Body
-		items: [{
-			// Saves model ID of the focus article
-			xtype: 'button' ,
-			tooltip: 'focusModelIndex' ,
-			hidden: true ,
-			text: focus.get ('about')
-		}] ,
-	
-		// Docked Items
-		dockedItems: [{
-			xtype: 'toolbar' ,
-			dock: 'bottom' ,
-			ui: 'footer' ,
-			items: [{
-				// Button I Like
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/like.png' ,
-				tooltip: 'I Like' ,
-				hidden: true
-			} , {
-				// Button I Dislike
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/dislike.png' ,
-				tooltip: 'I Dislike' ,
-				hidden: true
-			} , {
-				// Button follow
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/follow.png' ,
-				tooltip: 'Follow' ,
-				hidden: true
-			} , {
-				// Button unfollow
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/unfollow.gif' ,
-				tooltip: 'Unfollow' ,
-				hidden: true
-			} , '->' , {
-				// Progress Bar like/dislike
-				xtype: 'progressbar' ,
-				width: 150
-			} , '->' , {
-				// Button reply
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/reply.png' ,
-				tooltip: 'Reply' ,
-				hidden: true
-			} , {
-				// Button respam
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/respam.png' ,
-				tooltip: 'Respam' ,
-				hidden: true
-			}]
-		}]
+		id: 'winFocusArticle'
 	});
 	
 	// Add win to center region

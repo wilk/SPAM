@@ -58,6 +58,11 @@ Ext.define ('SC.view.regions.center.FocusArticle' , {
 			xtype: 'progressbar' ,
 			width: 150
 		} , '->' , {
+			// Button focus
+			cls: 'x-btn-icon' ,
+			icon: 'ext/resources/images/btn-icons/focus.png' ,
+			tooltip: 'Focus'
+		} , {
 			// Button reply
 			cls: 'x-btn-icon' ,
 			icon: 'ext/resources/images/btn-icons/reply.png' ,

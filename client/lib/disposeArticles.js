@@ -92,17 +92,21 @@ function disposeArticles (store, focus, focusIndex) {
 			
 				degree += radCounter;
 				
-				// Saves information in the articles singleton
-				articleSin.addArticle ('articles' + j, record.get ('about'));
-				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
 					title: '<span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,
 					html: parseToRead (record.get ('article')) ,
 					id: 'articles' + j ,
 					x: x ,
-					y: y
+					y: y ,
+					
+					// Other useful configurations
+					aboutModel: record.get ('about') ,
+					isFollowed: false
 				});
+				
+				// Saves information in the articles singleton
+				articleSin.addArticle (win);
 		
 				// Add win to center region
 				cntRegion.add (win);
@@ -121,9 +125,6 @@ function disposeArticles (store, focus, focusIndex) {
 		}
 	}
 	
-	// Saves infos of focus article in article singleton
-	articleSin.setFocusModelID (focus.get ('about'));
-	
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {
 		// Author is /serverID/userID, so split and take only userID
@@ -131,8 +132,15 @@ function disposeArticles (store, focus, focusIndex) {
 		html: parseToRead (focus.get ('article')) ,
 		x: focusX ,
 		y: focusY ,
-		id: 'winFocusArticle'
+		id: 'winFocusArticle' ,
+		
+		// Other useful configurations
+		aboutModel: focus.get ('about') ,
+		isFollowed: false
 	});
+	
+	// Saves infos of focus article in article singleton
+	articleSin.setFocus (win);
 	
 	// Add win to center region
 	cntRegion.add (win);

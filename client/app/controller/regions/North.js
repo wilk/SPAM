@@ -173,7 +173,7 @@ Ext.define ('SC.controller.regions.North' , {
 					bNewPost.setVisible (false);
 					
 					// Refresh articles windows
-					refreshArticlesWin ();
+					articleSin.setLogoutButton ();
 					
 					// Request shared thesaurus
 					Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');

@@ -66,18 +66,6 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	// @brief Initialize vars and window layout
 	initFocusWindow: function (win) {
 		try {
-			// Getting model associated with
-			// About = /serverID/userID/postID
-			win.aboutModel = articleSin.getArticleModelID (win.getId ());
-			
-			// If it's null, throw an error
-			if (win.aboutModel == null) {
-				throw {
-					name: 'Model Error' ,
-					message: 'The model of this article is null. Something goes wrong!'
-				}
-			}
-			
 			win.articleStore = this.getRegionsCenterArticlesStore ();
 		
 			// Index of the appropriate model
@@ -124,8 +112,6 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 				}
 			
 				win.down('button[tooltip="Reply"]').setVisible (true);
-			
-				win.isFollowed = false;
 			
 				// If there are followers
 				if (win.followersStore.getCount () != 0) {
@@ -175,7 +161,7 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	
 	// @brief Remove the article ID from the article singleton
 	setupDefaults: function (win) {
-		articleSin.delArticleFromID (win.getId ());
+		articleSin.delArticleFromList (win);
 	} ,
 	
 	// @brief Set Like
@@ -273,6 +259,7 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 		// Ajax request
 		Ext.Ajax.request ({
 			url: optionSin.getUrlServerLtw () + 'setfollow' ,
+			scope: win ,
 			// Sending server and user ID of this article
 			params: { 
 				serverID: win.articleModel.get ('server') ,
@@ -309,8 +296,7 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 					}
 					
 					// Refresh articles windows
-					// TODO: refresh just windows belonging to this user
-					refreshArticlesWin ();
+					articleSin.setFollowButton (win.articleModel.get ('resource'), (val == 1 ? true : false));
 				});
 				
 				// Unset loading mask
@@ -336,7 +322,7 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 		var win = button.up ('window');
 		
 		// Set appropriate URL
-		win.articleStore.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/affinity' + win.aboutModel;
+		win.articleStore.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/affinity' + win.aboutModel;
 	
 		// Retrieve articles
 		requestSearchArticles (win.articleStore, win.articleModel, win.indexModel);

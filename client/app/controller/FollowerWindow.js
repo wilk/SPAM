@@ -88,8 +88,11 @@ Ext.define ('SC.controller.FollowerWindow' , {
 						storeFollowers.sort ('follower' , 'ASC');
 					}
 					
+					var owner = '/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
+					articleSin.setFollowButton (owner, false);
+					
 					// Refresh articles windows
-					refreshArticlesWin ();
+//					refreshArticlesWin ();
 				});
 			} ,
 			failure: function (error) {

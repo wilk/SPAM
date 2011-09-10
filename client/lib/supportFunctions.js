@@ -26,6 +26,13 @@ function requestSearchArticles (store, focus, focusIndex) {
 			store.removeAll ();
 			
 			try {
+				// If there's no one post, throw a new error
+				if ($(xml).find('post').length == 0) 
+					throw {
+						name: 'XML Parsing' ,
+						message: 'Something bad happened while reading the XML. Maybe is non well-formed.'
+					}
+				
 				// Check every posts
 				$(xml).find('post').each (function () {
 					var numLike, numDislike;
@@ -33,7 +40,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 					var geoLat = 0.0;
 					var geoLong = 0.0;
 					var userID = $(this).find('article').attr('resource');
-				
+					
 					// Find like and dislike counter plus setlike of the user
 					$(this).find('article').find('span').each (function () {
 						// Find like counter
@@ -64,7 +71,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 							}
 						}
 					});
-				
+					
 					// Add article to the store
 					store.add ({
 						affinity: parseInt ($(this).find('affinity').text ()) ,
@@ -84,31 +91,16 @@ function requestSearchArticles (store, focus, focusIndex) {
 			}
 			catch (err) {
 				Ext.Msg.show ({
-					title: 'Error' ,
-					msg: 'Something bad happened while reading the XML. Maybe is non well-formed.' ,
+					title: err.name ,
+					msg: err.message ,
 					buttons: Ext.Msg.OK,
 					icon: Ext.Msg.ERROR
 				});
 			}
 			
 			// Before dispose the retrieved articles, kill the old windows
-			destroyArticleWindows ();
-//			var winFocus = Ext.getCmp ('winFocusArticle');
-//	
-//			// Kills focus window
-//			if (winFocus != null)
-//				winFocus.destroy ();
-//	
-//			// And then kills the other windows
-//			while (!(articleSin.isEmpty ())) {
-////				var idToRem = articleSin.remArticleIDs ();
-//				var winToRem = articleSin.delLastArticle ();
-//				var win = Ext.getCmp (winToRem.ID);
-//				if (win != null) {
-//					win.destroy ();
-//				}
-//			}
-			
+			articleSin.destroyAll ();
+
 			// Unset loading mask to the Search Panel
 			Ext.getCmp('panelSearch').setLoading (false);
 			
@@ -124,21 +116,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 				store.add (focus);
 				
 				// Before dispose the retrieved articles, kill the old windows
-				destroyArticleWindows ();
-//				var winFocus = Ext.getCmp ('winFocusArticle');
-//	
-//				// Kills focus window
-//				if (winFocus != null)
-//					winFocus.destroy ();
-//	
-//				// And then kills the other windows
-//				while (!(articleSin.isEmpty ())) {
-//					var idToRem = articleSin.remArticleIDs ();
-//					var win = Ext.getCmp (idToRem);
-//					if (win != null) {
-//						win.destroy ();
-//					}
-//				}
+				articleSin.destroyAll ();
 			
 				// Dispose retrieved articles
 				disposeArticles (store, focus, focusIndex);
@@ -470,69 +448,4 @@ function clickTitle () {
 //	var store = Ext.create ('SC.store.regions.center.Articles');
 //	store.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/recent/';
 //	requestSearchArticles (store, null, 0);
-}
-
-// @brief Destroy article windows
-// @return void
-function destroyArticleWindows () {
-	// Retrieve the window of focus article
-	var winFocus = Ext.getCmp ('winFocusArticle');
-
-	// Kills focus window
-	if (winFocus != null)
-		winFocus.destroy ();
-
-	// And then kills the other windows
-	while (!(articleSin.isEmpty ())) {
-		var winToRem = articleSin.delLastArticle ();
-		var win = Ext.getCmp (winToRem.ID);
-		
-		if (win != null) {
-			win.destroy ();
-		}
-	}
-}
-
-// @brief Refresh each article window
-// @return void
-function refreshArticlesWin () {
-	var arts = articleSin.getArticles ();
-	var winFocus = Ext.getCmp ('winFocusArticle');
-	var centerReg = Ext.getCmp ('centReg');
-	
-	try {
-		// Set loading mask to the center region
-		centerReg.setLoading (true);
-		
-		// If it's iterable, iterates
-		if (Ext.isIterable (arts)) {
-			Ext.iterate (arts, function (item, index, myself) {
-				// Refresh the right window
-				// Note: show event doesn't work
-				Ext.getCmp(item.ID).setVisible (false);
-				Ext.getCmp(item.ID).setVisible (true);
-			});
-		}
-		
-		// Refresh focus window
-		if (winFocus != undefined) {
-			winFocus.setVisible (false);
-			winFocus.setVisible (true);
-		}
-	
-		// Unset loading mask to the center region
-		centerReg.setLoading (false);
-	}
-	// If something goes wrong, set the loading mask off
-	catch (err) {
-		// Unset loading mask to the center region
-		centerReg.setLoading (false);
-		
-		Ext.Msg.show ({
-			title: err.name ,
-			msg: err.message ,
-			buttons: Ext.Msg.OK,
-			icon: Ext.Msg.ERROR
-		});
-	}
 }

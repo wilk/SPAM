@@ -67,12 +67,12 @@ Ext.define ('SC.controller.regions.west.User' , {
 					}
 					else {
 						// Refresh articles windows
-						refreshArticlesWin ();
+						articleSin.setLoginButton ();
 					}
 				}
 				else {
 					// Refresh articles windows
-					refreshArticlesWin ();
+					articleSin.setLoginButton ();
 					
 					// Ascendent sort for followers
 					storeFollowers.sort ('follower' , 'ASC');

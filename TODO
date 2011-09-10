@@ -20,5 +20,5 @@
 
 Errori
 - txtSendArea.getFocusEl().setSelectionRange is not a function (send.js 97)
-- il controller degli articoli normale funziona solo con l'ultimo... cazzo!
-- lo scope della funzione scazza quando si entra in altre funzioni. usare il me = this
+- quando si scrive un post e si aggiungono hashtag si resetta il emptyText
+- cerca fulltext video. grosso problema.

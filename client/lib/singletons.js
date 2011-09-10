@@ -221,118 +221,174 @@ Ext.define ('geolocSin' , {
 });
 
 // @brief Singleton for article windows
+//        It keeps a point to every article windows, even that focus one.
 Ext.define ('articleSin' , {
 	singleton: true ,
 	
 	// Vars
-	storeArts: new Array () ,
-	focusModelID: '' ,
+	articleList: new Array () ,
+	// focusArticle is an array because javascript has some problems with object pointer
+	focusArticle: new Array () ,
 	
-	// Getters
-	
-	// Get the entire array
-	getArticles: function () {
-		return this.storeArts;
+	// Add a new article
+	addArticle: function (article) {
+		this.articleList.push (article);
 	} ,
 	
-	// Get the model ID of the article
-	getArticleModelID: function (id) {
-		var idToReturn = null;
-		var index = this.findIndexById (id);
-				
-		if (index != -1) {
-			idToReturn = this.storeArts[index].modelID;
+	// Set the Focus article
+	setFocus: function (focus) {
+		this.focusArticle.push (focus);
+	} ,
+	
+	// Remove focus article
+	delFocus: function () {
+		Ext.Array.erase (this.focusArticle, 0, this.focusArticle.length);
+	} ,
+	
+	// Destroy every article windows, even the Focus one
+	destroyAll: function () {
+		// Destroy each article window and empty the array
+		while (this.articleList.length > 0) {
+			var win = this.articleList.pop ();
+			
+			if (win != null) win.destroy ();
 		}
 		
-		return idToReturn;
-	} ,
-	
-	// Get focus model ID
-	getFocusModelID: function () {
-		return this.focusModelID;
-	} ,
-	
-	// Setters
-	
-	// Set focus model ID
-	setFocusModelID: function (id) {
-		this.focusModelID = id;
-	} ,
-	
-	// Reset focus model ID
-	resetFocusModelID: function () {
-		this.focusModelID = '';
-	} ,
-	
-	// Add new article
-	addArticle: function (id, model) {
-		this.storeArts.push ({
-			ID: id ,
-			modelID: model
-		});
-	} ,
-	
-	// Add a new ID of article window
-//	addArticleIDs : function (id) {
-//		this.storeArticleIDs.push (id);
-//	} ,
-
-	// Remove last article
-	delLastArticle: function () {
-		return this.storeArts.pop ();
-	} ,
-	
-	// Remove an article from its ID
-	delArticleFromID: function (id) {
-		var index = this.findIndexById (id);
+		// Same thing with focus window
+		var focus = this.focusArticle.pop ();
 		
-		// Remove it if is found
-		if (index != -1) {
-			this.storeArts.splice (index, 1);
-		}
+		if (focus != null) focus.destroy ();
 	} ,
 	
-	// Finds the index in the array from an ID
-	findIndexById: function (id) {
-		var index = -1;
-		var sentinel = false;
+	// Destroy passed article
+	delArticleFromList: function (article) {
+		var index = Ext.Array.indexOf (this.articleList, article);
 		
-		// Find index of the ID
-		for (var i = 0; i < this.storeArts.length; i++) {
-			if (this.storeArts[i].ID == id) {
-				sentinel = true;
-				break;
+		if (index != -1) Ext.Array.erase (this.articleList, index, 1);
+	} ,
+	
+	// Show/Hide follow/unfollow button of every article window, even the Focus one
+	// user: /serverID/userID
+	// toFollow: true/false
+	setFollowButton: function (user, toFollow) {
+		// Article windows
+		Ext.Array.each (this.articleList, function (win, index, myself) {
+			if (win.articleModel.get ('resource') == user) {
+				// If it's to follow, shows the unfollow button
+				if (toFollow) {
+					win.isFollowed = true;
+					win.down('button[tooltip="Unfollow"]').setVisible (true);
+					win.down('button[tooltip="Follow"]').setVisible (false);
+				}
+				// Otherwise shows the follow button
+				else {
+					win.isFollowed = false;
+					win.down('button[tooltip="Follow"]').setVisible (true);
+					win.down('button[tooltip="Unfollow"]').setVisible (false);
+				}
 			}
-		}
+		}, this);
 		
-		if (sentinel) {
-			index = i;
-		}
-		
-		return index;
-		
+		// Focus window
+		Ext.Array.each (this.focusArticle, function (win, index, myself) {
+			if (win.focusModel.get ('resource') == user) {
+				// If it's to follow, shows the unfollow button
+				if (toFollow) {
+					win.isFollowed = true;
+					win.down('button[tooltip="Unfollow"]').setVisible (true);
+					win.down('button[tooltip="Follow"]').setVisible (false);
+				}
+				// Otherwise shows the follow button
+				else {
+					win.isFollowed = false;
+					win.down('button[tooltip="Follow"]').setVisible (true);
+					win.down('button[tooltip="Unfollow"]').setVisible (false);
+				}
+			}
+		}, this);
 	} ,
-	// Remove an ID of a specified article
-//	remArticleFromID : function (id) {
-//		var sentinel = false;
-//		// Find index of the ID to remove
-//		for (var i = 0; i < this.storeArticleIDs.length; i++) {
-//			if (this.storeArticleIDs[i] == id) {
-//				sentinel = true;
-//				break;
-//			}
-//		}
-//		// Remove it if is found
-//		if (sentinel) {
-//			this.storeArticleIDs.splice (i, 1, id);
-//		}
-//	} ,
-//	remArticleIDs : function () {
-//		return this.storeArticleIDs.pop ();
-//	} ,
-	// Return true if the array is empty, false instead
-	isEmpty : function () {
-//		return (this.storeArticleIDs.length < 1 ? true : false);
-		return (this.storeArts.length < 1 ? true : false);
+	
+	// Hides/Shows appropriate buttons
+	// E.g. : user can only respam, reply and focus on his posts
+	// but he can't setLike or setFollow on his posts.
+	setLoginButton: function () {
+		var owner = '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ();
+		
+		// Articles buttons
+		Ext.Array.each (this.articleList, function (win, index, myself) {
+			win.down('button[tooltip="Reply"]').setVisible (true);
+			win.down('button[tooltip="Respam"]').setVisible (true);
+			
+			// Current user can't follow or like/dislike his posts, so doesn't show
+			// to him the following buttons
+			if (win.articleModel.get ('resource') != owner) {
+				// Follow button
+				if (win.isFollowed) win.down('button[tooltip="Unfollow"]').setVisible (true);
+				else win.down('button[tooltip="Follow"]').setVisible (true);
+				
+				// Like/Dislike button
+				// If user set like, change the icon of 'I like' button
+				if (win.likeOrDislike == 1) {
+					win.down('button[tooltip="I Like"]').setIcon ('ext/resources/images/btn-icons/already-like.png');
+				}
+				// If user set dislike, change the icon of 'I Dislike' button
+				else if (win.likeOrDislike == -1) {
+					win.down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/already-dislike.png');
+				}
+				
+				win.down('button[tooltip="I Like"]').setVisible (true);
+				win.down('button[tooltip="I Dislike"]').setVisible (true);
+			}
+		}, this);
+		
+		// Focus
+		// Reply/Respam
+		Ext.Array.each (this.focusArticle, function (win, index, myself) {
+			win.down('button[tooltip="Reply"]').setVisible (true);
+			win.down('button[tooltip="Respam"]').setVisible (true);
+		
+			// Setlike/Setfollow
+			if (win.focusModel.get ('resource') != owner) {
+				// Follow button
+				if (win.isFollowed) win.down('button[tooltip="Unfollow"]').setVisible (true);
+				else win.down('button[tooltip="Follow"]').setVisible (true);
+			
+				// Like/Dislike button
+				// If user set like, change the icon of 'I like' button
+				if (win.likeOrDislike == 1) {
+					win.down('button[tooltip="I Like"]').setIcon ('ext/resources/images/btn-icons/already-like.png');
+				}
+				// If user set dislike, change the icon of 'I Dislike' button
+				else if (win.likeOrDislike == -1) {
+					win.down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/already-dislike.png');
+				}
+			
+				win.down('button[tooltip="I Like"]').setVisible (true);
+				win.down('button[tooltip="I Dislike"]').setVisible (true);
+			}
+		}, this);
+	} ,
+	
+	// Hides every button when user logout, leaving only the focus button
+	setLogoutButton: function () {
+		// Articles
+		Ext.Array.each (this.articleList, function (win, index, myself) {
+			win.down('button[tooltip="I Like"]').setVisible (false);
+			win.down('button[tooltip="I Dislike"]').setVisible (false);
+			win.down('button[tooltip="Follow"]').setVisible (false);
+			win.down('button[tooltip="Unfollow"]').setVisible (false);
+			win.down('button[tooltip="Reply"]').setVisible (false);
+			win.down('button[tooltip="Respam"]').setVisible (false);
+		}, this);
+		
+		// Focus
+		Ext.Array.each (this.focusArticle, function (win, index, myself) {
+			win.down('button[tooltip="I Like"]').setVisible (false);
+			win.down('button[tooltip="I Dislike"]').setVisible (false);
+			win.down('button[tooltip="Follow"]').setVisible (false);
+			win.down('button[tooltip="Unfollow"]').setVisible (false);
+			win.down('button[tooltip="Reply"]').setVisible (false);
+			win.down('button[tooltip="Respam"]').setVisible (false);
+		}, this);
 	}
 });

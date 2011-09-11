@@ -86,15 +86,13 @@ Ext.define ('SC.controller.FollowerWindow' , {
 					else {
 						// Ascendent sort for followers
 						storeFollowers.sort ('follower' , 'ASC');
-						
-						var winFocus = Ext.getCmp ('winFocusArticle');
-				
-						// On unfollow refresh Focus Article if it is present to refresh the setfollow button
-						if (winFocus != null) {
-							winFocus.setVisible (false);
-							winFocus.setVisible (true);
-						}
 					}
+					
+					var owner = '/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
+					articleSin.setFollowButton (owner, false);
+					
+					// Refresh articles windows
+//					refreshArticlesWin ();
 				});
 			} ,
 			failure: function (error) {

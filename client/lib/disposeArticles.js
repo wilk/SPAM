@@ -70,6 +70,7 @@ function disposeArticles (store, focus, focusIndex) {
 		store.each (function (record) {
 			var winAff = record.get ('affinity');
 			var strWinAff = winAff.toString ();
+			// TODO: fix this stuff because 1198 is greater then 1099
 			// Check if affinity value is greater then 99. If is it, keep the last two figures (1099 -> 99)
 			if (strWinAff.length > 2) {
 				winAff = parseInt (strWinAff.slice (strWinAff.length - 2, strWinAff.length));
@@ -91,8 +92,6 @@ function disposeArticles (store, focus, focusIndex) {
 			
 				degree += radCounter;
 				
-				articleSin.addArticleIDs ('articles' + j);
-				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
 					title: '<span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,
@@ -101,27 +100,13 @@ function disposeArticles (store, focus, focusIndex) {
 					x: x ,
 					y: y ,
 					
-					items: [{
-						// Saves information about this article (/serverID/userID/postID) in a hidden button
-						xtype: 'button' ,
-						text: record.get ('about') ,
-						tooltip: 'index' ,
-						hidden: true
-					}] ,
-					
-					dockedItems: [{
-						xtype: 'toolbar' ,
-						dock: 'bottom' ,
-						ui: 'footer' ,
-						// Only focus button
-						items: ['->' , {
-							// Button focus
-							cls: 'x-btn-icon' ,
-							icon: 'ext/resources/images/btn-icons/focus.png' ,
-							tooltip: 'Focus'
-						} , '->']
-					}]
+					// Other useful configurations
+					aboutModel: record.get ('about') ,
+					isFollowed: false
 				});
+				
+				// Saves information in the articles singleton
+				articleSin.addArticle (win);
 		
 				// Add win to center region
 				cntRegion.add (win);
@@ -149,63 +134,13 @@ function disposeArticles (store, focus, focusIndex) {
 		y: focusY ,
 		id: 'winFocusArticle' ,
 		
-		// Body
-		items: [{
-			// Saves model ID of the focus article
-			xtype: 'button' ,
-			tooltip: 'focusModelIndex' ,
-			hidden: true ,
-			text: focus.get ('about')
-		}] ,
-	
-		// Docked Items
-		dockedItems: [{
-			xtype: 'toolbar' ,
-			dock: 'bottom' ,
-			ui: 'footer' ,
-			items: [{
-				// Button I Like
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/like.png' ,
-				tooltip: 'I Like' ,
-				hidden: true
-			} , {
-				// Button I Dislike
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/dislike.png' ,
-				tooltip: 'I Dislike' ,
-				hidden: true
-			} , {
-				// Button follow
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/follow.png' ,
-				tooltip: 'Follow' ,
-				hidden: true
-			} , {
-				// Button unfollow
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/unfollow.gif' ,
-				tooltip: 'Unfollow' ,
-				hidden: true
-			} , '->' , {
-				// Progress Bar like/dislike
-				xtype: 'progressbar' ,
-				width: 150
-			} , '->' , {
-				// Button reply
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/reply.png' ,
-				tooltip: 'Reply' ,
-				hidden: true
-			} , {
-				// Button respam
-				cls: 'x-btn-icon' ,
-				icon: 'ext/resources/images/btn-icons/respam.png' ,
-				tooltip: 'Respam' ,
-				hidden: true
-			}]
-		}]
+		// Other useful configurations
+		aboutModel: focus.get ('about') ,
+		isFollowed: false
 	});
+	
+	// Saves infos of focus article in article singleton
+	articleSin.setFocus (win);
 	
 	// Add win to center region
 	cntRegion.add (win);

@@ -68,13 +68,13 @@ function disposeArticles (store, focus, focusIndex) {
 	
 		// Create a window for any articles
 		store.each (function (record) {
-			var winAff = record.get ('affinity');
-			var strWinAff = winAff.toString ();
+//			var winAff = record.get ('affinity');
+//			var strWinAff = winAff.toString ();
 			// TODO: fix this stuff because 1198 is greater then 1099
 			// Check if affinity value is greater then 99. If is it, keep the last two figures (1099 -> 99)
-			if (strWinAff.length > 2) {
-				winAff = parseInt (strWinAff.slice (strWinAff.length - 2, strWinAff.length));
-			}
+//			if (strWinAff.length > 2) {
+//				winAff = parseInt (strWinAff.slice (strWinAff.length - 2, strWinAff.length));
+//			}
 			var x, y;
 			
 			// Don't manage the focus article
@@ -83,8 +83,8 @@ function disposeArticles (store, focus, focusIndex) {
 				var cosX = Math.cos (degree * (Math.PI/180));
 				var sinY = Math.sin (degree * (Math.PI/180));
 			
-				x = oX + (((cntRegion.getWidth () / 2) - ARTICLE_WINDOW_WIDTH) * cosX) + winAff;
-				y = oY - (((cntRegion.getHeight () / 2) - ARTICLE_WINDOW_HEIGHT) * sinY) + winAff;
+				x = oX + (((cntRegion.getWidth () / 2) - ARTICLE_WINDOW_WIDTH) * cosX);
+				y = oY - (((cntRegion.getHeight () / 2) - ARTICLE_WINDOW_HEIGHT) * sinY);
 			
 				// No negative values
 				if (x < 0) x = Math.abs (x);
@@ -111,6 +111,19 @@ function disposeArticles (store, focus, focusIndex) {
 				// Add win to center region
 				cntRegion.add (win);
 				win.show ();
+				
+				// Attach some powerful and cool events
+				win.getEl().on ({
+					mouseenter: function (event, el) {
+						// Bring to top when mouse enter
+						this.toFront ();
+					} ,
+					mouseleave: function (event, el) {
+						// Bring back to down when mouse leave
+						this.toBack ();
+					} ,
+					scope: win
+				});
 				
 				j++;
 			}
@@ -145,6 +158,15 @@ function disposeArticles (store, focus, focusIndex) {
 	// Add win to center region
 	cntRegion.add (win);
 	win.show ();
+	
+	// Attach some powerful and cool events
+	win.getEl().on ({
+		mouseenter: function (event, el) {
+			// Bring to top when mouse enter
+			this.toFront ();
+		} ,
+		scope: win
+	});
 	
 	// Unset loading mask to the center region
 	Ext.getCmp('centReg').setLoading (false);

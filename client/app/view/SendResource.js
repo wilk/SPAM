@@ -38,9 +38,9 @@ Ext.define ('SC.view.SendResource' , {
 	} , {
 		xtype: 'textareafield' ,
 		id: 'txtResourceDescription' ,
+		inputId: 'txtResourceDescriptionInner' ,
 		fieldLabel: 'Description (optional) ' ,
 		labelAlign: 'top' ,
-		emptyText: 'Type resource description here ...' ,
 		enforceMaxLenght: true ,
 		maxLenght: 140 ,
 		anchor: '100%' ,
@@ -54,7 +54,8 @@ Ext.define ('SC.view.SendResource' , {
 		anchor: '100%' ,
 		store: 'ComboThesaurus' ,
 		queryMode: 'local' ,
-		typeAhead: true
+		typeAhead: true ,
+		pickerAlign: 'bl'
 	}] ,
 	// Bottom buttons
 	dockedItems: [{

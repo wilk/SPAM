@@ -212,7 +212,7 @@ Ext.define ('geolocSin' , {
 	} ,
 	showCoords : function (event) {
 		Ext.Msg.show ({
-			title: 'Coords' ,
+			title: 'Coords of ' + this.title ,
 			msg: 'Latitude : ' + event.latLng.lat () + '<br />Longitude : ' + event.latLng.lng () ,
 			buttons: Ext.Msg.OK,
 			icon: Ext.Msg.INFO

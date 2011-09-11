@@ -80,12 +80,29 @@ Ext.define ('SC.controller.SendResource' , {
 	
 	// @brief Insert the appropriate hashtag into the textarea
 	getHashtag : function (combo) {
+		// Insert hashtag at that index
+//		txtResDes.insertAtCursor (combo.getValue ());
+		
+		// Reset combobox
+//		combo.setValue ('');
+		
+		// Set focus on textarea
+//		txtResDes.focus ();
+		
+//		var len = txtResDes.getValue().length;
+		
+		// Position cursor at the end of the textarea
+//		var doc = txtResDes.getFocusEl().id;
+//		var ta = document.getElementById (doc);
+//		ta.setSelectionRange (len, len);
+		
+		
 		txtResDes.insertAtCursor (combo.getValue ());
 		combo.reset ();
 		
 		txtResDes.getFocusEl().focus ();
 		// To avoid Opera's bullshit
-		var len = txtResDes.getFocusEl().length * 2;
+		var len = txtResDes.getFocusEl().length;
 		
 		// TODO: problem with IE and Chromium
 		txtResDes.getFocusEl().setSelectionRange (len, len);

@@ -86,15 +86,21 @@ Ext.define ('SC.controller.Send' , {
 	
 	// @brief Insert the appropriate hashtag into the textarea
 	getHashtag : function (combo) {
+		// Insert hashtag at that index
 		txtSendArea.insertAtCursor (combo.getValue ());
-		combo.reset ();
 		
-		txtSendArea.getFocusEl().focus ();
-		// To avoid Opera's bullshit
-		var len = txtSendArea.getFocusEl().length;
+		// Set focus on textarea
+		txtSendArea.focus ();
 		
-		// TODO: problem with IE, Chromium and Firefox too
-		txtSendArea.getFocusEl().setSelectionRange (len, len);
+		var len = txtSendArea.getValue().length;
+		
+		// Position cursor at the end of the textarea
+		var doc = txtSendArea.getFocusEl().id;
+		var ta = document.getElementById (doc);
+		ta.setSelectionRange (len, len);
+		
+		// Reset combobox
+		combo.setValue ('');
 	} ,
 	
 	// @brief Send the article

@@ -70,32 +70,86 @@ Ext.regController('Home',{
 					});
 				
 				
-					$(this).find('article').each(function(){
-//					console.log($(this));
-						
-						html+=$(this).text();
-						
-						$(this).find('span').each(function(){
-							if( $(this).attr('resource')=='audio' )
-							{
-//								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/play.png"'+'onclick="this.play();"'+'/>';
-//								html+='<a href="'+$(this).attr('src')+'"'+'>'+'<img src="lib_mobile/play.png" onclick="this.play();"/>'+'</a>';
-								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/play.png"'+'controls="controls"'+'preload="none" onclick="this.play();"'+'/>';
-							}
-							if( $(this).attr('resource')=='video' )
-							{
-								html+='<a href="'+$(this).attr('src')+'"'+'>'+'<img src="lib_mobile/video.png"/>'+'</a>';
-//							html+='<iframe src='+'"'+$(this).attr('src')+'"'+'>'+'</iframe>';
-//								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/video.png"'+'onclick="this.play();"'+'/>';
-							}
-							if( $(this).attr('resource')=='image' )
-							{
-								html+='<img src="'+$(this).attr('src')+'"'+'height="20%" width:"20%"'+'/>';
-							}
-						});
-						
-					});
-				
+//					$(this).find('article').each(function(){
+////					console.log($(this));
+//						
+//						html+=$(this).text();
+//						
+//						$(this).find('span').each(function(){
+//							if( $(this).attr('resource')=='audio' )
+//							{
+////								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/play.png"'+'onclick="this.play();"'+'/>';
+////								html+='<a href="'+$(this).attr('src')+'"'+'>'+'<img src="lib_mobile/play.png" onclick="this.play();"/>'+'</a>';
+//								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/play.png"'+'controls="controls"'+'preload="none" onclick="this.play();"'+'/>';
+//							}
+//							if( $(this).attr('resource')=='video' )
+//							{
+//								html+='<a href="'+$(this).attr('src')+'"'+'>'+'<img src="lib_mobile/video.png"/>'+'</a>';
+////							html+='<iframe src='+'"'+$(this).attr('src')+'"'+'>'+'</iframe>';
+////								html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/video.png"'+'onclick="this.play();"'+'/>';
+//							}
+//							if( $(this).attr('resource')=='image' )
+//							{
+//								html+='<img src="'+$(this).attr('src')+'"'+'height="20%" width:"20%"'+'/>';
+//							}
+//						});
+//						
+//					});
+
+
+$(this).find('article').contents().each(function(){
+
+//	$(this).each(function(){
+		
+		if($(this).is('span')){
+		
+			if($(this).attr('resource')=='audio'){
+				html+='<video src="'+$(this).attr('src')+'"'+'poster="lib_mobile/play.png"'+'controls="controls"'+'preload="none" onclick="this.play();"'+'/>';
+			}
+			
+			if($(this).attr('resource')=='video'){
+			
+				html+='<a href="'+$(this).attr('src')+'"'+'>'+'<img src="lib_mobile/video.png"/>'+'</a>';
+			
+			}
+			
+			if($(this).attr('resource')=='image'){
+			
+				html+='<img src="'+$(this).attr('src')+'"'+'height="20%" width:"20%"'+'/>';
+			
+			}
+			
+			html+=$(this).text();
+		
+		}
+		
+		if(this.nodeType == 3){
+		
+			var tmp=$(this).text();
+			
+			var links=$(this).text().match(/\(?\bhttp:\/\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]/gim);
+			
+			if(links!=null){
+			
+				for(i=0;i<links.length;i++){
+			
+					var indexOfLink=tmp.indexOf(links[i]);
+					var first=tmp.substring(0,indexOfLink);
+					var next=tmp.substring(indexOfLink+links[i].length);
+					
+					tmp=first+'<a href="'+links[i]+'">'+links[i]+'</a>';
+			
+				}
+			
+			}
+			
+			html+=tmp;
+		
+		}
+		
+//	});
+
+});				
 				
 				
 					// Add article to the store
@@ -104,6 +158,7 @@ Ext.regController('Home',{
 						article: $(this).find('article') ,
 						resource: $(this).find('article').attr ('resource') ,
 						about: $(this).find('article').attr ('about') ,
+						date: $(this).find('article').attr('content'),
 						like: numLike ,
 						dislike: numDislike ,
 						setlike: ifLikeDislike ,

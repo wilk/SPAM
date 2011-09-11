@@ -32,6 +32,22 @@ this.dockedItems=[{
 			xtype:'spacer'
 		},
 		{
+		
+			iconCls:'info',
+			iconMask:true,
+			ui:'plain',
+			handler:function(){
+			
+				Ext.dispatch({
+					
+					controller:'Post',
+					action:'showPostGenerality'
+					
+				});
+			
+			}
+		},
+		{
 			iconCls:'settings',
 			iconMask:true,
 			ui:'plain',

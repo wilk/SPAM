@@ -5,7 +5,7 @@ mspam.views.ServerList=Ext.extend(Ext.Panel,{
 	dockedItems:[{
 		xtype:'toolbar',
 		dock:'top',
-		title:'Mspam',
+		title:'Spam',
 		items:[{
 			text:'Back',
 				ui:'back',

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<archive>
+	<post>
+		<content>text/html; charset=UTF8</content>
+		<affinity>1315604572</affinity>
+		<article about="/VoglioLaurearmi/miki/48" content="2011-09-09T21:42:52Z" prefix="sioc: http://rdfs.org/sioc/ns# ctag: http://commontag.org/ns# skos: http://www.w3.org/2004/02/skos/core# dcterms: http://purl.org/dc/terms/ tweb: http://vitali.web.cs.unibo.it/vocabulary/" property="dcterms:created" rel="sioc:has_creator" resource="/VoglioLaurearmi/miki" typeof="sioc:Post">
+			canzone stupenda <span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">youtube</span></span><span resource="video" src="http://www.youtube.com/watch?v=ZVCDjLyyIV0"/><span content="0" property="tweb:countLike"/><span content="0" property="tweb:countDislike"/></article>
+	</post><post><content>text/html; charset=UTF8</content><affinity>0.74977</affinity>
+            <article prefix="
+               sioc: http://rdfs.org/sioc/ns#
+               ctag: http://commontag.org/ns#
+               skos: http://www.w3.org/2004/02/skos/core#
+               dcterms: http://purl.org/dc/terms/
+               tweb: http://vitali.web.cs.unibo.it/vocabulary/
+               "
+               about="/Spammers/pippo/21082" typeof="sioc:Post" rel="sioc:has_creator" resource="/Spammers/pippo"
+               property="dcterms:created" content="2011-07-17T23:42:38+02:00">
+
+video preso da <span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">youtube</span></span><span resource="video" src="http://www.youtube.com/watch?v=DRN3XsGst5w&feature=feedrec_grec_index"/><span property="tweb:countLike" content="0" /><span property="tweb:countDislike" content="0" /></article></post>
+
+</archive>
+

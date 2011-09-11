@@ -26,72 +26,130 @@ Ext.regController('sendpost',{
 		}
 		else{
 		
-			var preabout='<span rel="sioc:topic">#<span typeof="skos:Concept" about="';
-			var postabout='" rel="skos:inScheme" resource="';
-			var postinscheme='">';
-			var closespans='</span></span>';
-			
-			var pregentag='<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">';
-			
-			do{
-		
-				var hashtags=post.match("#[a-zA-Z0-9]+");
-			
-				if(hashtags!=null){
-			
-					var controllerThesaurus=Ext.ControllerManager.get('thesaurus');
-			
-					for(i=0;i<hashtags.length;i++){
-				
-						var resource=controllerThesaurus.getResource(hashtags[i]);
-					
-						if(resource!=null){
-						
-							var inscheme=resource[0];
-						
-							var indexofabout=inscheme.length;
-						
-							var about=resource[1].substr(indexofabout);
-						
-							var replace=preabout+about+postabout+inscheme+postinscheme+hashtags[i].substr(1)+closespans;
-							var indexoftag=post.indexOf(hashtags[i]);
-							var first=post.substring(0,indexoftag);
-							var next=post.substring(indexoftag+hashtags[i].length);
-							post=first+replace+next;
-							
-						}
-						else{
-							
-							var replace=pregentag+hashtags[i].substr(1)+closespans;
-							var indexoftag=post.indexOf(hashtags[i]);
-							var first=post.substring(0,indexoftag);
-							var next=post.substring(indexoftag+hashtags[i].length);
-							post=first+replace+next;
-						
-						}
-//						console.log(post);				
-					}
-			
-				}
-			}while(hashtags!=null)
+			post=this.addHashtagElement(post);
+			post=this.addMediaElement(post);
 		
 		}
 		
-		Ext.Ajax.request({
-		
-			url:'http://muza-chan.net/aj/poze-weblog/tanuki-01.jpg',
-			method:'head',
-			success:function(res,obj){console.log(res, obj);},
-			failure:function(res,obj){console.log(res, obj);}
-			
-		
-		});
-		
-//			this.sendPost(post);
-console.log(post);
+			this.sendPost(post);
+//console.log(post);
 	
 	},
 	
+	addHashtagElement:function(post){
+	
+		var preabout='<span rel="sioc:topic">#<span typeof="skos:Concept" about="';
+		var postabout='" rel="skos:inScheme" resource="';
+		var postinscheme='">';
+		var closespans='</span></span>';
+		
+		var pregentag='<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">';
+		
+//		do{
+	
+			var hashtags=post.match(/#[a-zA-Z0-9]+/gim);
+		
+			if(hashtags!=null){
+		
+				var controllerThesaurus=Ext.ControllerManager.get('thesaurus');
+		
+				for(i=0;i<hashtags.length;i++){
+			
+					var resource=controllerThesaurus.getResource(hashtags[i]);
+				
+					if(resource!=null){
+					
+						var inscheme=resource[0];
+					
+						var indexofabout=inscheme.length;
+					
+						var about=resource[1].substr(indexofabout);
+					
+						var replace=preabout+about+postabout+inscheme+postinscheme+hashtags[i].substr(1)+closespans;
+						var indexoftag=post.indexOf(hashtags[i]);
+						var first=post.substring(0,indexoftag);
+						var next=post.substring(indexoftag+hashtags[i].length);
+						post=first+replace+next;
+						
+					}
+					else{
+						
+						var replace=pregentag+hashtags[i].substr(1)+closespans;
+						var indexoftag=post.indexOf(hashtags[i]);
+						var first=post.substring(0,indexoftag);
+						var next=post.substring(indexoftag+hashtags[i].length);
+						post=first+replace+next;
+					
+					}
+//						console.log(post);				
+				}
+		
+			}
+//		}while(hashtags!=null)
+		
+		return post;
+	
+	},
+	
+	addMediaElement:function(post){
+	
+		var openSpan='<span resource="';
+		var closeSpan='/>';
+			
+//		do{
+		
+			var links=post.match(/\(?\bhttp:\/\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]/gim);
+			
+			if(links!=null){
+			
+				for(i=0;i<links.length;i++){
+				
+					var indexOfMedia=post.indexOf(links[i]);
+					var first=post.substring(0,indexOfMedia);
+					var next=post.substring(indexOfMedia+links[i].length);
+					
+					var mime=this.getMediaMimeType(links[i]);
+					var type=mime.substring(0,mime.indexOf('/'));
+					
+					if(type.search("image|video|audio")!=-1){
+						
+						post=first+openSpan+type+'" src="'+links[i]+'"'+closeSpan+next;
+						
+					}				
+				}
+				
+			}
+		
+//		}while(links!=null)
+		
+		return post;
+	
+	},
+	
+	getMediaMimeType:function(url){
+	
+		var mime=',hjv';
+	
+		$.ajax({
+		
+			url:'proxy',
+			type:'post',
+			data:{url:url},
+			async:false,
+			scope:this,
+			
+			success:function(res){mime=res;},
+			
+			failure:function(res){
+				Ext.Msg.alert(res.statusText,res.responseText);
+			}
+		
+		});
+		
+		return mime;
+	
+	},
+		
 	sendPost:function(post){
 
 	

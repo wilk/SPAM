@@ -6,6 +6,7 @@ Ext.regModel('Post',{
 		{name:'article'},
 		{name:'resource'},
 		{name:'about'},
+		{name:'date'},
 		{name:'like'},
 		{name:'dislike'},
 		{name:'setlike'},
@@ -18,7 +19,7 @@ Ext.regModel('Post',{
 		type:'ajax',
 		
 		//url dinamically set
-		url:'lib_mobile/art4.xml',
+		url:'lib_mobile/art1.xml',
 //		url:'search/10/recent',
 		reader:{
 			type:'xml',

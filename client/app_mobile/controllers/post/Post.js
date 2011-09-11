@@ -1,7 +1,7 @@
 Ext.regController('Post',{
 
 	init:function(){
-			var postIndex,postView, userId, serverId, postId, likeChoice;
+			var postIndex,postView, userId, serverId, postId, likeChoice, postDate;
 //			genLoaded=false;
 		},
 
@@ -17,7 +17,7 @@ Ext.regController('Post',{
 //	console.log(record);
 		this.post=this.render({xtype:'post',html:record});
 		
-		this.post.down('#toolbarTitle').setTitle(options.user+' said');
+//		this.post.down('#toolbarTitle').setTitle(options.user+' said');
 
 		if (Ext.StoreMgr.get('loginstore').getCount()!=0){
 
@@ -191,10 +191,15 @@ Ext.regController('Post',{
 			userId=tmp[2];
 			postId=tmp[3];
 			likeChoice=post.get('setlike');
-			
-//			genLoaded=true;
+			postDate=post.get('date');
 //			console.log(serverId, userId,postId,tmp,post.get('about'));
 //		}
+	
+	},
+	
+	showPostGenerality:function(){
+	
+		Ext.Msg.alert('Post info','<p align="left"><b>serverId: </b>'+serverId+'<br/>'+'<b>userId: </b>'+userId+'<br />'+'<b>postId: </b>'+postId+'<br />'+'<b>date: </b>'+Date.parseDate(postDate,'c').format('d-m-Y H:i')+'</p>');
 	
 	},
 	

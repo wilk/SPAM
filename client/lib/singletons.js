@@ -124,6 +124,10 @@ Ext.define ('optionSin' , {
 	pureUrlServerLtw: '' ,
 	serverID: '' ,
 	currentUser: '' ,
+	// Default number of search
+	searchNumber: 10 ,
+	// Default number of pages to surf
+	navigatorNumber: 10 ,
 	
 	// Getters
 	getUrlServerLtw : function () {
@@ -137,6 +141,12 @@ Ext.define ('optionSin' , {
 	} ,
 	getCurrentUser : function () {
 		return this.currentUser;
+	} ,
+	getSearchNumber : function () {
+		return this.searchNumber;
+	} ,
+	getNavigatorNumber : function () {
+		return this.navigatorNumber;
 	} ,
 	
 	// Setters
@@ -152,6 +162,12 @@ Ext.define ('optionSin' , {
 	setCurrentUser : function (id) {
 		this.currentUser = id;
 	} ,
+	setSearchNumber : function (val) {
+		this.searchNumber = val;
+	} ,
+	setNavigatorNumber : function (val) {
+		this.navigatorNumber = val;
+	} ,
 	
 	// Reset variables (urls and id)
 	resetOption : function () {
@@ -160,6 +176,8 @@ Ext.define ('optionSin' , {
 		this.urlServerLtw = '';
 		this.pureUrlServerLtw = '';
 		this.serverID = 'Spammers';
+		this.searchNumber = 10;
+		this.navigatorNumber = 10;
 	} ,
 	resetCurrentUser : function () {
 		this.currentUser = '';

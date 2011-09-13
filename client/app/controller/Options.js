@@ -26,6 +26,7 @@ Ext.define ('SC.controller.Options' , {
 		var originalServerStore;
 		var userServerStore;
 		var isUserServerStoreChanged;
+		var searchNF, navigatorNF;
 		
 		this.control ({
 			// Init variables
@@ -39,7 +40,7 @@ Ext.define ('SC.controller.Options' , {
 				click : this.resetFields
 			} ,
 			'#btnOptionApply' : {
-				click : this.updateUrl
+				click : this.updateOptions
 			} ,
 			'#adServerColumn' : {
 				click : this.onAction
@@ -53,6 +54,10 @@ Ext.define ('SC.controller.Options' , {
 	
 	// @brief Initialize variables
 	initVar : function (win) {
+		// Search and navigator numberfield
+		searchNF = Ext.getCmp ('numberSearchDefault');
+		navigatorNF = Ext.getCmp ('numberNavigatorDefault');
+		
 		txtServerUrl = win.down ('#tfServerUrl');
 		txtServerUrl.setValue ('Spammers');
 		
@@ -63,13 +68,13 @@ Ext.define ('SC.controller.Options' , {
 		isUserServerStoreChanged = false;
 	} ,
 	
-	// @brief Update urlServerLtw global var
-	updateUrl : function (button) {
+	// @brief Update options variables
+	updateOptions: function (button) {
 		// If user is already logged-in, throw an error
 		if (checkIfUserLogged ()) {
 			Ext.Msg.show ({
-				title: 'Error: server not changed.',
-				msg: 'Logout before change server!' ,
+				title: 'Error',
+				msg: 'Server list is not changed.<br />Logout before change the server!' ,
 				buttons: Ext.Msg.OK,
 				icon: Ext.Msg.ERROR
 			});
@@ -95,9 +100,16 @@ Ext.define ('SC.controller.Options' , {
 				optionSin.setServerID (record.get ('serverID'));
 			}
 			
+			// Update search&navigator default number
+			if (searchNF.isValid ()) {
+				optionSin.setSearchNumber (searchNF.getValue ());
+				Ext.getCmp('numberSearch').setValue (optionSin.getSearchNumber ());
+			}
+			if (navigatorNF.isValid ()) optionSin.setNavigatorNumber (navigatorNF.getValue ());
+			
 			Ext.Msg.show ({
-				title: 'Success.',
-				msg: 'Server URL changed successfully!' ,
+				title: 'Success',
+				msg: 'Options has been changed successfully!' ,
 				buttons: Ext.Msg.OK,
 				icon: Ext.Msg.INFO
 			});
@@ -202,6 +214,10 @@ Ext.define ('SC.controller.Options' , {
 	
 	// @brief Set active the first tab
 	resetTab : function (win) {
+		// Reset numberfields
+		searchNF.setValue (optionSin.getSearchNumber ());
+		navigatorNF.setValue (optionSin.getNavigatorNumber ());
+
 		win.down('tabpanel').setActiveTab (0);
 		
 		// If something is been added or deleted from the store of the user federated servers list, update it!

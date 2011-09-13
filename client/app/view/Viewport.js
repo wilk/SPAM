@@ -16,6 +16,7 @@ Ext.define ('SC.view.Viewport' , {
 		'SC.view.regions.West' ,
 		'SC.view.regions.East' ,
 		'SC.view.regions.Center' ,
+		'SC.view.regions.center.Navigator' ,
 		'SC.view.Send' ,
 		'SC.view.SelectPost' ,
 		'SC.view.SendResource' ,
@@ -36,6 +37,9 @@ Ext.define ('SC.view.Viewport' , {
 		xtype: 'eastregion'
 	} , {
 		xtype: 'centerregion'
+	} , {
+		xtype: 'navigatorwin' ,
+		hidden: true
 	} , {
 		xtype: 'send'
 	} , {

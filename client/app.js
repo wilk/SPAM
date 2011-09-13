@@ -22,6 +22,7 @@ Ext.application ({
 		'regions.Center' ,
 		'regions.center.Articles' ,
 		'regions.center.FocusArticle' ,
+		'regions.center.Navigator' ,
 		'Send' ,
 		'SendResource' ,
 		'SelectPost' ,

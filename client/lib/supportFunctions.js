@@ -88,8 +88,22 @@ function requestSearchArticles (store, focus, focusIndex) {
 						glLong: geoLong
 					});
 				});
+				
+				// Before dispose the retrieved articles, kill the old windows
+				articleSin.destroyAll ();
+
+				// Unset loading mask to the Search Panel
+				Ext.getCmp('panelSearch').setLoading (false);
+				
+				// Dispose retrieved articles
+				disposeArticles (store, focus, focusIndex);
 			}
 			catch (err) {
+				// Unset loading mask to the Search Panel
+				Ext.getCmp('panelSearch').setLoading (false);
+				// Unset loading mask to the center region
+				Ext.getCmp('centReg').setLoading (false);
+				
 				Ext.Msg.show ({
 					title: err.name ,
 					msg: err.message ,
@@ -97,15 +111,6 @@ function requestSearchArticles (store, focus, focusIndex) {
 					icon: Ext.Msg.ERROR
 				});
 			}
-			
-			// Before dispose the retrieved articles, kill the old windows
-			articleSin.destroyAll ();
-
-			// Unset loading mask to the Search Panel
-			Ext.getCmp('panelSearch').setLoading (false);
-			
-			// Dispose retrieved articles
-			disposeArticles (store, focus, focusIndex);
 		} ,
 		error: function (xhr, type, text) {
 			if ((xhr.status == 404) && (focus != null)) {

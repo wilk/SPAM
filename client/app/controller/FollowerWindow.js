@@ -89,10 +89,8 @@ Ext.define ('SC.controller.FollowerWindow' , {
 					}
 					
 					var owner = '/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
-					articleSin.setFollowButton (owner, false);
-					
 					// Refresh articles windows
-//					refreshArticlesWin ();
+					articleSin.setFollowButton (owner, false);
 				});
 			} ,
 			failure: function (error) {
@@ -112,7 +110,7 @@ Ext.define ('SC.controller.FollowerWindow' , {
 		winFollower.hide ();
 		
 		// Set appropriate URL
-		storeArticles.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/author/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
+		storeArticles.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
 		
 		// Retrieve articles
 		requestSearchArticles (storeArticles, null, 0);

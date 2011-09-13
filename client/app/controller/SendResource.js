@@ -170,7 +170,7 @@ Ext.define ('SC.controller.SendResource' , {
 					}
 					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);

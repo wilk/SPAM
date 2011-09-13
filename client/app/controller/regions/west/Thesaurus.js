@@ -129,7 +129,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		var storeArticle = this.getRegionsCenterArticlesStore ();
 		
 		// Set appropriate URL
-		storeArticle.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/related/' + record.get ('text');
+		storeArticle.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/related/' + record.get ('text');
 	
 		// Retrieve articles
 		requestSearchArticles (store, null, 0);

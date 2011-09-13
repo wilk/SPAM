@@ -24,7 +24,7 @@ Ext.define ('SC.view.Options' , {
 	activeTab: 0 ,
 	
 	// Body
-	items: [{
+	items: {
 		// Tab panel
 		xtype: 'tabpanel' ,
 		anchor: '100% 100%' ,
@@ -32,7 +32,7 @@ Ext.define ('SC.view.Options' , {
 		items: [{
 			// Tab Options
 			title: 'Options' ,
-			items: [{
+			items: {
 				xtype: 'panel' ,
 				id: 'optionTab' ,
 				// No frame nor border
@@ -46,13 +46,33 @@ Ext.define ('SC.view.Options' , {
 					xtype: 'combo' ,
 					id: 'tfServerUrl' ,
 					fieldLabel: 'Server URL ' ,
-					anchor: '100% 100%' ,
+					anchor: '100%' ,
 					allowBlank: false ,
 					editable: false ,
 					displayField: 'serverID' ,
-					labelWidth: 130 ,
+					labelWidth: 150 ,
 					store: 'Server' ,
 					queryMode: 'local'
+				} , {
+					// Search Number
+					xtype: 'numberfield' ,
+					id: 'numberSearchDefault' ,
+					fieldLabel: 'Default number search ' ,
+					labelWidth: 150 ,
+					value: 10 ,
+					minValue: 1 ,
+					allowBlank: false ,
+					anchor: '100%'
+				} , {
+					// Search Number
+					xtype: 'numberfield' ,
+					id: 'numberNavigatorDefault' ,
+					fieldLabel: 'Default number navigator ' ,
+					labelWidth: 150 ,
+					value: 10 ,
+					minValue: 1 ,
+					allowBlank: false ,
+					anchor: '100%'
 				}] ,
 				// Buttons
 				buttons: [{
@@ -66,13 +86,13 @@ Ext.define ('SC.view.Options' , {
 					id: 'btnOptionApply' ,
 					icon: 'ext/resources/images/btn-icons/apply.png'
 				}]
-			}]
+			}
 		} , {
 			// Tab Server Grid
 			title: 'Server' ,
 			id: 'serverTab' ,
 			autoScroll: true ,
-			items: [{
+			items: {
 				xtype: 'grid' ,
 				forceFit:true,
 				id: 'fedServer' ,
@@ -108,13 +128,13 @@ Ext.define ('SC.view.Options' , {
 						tooltip: 'Delete this server from your list'
 					}]
 				}]
-			}]
+			}
 		} , {
 			// Tab About Us
 			title: 'About Us' ,
 			layout: 'anchor' ,
 			anchor: '100% 100%' ,
-			items: [{
+			items: {
 				xtype: 'panel' ,
 				layout: 'accordion' ,
 				anchor: '100% 100%' ,
@@ -134,7 +154,7 @@ Ext.define ('SC.view.Options' , {
 					title: '<b>Clemente Vitale</b>' ,
 					html: '<table><tr><td rowspan="6" style="padding-right: 2px"><img style="border:1px solid black" src="ext/resources/images/profile.png" alt="Cle" /></td></tr><tr><td><b>Nick :</b></td><td><i>Cle</i></td></tr><tr><td><b>Email :</b></td><td><i>cvitale@cs.unibo.it</i></td></tr><tr><td><b>Level :</b></td><td><i>Newbie Spammer</i></td></tr></table><p><b>Description :</b><br /><i>Cle has made the server-side with Ricky but he\'s still a newbie in the art of spamming too.</i></p>'
 				}]
-			}]
+			}
 		}]
-	}]
+	}
 });

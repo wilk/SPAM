@@ -30,6 +30,7 @@ Ext.define ('SC.view.regions.west.Thesaurus' , {
 	dockedItems: [{
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
+		// TODO: check the show of add new term button
 		height: 25 ,
 		ui: 'footer' ,
 		items: ['->' , {

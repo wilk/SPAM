@@ -88,8 +88,22 @@ function requestSearchArticles (store, focus, focusIndex) {
 						glLong: geoLong
 					});
 				});
+				
+				// Before dispose the retrieved articles, kill the old windows
+				articleSin.destroyAll ();
+
+				// Unset loading mask to the Search Panel
+				Ext.getCmp('panelSearch').setLoading (false);
+				
+				// Dispose retrieved articles
+				disposeArticles (store, focus, focusIndex);
 			}
 			catch (err) {
+				// Unset loading mask to the Search Panel
+				Ext.getCmp('panelSearch').setLoading (false);
+				// Unset loading mask to the center region
+				Ext.getCmp('centReg').setLoading (false);
+				
 				Ext.Msg.show ({
 					title: err.name ,
 					msg: err.message ,
@@ -97,15 +111,6 @@ function requestSearchArticles (store, focus, focusIndex) {
 					icon: Ext.Msg.ERROR
 				});
 			}
-			
-			// Before dispose the retrieved articles, kill the old windows
-			articleSin.destroyAll ();
-
-			// Unset loading mask to the Search Panel
-			Ext.getCmp('panelSearch').setLoading (false);
-			
-			// Dispose retrieved articles
-			disposeArticles (store, focus, focusIndex);
 		} ,
 		error: function (xhr, type, text) {
 			if ((xhr.status == 404) && (focus != null)) {
@@ -448,4 +453,48 @@ function clickTitle () {
 //	var store = Ext.create ('SC.store.regions.center.Articles');
 //	store.getProxy().url = optionSin.getUrlServerLtw () + 'search/10/recent/';
 //	requestSearchArticles (store, null, 0);
+}
+
+// @brief Show image passed in a modal window
+// @return void
+function showImg (img) {
+	var regCenter = Ext.getCmp ('centReg');
+	var image = new Image ();
+	image.src = img.src;
+
+	var win = Ext.create ('Ext.window.Window' , {
+		title: 'Image' ,
+		maximizable: true ,
+		modal: true ,
+		bodyPadding: 10 ,
+		width: Math.round (regCenter.getWidth () / 2) ,
+		height: Math.round (regCenter.getHeight () / 2) ,
+		autoScroll: true ,
+		items: {
+			xtype: 'image' ,
+			src: img.src ,
+			border: 3
+		}
+	});
+	
+	// If image is too large, use the center region dimensions
+	if ((image.width > regCenter.getWidth ()) || (image.height > regCenter.getHeight ())) {
+		// If width is lower, use it
+		if (image.width <= regCenter.getWidth ()) {
+			win.setWidth (image.width + 45);
+			win.setHeight (regCenter.getHeight ());
+		}
+		// Same thing with height
+		if (image.height <= regCenter.getHeight ()) {
+			win.setHeight (image.height + 65);
+			win.setWidth (regCenter.getWidth ());
+		}
+	}
+	// Otherwise, use image dimension
+	else {
+		win.setWidth (image.width + 35);
+		win.setHeight (image.height + 58);
+	}
+
+	win.show ();
 }

@@ -18,16 +18,6 @@ Ext.define ('SC.controller.SendResource' , {
 	
 	// Configuration
 	init: function () {
-		var MAXCHARS;
-		var artHeader;
-		var artFooter;
-		var winRes, txtResUrl, txtResDes, lblResCount , chkBoxGeoLoc;
-		var geoLocSpan;
-
-		// Type of resource
-		var btnGhost;
-		var sendResourceComboHashtag;
-		
 		this.control ({
 			// Reset field when it's showed
 			'sendresource': {
@@ -58,37 +48,55 @@ Ext.define ('SC.controller.SendResource' , {
 		});
 	} ,
 	
+	// @brief initialize fields and local variables
+	initFields: function (win) {
+		this.win = win;
+		this.txtResUrl = win.down ('#txtResourceUrl');
+		this.txtResDes = win.down ('#txtResourceDescription');
+		this.lblResCount = win.down ('#lblResCounter');
+		this.chkBoxGeoLoc = win.down ('#chkResGeoLoc');
+		
+		this.btnGhost = Ext.getCmp ('resBtnGhost');
+		
+		// If browser do not support geolocation, hide the checkbox
+		if (geolocSin.isSupported ())
+			this.chkBoxGeoLoc.setVisible (true);
+		else
+			this.chkBoxGeoLoc.setVisible (false);
+		
+		this.sendResourceComboHashtag = win.down ('#sendResourceComboHashtag');
+		
+		this.MAXCHARS = 140;
+		this.artHeader = '<article>';
+		this.artFooter = '</article>';
+	} ,
+	
+	// @brief Reset fields
+	resetFields: function (button) {
+		this.txtResUrl.reset ();
+		this.txtResDes.reset ();
+		this.chkBoxGeoLoc.reset ();
+		this.lblResCount.setText ('<span style="color:black;">' + this.MAXCHARS + '</span>' , false);
+	} ,
+	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
 	checkChars : function (txtarea, e) {
 			// Get the lenght
 		var	numChar = txtarea.getValue().length ,
 			// And the difference
-			diffCount = MAXCHARS - numChar;
+			diffCount = this.MAXCHARS - numChar;
 		
 		// If it's negative, color it with red, otherwise with black
 		if (diffCount < 0)
-			lblResCount.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
+			this.lblResCount.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
 		else
-			lblResCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
+			this.lblResCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 		
 		// Focus on hashtag combobox on '#'
 		if (e.getKey () == '35') {
-			sendResourceComboHashtag.focus ();
+			this.sendResourceComboHashtag.focus ();
 		}
-	} ,
-	
-	// @brief Insert the appropriate hashtag into the textarea
-	getHashtag : function (combo) {
-		txtResDes.insertAtCursor (combo.getValue ());
-		combo.reset ();
-		
-		txtResDes.getFocusEl().focus ();
-		// To avoid Opera's bullshit
-		var len = txtResDes.getFocusEl().length * 2;
-		
-		// TODO: problem with IE and Chromium
-		txtResDes.getFocusEl().setSelectionRange (len, len);
 	} ,
 	
 	// @brief Send the article
@@ -97,10 +105,10 @@ Ext.define ('SC.controller.SendResource' , {
 		var store = this.getRegionsCenterArticlesStore ();
 		
 		// Check if text area is filled and if it has at most 140 chars
-		if (txtResUrl.isValid () && (txtResDes.getValue().length <= MAXCHARS)) {
+		if (this.txtResUrl.isValid () && (this.txtResDes.getValue().length <= this.MAXCHARS)) {
 		
-			var 	artBody = txtResDes.getValue () ,
-				artResource = '<span resource="' + btnGhost.getText () + '" src="' + txtResUrl.getValue () + '" />';
+			var 	artBody = this.txtResDes.getValue () ,
+				artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + this.txtResUrl.getValue () + '" />';
 			
 			// Escapes every '<'
 			artBody = artBody.replace ('<' , '&lt;');
@@ -108,13 +116,13 @@ Ext.define ('SC.controller.SendResource' , {
 			artBody = htInjection (artBody , this.getComboThesaurusStore ());
 			
 			// XML Injection
-			var article = artHeader + '\n' + artBody + '\n' + artResource + '\n';
+			var article = this.artHeader + '\n' + artBody + '\n' + artResource + '\n';
 			
 			// Add geolocation
 			article += geolocSin.getSpan ();
 			
 			// Complete article building
-			article += artFooter;
+			article += this.artFooter;
 			
 			var ajaxUrl;
 			var ajaxParams;
@@ -139,10 +147,11 @@ Ext.define ('SC.controller.SendResource' , {
 			// AJAX Request
 			Ext.Ajax.request ({
 				url: ajaxUrl ,
+				scope: this ,
 				params: ajaxParams ,
 				success: function (response) {
 					// On success, close window and display last 5 posts of the user
-					winRes.close ();
+					this.win.close ();
 
 					// Get appropriate serverID of the user logged in
 					var sendServerID = Ext.getCmp('tfServerUrl').getValue ();
@@ -153,7 +162,7 @@ Ext.define ('SC.controller.SendResource' , {
 					}
 					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/5/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + sendServerID + '/' + optionSin.getCurrentUser ();
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
@@ -178,43 +187,43 @@ Ext.define ('SC.controller.SendResource' , {
 		}
 	} ,
 	
-	// @brief initialize fields and local variables
-	initFields: function (win) {
-		winRes = win;
-		txtResUrl = winRes.down ('#txtResourceUrl');
-		txtResDes = winRes.down ('#txtResourceDescription');
-		lblResCount = winRes.down ('#lblResCounter');
-		chkBoxGeoLoc = winRes.down ('#chkResGeoLoc');
+	// @brief Insert the appropriate hashtag into the textarea
+	getHashtag : function (combo) {
+		// Insert hashtag at that index
+//		txtResDes.insertAtCursor (combo.getValue ());
 		
-		btnGhost = Ext.getCmp ('resBtnGhost');
+		// Reset combobox
+//		combo.setValue ('');
 		
-		// If browser do not support geolocation, hide the checkbox
-		if (geolocSin.isSupported ())
-			chkBoxGeoLoc.setVisible (true);
-		else
-			chkBoxGeoLoc.setVisible (false);
+		// Set focus on textarea
+//		txtResDes.focus ();
 		
-		sendResourceComboHashtag = winRes.down ('#sendResourceComboHashtag');
+//		var len = txtResDes.getValue().length;
 		
-		MAXCHARS = 140;
-		artHeader = '<article>';
-		artFooter = '</article>';
-	} ,
-	
-	// @brief Reset fields
-	resetFields: function (button) {
-		txtResUrl.reset ();
-		txtResDes.reset ();
-		chkBoxGeoLoc.reset ();
-		lblResCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
+		// Position cursor at the end of the textarea
+//		var doc = txtResDes.getFocusEl().id;
+//		var ta = document.getElementById (doc);
+//		ta.setSelectionRange (len, len);
+		
+		
+		this.txtResDes.insertAtCursor (combo.getValue ());
+		combo.reset ();
+		
+		this.txtResDes.getFocusEl().focus ();
+		// To avoid Opera's bullshit
+		var len = this.txtResDes.getFocusEl().length;
+		
+		// TODO: problem with IE and Chromium
+		this.txtResDes.getFocusEl().setSelectionRange (len, len);
 	} ,
 	
 	// @brief Retrieve geolocation of the user device
 	getGeoPosition : function (cb) {
 		if (cb.getValue () && geolocSin.isSupported ()) {
 			// Mask the window
-			winRes.setLoading ('Retrieving geolocation of your device ...');
+			this.win.setLoading ('Retrieving geolocation of your device ...');
 			try {
+				var winRes = this.win;
 				navigator.geolocation.getCurrentPosition (function (position) {
 					// If geolocation was retrieved successfully, setup geolocation span
 					geolocSin.setSpan ('<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.longitude + '" />');
@@ -235,12 +244,12 @@ Ext.define ('SC.controller.SendResource' , {
 				
 				// Reset Geolocation
 				geolocSin.setSpan ('');
-				winRes.setLoading (false);
+				this.win.setLoading (false);
 			}
 		}
 		else {
 			// Send an empty string
-			sendGeoLocSpan = '';
+			this.sendGeoLocSpan = '';
 		}
 	}
 });

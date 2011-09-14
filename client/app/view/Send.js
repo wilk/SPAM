@@ -32,7 +32,6 @@ Ext.define ('SC.view.Send' , {
 		id: 'txtAreaSend' ,
 		inputId: 'taSend' ,
 		anchor: '100% 89%' ,
-		emptyText: 'Type you text here ...' ,
 		allowBlank: false ,
 		enforceMaxLenght: true ,
 		maxLenght: 140 ,
@@ -52,7 +51,7 @@ Ext.define ('SC.view.Send' , {
 		pickerAlign: 'bl'
 	}] ,
 	// Bottom buttons
-	dockedItems: [{
+	dockedItems: {
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
 		ui: 'footer' ,
@@ -79,5 +78,5 @@ Ext.define ('SC.view.Send' , {
 			id: 'buttonSend' ,
 			icon: 'ext/resources/images/btn-icons/send.png'
 		}]
-	}]
+	}
 });

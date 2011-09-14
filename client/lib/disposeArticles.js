@@ -16,6 +16,9 @@ function disposeArticles (store, focus, focusIndex) {
 	var ARTICLE_WINDOW_HEIGHT = 100;
 	var ARTICLE_FOCUS_WINDOW_WIDTH = 225;
 	var ARTICLE_FOCUS_WINDOW_HEIGHT = 175;
+	
+	// Articles counter
+	var storeCount = store.count ();
 
 	// Degree of every articles
 	var degree = 0;
@@ -31,23 +34,45 @@ function disposeArticles (store, focus, focusIndex) {
 	var oY = (cntRegion.getHeight () / 2) - ARTICLE_WINDOW_HEIGHT;
 	var focusX = (cntRegion.getWidth () / 2) - ARTICLE_FOCUS_WINDOW_WIDTH;
 	var focusY = (cntRegion.getHeight () / 2) - ARTICLE_FOCUS_WINDOW_HEIGHT;
+	
+	// The post with greater z-index is the most recent
+	store.sort ('affinity' , 'ASC');
+	
+	// Destroy old window
+	var winNav = Ext.getCmp ('navigatorWindow');
+	
+	// If there are too much articles to display, enables navigator
+	if (storeCount > optionSin.getNavigatorNumber ()) {
+		// Add winNav to center region
+		cntRegion.add (winNav);
 		
+		// Refresh local vars
+		winNav.setVisible (false);
+		winNav.setVisible (true);
+		
+		storeCount = optionSin.getNavigatorNumber ();
+	}
+	// If there aren't enough articles, hide the navigator
+	else {
+		winNav.setVisible (false);
+	}
+	
 	// Retrieve all records
 	var allRecord = store.getRange ();
 	
 	// Check if there are two articles at least
-	if (store.count () > 1) {
+	if (storeCount > 1) {
 		// If focus wasn't passed by argument, find it!
 		if (focus == null) {
 			var artBestAffinity = allRecord[0].get ('affinity');
 			
 			// Check the article with best affinity
-			for (var i=1; i < store.count (); i++) {
+			for (var i=1; i < storeCount; i++) {
 				artBestAffinity = Math.max (allRecord[i].get ('affinity') , artBestAffinity);
 			}
 		
 			// Retrieve index of the article with the best affinity
-			for (var i=0; i < store.count (); i++)
+			for (var i=0; i < storeCount; i++)
 				if (artBestAffinity == allRecord[i].get ('affinity')) 
 					focusIndex = i;
 				
@@ -58,33 +83,30 @@ function disposeArticles (store, focus, focusIndex) {
 			store.add (focus);
 		}
 		
-		// The post with greater z-index is the more recent
-		store.sort ('affinity' , 'ASC');
-		
-		radCounter = 360 / store.count ();
+		radCounter = 360 / storeCount;
 		
 		// Counter for generate random id of articles
 		var j=0;
 	
 		// Create a window for any articles
-		store.each (function (record) {
-			var winAff = record.get ('affinity');
-			var strWinAff = winAff.toString ();
+		for (var index=0; index < storeCount; index++) {
+			var record = store.getAt (index);
+//			var winAff = record.get ('affinity');
+//			var strWinAff = winAff.toString ();
 			// TODO: fix this stuff because 1198 is greater then 1099
 			// Check if affinity value is greater then 99. If is it, keep the last two figures (1099 -> 99)
-			if (strWinAff.length > 2) {
-				winAff = parseInt (strWinAff.slice (strWinAff.length - 2, strWinAff.length));
-			}
+//			if (strWinAff.length > 2) {
+//				winAff = parseInt (strWinAff.slice (strWinAff.length - 2, strWinAff.length));
+//			}
 			var x, y;
 			
 			// Don't manage the focus article
 			if (record != focus) {
-			
 				var cosX = Math.cos (degree * (Math.PI/180));
 				var sinY = Math.sin (degree * (Math.PI/180));
 			
-				x = oX + (((cntRegion.getWidth () / 2) - ARTICLE_WINDOW_WIDTH) * cosX) + winAff;
-				y = oY - (((cntRegion.getHeight () / 2) - ARTICLE_WINDOW_HEIGHT) * sinY) + winAff;
+				x = oX + (((cntRegion.getWidth () / 2) - ARTICLE_WINDOW_WIDTH) * cosX);
+				y = oY - (((cntRegion.getHeight () / 2) - ARTICLE_WINDOW_HEIGHT) * sinY);
 			
 				// No negative values
 				if (x < 0) x = Math.abs (x);
@@ -112,9 +134,22 @@ function disposeArticles (store, focus, focusIndex) {
 				cntRegion.add (win);
 				win.show ();
 				
+				// Attach some powerful and cool events
+				win.getEl().on ({
+					mouseenter: function (event, el) {
+						// Bring on top when mouse enter
+						this.toFront ();
+					} ,
+					mouseleave: function (event, el) {
+						// Bring back to down when mouse leave
+						this.toBack ();
+					} ,
+					scope: win
+				});
+				
 				j++;
 			}
-		} , this);
+		}
 	}
 	// Check if there's only an article
 	else if (store.count () == 1) {
@@ -145,6 +180,9 @@ function disposeArticles (store, focus, focusIndex) {
 	// Add win to center region
 	cntRegion.add (win);
 	win.show ();
+	
+	// Bring up on top
+	if (winNav.isVisible ()) winNav.toFront ();
 	
 	// Unset loading mask to the center region
 	Ext.getCmp('centReg').setLoading (false);

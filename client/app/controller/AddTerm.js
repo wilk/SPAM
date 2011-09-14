@@ -16,11 +16,6 @@ Ext.define ('SC.controller.AddTerm' , {
 			
 	// Configuration
 	init: function () {
-		var comboBox;
-		var textField;
-		var winAdd;
-		var storeComboThesaurus;
-		
 		this.control ({
 			'thesaurusaddterm': {
 				afterrender : this.initVar ,
@@ -47,22 +42,28 @@ Ext.define ('SC.controller.AddTerm' , {
 	
 	// @brief Initialize local variables
 	initVar: function (win) {
-		comboBox = win.down ('#comboAddTerm');
-		textField = win.down ('#tfAddTerm');
-		winAdd = win;
+		this.comboBox = win.down ('#comboAddTerm');
+		this.textField = win.down ('#tfAddTerm');
+		this.win = win;
 		
-		storeComboThesaurus = this.getComboThesaurusStore ();
+		this.storeComboThesaurus = this.getComboThesaurusStore ();
+	} ,
+	
+	// @brief Reset fields
+	resetFields: function (button) {
+		this.comboBox.reset ();
+		this.textField.reset ();
 	} ,
 	
 	// @brief Send 
 	applyFields: function (button) {
 		// Check if fields are filled
-		if (comboBox.isValid () && textField.isValid ()) {
-			var cValue = comboBox.getValue ();
-			var tValue = textField.getValue ();
+		if (this.comboBox.isValid () && this.textField.isValid ()) {
+			var cValue = this.comboBox.getValue ();
+			var tValue = this.textField.getValue ();
 			
 			//var termToCheck = storeThesaurus.getNodeById (cValue);
-			var termToCheck = storeComboThesaurus.findRecord ('term' , cValue);
+			var termToCheck = this.storeComboThesaurus.findRecord ('term' , cValue);
 			
 			// Check if the parent term is present into the thesaurus
 			if (termToCheck != null) {
@@ -77,7 +78,7 @@ Ext.define ('SC.controller.AddTerm' , {
 					});
 				}
 				else {				
-					termToCheck = storeComboThesaurus.findRecord ('term' , tValue);
+					termToCheck = this.storeComboThesaurus.findRecord ('term' , tValue);
 					
 					// Check if term is present into thesaurus
 					if (termToCheck == null) {
@@ -86,6 +87,7 @@ Ext.define ('SC.controller.AddTerm' , {
 						Ext.Ajax.request ({
 							url: optionSin.getUrlServerLtw () + 'addterm' ,
 							method: 'POST' ,
+							scope: this ,
 							params: {
 								parentterm : cValue ,
 								term : tValue
@@ -99,7 +101,7 @@ Ext.define ('SC.controller.AddTerm' , {
 								});
 							
 								// Hide this window
-								winAdd.hide ();
+								this.win.hide ();
 							
 								// Reload thesaurus panel
 								Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
@@ -141,11 +143,5 @@ Ext.define ('SC.controller.AddTerm' , {
 				icon: Ext.Msg.ERROR
 			});
 		}
-	} ,
-	
-	// @brief Reset fields
-	resetFields: function (button) {
-		comboBox.reset ();
-		textField.reset ();
 	}
 });

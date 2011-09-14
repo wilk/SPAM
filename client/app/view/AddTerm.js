@@ -51,7 +51,7 @@ Ext.define ('SC.view.AddTerm' , {
 	}] ,
 	
 	// Docked buttons
-	dockedItems: [{
+	dockedItems: {
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
 		ui: 'footer' ,
@@ -66,5 +66,5 @@ Ext.define ('SC.view.AddTerm' , {
 			text: 'Apply' ,
 			icon: 'ext/resources/images/btn-icons/apply.png'
 		}]
-	}]
+	}
 });

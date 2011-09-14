@@ -26,7 +26,7 @@ Ext.define ('SC.view.FollowerWindow' , {
 	html: '<table><tr><td rowspan="6"><img src="ext/resources/images/profile.png" alt="profile" /></td></tr><tr><td><b>Name :</b></td><td><i id="followerUserName">name</i></td></tr><tr><td><b>Server : </b></td><td><i id="followerUserServer">server</i></td></tr><tr><td><b>Email :</b></td><td><i>Not implemented</i></td></tr><tr><td><b>Description : </b></td><td><i>Not implemented</i></td></tr></table>' ,
 	
 	// Docked buttons
-	dockedItems: [{
+	dockedItems: {
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
 		ui: 'footer' ,
@@ -41,5 +41,5 @@ Ext.define ('SC.view.FollowerWindow' , {
 			id: 'btnProfileSearch' ,
 			icon: 'ext/resources/images/btn-icons/search.png'
 		}]
-	}]
+	}
 });

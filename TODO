@@ -9,16 +9,20 @@
 ----
 
 - testare su firefox 3.6 interamente
-- scazza l'id del post quando si fa una ricerca affinity col bottone focus sulle finestre degli articoli. controllare a dovere
 - aggiornare la mappa ad ogni ricerca, cancellando i vecchi marker
 - creare nuova finestra (tipo followers) da associare ad ogni marker per descrivere tutte le info sull'autore e x poter fare una ricerca
 - mettere nelle opzioni la possibilità di usare i canvas o meno
-- mettere nelle opzioni la possibilità di fare delle ricerche da più di 5 post per ogni click
 - quando si è disconnessi la recent non deve ritornare un 500 ma i post del server locale e se questi non ci sono 404
 - come gestire l'errore di un reader xml a cui viene passato del testo (text/html)
-- inserire tutti i bottoni del focus anche negli altri articoli
 
 Errori
-- txtSendArea.getFocusEl().setSelectionRange is not a function (send.js 97)
-- quando si scrive un post e si aggiungono hashtag si resetta il emptyText
 - cerca fulltext video. grosso problema.
+
+Idee
+- creare finestra per geolocazione e trovare un modo per mostrare 10 post degli autori più vicini
+
+- controllare SetDislike
+- settare this per ogni classe
+- la mappa non si vede su IE
+- controllare gestione errori, soprattutto 404 di alcuni casi
+- controllare che il bottone dell'aggiungi termine tesauro venga mostrato correttamente

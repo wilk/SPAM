@@ -15,9 +15,6 @@ Ext.define ('SC.controller.regions.North' , {
 	
 	// Configuration
 	init: function () {
-		// Local vars declaration
-		var fieldUser , pUser , bNewPost, btnLogin;
-		
 		this.control ({
 			// Init login with cookie
 			'northregion' : {
@@ -45,22 +42,13 @@ Ext.define ('SC.controller.regions.North' , {
 		});
 	} ,
 	
-	// New post handler
-	sendNewPost : function (button) {
-		// Reset reply singleton
-		replySin.setToReply (false);
-		
-		var selectPostWindow = Ext.getCmp ('windowSelectPost');
-		selectPostWindow.show ();
-	} ,
-	
 	// @brief Initialize variables and login
 	initLogin : function (northPanel) {
 		// Variables initialization
-		fieldUser = northPanel.down ('textfield');
-		pUser = Ext.getCmp ('userPanel');
-		bNewPost = northPanel.down ('#newPostButton');
-		btnLogin = northPanel.down ('#loginButton');
+		this.fieldUser = northPanel.down ('textfield');
+		this.pUser = Ext.getCmp ('userPanel');
+		this.bNewPost = northPanel.down ('#newPostButton');
+		this.btnLogin = northPanel.down ('#loginButton');
 		
 		// If there is server cookie
 		if (Ext.util.Cookies.get ('ltwlogin') != null)
@@ -78,12 +66,12 @@ Ext.define ('SC.controller.regions.North' , {
 	// @brief Login and logout user
 	userLogin : function () {
 		// Check if user wants to login
-		if (fieldUser.isVisible ()) {
+		if (this.fieldUser.isVisible ()) {
 			
 			// Check if the form is filled or not
-			if (fieldUser.isValid ()) {
+			if (this.fieldUser.isValid ()) {
 			
-				var txtUser = fieldUser.getValue ();
+				var txtUser = this.fieldUser.getValue ();
 				
 				// Check if user setup a username with strange symbols
 				if (txtUser.search (/[\. ,-\/!?$%\^&\*;:{}=\-_`~()]/g) == -1) {
@@ -91,6 +79,7 @@ Ext.define ('SC.controller.regions.North' , {
 					// AJAX request to login
 					Ext.Ajax.request ({
 						url: optionSin.getUrlServerLtw () + 'login' ,
+						scope: this ,
 						method: 'POST' ,
 						params: { username: txtUser } ,
 						success: function (response) {
@@ -103,14 +92,14 @@ Ext.define ('SC.controller.regions.North' , {
 								Ext.util.Cookies.set ('SPAMlogin' , txtUser);
 						
 								// Setup login fields
-								btnLogin.setText ('Logout');
+								this.btnLogin.setText ('Logout');
 						
-								fieldUser.setVisible (false);
+								this.fieldUser.setVisible (false);
 						
-								pUser.setTitle ('User :: ' + txtUser);
-								pUser.setVisible (true);
+								this.pUser.setTitle ('User :: ' + txtUser);
+								this.pUser.setVisible (true);
 	
-								bNewPost.setVisible (true);
+								this.bNewPost.setVisible (true);
 						
 								// Request extended thesaurus
 								Ext.getCmp('thesaurusPanel').fireEvent ('afterrender');
@@ -161,16 +150,17 @@ Ext.define ('SC.controller.regions.North' , {
 			// AJAX request to logout
 			Ext.Ajax.request ({
 				method: 'POST' ,
+				scope: this ,
 				url: optionSin.getUrlServerLtw () + 'logout' ,
 				success: function () {
-					btnLogin.setText ('Login');
+					this.btnLogin.setText ('Login');
 		
-					fieldUser.reset ();
-					fieldUser.setVisible (true);
+					this.fieldUser.reset ();
+					this.fieldUser.setVisible (true);
 	
-					pUser.setVisible (false);
+					this.pUser.setVisible (false);
 		
-					bNewPost.setVisible (false);
+					this.bNewPost.setVisible (false);
 					
 					// Refresh articles windows
 					articleSin.setLogoutButton ();
@@ -193,20 +183,29 @@ Ext.define ('SC.controller.regions.North' , {
 		}
 	} ,
 	
-	// @brief Setup login field
-	// @param user : username
-	setLoginField: function (user) {
-		btnLogin.setText ('Logout');
-
-		fieldUser.setVisible (false);
-	
-		pUser.setTitle ('User :: ' + user);
-		pUser.setVisible (true);
-	
-		bNewPost.setVisible (true);
+	// New post handler
+	sendNewPost : function (button) {
+		// Reset reply singleton
+		replySin.setToReply (false);
+		
+		var selectPostWindow = Ext.getCmp ('windowSelectPost');
+		selectPostWindow.show ();
 	} ,
 	
 	showOptions: function (button) {
 		Ext.getCmp('windowOptions').show ();
+	} ,
+	
+	// @brief Setup login field
+	// @param user : username
+	setLoginField: function (user) {
+		this.btnLogin.setText ('Logout');
+
+		this.fieldUser.setVisible (false);
+	
+		this.pUser.setTitle ('User :: ' + user);
+		this.pUser.setVisible (true);
+	
+		this.bNewPost.setVisible (true);
 	}
 });

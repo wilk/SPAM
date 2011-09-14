@@ -24,7 +24,7 @@ Ext.define ('SC.view.SelectPost' , {
 	closeAction: 'hide' ,
 	
 	// Body
-	items: [{
+	items: {
 		xtype: 'buttongroup' ,
 		columns: 5 ,
 		items: [{
@@ -73,5 +73,5 @@ Ext.define ('SC.view.SelectPost' , {
 			icon: 'ext/resources/images/btn-icons/link.png' ,
 			iconAlign: 'top'
 		}]
-	}]
+	}
 });

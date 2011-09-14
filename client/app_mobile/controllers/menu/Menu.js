@@ -88,6 +88,25 @@ Ext.regController('menu',{
 					},
 					{
 					
+						text:'Map',
+						scope:this,
+						handler:function(){
+							
+							this.settings.hide();
+							
+							Ext.dispatch({
+								
+								controller:'Map',
+								action:'showMap',
+								view:this.prevView
+								
+							});
+							
+						}
+					
+					},
+					{
+					
 						text:'Close',
 						ui:'decline',
 						scope:this,

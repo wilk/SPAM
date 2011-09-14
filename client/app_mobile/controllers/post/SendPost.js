@@ -1,5 +1,11 @@
 Ext.regController('sendpost',{
 
+	init:function(){
+	
+		var lat, lng;
+	
+	},
+
 	showNewPost:function(options){
 	
 		this.prevView=options.view;
@@ -13,6 +19,7 @@ Ext.regController('sendpost',{
 	
 		this.newpost=this.render({xtype:'sendpost'});
 		this.application.viewport.setActiveItem(this.newpost);
+		this.getGeoLocation();
 	
 	},
 	
@@ -28,11 +35,14 @@ Ext.regController('sendpost',{
 		
 			post=this.addHashtagElement(post);
 			post=this.addMediaElement(post);
-		
+			if(lat){
+			
+			post+='<span id="geolocationspan" long="'+lng+'" lat="'+lat+'"/>';
+			
+			}
 		}
 		
 			this.sendPost(post);
-//console.log(post);
 	
 	},
 	
@@ -45,8 +55,6 @@ Ext.regController('sendpost',{
 		
 		var pregentag='<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">';
 		
-//		do{
-	
 			var hashtags=post.match(/#[a-zA-Z0-9]+/gim);
 		
 			if(hashtags!=null){
@@ -80,12 +88,10 @@ Ext.regController('sendpost',{
 						var next=post.substring(indexoftag+hashtags[i].length);
 						post=first+replace+next;
 					
-					}
-//						console.log(post);				
+					}			
 				}
 		
 			}
-//		}while(hashtags!=null)
 		
 		return post;
 	
@@ -95,8 +101,7 @@ Ext.regController('sendpost',{
 	
 		var openSpan='<span resource="';
 		var closeSpan='/>';
-			
-//		do{
+
 		
 			var links=post.match(/\(?\bhttp:\/\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]/gim);
 			
@@ -120,15 +125,13 @@ Ext.regController('sendpost',{
 				
 			}
 		
-//		}while(links!=null)
-		
 		return post;
 	
 	},
 	
 	getMediaMimeType:function(url){
 	
-		var mime=',hjv';
+		var mime=null;
 	
 		$.ajax({
 		
@@ -148,6 +151,29 @@ Ext.regController('sendpost',{
 		
 		return mime;
 	
+	},
+	
+	getGeoLocation:function(){
+
+		var geo=new Ext.util.GeoLocation({
+		
+			autoUpdate:false,
+		
+			listeners:{
+				locationupdate:function(geo){
+				
+					lat=geo.latitude;
+					lng=geo.longitude;
+
+				},
+				locationerror:function(geo, timeout, permissionDenied, locationUnavailable, message){
+				
+					alert('geo:'+geo+'---timeout:'+timeout+'---permission:'+permissionDenied+'---locationUnavailable:'+locationUnavailable+'---message:'+message);
+					}
+				
+				}
+			});
+			geo.updateLocation();
 	},
 		
 	sendPost:function(post){

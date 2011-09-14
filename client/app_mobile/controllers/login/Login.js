@@ -66,7 +66,7 @@ Ext.regController('Login',{
 			
 							this.store.add({username:uname});
 							this.store.sync();
-
+//console.log(document.cookie);
 //var user=Ext.ModelMgr.create({username:uname},'User');
 //user.save();
 

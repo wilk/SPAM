@@ -27,28 +27,15 @@ Ext.regController('Post',{
 			this.post.down('#postAction').setVisible(false);
 		}
 		
+		if($(article).find('span[id=geolocationspan]').length){
+		
+			this.post.down('#locate').show();
+			console.log($(article).find('span[id=geolocationspan]').attr('lat'));
+		
+		}
+		
 		this.post.doComponentLayout();
 		
-//		var pos=this.post;
-//		$(article).find('span').each(function(){
-//		//		console.log(article);
-//		//console.log($(article).find('span').attr('audio'));
-//				if( $(this).attr('resource')=='audio')
-//				{
-//		//			console.log(pos);
-//					pos.add({xtype:'audio',url:$(this).attr('src')});
-//				}
-//				if( $(this).attr('resource')=='video')
-//				{
-//					pos.add({xtype:'video',url:$(this).attr('src')});
-//				}
-//		//		if( $(this).attr('resource')=='image' )
-//		//		{
-//		//			html+='<img src="'+$(this).attr('src')+'"'+'/>';
-//		//		}
-//		//console.log(this.post);
-//		});
-//		console.log(this.post);
 		this.application.viewport.setActiveItem(this.post);
 	
 	},
@@ -240,6 +227,32 @@ Ext.regController('Post',{
 			postID:postId,
 			view:this.post
 		})
+	},
+	
+	showOnMap:function(options){
+	
+		var article=Ext.StoreMgr.get('poststore').getAt(postIndex).get('article');
+		
+		var lat=$(article).find('span[id=geolocationspan]').attr('lat');
+		var lng=$(article).find('span[id=geolocationspan]').attr('long');
+		
+		Ext.dispatch({
+			controller:'Map',
+			action:'showMap',
+			view:options.view,
+			lat:lat,
+			lng:lng
+		});
+		
+//		Ext.dispatch({
+//		
+//			controller:'Map',
+//			action:'centerMap',
+//			lat:lat,
+//			lng:lng
+//		
+//		});
+	
 	}
 
 });

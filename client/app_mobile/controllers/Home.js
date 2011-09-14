@@ -24,6 +24,8 @@ Ext.regController('Home',{
 		this.application.viewport.setActiveItem(this.home);
 		
 		this.getSearchResponse(Ext.StoreMgr.get('poststore'));
+		
+		Ext.StoreMgr.get('poststore').fireEvent('load');
 	},
 	
 	getSearchResponse:function(store){

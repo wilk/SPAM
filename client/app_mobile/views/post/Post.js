@@ -1,6 +1,6 @@
 mspam.views.Post=Ext.extend(Ext.Panel,{
 
-	fullscreen:true,
+//	fullscreen:true,
 	styleHtmlContent:true,
 	autoDestroy:false,
 	layout:'card',
@@ -14,7 +14,7 @@ this.dockedItems=[{
 		xtype:'toolbar',
 		dock:'top',
 		ui:'light',
-		title:'Mspam',
+//		title:'Mspam',
 		items:[
 		{
 			text:'Back',
@@ -46,6 +46,24 @@ this.dockedItems=[{
 				});
 			
 			}
+		},
+		{
+		
+			iconCls:'locate',
+			iconMask:'true',
+			ui:'plain',
+			hidden:'true',
+			itemId:'locate',
+			handler:function(){
+			
+				Ext.dispatch({
+				
+					controller:'Post',
+					action:'showOnMap',
+					view:this.up('post')				
+				});			
+			}
+		
 		},
 		{
 			iconCls:'settings',

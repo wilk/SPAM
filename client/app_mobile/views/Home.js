@@ -49,7 +49,8 @@ mspam.views.Home=Ext.extend(Ext.Panel,{
 			handler:function(){
 				Ext.dispatch({
 					controller:'menu',
-					action:'showSettingsSheet'
+					action:'showSettingsSheet',
+					view:this.up('home')
 				})
 			}
 		},
@@ -60,7 +61,8 @@ mspam.views.Home=Ext.extend(Ext.Panel,{
 			handler:function(){
 				Ext.dispatch({
 					controller:'search',
-					action:'showSearchForm'
+					action:'showSearchForm',
+					view:this.up('home')
 				})
 			}
 		}]
@@ -68,8 +70,14 @@ mspam.views.Home=Ext.extend(Ext.Panel,{
 	
 //		this.fullscreen=true,
 	
+		if(!Ext.StoreMgr.get('poststore')){
 		this.store=new Ext.data.Store({model:'Post',storeId:'poststore'});
+		}
+		else{
 		
+			this.store=Ext.StoreMgr.get('poststore');
+		
+		}
 		this.list=new Ext.List({
 //			itemId:'postList',
 			styleHtmlContent:true,

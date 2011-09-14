@@ -18,8 +18,6 @@ Ext.define ('SC.controller.regions.west.Search' , {
 	
 	// Configuration
 	init: function () {
-		var sPanel, sCombo, sTextfield, sNumberfield, sCheckbox, store;
-		
 		this.control ({
 			'search' : {
 				afterrender : this.initVar
@@ -64,12 +62,12 @@ Ext.define ('SC.controller.regions.west.Search' , {
 	
 	// @brief Initialize variables
 	initVar : function (panel) {
-		sPanel = panel;
-		sCombo = panel.down ('#comboSearch');
-		sTextfield = panel.down ('#textSearch');
-		sNumberfield = panel.down ('#numberSearch');
-		sCheckbox = panel.down ('#checkBoxSearch');
-		store = this.getRegionsCenterArticlesStore ();
+		this.sPanel = panel;
+		this.sCombo = panel.down ('#comboSearch');
+		this.sTextfield = panel.down ('#textSearch');
+		this.sNumberfield = panel.down ('#numberSearch');
+		this.sCheckbox = panel.down ('#checkBoxSearch');
+		this.store = this.getRegionsCenterArticlesStore ();
 	} ,
 	
 	// @brief Update textfield value
@@ -77,68 +75,68 @@ Ext.define ('SC.controller.regions.west.Search' , {
 		// For each combo value, set the appropriate value to the textfield
 		switch (combo.getValue ()) {
 			case 'Author':
-				sTextfield.emptyText = '/serverID/userID';
-				sTextfield.reset ();
-				sTextfield.setDisabled (false);
+				this.sTextfield.emptyText = '/serverID/userID';
+				this.sTextfield.reset ();
+				this.sTextfield.setDisabled (false);
 				break;
 			case 'Following':
-				sTextfield.setDisabled (true);
+				this.sTextfield.setDisabled (true);
 				break;
 			case 'Recent':
-				sTextfield.emptyText = 'Term to search' ,
-				sTextfield.reset ();
-				sTextfield.setDisabled (false);
+				this.sTextfield.emptyText = 'Term to search' ,
+				this.sTextfield.reset ();
+				this.sTextfield.setDisabled (false);
 				break;
 			case 'Related':
-				sTextfield.emptyText = 'Term of Thesaurus' ,
-				sTextfield.reset ();
-				sTextfield.setDisabled (false);
+				this.sTextfield.emptyText = 'Term of Thesaurus' ,
+				this.sTextfield.reset ();
+				this.sTextfield.setDisabled (false);
 				break;
 			case 'Fulltext':
-				sTextfield.emptyText = 'Some to search' ,
-				sTextfield.reset ();
-				sTextfield.setDisabled (false);
+				this.sTextfield.emptyText = 'Some to search' ,
+				this.sTextfield.reset ();
+				this.sTextfield.setDisabled (false);
 				break;
 			case 'Affinity':
-				sTextfield.emptyText = '/serverID/userID/postID' ,
-				sTextfield.reset ();
-				sTextfield.setDisabled (false);
+				this.sTextfield.emptyText = '/serverID/userID/postID' ,
+				this.sTextfield.reset ();
+				this.sTextfield.setDisabled (false);
 				break;
 		}
 	} ,
 	
 	// @brief Reset all search fields
 	formReset : function (button) {		
-		sCombo.reset ();
-		sTextfield.reset ();
-		sTextfield.setVisible (true);
-		sNumberfield.reset ();
-		sCheckbox.reset ();
+		this.sCombo.reset ();
+		this.sTextfield.reset ();
+		this.sTextfield.setVisible (true);
+		this.sNumberfield.reset ();
+		this.sCheckbox.reset ();
 	} ,
 	
 	submitSearch : function (button) {
 		var limit;
 		
 		// Checks to set 'all' or a number to search limit
-		if (sCheckbox.getValue ())
+		if (this.sCheckbox.getValue ())
 			limit = 'all';
 		else
-			limit = sNumberfield.getValue ();
+			limit = this.sNumberfield.getValue ();
 		
 		// Check if combo and number boxes are empty or not
-		if (sCombo.isValid () && sNumberfield.isValid ()) {
+		if (this.sCombo.isValid () && this.sNumberfield.isValid ()) {
 			// Check the type of search
-			switch (sCombo.getValue ()) {
+			switch (this.sCombo.getValue ()) {
 				case 'Author' :
-					if (sTextfield.isValid ()) {
+					if (this.sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/author' + sTextfield.getValue ();
+						this.store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/author' + this.sTextfield.getValue ();
 						
 						// Setup loading mask to the search panel
-						sPanel.setLoading (true);
+						this.sPanel.setLoading (true);
 						
 						// Retrieve articles
-						requestSearchArticles (store, null, 0);
+						requestSearchArticles (this.store, null, 0);
 					}
 					// If textfield is empty, return an error
 					else {
@@ -153,13 +151,13 @@ Ext.define ('SC.controller.regions.west.Search' , {
 				case 'Following' :
 					if (checkIfUserLogged ()) {
 						// Set appropriate URL
-						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/following';
+						this.store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/following';
 					
 						// Setup loading mask to the search panel
-						sPanel.setLoading (true);
+						this.sPanel.setLoading (true);
 						
 						// Retrieve articles
-						requestSearchArticles (store, null, 0);
+						requestSearchArticles (this.store, null, 0);
 					}
 					// If user isn't logged in, return an error
 					else {
@@ -172,15 +170,15 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					}
 					break;
 				case 'Recent' :
-					if (sTextfield.isValid ()) {
+					if (this.sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/recent/' + sTextfield.getValue ();
+						this.store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/recent/' + this.sTextfield.getValue ();
 					
 						// Setup loading mask to the search panel
-						sPanel.setLoading (true);
+						this.sPanel.setLoading (true);
 						
 						// Retrieve articles
-						requestSearchArticles (store, null, 0);
+						requestSearchArticles (this.store, null, 0);
 					}
 					// If textfield is empty, return an error
 					else {
@@ -193,15 +191,15 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					}
 					break;
 				case 'Related' :
-					if (sTextfield.isValid ()) {
+					if (this.sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/related/' + sTextfield.getValue ();
+						this.store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/related/' + this.sTextfield.getValue ();
 					
 						// Setup loading mask to the search panel
-						sPanel.setLoading (true);
+						this.sPanel.setLoading (true);
 					
 						// Retrieve articles
-						requestSearchArticles (store, null, 0);
+						requestSearchArticles (this.store, null, 0);
 					}
 					// If textfield is empty, return an error
 					else {
@@ -214,15 +212,15 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					}
 					break;
 				case 'Fulltext' :
-					if (sTextfield.isValid ()) {
+					if (this.sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/fulltext/' + sTextfield.getValue ();
+						this.store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/fulltext/' + this.sTextfield.getValue ();
 					
 						// Setup loading mask to the search panel
-						sPanel.setLoading (true);
+						this.sPanel.setLoading (true);
 					
 						// Retrieve articles
-						requestSearchArticles (store, null, 0);
+						requestSearchArticles (this.store, null, 0);
 					
 					}
 					// If textfield is empty, return an error
@@ -236,15 +234,15 @@ Ext.define ('SC.controller.regions.west.Search' , {
 					}
 					break;
 				case 'Affinity' :
-					if (sTextfield.isValid ()) {
+					if (this.sTextfield.isValid ()) {
 						// Set appropriate URL
-						store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/affinity' + sTextfield.getValue ();
+						this.store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + limit + '/affinity' + this.sTextfield.getValue ();
 					
 						// Setup loading mask to the search panel
-						sPanel.setLoading (true);
+						this.sPanel.setLoading (true);
 					
 						// Retrieve articles
-						requestSearchArticles (store, null, 0);
+						requestSearchArticles (this.store, null, 0);
 					
 					}
 					// If textfield is empty, return an error

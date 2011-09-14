@@ -14,9 +14,11 @@ Ext.application ({
 	// Controllers list
 	controllers: [
 		'regions.North' ,
+		'regions.West' ,
 		'regions.west.Search' ,
 		'regions.west.Thesaurus' ,
 		'regions.west.User' ,
+		'regions.East' ,
 		'regions.east.RecentPost' ,
 		'regions.east.GeoLocation' ,
 		'regions.Center' ,
@@ -28,7 +30,8 @@ Ext.application ({
 		'SelectPost' ,
 		'Options' ,
 		'AddTerm' ,
-		'FollowerWindow'
+		'FollowerWindow' ,
+		'Viewport'
 	] ,
 	
 	launch: function () {

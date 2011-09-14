@@ -40,7 +40,7 @@ Ext.define ('SC.controller.regions.center.Navigator' , {
 			// Last
 			'navigatorwin button[tooltip="Last"]': {
 				click: this.goLast
-			} ,
+			}
 		});
 	} ,
 	
@@ -80,10 +80,9 @@ Ext.define ('SC.controller.regions.center.Navigator' , {
 		this.articleCounter = this.articleStore.getCount ();
 		
 		// Get the pages number
-		// E.g.: 130 articles, 15 per page
-		// num page = (130 / 15) + 130 - (130 / 15) * 15
-		// It takes also the last one
-		this.articlePages = Math.floor (this.articleCounter / optionSin.getNavigatorNumber ()) + this.articleCounter - (Math.floor (this.articleCounter / optionSin.getNavigatorNumber ()) * optionSin.getNavigatorNumber ());
+		// If mod is equl, normal division, while if it's odd add one more page for the remaining articles
+		if ((this.articleCounter % optionSin.getNavigatorNumber ()) == 0) this.articlePages = this.articleCounter / optionSin.getNavigatorNumber ();
+		else this.articlePages = Math.floor (this.articleCounter / optionSin.getNavigatorNumber ()) + 1;
 		
 		// Position centered on bottom
 		win.setPosition ((Ext.getCmp('centReg').getWidth () / 2) - 85 , Ext.getCmp('centReg').getHeight () - 55);

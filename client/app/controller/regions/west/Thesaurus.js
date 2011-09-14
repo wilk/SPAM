@@ -16,8 +16,6 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 			
 	// Configuration
 	init: function () {
-		var skosNS, twebNS, rdfNS;
-
 		this.control ({
 			'thesaurus': {
 				afterrender: this.loadThesaurus ,
@@ -42,9 +40,9 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		var urlThesaurus = (checkIfUserLogged () ? optionSin.getUrlServerLtw () + 'thesaurus' : 'app/data/tesauro.xml');
 		
 		// set namespaces
-		skosNS = 'http://www.w3.org/2004/02/skos/core#';
-		twebNS = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
-		rdfNS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+		var skosNS = 'http://www.w3.org/2004/02/skos/core#';
+		var twebNS = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
+		var rdfNS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
 	
 		// function and constructor from parse.js library
 		myRDF = new RDF ();
@@ -132,6 +130,6 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		storeArticle.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/related/' + record.get ('text');
 	
 		// Retrieve articles
-		requestSearchArticles (store, null, 0);
+		requestSearchArticles (storeArticle, null, 0);
 	}
 });

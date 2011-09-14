@@ -18,15 +18,6 @@ Ext.define ('SC.controller.Send' , {
 	
 	// Configuration
 	init: function () {
-		var MAXCHARS;
-		var artHeader;
-		var artFooter;
-		var txtSendArea , lblSendCount , chkSendBoxGeoLoc;
-		var sendGeoLocSpan;
-		var hashtagArray = new Array ();
-		var sendComboHashtag;
-		var sendWindow;
-		
 		this.control ({
 			// Reset field when it's showed
 			'send': {
@@ -64,38 +55,68 @@ Ext.define ('SC.controller.Send' , {
 		});
 	} ,
 	
+	// @brief initialize fields and local variables
+	initFields: function (win) {
+		this.win = win;
+		this.txtSendArea = win.down ('#txtAreaSend');
+		this.lblSendCount = win.down ('#sendCharCounter');
+		this.chkSendBoxGeoLoc = win.down ('#chkSendGeoLoc');
+		this.sendComboHashtag = win.down ('#sendComboHashtag');
+		
+		// If browser do not support geolocation, hide the checkbox
+		if (geolocSin.isSupported ())
+			this.chkSendBoxGeoLoc.setVisible (true);
+		else
+			this.chkSendBoxGeoLoc.setVisible (false);
+		
+		this.MAXCHARS = 140;
+		this.artHeader = '<article>';
+		this.artFooter = '</article>';
+		
+		this.hashtagArray = new Array ();
+	} ,
+	
+	// @brief Reset text area of the new post
+	resetFields: function (win) {
+		this.txtSendArea.reset ();
+		this.chkSendBoxGeoLoc.reset ();
+		this.sendComboHashtag.reset ();
+		
+		this.lblSendCount.setText ('<span style="color:black;">' + this.MAXCHARS + '</span>' , false);
+	} ,
+	
 	// @brief Check if text area lenght is positive or negative (140 chars)
 	//	  and update label with the right color
 	checkChars : function (ta, event) {
 		var 	// Get the lenght
 			numChar = ta.getValue().length ,
 			// And the difference
-			diffCount = MAXCHARS - numChar;
+			diffCount = this.MAXCHARS - numChar;
 		
 		// If it's negative, color it with red, otherwise with black
 		if (diffCount < 0)
-			lblSendCount.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
+			this.lblSendCount.setText ('<span style="color:red;">' + diffCount + '</span>' , false);
 		else
-			lblSendCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
+			this.lblSendCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 
 		// Focus on hashtag combobox on '#'
 		if (event.getKey () == '35') {
-			sendComboHashtag.focus ();
+			this.sendComboHashtag.focus ();
 		}
 	} ,
 	
 	// @brief Insert the appropriate hashtag into the textarea
 	getHashtag : function (combo) {
 		// Insert hashtag at that index
-		txtSendArea.insertAtCursor (combo.getValue ());
+		this.txtSendArea.insertAtCursor (combo.getValue ());
 		
 		// Set focus on textarea
-		txtSendArea.focus ();
+		this.txtSendArea.focus ();
 		
-		var len = txtSendArea.getValue().length;
+		var len = this.txtSendArea.getValue().length;
 		
 		// Position cursor at the end of the textarea
-		var doc = txtSendArea.getFocusEl().id;
+		var doc = this.txtSendArea.getFocusEl().id;
 		var ta = document.getElementById (doc);
 		ta.setSelectionRange (len, len);
 		
@@ -109,32 +130,31 @@ Ext.define ('SC.controller.Send' , {
 		var store = this.getRegionsCenterArticlesStore ();
 		
 		// Check if text area is filled and if it has at most 140 chars
-		if (txtSendArea.isValid () && (txtSendArea.getValue().length <= MAXCHARS)) {
+		if (this.txtSendArea.isValid () && (this.txtSendArea.getValue().length <= this.MAXCHARS)) {
 		
-			var 	artBody = txtSendArea.getValue () ,
-				win = Ext.getCmp ('windowNewPost');
+			var artBody = this.txtSendArea.getValue ();
 			
 			// Escapes every '<'
 			artBody = artBody.replace ('<' , '&lt;');
 			
 			// Allow transformNakedUrl to Spammers server only
 			if (optionSin.getUrlServerLtw () == 'http://ltw1102.web.cs.unibo.it/') {
-				win.setLoading (true);
+				this.win.setLoading (true);
 				artBody = transformNakedUrl (artBody , 0, artBody.length);
-				win.setLoading (false);
+				this.win.setLoading (false);
 			}
 			
 			// XML Injection for hashtag
 			artBody = htInjection (artBody , this.getComboThesaurusStore ());
 			
 			// XML Injection
-			var article = artHeader + '\n' + artBody + '\n';
+			var article = this.artHeader + '\n' + artBody + '\n';
 		
 			// Setup geolocation
 			article += geolocSin.getSpan ();
 			
 			// Complete article building
-			article += artFooter;
+			article += this.artFooter;
 			
 			var ajaxUrl;
 			var ajaxParams;
@@ -159,10 +179,11 @@ Ext.define ('SC.controller.Send' , {
 			// AJAX Request
 			Ext.Ajax.request ({
 				url: ajaxUrl ,
+				scope: this ,
 				params: ajaxParams ,
 				success: function (response) {
 					// On success, close window and display last 5 posts of the user
-					win.close ();
+					this.win.close ();
 					
 					// Get appropriate serverID of the user logged in
 					var sendServerID = Ext.getCmp('tfServerUrl').getValue ();
@@ -173,7 +194,7 @@ Ext.define ('SC.controller.Send' , {
 					}
 					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + sendServerID + '/' + Ext.util.Cookies.get ('SPAMlogin');
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + sendServerID + '/' + optionSin.getCurrentUser ();
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);
@@ -198,40 +219,13 @@ Ext.define ('SC.controller.Send' , {
 		}
 	} ,
 	
-	// @brief initialize fields and local variables
-	initFields: function (win) {
-		sendWindow = win;
-		txtSendArea = win.down ('#txtAreaSend');
-		lblSendCount = win.down ('#sendCharCounter');
-		chkSendBoxGeoLoc = win.down ('#chkSendGeoLoc');
-		sendComboHashtag = win.down ('#sendComboHashtag');
-		
-		// If browser do not support geolocation, hide the checkbox
-		if (geolocSin.isSupported ())
-			chkSendBoxGeoLoc.setVisible (true);
-		else
-			chkSendBoxGeoLoc.setVisible (false);
-		
-		MAXCHARS = 140;
-		artHeader = '<article>';
-		artFooter = '</article>';
-	} ,
-	
-	// @brief Reset text area of the new post
-	resetFields: function (win) {
-		txtSendArea.reset ();
-		chkSendBoxGeoLoc.reset ();
-		sendComboHashtag.reset ();
-		
-		lblSendCount.setText ('<span style="color:black;">' + MAXCHARS + '</span>' , false);
-	} ,
-	
 	// @brief Retrieve geolocation of the user device
 	getGeoPosition : function (cb) {
 		if (cb.getValue () && geolocSin.isSupported ()) {
 			// Mask the window
-			sendWindow.setLoading ('Retrieving geolocation of your device ...');
+			this.win.setLoading ('Retrieving geolocation of your device ...');
 			try {
+				var sendWindow = this.win;
 				navigator.geolocation.getCurrentPosition (function (position) {
 					// If geolocation was retrieved successfully, setup geolocation span
 					geolocSin.setSpan ('<span id="geolocationspan" lat="' + position.coords.latitude + '" long="' + position.coords.longitude + '" />');
@@ -252,12 +246,12 @@ Ext.define ('SC.controller.Send' , {
 				
 				// Reset Geolocation
 				geolocSin.setSpan ('');
-				sendWindow.setLoading (false);
+				this.win.setLoading (false);
 			}
 		}
 		else {
 			// Send an empty string
-			sendGeoLocSpan = '';
+			this.sendGeoLocSpan = '';
 		}
 	}
 });

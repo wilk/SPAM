@@ -45,8 +45,6 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 		// Articles store instead of recent post store
 		var storeArticles = this.getRegionsCenterArticlesStore ();
 		
-		console.log (optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/affinity' + record.get ('about'));
-		
 		// Set appropriate URL
 		store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/affinity' + record.get ('about');
 	

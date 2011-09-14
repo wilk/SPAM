@@ -66,7 +66,14 @@ function embedResource (src, res) {
 			break;
 		// image
 		case 2:
-			retRes = '<img src="'+ src +'" />';
+			var img = new Image ();
+			img.src = src;
+			
+			// Set thumbnail for too large images
+			if ((img.width > 280) || (img.height > 180)) {
+				retRes = '<img width="150" height="150" src="'+ src +'" onClick="showImg (this);" style="border: 1px black solid" />';
+			}
+			else retRes = '<img src="'+ src +'" />';
 			break;
 	}
 	

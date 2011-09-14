@@ -62,7 +62,7 @@ Ext.define ('SC.view.regions.west.Search' , {
 	}] ,
 	
 	// Dockbar
-	dockedItems: [{
+	dockedItems: {
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
 		ui: 'footer' ,
@@ -77,5 +77,5 @@ Ext.define ('SC.view.regions.west.Search' , {
 			id: 'submitSearch' ,
 			icon: 'ext/resources/images/btn-icons/search.png'
 		}]
-	}]
+	}
 });

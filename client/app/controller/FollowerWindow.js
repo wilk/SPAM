@@ -21,10 +21,6 @@ Ext.define ('SC.controller.FollowerWindow' , {
 	
 	// Configuration
 	init: function () {
-		var storeArticles;
-		var storeFollowers;
-		var winFollower;
-		
 		this.control ({
 			// Init vars
 			'followerwindow' : {
@@ -41,56 +37,61 @@ Ext.define ('SC.controller.FollowerWindow' , {
 	
 	// @brief Initialize variables
 	initVar: function (win) {
-		winFollower = win;
-		storeArticles = this.getRegionsCenterArticlesStore ();
-		storeFollowers = this.getRegionsWestFollowersStore ();
+		this.win = win;
+		this.storeArticles = this.getRegionsCenterArticlesStore ();
+		this.storeFollowers = this.getRegionsWestFollowersStore ();
 	} ,
 	
 	// @brief Unfollow the user
 	setUnfollow: function (button) {
-		winFollower.hide ();
+		this.win.hide ();
 		
 		// Ajax request
 		Ext.Ajax.request ({
 			url: optionSin.getUrlServerLtw () + 'setfollow' ,
+			scope: this ,
 			// Sending server and user ID of this article
-			params: { 
-				serverID: document.getElementById('followerUserServer').innerHTML ,
-				userID: document.getElementById('followerUserName').innerHTML ,
+			params: {
+				serverID: Ext.fly('followerUserServer').dom.innerHTML ,
+				userID: Ext.fly('followerUserName').dom.innerHTML ,
 				value: 0
 			} ,
 			success: function (response) {
 				// Reset the store
-				storeFollowers.removeAll ();
+				this.storeFollowers.removeAll ();
 				
 				// Update URL
-				storeFollowers.getProxy().url = optionSin.getUrlServerLtw () + 'followers';
+				this.storeFollowers.getProxy().url = optionSin.getUrlServerLtw () + 'followers';
 				
 				// Reload followers store to refresh user panel
-				storeFollowers.load (function (record, option, success) {
-					if (! success) {
-						var err = option.getError ();
-						// If 404 is returned, ignore it because or user isn't logged in or hasn't followers
-						if (err.status != 404) {
-							Ext.Msg.show ({
-								title: 'Error ' + err.status,
-								msg: 'Something bad happened during retrieve the followers list!' ,
-								buttons: Ext.Msg.OK,
-								icon: Ext.Msg.ERROR
-							});
+//				storeFollowers.load (function (record, option, success) {
+				this.storeFollowers.load ({
+					scope: this ,
+					callback: function (record, option, success) {
+						if (! success) {
+							var err = option.getError ();
+							// If 404 is returned, ignore it because or user isn't logged in or hasn't followers
+							if (err.status != 404) {
+								Ext.Msg.show ({
+									title: 'Error ' + err.status,
+									msg: 'Something bad happened during retrieve the followers list!' ,
+									buttons: Ext.Msg.OK,
+									icon: Ext.Msg.ERROR
+								});
 						
-							// If there aren't followers, remove all previous (old) followers from the store
-							storeFollowers.removeAll ();
+								// If there aren't followers, remove all previous (old) followers from the store
+								this.storeFollowers.removeAll ();
+							}
 						}
+						else {
+							// Ascendent sort for followers
+							this.storeFollowers.sort ('follower' , 'ASC');
+						}
+						
+						var owner = '/' + Ext.fly('followerUserServer').dom.innerHTML + '/' + Ext.fly('followerUserName').dom.innerHTML;
+						// Refresh articles windows
+						articleSin.setFollowButton (owner, false);
 					}
-					else {
-						// Ascendent sort for followers
-						storeFollowers.sort ('follower' , 'ASC');
-					}
-					
-					var owner = '/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
-					// Refresh articles windows
-					articleSin.setFollowButton (owner, false);
 				});
 			} ,
 			failure: function (error) {
@@ -107,12 +108,12 @@ Ext.define ('SC.controller.FollowerWindow' , {
 	// @brief Starts an author search (the author of the profile)
 	startAuthorSearch: function (button) {
 		// Hide the profile window
-		winFollower.hide ();
+		this.win.hide ();
 		
 		// Set appropriate URL
-		storeArticles.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + document.getElementById('followerUserServer').innerHTML + '/' + document.getElementById('followerUserName').innerHTML;
+		this.storeArticles.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + Ext.fly('followerUserServer').dom.innerHTML + '/' + Ext.fly('followerUserName').dom.innerHTML;
 		
 		// Retrieve articles
-		requestSearchArticles (storeArticles, null, 0);
-	} ,
+		requestSearchArticles (this.storeArticles, null, 0);
+	}
 });

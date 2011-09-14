@@ -58,7 +58,7 @@ Ext.define ('SC.view.SendResource' , {
 		pickerAlign: 'bl'
 	}] ,
 	// Bottom buttons
-	dockedItems: [{
+	dockedItems: {
 		xtype: 'toolbar' ,
 		dock: 'bottom' ,
 		ui: 'footer' ,
@@ -89,5 +89,5 @@ Ext.define ('SC.view.SendResource' , {
 			id: 'resBtnGhost' ,
 			hidden: true
 		}]
-	}]
+	}
 });

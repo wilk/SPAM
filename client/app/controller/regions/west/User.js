@@ -14,15 +14,13 @@ Ext.define ('SC.controller.regions.west.User' , {
 	views: ['regions.west.User'] ,
 	
 	// Models
-	models: ['regions.west.Followers' , 'regions.west.user.Server' , 'regions.center.Articles'] ,
+	models: ['regions.west.Followers' , 'regions.west.user.Server'] ,
 	
 	// Stores
-	stores: ['regions.west.Followers' , 'regions.west.user.Server' , 'regions.center.Articles'] ,
+	stores: ['regions.west.Followers' , 'regions.west.user.Server'] ,
 	
 	// Configuration
 	init: function () {
-		var storeArticles;
-		
 		this.control ({
 			// Init user with his followers list
 			'user' : {
@@ -42,8 +40,6 @@ Ext.define ('SC.controller.regions.west.User' , {
 		var storeServer = this.getRegionsWestUserServerStore ();
 		var winFocus = Ext.getCmp ('winFocusArticle');
 		var centerReg = Ext.getCmp ('centReg');
-		
-		storeArticles = this.getRegionsCenterArticlesStore ();
 		
 		// It doesn't retrieve follower list if the user is logged off
 		if (checkIfUserLogged ()) {

@@ -53,7 +53,7 @@ class SearchController extends DooController {
     public function searchMain($extRequest = FALSE) {
         $limite = $this->params['limit'];
         if ($limite != "all" && !is_numeric($limite))
-            ErrorController::badReq ("O numeri o 'all' altro non è consentito");
+            ErrorController::badReq("O numeri o 'all' altro non è consentito");
         $tipo = $this->params['type'];
 
         /* Qui definisco i tipi di ricerca */
@@ -364,20 +364,20 @@ class SearchController extends DooController {
                     $timeOfPost = $art[key($art)]["http://purl.org/dc/terms/created"][0];
                 } else {
                     $url = $this->SRV->getUrl($srv);
-                    if ($url){
-                    //print "Il server è:$url\n\r";
-                    $this->request->connect_to("$url/postserver/$usr/$pid")
-                            ->accept(DooRestClient::HTML)
-                            ->get();
-                    if (!$this->request->isSuccess()) {
-                        header("Status:" . $this->request->resultCode());
-                        die("C'è stato un problema nella ricezione del post dall'esterno.");
-                    }
-                    $content = str_get_html($this->request->result());
-                    $timeOfPost = $content->find('article', 0)->content;
-                    $content = $content->find('article', 0)->innertext;
-                }else
-                ErrorController::notFound("il server non esiste");
+                    if ($url) {
+                        //print "La richiesta è:".$url."postserver/$usr/$pid\n\r";
+                        $this->request->connect_to($url."postserver/$usr/$pid")
+                                ->accept(DooRestClient::HTML)
+                                ->get();
+                        if (!$this->request->isSuccess()) {
+                            header("Status:" . $this->request->resultCode());
+                            die("C'è stato un problema nella ricezione del post dall'esterno.");
+                        }
+                        $content = str_get_html($this->request->result());
+                        $timeOfPost = $content->find('article', 0)->content;
+                        $content = $content->find('article', 0)->innertext;
+                    }else
+                        ErrorController::notFound("il server non esiste");
                 }////l'articolo da affinare!
                 //print ("$content\n\r");
                 $html = str_get_html($content);
@@ -522,7 +522,7 @@ class SearchController extends DooController {
         if ($limite != "all")
             $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
         else
-            $toRender= $this->toMerge;
+            $toRender = $this->toMerge;
         $temp = array();
         foreach ($toRender as $k => $n)
             array_push($temp, $this->listaPost[$k]);
@@ -550,15 +550,15 @@ class SearchController extends DooController {
 
     private function rcvFromEXTServer($server, $method) {
         $url = $this->SRV->getUrl($server);
-        if ($url){
-        $this->request->connect_to($url . $method)
-                ->accept(DooRestClient::XML)
-                ->get();
-        if ($this->request->isSuccess())
-            return $this->request->result();
-        else
-            return $this->request->resultCode();
-    }
+        if ($url) {
+            $this->request->connect_to($url . $method)
+                    ->accept(DooRestClient::XML)
+                    ->get();
+            if ($this->request->isSuccess())
+                return $this->request->result();
+            else
+                return $this->request->resultCode();
+        }
     }
 
     private function rcvFromEXTServers(&$servers, $limite, $metodo) {
@@ -637,8 +637,10 @@ class SearchController extends DooController {
 
     //Usata per l'affinity
     private function parseEXTContent3($toParse, $arr, $tempoPostConfronto) {
-        //print ("L'xml che mi arriva:\n\r");
+        //print ("\n\rL'xml che mi arriva:\n\r");
         //print_r($toParse);
+        if (!($this->validateXML($toParse)))
+                return;
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
 //            print "L'articolo é:\n\r".$articolo->outertext."\n\r";
@@ -671,7 +673,7 @@ class SearchController extends DooController {
             if ($tempoPostConfrontato > $tempoPostConfronto)
                 $realPeso = ($sumPeso * 1000) / (($tempoPostConfrontato - $tempoPostConfronto) / 3600);
             else
-                $realPeso= ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
+                $realPeso = ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
 //            $numDislike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
 //            $numLike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
             if ($numDislike > $numLike)
@@ -770,6 +772,16 @@ class SearchController extends DooController {
         }
 
         return $result;
+    }
+
+    private function validateXML($toParse) {
+        if ($toParse == "")
+            return false;
+        libxml_use_internal_errors(true);
+        $xdoc = new DomDocument;
+        $xmlschema = 'data/archive.xsd';
+        $xdoc->loadXML($toParse);
+       return $xdoc->schemaValidate($xmlschema);
     }
 
 }

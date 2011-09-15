@@ -39,7 +39,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 					var ifLikeDislike = 0;
 					var geoLat = 0.0;
 					var geoLong = 0.0;
-					var userID = $(this).find('article').attr('resource');
+					var aboutID = $(this).find('article').attr ('about');
 					
 					// Find like and dislike counter plus setlike of the user
 					$(this).find('article').find('span').each (function () {
@@ -67,7 +67,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 							geoLat = ($(this).attr ('lat') != null ? $(this).attr ('lat') : 0.0);
 							if (!((geoLong == 0) && (geoLat == 0))) {
 								var mapLatLng = new google.maps.LatLng (geoLat, geoLong);
-								geolocSin.addMarker (mapLatLng, userID);
+								geolocSin.addMarker (mapLatLng, aboutID);
 							}
 						}
 					});
@@ -77,7 +77,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 						affinity: parseInt ($(this).find('affinity').text ()) ,
 						article: tag2string ($(this).find('article')[0]) ,
 						resource: $(this).find('article').attr ('resource') ,
-						about: $(this).find('article').attr ('about') ,
+						about: aboutID ,
 						like: numLike ,
 						dislike: numDislike ,
 						setlike: ifLikeDislike ,
@@ -191,7 +191,7 @@ function retrieveRecentArticles (store) {
 					var ifLikeDislike = 0;
 					var geoLat = 0.0;
 					var geoLong = 0.0;
-					var userID = $(this).find('article').attr('resource');
+					var aboutID = $(this).find('article').attr ('about');
 			
 					// Find like and dislike counter plus setlike of the user
 					$(this).find('article').find('span').each (function () {
@@ -219,7 +219,7 @@ function retrieveRecentArticles (store) {
 							geoLat = ($(this).attr ('lat') != null ? $(this).attr ('lat') : 0.0);
 							if (!((geoLong == 0) && (geoLat == 0))) {
 								var mapLatLng = new google.maps.LatLng (geoLat, geoLong);
-								geolocSin.addMarker (mapLatLng, userID);
+								geolocSin.addMarker (mapLatLng, aboutID);
 							}
 						}
 				
@@ -231,7 +231,7 @@ function retrieveRecentArticles (store) {
 						article: tag2string ($(this).find('article')[0]) ,
 						articleText: $(this).find('article').text () ,
 						resource: $(this).find('article').attr ('resource') ,
-						about: $(this).find('article').attr ('about') ,
+						about: aboutID ,
 						like: numLike ,
 						dislike: numDislike ,
 						setlike: ifLikeDislike ,

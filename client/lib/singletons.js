@@ -217,24 +217,32 @@ Ext.define ('geolocSin' , {
 		return this.browserGeoSupportFlag;
 	} ,
 	// Add a marker to the map
-	addMarker : function (pos, owner) {
+	addMarker : function (pos, aboutOwner) {
 		if (pos != null) {
 			var marker = new google.maps.Marker ({
 				position: pos ,
 				map: this.googleMap ,
-				title: owner
+				about: aboutOwner
 			});
 			// Attach the click event
 			google.maps.event.addListener(marker, 'click', this.showCoords);
 		}
 	} ,
 	showCoords : function (event) {
-		Ext.Msg.show ({
-			title: 'Coords of ' + this.title ,
-			msg: 'Latitude : ' + event.latLng.lat () + '<br />Longitude : ' + event.latLng.lng () ,
-			buttons: Ext.Msg.OK,
-			icon: Ext.Msg.INFO
-		});
+		var server = this.about.split('/')[1];
+		var user = this.about.split('/')[2];
+		var post = this.about.split('/')[3];
+		Ext.widget ('markerwindow' , {
+			title: 'Coords of ' + user ,
+			html: '<b>User: </b>' + user + '<br /><b>Server: </b>' + server + '<br /><b>Post: </b>' + post + '<br /><b>Latitude: </b>' + event.latLng.lat () + '<br /><b>Longitude: </b>' + event.latLng.lng () ,
+			about: this.about
+		}).show ();
+//		Ext.Msg.show ({
+//			title: 'Coords of ' + this.title ,
+//			msg: 'Latitude : ' + event.latLng.lat () + '<br />Longitude : ' + event.latLng.lng () ,
+//			buttons: Ext.Msg.OK,
+//			icon: Ext.Msg.INFO
+//		});
 	}
 });
 

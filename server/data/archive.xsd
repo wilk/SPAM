@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <xs:element name="archive">
@@ -54,3 +55,57 @@
     </xs:complexType>
   </xs:element>
 </xs:schema>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="archive">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="post"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="post">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="content"/>
+        <xs:element ref="affinity"/>
+        <xs:element ref="article"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="content" type="xs:string"/>
+  <xs:element name="affinity" type="xs:integer"/>
+  <xs:element name="article">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="span"/>
+      </xs:sequence>
+      <xs:attribute name="about" use="required"/>
+      <xs:attribute name="content" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="prefix" use="required"/>
+      <xs:attribute name="property" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="rel" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="resource" use="required"/>
+      <xs:attribute name="typeof" use="required" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="span">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="span"/>
+      </xs:sequence>
+      <xs:attribute name="about"/>
+      <xs:attribute name="content" type="xs:integer"/>
+      <xs:attribute name="id" type="xs:NCName"/>
+      <xs:attribute name="lat" type="xs:decimal"/>
+      <xs:attribute name="long" type="xs:decimal"/>
+      <xs:attribute name="property" type="xs:NMTOKEN"/>
+      <xs:attribute name="rel" type="xs:NMTOKEN"/>
+      <xs:attribute name="resource"/>
+      <xs:attribute name="rev" type="xs:NMTOKEN"/>
+      <xs:attribute name="typeof" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+>>>>>>> fix xml schema

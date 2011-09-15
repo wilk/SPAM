@@ -636,10 +636,11 @@ class SearchController extends DooController {
 
     //Usata per l'affinity
     private function parseEXTContent3($toParse, $arr, $tempoPostConfronto) {
-        //print ("\n\rL'xml che mi arriva:\n\r");
-        //print_r($toParse);
+//        print ("\n\rL'xml che mi arriva:\n\r");
+//        print_r($toParse);
         if (!($this->validateXML($toParse)))
             return;
+//        print "Validato";
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
 //            print "L'articolo é:\n\r".$articolo->outertext."\n\r";
@@ -654,19 +655,19 @@ class SearchController extends DooController {
     }
 
     private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike) {
-        print "\n\rL'articolo che considero:\n\r";
-        print_r($articolo);
-        print "\n\r";
+//        print "\n\rL'articolo che considero:\n\r";
+//        print_r($articolo);
+//        print "\n\r";
         foreach ($arr as $key => $peso) {
             $pathTerm = explode('/', $key);
             unset($pathTerm[0]);
-            print "Stampo il pathterm come array:\n\r";
-            print_r($pathTerm);
-            print "\n\r";
+//            print "Stampo il pathterm come array:\n\r";
+//            print_r($pathTerm);
+//            print "\n\r";
             $arr[$key] = $this->calcWeight($articolo, $pathTerm);
-            print "Il peso per $key è: $arr[$key]\n\r";
+//            print "Il peso per $key è: $arr[$key]\n\r";
         }
-        print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
+//        print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
         $sumPeso = array_sum($arr);
         //Se il peso è positivo allora considero l'articolo
         if ($sumPeso > 0 && $tempoPostConfrontato != $tempoPostConfronto) {
@@ -783,7 +784,13 @@ class SearchController extends DooController {
         $xdoc = new DomDocument;
         $xmlschema = 'data/archive.xsd';
         $xdoc->loadXML($toParse);
-        return $xdoc->schemaValidate($xmlschema);
+        if ($xdoc->schemaValidate($xmlschema)){
+//            print "Validato cazzo";
+            return true;
+        }
+//        print "non Valido un cazzo";
+        return false;
+            
     }
 
 }

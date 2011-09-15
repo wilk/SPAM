@@ -342,12 +342,11 @@ class SearchController extends DooController {
                 break;
 
             case $types[5]: //affinity
-                if (!(isset($this->params['var1'])) ||
-                        !(isset($this->params['var2'])) ||
-                        !(isset($this->params['var3'])))
+                if ((!(isset($this->params['var1'])) && $this->params['var1'] != "") ||
+                        (!(isset($this->params['var2'])) && $this->params['var2'] != "") ||
+                        (!(isset($this->params['var3'])) && $this->params['var3'] != ""))
                 //BAD REQUEST
-                    return 400;
-//                ErrorController::notImpl();
+                    ErrorController::badReq("Non tutti i parametri sono stati specificati");
 //                break;
                 $srv = urldecode($this->params['var1']);
                 $usr = urldecode($this->params['var2']);
@@ -366,7 +365,7 @@ class SearchController extends DooController {
                     $url = $this->SRV->getUrl($srv);
                     if ($url) {
                         //print "La richiesta è:".$url."postserver/$usr/$pid\n\r";
-                        $this->request->connect_to($url."postserver/$usr/$pid")
+                        $this->request->connect_to($url . "postserver/$usr/$pid")
                                 ->accept(DooRestClient::HTML)
                                 ->get();
                         if (!$this->request->isSuccess()) {
@@ -578,7 +577,7 @@ class SearchController extends DooController {
             curl_setopt($h, CURLOPT_HTTPHEADER, array(
                 "Content-Type: application/xml; charset=utf-8"
             ));
-            curl_setopt($h, CURLOPT_TIMEOUT, 2);
+            curl_setopt($h, CURLOPT_TIMEOUT, 5);
 
             array_push($hArr, $h);
         }
@@ -640,7 +639,7 @@ class SearchController extends DooController {
         //print ("\n\rL'xml che mi arriva:\n\r");
         //print_r($toParse);
         if (!($this->validateXML($toParse)))
-                return;
+            return;
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
 //            print "L'articolo é:\n\r".$articolo->outertext."\n\r";
@@ -655,16 +654,19 @@ class SearchController extends DooController {
     }
 
     private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike) {
+        print "\n\rL'articolo che considero:\n\r";
+        print_r($articolo);
+        print "\n\r";
         foreach ($arr as $key => $peso) {
             $pathTerm = explode('/', $key);
             unset($pathTerm[0]);
-//                        print "Stampo il pathterm come array:\n\r";
-//                        print_r ($pathTerm);
-//                        print "\n\r";
+            print "Stampo il pathterm come array:\n\r";
+            print_r($pathTerm);
+            print "\n\r";
             $arr[$key] = $this->calcWeight($articolo, $pathTerm);
-            //print "Il peso per $key è: $arr[$key]\n\r";
+            print "Il peso per $key è: $arr[$key]\n\r";
         }
-//        print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
+        print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
         $sumPeso = array_sum($arr);
         //Se il peso è positivo allora considero l'articolo
         if ($sumPeso > 0 && $tempoPostConfrontato != $tempoPostConfronto) {
@@ -781,7 +783,7 @@ class SearchController extends DooController {
         $xdoc = new DomDocument;
         $xmlschema = 'data/archive.xsd';
         $xdoc->loadXML($toParse);
-       return $xdoc->schemaValidate($xmlschema);
+        return $xdoc->schemaValidate($xmlschema);
     }
 
 }

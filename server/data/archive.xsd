@@ -18,5 +18,39 @@
   </xs:element>
   <xs:element name="content" type="xs:string"/>
   <xs:element name="affinity" type="xs:integer"/>
-  <xs:element name="article" type="xs:string"/>
+  <xs:element name="article">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="span"/>
+        <xs:element ref="a"/>
+      </xs:choice>
+      <xs:attribute name="about" use="required"/>
+      <xs:attribute name="content" use="required" type="xs:dateTime"/>
+      <xs:attribute name="prefix" use="required"/>
+      <xs:attribute name="property" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="rel" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="resource" use="required"/>
+      <xs:attribute name="typeof" use="required" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="a">
+    <xs:complexType>
+      <xs:attribute name="href" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="span">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="span"/>
+      </xs:sequence>
+      <xs:attribute name="about"/>
+      <xs:attribute name="content" type="xs:integer"/>
+      <xs:attribute name="property" type="xs:NMTOKEN"/>
+      <xs:attribute name="rel" type="xs:NMTOKEN"/>
+      <xs:attribute name="resource" type="xs:anyURI"/>
+      <xs:attribute name="rev" type="xs:NMTOKEN"/>
+      <xs:attribute name="src" type="xs:anyURI"/>
+      <xs:attribute name="typeof" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

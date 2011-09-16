@@ -232,7 +232,7 @@ class SearchController extends DooController {
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
 
-//$test[] = $value['url'].' => '.$value['code']."\n";
+//$test[] = $value['url'].' => '.$value['data']."\n";
                         }
 //print_r($test);die();
 //qui fanculizzo i server
@@ -242,7 +242,7 @@ class SearchController extends DooController {
                     } else
                         return 500;
                 }
-//					 $this->calcWeight();
+//print_r($this->listaPost); die();
                 $this->sortPost($limite);
                 $this->displayPosts();
                 break;
@@ -281,8 +281,8 @@ class SearchController extends DooController {
                 $endtime = $mtime;
                 $totaltime = ($endtime - $starttime);
                 //print "Tempo trascorso $totaltime\n\r";
-//                print_r($this->listaPost);
-//                die();
+                print_r($this->listaPost);
+                //die();
 //Eseguo richiesta esterna
                 if ($extRequest === FALSE) {
                     $servers;
@@ -301,7 +301,7 @@ class SearchController extends DooController {
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
 
-//$test[] = $value['url'].' => '.$value['code']."\n";
+//$test[] = $value['url'].' => '.$value['data']."\n";
                         }
 //print_r($test);die();
 //qui fanculizzo i server
@@ -318,7 +318,7 @@ class SearchController extends DooController {
                 for ($i = $c; $i > 0; $i--) {
                     $arrayPesi = array();
                     foreach ($this->listaPost[$i] as $key => $post) {
-                        //print ("\n\rla key è: $key e il peso è: " .$post['peso']);
+                        //print ("\n\rla key è: $key e il peso è: " .$post['peso']);die();
                         $arrayPesi[$key] = $post['peso'];
                         //$arrayPost[$key]=$post['post'];
                     }
@@ -508,8 +508,12 @@ class SearchController extends DooController {
             if ($arr[$tag] == 0)
                 $arr[$tag] -= $none;
         }
-        arsort($arr, SORT_NUMERIC);
-        return current($arr);
+        //anche qui ho aggiunto sto controllo per le related dall'esterno
+        if (sizeof($arr)){
+            arsort($arr, SORT_NUMERIC);
+            return current($arr);
+        } else
+            return -1; //qui, purtroppo, gestisco se qualcuno mi manda un post senza tag (i.e. da non credere!)
     }
 
     private function sortPost($limite) {
@@ -609,8 +613,13 @@ class SearchController extends DooController {
         foreach ($html->find('article') as $articolo) {
             $node['articolo'] = $articolo->outertext;
             $node['peso'] = strtotime($articolo->content);
-            if ($pathTerm)
-                $node['peso'] += $this->salt * $this->calcWeight($articolo->innertext, $pathTerm);
+            if ($pathTerm) {
+                $weight = $this->calcWeight($articolo->innertext, $pathTerm);
+                //faccio sto controllo caso mai il post di cui ho calcolato il peso non c'entra nulla
+                if($weight<0)
+                    continue;
+                $node['peso'] += $this->salt * $weight;
+            }
             array_push($this->listaPost, $node);
             array_push($this->toMerge, $node['peso']);
         }

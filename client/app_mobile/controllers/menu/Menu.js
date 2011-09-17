@@ -61,6 +61,22 @@ Ext.regController('menu',{
 						}
 					},
 					{
+						text:'Followers',
+						itemId:'followerList',
+						scope:this,
+						handler:function(){
+							this.settings.hide();
+							
+							Ext.dispatch({
+							
+								controller:'followers',
+								action:'showFollowers',
+								view:this.prevView
+							
+							})
+						}
+					},
+					{
 						text:'Server',
 						scope:this,
 						handler:function(){
@@ -118,6 +134,7 @@ Ext.regController('menu',{
 				if(Ext.StoreMgr.get('loginstore').getCount()==0){
 				
 					this.settings.remove('newpost');
+					this.settings.remove('followerList');
 				
 				}
 				

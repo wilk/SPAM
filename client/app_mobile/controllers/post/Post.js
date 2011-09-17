@@ -31,6 +31,7 @@ Ext.regController('Post',{
 		
 			this.post.down('#locate').show();
 			console.log($(article).find('span[id=geolocationspan]').attr('lat'));
+			console.log($(article).find('span[id=geolocationspan]').attr('long'));
 		
 		}
 		
@@ -53,88 +54,6 @@ Ext.regController('Post',{
 	
 	getPostIndex:function(){
 		return postIndex;
-	},
-	
-	showActionSheet:function(){
-		if (!this.actions){
-			this.actions=new Ext.ActionSheet({
-				items:[
-				{
-					text:'I like it',
-					ui:'confirm',
-					itemId:'like',
-					scope:this,
-					handler:function(){
-						this.setLike(+1);
-						this.actions.hide();
-					}
-				},
-				{
-					text:"Reset my previous like choice",
-					itemId:'neutral',
-					scope:this,
-					handler:function(){
-						this.setLike(0);
-						this.actions.hide();
-					}
-				},
-				{
-					text:"I don't like it",
-					ui:'decline',
-					itemId:'dislike',
-					scope:this,
-					handler:function(){
-						this.setLike(-1);
-						this.actions.hide();
-					}
-				},
-				{
-					text:'Replay',
-					scope:this,
-					handler:function(){
-						this.actions.hide();
-						this.replayToPost();
-					}
-				},
-				{
-					text:'Respam',
-					scope:this,
-					handler:function(){
-						this.respamPost();
-						this.actions.hide();
-					}
-				},
-				{
-					text:'Back',
-					ui:'decline',
-					scope:this,
-					handler:function(){
-					this.actions.hide();
-//						Ext.dispatch({
-//							controller:'PostAction',
-//							action:'destroySheet',
-//							view:this.up('postAction')
-//						})
-					}
-				}]
-			});
-		}
-		
-		switch(likeChoice){
-		
-			case 0:
-				this.actions.remove('neutral');
-				break;
-			case 1:
-				this.actions.remove('like');
-				break;
-			case -1:
-				this.actions.remove('dislike');
-				break;		
-		}
-		
-		this.actions.show();
-	
 	},
 	
 	setLike:function(value){
@@ -252,6 +171,174 @@ Ext.regController('Post',{
 //			lng:lng
 //		
 //		});
+	
+	},
+	
+	showActionSheet:function(){
+		if (!this.actions){
+			this.actions=new Ext.ActionSheet({
+				items:[
+				{
+					text:'I like it',
+					ui:'confirm',
+					itemId:'like',
+					scope:this,
+					handler:function(){
+						this.setLike(+1);
+						this.actions.hide();
+					}
+				},
+				{
+					text:"Reset my previous like choice",
+					itemId:'neutral',
+					scope:this,
+					handler:function(){
+						this.setLike(0);
+						this.actions.hide();
+					}
+				},
+				{
+					text:"I don't like it",
+					ui:'decline',
+					itemId:'dislike',
+					scope:this,
+					handler:function(){
+						this.setLike(-1);
+						this.actions.hide();
+					}
+				},
+				{
+					text:'Replay',
+					scope:this,
+					handler:function(){
+						this.actions.hide();
+						this.replayToPost();
+					}
+				},
+				{
+					text:'Respam',
+					scope:this,
+					handler:function(){
+						this.respamPost();
+						this.actions.hide();
+					}
+				},
+				{
+				
+					text:'Follow user',
+					ui:'confirm',
+					itemId:'followButton',
+					scope:this,
+					handler:function(){
+						this.actions.hide();
+//						var value=1;
+//						if(this.actions.down('#followButton').text!='Follow user'){
+//							value=0;
+//						}
+						Ext.dispatch({
+							controller:'followers',
+							action:'setFollow',
+							id:serverId+'/'+userId,
+							value:1				
+						})
+					
+					}
+				
+				},
+				{
+				
+					text:'Unollow user',
+					ui:'decline',
+					itemId:'unfollowButton',
+					scope:this,
+					handler:function(){
+						this.actions.hide();
+//						var value=1;
+//						if(this.actions.down('#followButton').text!='Follow user'){
+//							value=0;
+//						}
+						Ext.dispatch({
+							controller:'followers',
+							action:'setFollow',
+							id:serverId+'/'+userId,
+							value:0				
+						})
+					
+					}
+				
+				},
+				{
+					text:'Back',
+					ui:'decline',
+					scope:this,
+					handler:function(){
+					this.actions.hide();
+//						Ext.dispatch({
+//							controller:'PostAction',
+//							action:'destroySheet',
+//							view:this.up('postAction')
+//						})
+					}
+				}]
+			});
+		}
+		
+		switch(likeChoice){
+		
+			case 0:
+				this.actions.remove('neutral');
+				break;
+			case 1:
+				this.actions.remove('like');
+				break;
+			case -1:
+				this.actions.remove('dislike');
+				break;		
+		}
+		var tmp=serverId+'/'+userId;
+		if(Ext.StoreMgr.get('followersStore').findExact('follower',tmp)!=-1){
+		
+//			this.actions.down('#followButton').addManagedListener(this.actions.down('#followButton'),'tap',function(){
+//			
+//				this.actions.hide();
+//			
+//				Ext.dispatch({
+//					
+//					controller:'followers',
+//					action:'setFollow',
+//					id:tmp,
+//					value:0
+//					
+//				})
+//			},this);
+			this.actions.down('#followButton').hide();
+			this.actions.down('#unfollowButton').show();
+
+//			this.actions.down('#followButton').setText('Unfollow user');
+//			this.actions.down('#followButton').ui='decline';		
+		}
+		else{
+		
+//			this.actions.down('#followButton').addManagedListener(this.actions.down('#followButton'),'tap',function(){
+//			
+//				this.actions.hide();
+//			
+//				Ext.dispatch({
+//					
+//					controller:'followers',
+//					action:'setFollow',
+//					id:serverId+'/'+userId,
+//					value:1
+//					
+//				})
+//			},this);
+			this.actions.down('#unfollowButton').hide();
+			this.actions.down('#followButton').show();
+//			this.actions.down('#followButton').setText('Follow user');
+//			this.actions.down('#followButton').ui='confirm';		
+		}
+		
+		this.actions.show();
 	
 	}
 

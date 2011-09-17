@@ -27,33 +27,29 @@ Ext.regController('Server',{
 		
 		Ext.regStore('serverstore',this.serverstore);
 		
-		if(Ext.StoreMgr.get('loginstore').getCount()==0){
+		this.serverstorecopy=new Ext.data.Store({
+			model:'Server',
+			proxy:{
+				type:'localstorage',
+				id:'serverstorecopy'
+			}
+		});
 		
-			this.serverstorecopy=new Ext.data.Store({
-				model:'Server',
-				proxy:{
-					type:'localstorage',
-					id:'serverstorecopy'
-				}
-			});
-			
-			Ext.regStore('serverstorecopy',this.serverstorecopy);
+		Ext.regStore('serverstorecopy',this.serverstorecopy);
+		
+		if(Ext.StoreMgr.get('loginstore').getCount()==0){
 			
 			this.serverstore.load();
+			this.serverstore.each(function(rec){
+			
+				rec.set('enabled',0);
+				this.serverstorecopy.add(rec);
+				this.serverstorecopy.sync();
+			
+			},this);
 		
 		}
 		else{
-			this.serverstorecopy=new Ext.data.Store({
-				model:'Server',
-				proxy:{
-					type:'localstorage',
-					id:'serverstorecopy'
-				}
-			});
-			
-			Ext.regStore('serverstorecopy',this.serverstorecopy);
-			
-//			this.serverscopy=Ext.StoreMgr.get('serverstorecopy');
 			
 			this.serverstorecopy.load();
 			
@@ -67,24 +63,24 @@ Ext.regController('Server',{
 		
 		}
 		
-		this.serverstore.on('load',function(store,record,success){
-		
-			if(Ext.StoreMgr.get('loginstore').getCount()==0){
-			
-				for(i=0;i<record.length;i++){
-					record[i].set('enabled',0);
-					this.serverstorecopy.add(record[i]);
-				}
-				this.serverstorecopy.sync();
-			}
-		
-		},this);
+//		this.serverstore.on('load',function(store,record,success){
+//		
+//			if(Ext.StoreMgr.get('loginstore').getCount()==0){
+//			
+//				for(i=0;i<record.length;i++){
+//					record[i].set('enabled',0);
+//					this.serverstorecopy.add(record[i]);
+//				}
+//				this.serverstorecopy.sync();
+//			}
+//		
+//		},this);
 		
 		Ext.Ajax.on('requestcomplete',function(conn, resp, opt){
 			
 //			console.log(conn, resp, opt);
 			if(opt.url=='login'&&resp.status==200){
-			console.log(conn, resp, opt);
+
 				this.compareServerStores();
 			
 			}
@@ -201,7 +197,7 @@ Ext.regController('Server',{
 			var isenabled=record.get('enabled');
 			var message='';
 			if(isenabled){
-				message='This server is enabled, do you want to diable it?';
+				message='This server is enabled, do you want to disable it?';
 			}
 			else{
 				message='This server is disabled, do you want to enable it?';
@@ -221,7 +217,7 @@ Ext.regController('Server',{
 					record.set('enabled',1);
 				}
 //				this.list.doComponentLayout();
-				this.render(this.list);
+//				this.render(this.list);
 			}
 			
 		},this);

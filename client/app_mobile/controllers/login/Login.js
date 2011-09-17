@@ -8,8 +8,10 @@ Ext.regController('Login',{
 		
 		Ext.regStore('loginstore',this.store);
 		
-		this.store.load();
-	
+		if(document.cookie.search('ltwlogin')!=-1){
+
+			this.store.load();
+		}
 	},
 
 	displayLogin:function(){
@@ -132,7 +134,7 @@ Ext.regController('Login',{
 				this.application.viewport.setLoading(false);
 				
 				this.displayLogin();
-				
+				document.cookie='';
 			},
 			
 			failure:function(){

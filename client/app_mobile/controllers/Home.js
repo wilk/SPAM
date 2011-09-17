@@ -1,8 +1,43 @@
 Ext.regController('Home',{
 	
+	init:function(){
+	
+		this.store=new Ext.data.Store({model:'Post',storeId:'poststore'});
+	
+	},
+	
 	renderHome:function(){
 		
-		this.home=this.render({xtype:'home'});
+		this.home=this.render({
+			xtype:'home',
+			items:[{
+				xtype:'list',
+				styleHtmlContent:true,
+				fullscreen:true,
+				itemTpl:'{html}',
+				store:this.store,
+	//			listener:{
+	//				afterrender:
+	//				Ext.dispatch({
+	//					controller:'Home',
+	//					action:'getSearchResponse',
+	//					store:this.store
+	//				})
+	////				Ext.ControllerManager.get('Home').getSearchResponse(this.store)
+	//			},
+				onItemDisclosure:function(rec, node, index, e){
+					Ext.dispatch({
+						controller:'Post',
+						action:'showPost',
+						post:rec.data.html,
+						article:rec.data.article,
+						user:rec.data.user,
+						index:index
+					});
+	//				Ext.ControllerManager.get('Home').showPost(rec.data.html, rec.data.article)
+				}
+			}]
+		});
 //		console.log(this.home);
 		
 		var loginstore=Ext.StoreMgr.get('loginstore');

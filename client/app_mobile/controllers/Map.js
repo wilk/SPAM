@@ -2,59 +2,40 @@ Ext.regController('Map',{
 
 	init:function(){
 	
+		coords=get_position();
 		this.markers=new Array();
+		this.map=this.render({xtype:'Map'});
+		
+		Ext.StoreMgr.get('poststore').addListener('add',function(){
+		
+			this.setPostsMarkers();
+		
+		},this);
 	
 	},
 
 	showMap:function(options){
 		
-		this.previousView=options.view;
+		this.previousView=options.view;		
 		
-		
-		if(!this.map){
-		
-			this.map=this.render({xtype:'Map'});
-		
-			this.map.down('map').geo.updateLocation(function(geo){
-
-				if(geo!=null){
-					this.map.down('map').map.setZoom(14);
-					this.setMarker(geo.latitude,geo.longitude,'you');
-					this.map.update(geo);
-					
-					
-				}
-			
-			},this);
-			
-			
-//			this.map.addListener('activate',function(){console.log('activate');});
-//			this.map.addListener('added',function(){console.log('added');});
-//			this.map.addListener('afterrender',function(){console.log('afterrender');});
-//			this.map.addListener('enable',function(){console.log('enable');});
-//			this.map.addListener('maprender',function(){console.log('maprender');});
-//			this.map.addListener('render',function(){console.log('render');});
-//			this.map.addListener('show',function(){console.log('show');});
-//			this.map.addListener('zoomchange',function(){console.log('zoomchange');});
-			
-			
-			Ext.StoreMgr.get('poststore').addListener('load',function(store){
-			
-//				store.suspendEvents(false);
-				this.setPostsMarkers();
-//				store.resumeEvents();
-			
-			},this);	
-			
-		}
-
 		this.application.viewport.setActiveItem(this.map);
+		
+		this.setMarker(coords[0],coords[1],'you');
+		
+		
 		
 		this.setPostsMarkers();	
 		
 		if(options.lat&&options.lng){
 		
-			this.centerMap(options.lat,options.lng);
+			var center=new google.maps.LatLng(options.lat,options.lng,true);
+			this.map.down('map').map.setZoom(16);
+			this.map.down('map').map.setCenter(center);
+		
+		}
+		else{
+		
+			this.centerMap(coords[0],coords[1]);
 		
 		}
 	},
@@ -86,19 +67,15 @@ Ext.regController('Map',{
 		}
 		else{
 		
-			if(Ext.util.Date.getElapsed(this.map.down('map').geo.timestamp)>1200000){
-			
-				this.map.down('map').geo.updateLocation(function(geo){
-			
-					if(geo!=null){
+			var tmp=coords;
+			coords=get_position();
+			if(coords){
 
-						var pos=new google.maps.LatLng(geo.latitude,geo.longitude,true);
-						this.map.down('map').map.panTo(pos);
-						this.setMarker(geo.latitude,geo.longitude,'you');
-						this.map.down('map').map.setZoom(16);
-				
-					}			
-				},this);
+					var pos=new google.maps.LatLng(coords[0],coords[1],true);
+					this.map.down('map').map.panTo(pos);
+					this.setMarker(coords[0],coords[1],'you');
+					this.map.down('map').map.setZoom(16);
+						
 			}
 			else{
 				
@@ -128,9 +105,9 @@ Ext.regController('Map',{
 				tmp.setMap(null);
 				i--
 			}
-			else{
-				i++
-			}
+//			else{
+//				i++
+//			}
 		
 		}
 	

@@ -19,8 +19,8 @@ Ext.regModel('Post',{
 		type:'ajax',
 		
 		//url dinamically set
-		url:'lib_mobile/art1.xml',
-//		url:'search/10/recent',
+//		url:'lib_mobile/art1.xml',
+		url:'search/10/recent',
 		reader:{
 			type:'xml',
 			record:'post',

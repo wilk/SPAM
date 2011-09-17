@@ -3,10 +3,10 @@ mspam.views.Home=Ext.extend(Ext.Panel,{
 	layout:'card',
 
 //	fullscreen:true,
-	initComponent:function(){
+//	initComponent:function(){
 	
 	
-	this.dockedItems=[
+	dockedItems:[
 //	{
 //	
 //		xtype:'toolbar',
@@ -66,51 +66,51 @@ mspam.views.Home=Ext.extend(Ext.Panel,{
 				})
 			}
 		}]
-	}];
+	}]
 	
 //		this.fullscreen=true,
 	
-		if(!Ext.StoreMgr.get('poststore')){
-		this.store=new Ext.data.Store({model:'Post',storeId:'poststore'});
-		}
-		else{
-		
-			this.store=Ext.StoreMgr.get('poststore');
-		
-		}
-		this.list=new Ext.List({
-//			itemId:'postList',
-			styleHtmlContent:true,
-			fullscreen:true,
-			itemTpl:'{html}',
-			store:this.store,
-//			listener:{
-//				afterrender:
+//		if(!Ext.StoreMgr.get('poststore')){
+//		this.store=new Ext.data.Store({model:'Post',storeId:'poststore'});
+//		}
+//		else{
+//		
+//			this.store=Ext.StoreMgr.get('poststore');
+//		
+//		}
+//		this.list=new Ext.List({
+////			itemId:'postList',
+//			styleHtmlContent:true,
+//			fullscreen:true,
+//			itemTpl:'{html}',
+//			store:this.store,
+////			listener:{
+////				afterrender:
+////				Ext.dispatch({
+////					controller:'Home',
+////					action:'getSearchResponse',
+////					store:this.store
+////				})
+//////				Ext.ControllerManager.get('Home').getSearchResponse(this.store)
+////			},
+//			onItemDisclosure:function(rec, node, index, e){
 //				Ext.dispatch({
-//					controller:'Home',
-//					action:'getSearchResponse',
-//					store:this.store
-//				})
-////				Ext.ControllerManager.get('Home').getSearchResponse(this.store)
-//			},
-			onItemDisclosure:function(rec, node, index, e){
-				Ext.dispatch({
-					controller:'Post',
-					action:'showPost',
-					post:rec.data.html,
-					article:rec.data.article,
-					user:rec.data.user,
-					index:index
-				});
-//				Ext.ControllerManager.get('Home').showPost(rec.data.html, rec.data.article)
-			}
-		});
+//					controller:'Post',
+//					action:'showPost',
+//					post:rec.data.html,
+//					article:rec.data.article,
+//					user:rec.data.user,
+//					index:index
+//				});
+////				Ext.ControllerManager.get('Home').showPost(rec.data.html, rec.data.article)
+//			}
+//		});
 		
-		this.items=[this.list];
-	
-		mspam.views.Home.superclass.initComponent.apply(this,arguments);
-		
-	}
+//		this.items=[this.list];
+//	
+//		mspam.views.Home.superclass.initComponent.apply(this,arguments);
+//		
+//	}
 
 	
 });

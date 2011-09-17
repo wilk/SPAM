@@ -281,7 +281,7 @@ class SearchController extends DooController {
                 $endtime = $mtime;
                 $totaltime = ($endtime - $starttime);
                 //print "Tempo trascorso $totaltime\n\r";
-                print_r($this->listaPost);
+                //print_r($this->listaPost);
                 //die();
 //Eseguo richiesta esterna
                 if ($extRequest === FALSE) {
@@ -312,31 +312,52 @@ class SearchController extends DooController {
                         return 500;
                 }
                 //print "numero di elementi in listapost: " . count($this->listaPost) . "\n\r";
-                $c = count($this->listaPost);
+                //$c = count($this->listaPost);
                 //print "listaPost è fatto di: $c elementi";
                 //print_r($this->listaPost);die();
-                for ($i = $c; $i > 0; $i--) {
+                ////////////////// NEW //////////////////////////
+                asort($this->listaPost);
+                $toRender = array();
+                foreach ($this->listaPost as $array) {
+                    if ($limite == 0)
+                        break;
                     $arrayPesi = array();
-                    foreach ($this->listaPost[$i] as $key => $post) {
-                        //print ("\n\rla key è: $key e il peso è: " .$post['peso']);die();
+                    foreach ($array as $key => $post)
                         $arrayPesi[$key] = $post['peso'];
-                        //$arrayPost[$key]=$post['post'];
+                    array_multisort($arrayPesi, SORT_DESC, $array);
+                    $n = count($array);
+                    if (is_numeric($limite) && $n>$limite){
+                        $toRender = array_merge($toRender, array_slice($array, 0, $limite));
+                        break;
                     }
-                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$i]);
+                    $toRender = array_merge($toRender, $array);
+                    $limite -= $n;
                 }
-                //TODO:far tornare array con solo n elementi
-                $postToRender = array();
-                $internalCount = 0;
-                $i = count($this->listaPost);
-                for ($i; $i > 0; $i--) {
-                    foreach ($this->listaPost[$i] as $key => $post) {
-                        if ($limite != "all" && $internalCount == $limite)
-                            break;
-                        $postToRender[] = $post;
-                        $internalCount++;
-                    }
-                }
-                $this->listaPost = $postToRender;
+                $this->listaPost = $toRender;
+                ////////////////////////////////////////////////
+                //print_r($this->listaPost);die();
+//                for ($i = $c; $i > 0; $i--) {
+//                    $arrayPesi = array();
+//                    foreach ($this->listaPost[$i] as $key => $post) {
+//                        //print ("\n\rla key è: $key e il peso è: " .$post['peso']);die();
+//                        $arrayPesi[$key] = $post['peso'];
+//                        //$arrayPost[$key]=$post['post'];
+//                    }
+//                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$i]);
+//                }
+//                //TODO:far tornare array con solo n elementi
+//                $postToRender = array();
+//                $internalCount = 0;
+//                $i = count($this->listaPost);
+//                for ($i; $i > 0; $i--) {
+//                    foreach ($this->listaPost[$i] as $key => $post) {
+//                        if ($limite != "all" && $internalCount == $limite)
+//                            break;
+//                        $postToRender[] = $post;
+//                        $internalCount++;
+//                    }
+//                }
+//                $this->listaPost = $postToRender;
                 $this->displayPosts();
 //                ErrorController::notImpl();
                 break;

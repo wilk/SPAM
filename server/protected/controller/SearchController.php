@@ -316,7 +316,8 @@ class SearchController extends DooController {
                 //print "listaPost è fatto di: $c elementi";
                 //print_r($this->listaPost);die();
                 ////////////////// NEW //////////////////////////
-                asort($this->listaPost);
+                //ksort($this->listaPost, SORT_NUMERIC);
+                //$this->listaPost = array_reverse($this->listaPost, TRUE);
                 $toRender = array();
                 foreach ($this->listaPost as $array) {
                     if ($limite == 0)

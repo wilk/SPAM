@@ -31,6 +31,7 @@ Ext.application ({
 		'Options' ,
 		'AddTerm' ,
 		'FollowerWindow' ,
+		'MarkerWindow' ,
 		'Viewport'
 	] ,
 	

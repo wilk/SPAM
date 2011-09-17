@@ -53,7 +53,7 @@ class SearchController extends DooController {
     public function searchMain($extRequest = FALSE) {
         $limite = $this->params['limit'];
         if ($limite != "all" && !is_numeric($limite))
-            ErrorController::badReq ("O numeri o 'all' altro non è consentito");
+            ErrorController::badReq("O numeri o 'all' altro non è consentito");
         $tipo = $this->params['type'];
 
         /* Qui definisco i tipi di ricerca */
@@ -232,7 +232,7 @@ class SearchController extends DooController {
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
 
-//$test[] = $value['url'].' => '.$value['code']."\n";
+//$test[] = $value['url'].' => '.$value['data']."\n";
                         }
 //print_r($test);die();
 //qui fanculizzo i server
@@ -242,7 +242,7 @@ class SearchController extends DooController {
                     } else
                         return 500;
                 }
-//					 $this->calcWeight();
+//print_r($this->listaPost); die();
                 $this->sortPost($limite);
                 $this->displayPosts();
                 break;
@@ -281,8 +281,8 @@ class SearchController extends DooController {
                 $endtime = $mtime;
                 $totaltime = ($endtime - $starttime);
                 //print "Tempo trascorso $totaltime\n\r";
-//                print_r($this->listaPost);
-//                die();
+                //print_r($this->listaPost);
+                //die();
 //Eseguo richiesta esterna
                 if ($extRequest === FALSE) {
                     $servers;
@@ -301,7 +301,7 @@ class SearchController extends DooController {
                             else if ($value['code'] === 500)
                                 array_push($badServer, $value['name']);
 
-//$test[] = $value['url'].' => '.$value['code']."\n";
+//$test[] = $value['url'].' => '.$value['data']."\n";
                         }
 //print_r($test);die();
 //qui fanculizzo i server
@@ -312,42 +312,63 @@ class SearchController extends DooController {
                         return 500;
                 }
                 //print "numero di elementi in listapost: " . count($this->listaPost) . "\n\r";
-                $c = count($this->listaPost);
+                //$c = count($this->listaPost);
                 //print "listaPost è fatto di: $c elementi";
                 //print_r($this->listaPost);die();
-                for ($i = $c; $i > 0; $i--) {
+                ////////////////// NEW //////////////////////////
+                //ksort($this->listaPost, SORT_NUMERIC);
+                //$this->listaPost = array_reverse($this->listaPost, TRUE);
+                $toRender = array();
+                foreach ($this->listaPost as $array) {
+                    if ($limite == 0)
+                        break;
                     $arrayPesi = array();
-                    foreach ($this->listaPost[$i] as $key => $post) {
-                        //print ("\n\rla key è: $key e il peso è: " .$post['peso']);
+                    foreach ($array as $key => $post)
                         $arrayPesi[$key] = $post['peso'];
-                        //$arrayPost[$key]=$post['post'];
+                    array_multisort($arrayPesi, SORT_DESC, $array);
+                    $n = count($array);
+                    if (is_numeric($limite) && $n>$limite){
+                        $toRender = array_merge($toRender, array_slice($array, 0, $limite));
+                        break;
                     }
-                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$i]);
+                    $toRender = array_merge($toRender, $array);
+                    $limite -= $n;
                 }
-                //TODO:far tornare array con solo n elementi
-                $postToRender = array();
-                $internalCount = 0;
-                $i = count($this->listaPost);
-                for ($i; $i > 0; $i--) {
-                    foreach ($this->listaPost[$i] as $key => $post) {
-                        if ($limite != "all" && $internalCount == $limite)
-                            break;
-                        $postToRender[] = $post;
-                        $internalCount++;
-                    }
-                }
-                $this->listaPost = $postToRender;
+                $this->listaPost = $toRender;
+                ////////////////////////////////////////////////
+                //print_r($this->listaPost);die();
+//                for ($i = $c; $i > 0; $i--) {
+//                    $arrayPesi = array();
+//                    foreach ($this->listaPost[$i] as $key => $post) {
+//                        //print ("\n\rla key è: $key e il peso è: " .$post['peso']);die();
+//                        $arrayPesi[$key] = $post['peso'];
+//                        //$arrayPost[$key]=$post['post'];
+//                    }
+//                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$i]);
+//                }
+//                //TODO:far tornare array con solo n elementi
+//                $postToRender = array();
+//                $internalCount = 0;
+//                $i = count($this->listaPost);
+//                for ($i; $i > 0; $i--) {
+//                    foreach ($this->listaPost[$i] as $key => $post) {
+//                        if ($limite != "all" && $internalCount == $limite)
+//                            break;
+//                        $postToRender[] = $post;
+//                        $internalCount++;
+//                    }
+//                }
+//                $this->listaPost = $postToRender;
                 $this->displayPosts();
 //                ErrorController::notImpl();
                 break;
 
             case $types[5]: //affinity
-                if (!(isset($this->params['var1'])) ||
-                        !(isset($this->params['var2'])) ||
-                        !(isset($this->params['var3'])))
+                if ((!(isset($this->params['var1'])) && $this->params['var1'] != "") ||
+                        (!(isset($this->params['var2'])) && $this->params['var2'] != "") ||
+                        (!(isset($this->params['var3'])) && $this->params['var3'] != ""))
                 //BAD REQUEST
-                    return 400;
-//                ErrorController::notImpl();
+                    ErrorController::badReq("Non tutti i parametri sono stati specificati");
 //                break;
                 $srv = urldecode($this->params['var1']);
                 $usr = urldecode($this->params['var2']);
@@ -364,20 +385,20 @@ class SearchController extends DooController {
                     $timeOfPost = $art[key($art)]["http://purl.org/dc/terms/created"][0];
                 } else {
                     $url = $this->SRV->getUrl($srv);
-                    if ($url){
-                    //print "Il server è:$url\n\r";
-                    $this->request->connect_to("$url/postserver/$usr/$pid")
-                            ->accept(DooRestClient::HTML)
-                            ->get();
-                    if (!$this->request->isSuccess()) {
-                        header("Status:" . $this->request->resultCode());
-                        die("C'è stato un problema nella ricezione del post dall'esterno.");
-                    }
-                    $content = str_get_html($this->request->result());
-                    $timeOfPost = $content->find('article', 0)->content;
-                    $content = $content->find('article', 0)->innertext;
-                }else
-                ErrorController::notFound("il server non esiste");
+                    if ($url) {
+                        //print "La richiesta è:".$url."postserver/$usr/$pid\n\r";
+                        $this->request->connect_to($url . "postserver/$usr/$pid")
+                                ->accept(DooRestClient::HTML)
+                                ->get();
+                        if (!$this->request->isSuccess()) {
+                            header("Status:" . $this->request->resultCode());
+                            die("C'è stato un problema nella ricezione del post dall'esterno.");
+                        }
+                        $content = str_get_html($this->request->result());
+                        $timeOfPost = $content->find('article', 0)->content;
+                        $content = $content->find('article', 0)->innertext;
+                    }else
+                        ErrorController::notFound("il server non esiste");
                 }////l'articolo da affinare!
                 //print ("$content\n\r");
                 $html = str_get_html($content);
@@ -509,8 +530,12 @@ class SearchController extends DooController {
             if ($arr[$tag] == 0)
                 $arr[$tag] -= $none;
         }
-        arsort($arr, SORT_NUMERIC);
-        return current($arr);
+        //anche qui ho aggiunto sto controllo per le related dall'esterno
+        if (sizeof($arr)){
+            arsort($arr, SORT_NUMERIC);
+            return current($arr);
+        } else
+            return -1; //qui, purtroppo, gestisco se qualcuno mi manda un post senza tag (i.e. da non credere!)
     }
 
     private function sortPost($limite) {
@@ -522,7 +547,7 @@ class SearchController extends DooController {
         if ($limite != "all")
             $toRender = array_slice($this->toMerge, 0, $limite, TRUE);
         else
-            $toRender= $this->toMerge;
+            $toRender = $this->toMerge;
         $temp = array();
         foreach ($toRender as $k => $n)
             array_push($temp, $this->listaPost[$k]);
@@ -550,15 +575,15 @@ class SearchController extends DooController {
 
     private function rcvFromEXTServer($server, $method) {
         $url = $this->SRV->getUrl($server);
-        if ($url){
-        $this->request->connect_to($url . $method)
-                ->accept(DooRestClient::XML)
-                ->get();
-        if ($this->request->isSuccess())
-            return $this->request->result();
-        else
-            return $this->request->resultCode();
-    }
+        if ($url) {
+            $this->request->connect_to($url . $method)
+                    ->accept(DooRestClient::XML)
+                    ->get();
+            if ($this->request->isSuccess())
+                return $this->request->result();
+            else
+                return $this->request->resultCode();
+        }
     }
 
     private function rcvFromEXTServers(&$servers, $limite, $metodo) {
@@ -578,7 +603,7 @@ class SearchController extends DooController {
             curl_setopt($h, CURLOPT_HTTPHEADER, array(
                 "Content-Type: application/xml; charset=utf-8"
             ));
-            curl_setopt($h, CURLOPT_TIMEOUT, 2);
+            curl_setopt($h, CURLOPT_TIMEOUT, 5);
 
             array_push($hArr, $h);
         }
@@ -610,8 +635,13 @@ class SearchController extends DooController {
         foreach ($html->find('article') as $articolo) {
             $node['articolo'] = $articolo->outertext;
             $node['peso'] = strtotime($articolo->content);
-            if ($pathTerm)
-                $node['peso'] += $this->salt * $this->calcWeight($articolo->innertext, $pathTerm);
+            if ($pathTerm) {
+                $weight = $this->calcWeight($articolo->innertext, $pathTerm);
+                //faccio sto controllo caso mai il post di cui ho calcolato il peso non c'entra nulla
+                if($weight<0)
+                    continue;
+                $node['peso'] += $this->salt * $weight;
+            }
             array_push($this->listaPost, $node);
             array_push($this->toMerge, $node['peso']);
         }
@@ -637,8 +667,11 @@ class SearchController extends DooController {
 
     //Usata per l'affinity
     private function parseEXTContent3($toParse, $arr, $tempoPostConfronto) {
-        //print ("L'xml che mi arriva:\n\r");
-        //print_r($toParse);
+//        print ("\n\rL'xml che mi arriva:\n\r");
+//        print_r($toParse);
+        if (!($this->validateXML($toParse)))
+            return;
+//        print "Validato";
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
 //            print "L'articolo é:\n\r".$articolo->outertext."\n\r";
@@ -653,14 +686,17 @@ class SearchController extends DooController {
     }
 
     private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike) {
+//        print "\n\rL'articolo che considero:\n\r";
+//        print_r($articolo);
+//        print "\n\r";
         foreach ($arr as $key => $peso) {
             $pathTerm = explode('/', $key);
             unset($pathTerm[0]);
-//                        print "Stampo il pathterm come array:\n\r";
-//                        print_r ($pathTerm);
-//                        print "\n\r";
+//            print "Stampo il pathterm come array:\n\r";
+//            print_r($pathTerm);
+//            print "\n\r";
             $arr[$key] = $this->calcWeight($articolo, $pathTerm);
-            //print "Il peso per $key è: $arr[$key]\n\r";
+//            print "Il peso per $key è: $arr[$key]\n\r";
         }
 //        print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
         $sumPeso = array_sum($arr);
@@ -671,7 +707,7 @@ class SearchController extends DooController {
             if ($tempoPostConfrontato > $tempoPostConfronto)
                 $realPeso = ($sumPeso * 1000) / (($tempoPostConfrontato - $tempoPostConfronto) / 3600);
             else
-                $realPeso= ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
+                $realPeso = ( $sumPeso * 1000) / (($tempoPostConfronto - $tempoPostConfrontato) / 3600);
 //            $numDislike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
 //            $numLike = $pID[key($pID)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
             if ($numDislike > $numLike)
@@ -770,6 +806,22 @@ class SearchController extends DooController {
         }
 
         return $result;
+    }
+
+    private function validateXML($toParse) {
+        if ($toParse == "")
+            return false;
+        libxml_use_internal_errors(true);
+        $xdoc = new DomDocument;
+        $xmlschema = 'data/archive.xsd';
+        $xdoc->loadXML($toParse);
+        if ($xdoc->schemaValidate($xmlschema)){
+//            print "Validato cazzo";
+            return true;
+        }
+//        print "non Valido un cazzo";
+        return false;
+            
     }
 
 }

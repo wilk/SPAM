@@ -22,7 +22,5 @@ Idee
 - creare finestra per geolocazione e trovare un modo per mostrare 10 post degli autori più vicini
 
 - controllare SetDislike
-- settare this per ogni classe
-- la mappa non si vede su IE
 - controllare gestione errori, soprattutto 404 di alcuni casi
 - controllare che il bottone dell'aggiungi termine tesauro venga mostrato correttamente

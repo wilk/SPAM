@@ -52,6 +52,19 @@ class PostView {
                 }
             }
         }
+        //TODO: Copiare funzione sotto per $userPref;
+        if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'])) {
+                foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/like'] as $likeUser) {
+                        $user = strstr($likeUser, '/');
+                        $userPref .= "<span rev=\"tweb:like\" resource=\"$user \" />\n\r";
+                          }
+                }
+        if (isset($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/dislike'])) {
+                foreach ($p[$key]['http://vitali.web.cs.unibo.it/vocabulary/dislike'] as $dislikeUser) {
+                        $user = strstr($dislikeUser, '/');
+                        $userPref .= "<span rev=\"tweb:dislike\" resource=\"$user\" />\n\r";
+                          }
+                }
         $listOfReply = '';
         if (isset($p[$key]['http://rdfs.org/sioc/ns#has_reply'])) {
             foreach ($p[$key]['http://rdfs.org/sioc/ns#has_reply'] as $hasReply) {

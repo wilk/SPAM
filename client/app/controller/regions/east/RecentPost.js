@@ -46,9 +46,9 @@ Ext.define ('SC.controller.regions.east.RecentPost' , {
 		var storeArticles = this.getRegionsCenterArticlesStore ();
 		
 		// Set appropriate URL
-		store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/affinity' + record.get ('about');
+		storeArticles.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/affinity' + record.get ('about');
 	
 		// Retrieve articles
-		requestSearchArticles (store, record, index);
+		requestSearchArticles (storeArticles, record, index);
 	}
 });

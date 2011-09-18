@@ -14,7 +14,8 @@ Ext.define ('SC.view.SelectPost' , {
 	// Configuration
 	title: 'Select type of new post' ,
 	id: 'windowSelectPost' ,
-	height: 195 ,
+//	height: 195 ,
+	height: 230 ,
 	width: 740 ,
 	resizable: false ,
 	// On top of any content
@@ -72,6 +73,41 @@ Ext.define ('SC.view.SelectPost' , {
 			text: '.' ,
 			icon: 'ext/resources/images/btn-icons/link.png' ,
 			iconAlign: 'top'
+		}]
+	} ,
+	
+	// Docked buttons
+	dockedItems: {
+		xtype: 'toolbar' ,
+		dock: 'bottom' ,
+		ui: 'footer' ,
+		defaults: {
+			xtype: 'label' ,
+			style: {
+				fontSize: '2em' ,
+				color: 'grey'
+			}
+		} ,
+		items: [{
+			// Text
+			text: 'Text' ,
+			margin: '0 0 0 27'
+		} , {
+			// Video
+			text: 'Video' ,
+			margin: '0 0 0 45'
+		} , {
+			// Audio
+			text: 'Audio' ,
+			margin: '0 0 0 35'
+		} , {
+			// Image
+			text: 'Image' ,
+			margin: '0 0 0 42'
+		} , {
+			// Link
+			text: 'Link' ,
+			margin: '0 0 0 52'
 		}]
 	}
 });

@@ -145,6 +145,7 @@ Ext.define ('SC.controller.regions.North' , {
 				});
 			}
 		}
+		// LOGOUT
 		// Check if user wants to logout
 		else {
 			// AJAX request to logout
@@ -153,6 +154,10 @@ Ext.define ('SC.controller.regions.North' , {
 				scope: this ,
 				url: optionSin.getUrlServerLtw () + 'logout' ,
 				success: function () {
+					// Remove ltwlogin&SPAMlogin cookies
+					Ext.util.Cookies.clear ('ltwlogin');
+					Ext.util.Cookies.clear ('SPAMlogin');
+					
 					this.btnLogin.setText ('Login');
 		
 					this.fieldUser.reset ();

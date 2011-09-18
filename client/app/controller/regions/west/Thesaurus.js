@@ -115,7 +115,10 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		
 		// Set addterm button visibile if user is already logged in, otherwise set hidden
 		if (checkIfUserLogged ()) {
+			var tPan = Ext.getCmp ('thesaurusPanel');
+			tPan.collapse (Ext.Component.DIRECTION_TOP, false);
 			Ext.getCmp('btnThesaurusAddTerm').setVisible (true);
+			tPan.expand (false);
 		}
 		else {
 			Ext.getCmp('btnThesaurusAddTerm').setVisible (false);

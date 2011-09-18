@@ -37,10 +37,6 @@ Ext.define ('SC.controller.regions.west.Search' , {
 			} ,
 			// Textfield events
 			'#textSearch' : {
-				// Erase raw text
-				focus : function (tf) {
-					tf.setValue ('');
-				} ,
 				// Handle ENTER key
 				keypress : function (field , event) {
 					if (event.getKey () == event.ENTER)

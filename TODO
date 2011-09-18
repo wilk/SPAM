@@ -1,26 +1,6 @@
 - Guardare CANVAS
-- post vicini sulla mappa
-- inserire nome sotto icone per nuovo articolo
-- dbclick sui marker di google map per innestare una ricerca per affinity (singleton per marker?)
-- controllare che l'articolo o la struttura XML in arrivo non sia vuota, x evitare cazzi! (server prova a mandare XML vuoto solo con intestazione)
 - themebox nella north region di Saki
-- gestire bene i marker di google map
-
-----
-
 - testare su firefox 3.6 interamente
-- aggiornare la mappa ad ogni ricerca, cancellando i vecchi marker
-- creare nuova finestra (tipo followers) da associare ad ogni marker per descrivere tutte le info sull'autore e x poter fare una ricerca
 - mettere nelle opzioni la possibilità di usare i canvas o meno
-- quando si è disconnessi la recent non deve ritornare un 500 ma i post del server locale e se questi non ci sono 404
-- come gestire l'errore di un reader xml a cui viene passato del testo (text/html)
-
-Errori
-- cerca fulltext video. grosso problema.
-
-Idee
-- creare finestra per geolocazione e trovare un modo per mostrare 10 post degli autori più vicini
-
-- controllare SetDislike
-- controllare gestione errori, soprattutto 404 di alcuni casi
-- controllare che il bottone dell'aggiungi termine tesauro venga mostrato correttamente
+- testare i marker della geolocation
+- controllare la gestione dei marker: sembra vengano creati anche se la ricerca ritorna un 404

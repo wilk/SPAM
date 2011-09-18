@@ -90,7 +90,7 @@ Ext.define ('errorSin' , {
 				text = 'The request requires user authentication.';
 				break;
 			case 404:
-				text = 'The server has not found anything matching the Request-URI.';
+				text = 'The server has not found anything matching the resource requested.';
 				break;
 			case 405:
 				text = 'The method specified in the Request-Line is not allowed<br />for the resource identified by the Request-URI.';
@@ -171,8 +171,8 @@ Ext.define ('optionSin' , {
 	
 	// Reset variables (urls and id)
 	resetOption : function () {
-//		urlServerLtw = 'http://ltw1102.web.cs.unibo.it/';
-//		pureUrlServerLtw = 'http://ltw1102.web.cs.unibo.it';
+//		this.urlServerLtw = 'http://ltw1102.web.cs.unibo.it/';
+//		this.pureUrlServerLtw = 'http://ltw1102.web.cs.unibo.it/';
 		this.urlServerLtw = '';
 		this.pureUrlServerLtw = '';
 		this.serverID = 'Spammers';
@@ -192,6 +192,7 @@ Ext.define ('geolocSin' , {
 	geoSpan: '' ,
 	googleMap: null ,
 	browserGeoSupportFlag: false ,
+	markerList: new Array () ,
 	
 	// Getters
 	getSpan : function () {
@@ -226,8 +227,19 @@ Ext.define ('geolocSin' , {
 			});
 			// Attach the click event
 			google.maps.event.addListener(marker, 'click', this.showCoords);
+			
+			this.markerList.push (marker);
 		}
 	} ,
+	// Delete all markers
+	deleteMarkers : function () {
+		while (this.markerList.length > 0) {
+			var marker = this.markerList.pop ();
+			marker.setMap (null);
+		}
+	} ,
+	
+	// Show a window with some information
 	showCoords : function (event) {
 		var server = this.about.split('/')[1];
 		var user = this.about.split('/')[2];
@@ -237,13 +249,7 @@ Ext.define ('geolocSin' , {
 			html: '<b>User: </b>' + user + '<br /><b>Server: </b>' + server + '<br /><b>Post: </b>' + post + '<br /><b>Latitude: </b>' + event.latLng.lat () + '<br /><b>Longitude: </b>' + event.latLng.lng () ,
 			about: this.about
 		}).show ();
-//		Ext.Msg.show ({
-//			title: 'Coords of ' + this.title ,
-//			msg: 'Latitude : ' + event.latLng.lat () + '<br />Longitude : ' + event.latLng.lng () ,
-//			buttons: Ext.Msg.OK,
-//			icon: Ext.Msg.INFO
-//		});
-	}
+	} 
 });
 
 // @brief Singleton for article windows

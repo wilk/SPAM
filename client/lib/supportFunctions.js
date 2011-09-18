@@ -25,6 +25,9 @@ function requestSearchArticles (store, focus, focusIndex) {
 			// Clean the store
 			store.removeAll ();
 			
+			// Clean google map
+			geolocSin.deleteMarkers ();
+			
 			try {
 				// If there's no one post, throw a new error
 				if ($(xml).find('post').length == 0) 

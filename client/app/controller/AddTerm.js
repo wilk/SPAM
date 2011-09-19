@@ -21,6 +21,9 @@ Ext.define ('SC.controller.AddTerm' , {
 				afterrender : this.initVar ,
 				hide : this.resetFields
 			} ,
+			'#comboAddTerm': {
+				change : this.changeLabelPath
+			} ,
 			// Apply button
 			'#btnAddTermApply': {
 				click : this.applyFields
@@ -44,6 +47,7 @@ Ext.define ('SC.controller.AddTerm' , {
 	initVar: function (win) {
 		this.comboBox = win.down ('#comboAddTerm');
 		this.textField = win.down ('#tfAddTerm');
+		this.labelPath = win.down ('#comboPathLabel');
 		this.win = win;
 		
 		this.storeComboThesaurus = this.getComboThesaurusStore ();
@@ -53,6 +57,14 @@ Ext.define ('SC.controller.AddTerm' , {
 	resetFields: function (button) {
 		this.comboBox.reset ();
 		this.textField.reset ();
+		this.labelPath.setText ('Path: /');
+	} ,
+	
+	// @brief Change label of path
+	changeLabelPath: function (combo, newVal, oldVal) {
+		var record = this.storeComboThesaurus.findRecord('term', newVal);
+		
+		if (record != null) this.labelPath.setText ('Path: ' + record.get ('path'));
 	} ,
 	
 	// @brief Send 

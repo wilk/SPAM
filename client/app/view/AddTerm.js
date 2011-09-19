@@ -25,6 +25,11 @@ Ext.define ('SC.view.AddTerm' , {
 	
 	// Body
 	items: [{
+		// Path label
+		xtype: 'label' ,
+		id: 'comboPathLabel' ,
+		text: 'Path: /'
+	} ,{
 		// Combo of Thesaurus
 		xtype: 'combo' ,
 		id: 'comboAddTerm' ,

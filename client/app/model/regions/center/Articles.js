@@ -63,6 +63,9 @@ Ext.define ('SC.model.regions.center.Articles' , {
 		// Geolocation Longitude
 		name: 'glLong' ,
 		type: 'double'
+	} , {
+		name: 'time' ,
+		type: 'string'
 	}] ,
 	
 	// REST Proxy for REST requests

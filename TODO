@@ -2,5 +2,7 @@
 - themebox nella north region di Saki
 - testare su firefox 3.6 interamente
 - mettere nelle opzioni la possibilità di usare i canvas o meno
-- testare i marker della geolocation
-- controllare la gestione dei marker: sembra vengano creati anche se la ricerca ritorna un 404
+
+Idee
+- mettere la data nei post
+- differenziare i vari post con un css differente nelle finestre

@@ -114,10 +114,16 @@ function disposeArticles (store, focus, focusIndex) {
 			
 				degree += radCounter;
 				
+				// Get day and hour of the article
+				var day = record.get('time').slice (0, 10);
+				var hour = record.get ('time').slice (11, 19);
+				
+				var artBottom = '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
+				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
 					title: '<span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,
-					html: parseToRead (record.get ('article')) ,
+					html: parseToRead (record.get ('article')) + artBottom ,
 					id: 'articles' + j ,
 					x: x ,
 					y: y ,
@@ -160,11 +166,17 @@ function disposeArticles (store, focus, focusIndex) {
 		}
 	}
 	
+	// Get day and hour of the article
+	var day = focus.get('time').slice (0, 10);
+	var hour = focus.get ('time').slice (11, 19);
+	
+	var focusBottom = '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
+	
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {
 		// Author is /serverID/userID, so split and take only userID
 		title: '<span style="color: green; font-style: italic">' + focus.get ('user') + '</span> on <span style="color: red; font-style: italic">' + focus.get ('server') + '</span> said:' ,
-		html: parseToRead (focus.get ('article')) ,
+		html: parseToRead (focus.get ('article')) + focusBottom ,
 		x: focusX ,
 		y: focusY ,
 		id: 'winFocusArticle' ,

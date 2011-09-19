@@ -88,7 +88,8 @@ function requestSearchArticles (store, focus, focusIndex) {
 						server: $(this).find('article').attr('resource').split('/')[1] ,
 						post: $(this).find('article').attr('about').split('/')[3] ,
 						glLat: geoLat ,
-						glLong: geoLong
+						glLong: geoLong ,
+						time: $(this).find('article').attr ('content')
 					});
 				});
 				
@@ -242,7 +243,8 @@ function retrieveRecentArticles (store) {
 						server: $(this).find('article').attr('resource').split('/')[1] ,
 						post: $(this).find('article').attr('about').split('/')[3] ,
 						glLat: geoLat ,
-						glLong: geoLong
+						glLong: geoLong ,
+						time: $(this).find('article').attr ('content')
 					}));
 			
 				}

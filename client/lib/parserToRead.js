@@ -58,7 +58,7 @@ function embedResource (src, res) {
 	switch (res) {
 		// video
 		case 0:
-			retRes = '<iframe width="425" height="349" src="'+ src +'" frameborder="0" allowfullscreen></iframe>';
+			retRes = '<iframe width="425" height="349" src="'+ src.replace(new RegExp("watch\\?v=", "i"), 'v/') +'" frameborder="0" allowfullscreen></iframe>';
 			break;
 		// audio
 		case 1:

@@ -36,6 +36,8 @@
 				// To avoid AJAX request problems
 				Ext.Ajax.useDefaultXhrHeader = false;
 				
+				// If user is already logged in, set CurrentUser with this one
+				if (Ext.util.Cookies.get ('SPAMlogin') != null) optionSin.setCurrentUser (Ext.util.Cookies.get ('SPAMlogin'));
 			});
 		</script>
 	</head>

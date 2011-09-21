@@ -5,3 +5,11 @@
 
 Idee
 - differenziare i vari post con un css differente nelle finestre
+
+Test su altri browser
+- Chrome: autocomplete hashtag ha problemi nel tornare nella textarea
+- IE8: il discorso precedente fa ridere
+- Safari: anche questo non ritorna nella textarea. Inoltre rimane in caricamento quando richiede la geolocation.
+- Opera 11: sembra che prenda il '#' e lo schiaffi nella combobox
+
+- Sembra che abbia dei problemi con gli accenti: wtf?

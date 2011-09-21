@@ -64,7 +64,16 @@ Ext.define ('SC.model.regions.center.Articles' , {
 		name: 'glLong' ,
 		type: 'double'
 	} , {
+		// Time
 		name: 'time' ,
+		type: 'string'
+	} , {
+		// Type of the article (post, reply or respam)
+		name: 'type' ,
+		type: 'string'
+	} , {
+		// Resource of type (/serverID/userID/postID)
+		name: 'resourceType' ,
 		type: 'string'
 	}] ,
 	

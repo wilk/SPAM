@@ -108,7 +108,7 @@ Ext.define ('SC.controller.SendResource' , {
 		if (this.txtResUrl.isValid () && (this.txtResDes.getValue().length <= this.MAXCHARS)) {
 		
 			var 	artBody = this.txtResDes.getValue () ,
-				artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + this.txtResUrl.getValue () + '" />';
+				artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + this.txtResUrl.getValue ().split("&", 1) + '" />';
 			
 			// Escapes every '<'
 			artBody = artBody.replace ('<' , '&lt;');

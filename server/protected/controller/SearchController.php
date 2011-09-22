@@ -774,9 +774,9 @@ class SearchController extends DooController {
 //                    print (time());
 //                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
 
-            $tempo = time() - strtotime($creato);
+            //$tempo = time() - strtotime($creato);
             //print ("Differenza di tempo è:$tempo\n\r");
-            $peso = (((($matchEsatto + ($matchParziale * 0.5))) * 1000) / ($tempo / 3600)) * ($findTerm * $findTerm);
+            $peso = (($matchEsatto + ($matchParziale * 0.5)))/* * 1000) / ($tempo / 3600)*/ * ($findTerm * $findTerm);
 //                    print $peso;
 //                    print "Termini trovati $findTerm";
             return round($peso, 5);

@@ -253,13 +253,19 @@ class SearchController extends DooController {
                     ErrorController::badReq("Devi specificare il testo da cercare!!");
                 $stringToSearch = urldecode($this->params['var1']);
 //Inizializzo il timer e inizio a cercare in locale
-                $mtime = microtime();
-                $mtime = explode(' ', $mtime);
-                $mtime = $mtime[1] + $mtime[0];
-                $starttime = $mtime;
+//                $mtime = microtime();
+//                $mtime = explode(' ', $mtime);
+//                $mtime = $mtime[1] + $mtime[0];
+//                $starttime = $mtime;
                 $listOfWords = $this->utf8_str_word_count($stringToSearch, 1);
                 $listOfWords = array_unique($listOfWords);
-                //print_r($listOfWords);
+                $vocab = explode(" ", utf8_decode(file_get_contents("data/vocabolario.dat")));
+                //print_r($vocab); die();
+                foreach ($listOfWords as $k => $v) {
+                    if (in_array(utf8_decode($v), $vocab))
+                        unset ($listOfWords[$k]);
+                }
+                //print_r($listOfWords); die();
                 $post = new PostModel();
                 $allPost = $post->getPostArray(NULL, 'all');
 //$listPost = array();
@@ -275,11 +281,11 @@ class SearchController extends DooController {
                         );
                     }
                 }
-                $mtime = microtime();
-                $mtime = explode(" ", $mtime);
-                $mtime = $mtime[1] + $mtime[0];
-                $endtime = $mtime;
-                $totaltime = ($endtime - $starttime);
+//                $mtime = microtime();
+//                $mtime = explode(" ", $mtime);
+//                $mtime = $mtime[1] + $mtime[0];
+//                $endtime = $mtime;
+//                $totaltime = ($endtime - $starttime);
                 //print "Tempo trascorso $totaltime\n\r";
                 //print_r($this->listaPost);
                 //die();
@@ -316,8 +322,8 @@ class SearchController extends DooController {
                 //print "listaPost è fatto di: $c elementi";
                 //print_r($this->listaPost);die();
                 ////////////////// NEW //////////////////////////
-                //ksort($this->listaPost, SORT_NUMERIC);
-                //$this->listaPost = array_reverse($this->listaPost, TRUE);
+                ksort($this->listaPost, SORT_NUMERIC);
+                $this->listaPost = array_reverse($this->listaPost, TRUE);
                 $toRender = array();
                 foreach ($this->listaPost as $array) {
                     if ($limite == 0)
@@ -603,7 +609,7 @@ class SearchController extends DooController {
             curl_setopt($h, CURLOPT_HTTPHEADER, array(
                 "Content-Type: application/xml; charset=utf-8"
             ));
-            curl_setopt($h, CURLOPT_TIMEOUT, 5);
+            curl_setopt($h, CURLOPT_TIMEOUT, 3);
 
             array_push($hArr, $h);
         }
@@ -734,18 +740,18 @@ class SearchController extends DooController {
         foreach ($listOfWords as $indice => $word) {
             $find = false;
             if (strlen((string) $word) > 1) {
-                if (stristr((string) $word, "'") !== false) {
-                    $word = explode("'", (string) $word);
-                    $word = $word[1];
-                }
+//                if (stristr((string) $word, "'") !== false) {
+//                    $word = explode("'", (string) $word);
+//                    $word = $word[1];
+//                }
                 //print "Sto cercando questo termine: $word\n\r";
                 foreach ($wordInContent as $indice => $thisWord) {
-                    if (stristr((string) $thisWord, "'") !== false) {
-                        $thisWord = explode("'", (string) $thisWord);
-                        $thisWord = $thisWord[1];
-                    }
+//                    if (stristr((string) $thisWord, "'") !== false) {
+//                        $thisWord = explode("'", (string) $thisWord);
+//                        $thisWord = $thisWord[1];
+//                    }
                     //print "Sto controllando questo termine: $thisWord\n\r";
-                    if (strtolower((string) $thisWord) == strtolower((string) $word)) {
+                    if ($thisWord == $word) {
                         // print ("trovato il match di $word con $thisWord\n\r");
                         $matchEsatto++;
                         $find = true;
@@ -757,9 +763,8 @@ class SearchController extends DooController {
                         //print ("numero di matchParziali: $matchParziale\n\r");
                     }
                 }
-                if ($find) {
+                if ($find)
                     $findTerm++;
-                }
             }
         }
         //print ("totale termini trovati: $findTerm\n\r");
@@ -778,9 +783,7 @@ class SearchController extends DooController {
         }
     }
 
-    private
-
-    function rcvFromINTServer($usr, $countPost) {
+    private function rcvFromINTServer($usr, $countPost) {
         $post = new PostModel();
         $postIDs = $usr->getPosts($countPost);
         $posts = $post->getPostArray($postIDs);
@@ -796,13 +799,21 @@ class SearchController extends DooController {
         $result = array();
 
         if (preg_match_all('~[\p{L}\p{Mn}\p{Pd}\'\x{2019}' . preg_quote($charlist, '~') . ']+~u', $string, $result) > 0) {
-            if (array_key_exists(0, $result) === true) {
+            if (array_key_exists(0, $result) === true)
                 $result = $result[0];
-            }
         }
 
         if ($format == 0) {
             $result = count($result);
+        }
+        
+        if (is_array($result)){
+            foreach ($result as $k => $v){
+                $result[$k] = strtolower((string) $v);
+                $temp = stristr((string) $v, "'");
+                if ($temp != false)
+                    $result[$k] = $temp;
+            }
         }
 
         return $result;

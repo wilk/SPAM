@@ -106,15 +106,9 @@ Ext.define ('SC.controller.SendResource' , {
 		
 		// Check if text area is filled and if it has at most 140 chars
 		if (this.txtResUrl.isValid () && (this.txtResDes.getValue().length <= this.MAXCHARS)) {
-                    
-                        var risorsa , pattern = /youtube/gi;
-                        if (this.txtResUrl.getValue ().match(pattern))
-                            risorsa = this.txtResUrl.getValue ().split("&", 1);
-                        else
-                            risorsa = this.txtResUrl.getValue ();
 		
 			var 	artBody = this.txtResDes.getValue () ,
-				artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + risorsa + '" />';
+				artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + this.txtResUrl.getValue () + '" />';
 			
 			// Escapes every '<'
 			artBody = artBody.replace ('<' , '&lt;');

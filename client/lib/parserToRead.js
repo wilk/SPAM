@@ -60,7 +60,7 @@ function embedResource (src, res) {
 		case 0:
                         var pattern = /youtube/gi;
                         if (src.match(pattern))
-                            src = src.replace(new RegExp("watch\\?v=", "i"), 'v/');
+                            src = src.replace(new RegExp("watch\\?v=", "i"), 'v/').split("&", 1);
                         
 			retRes = '<iframe width="425" height="349" src="'+ src +'" frameborder="0" allowfullscreen></iframe>';
 			break;

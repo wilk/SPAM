@@ -15,6 +15,7 @@ class SearchController extends DooController {
     private $salt;
     private $request;
     private $SRV;
+    private $time;
 
     public function beforeRun($resource, $action) {
         $role;
@@ -269,6 +270,7 @@ class SearchController extends DooController {
                 $post = new PostModel();
                 $allPost = $post->getPostArray(NULL, 'all');
 //$listPost = array();
+                $this->time = time();
                 foreach ($allPost as $i => $pID) {
                     $postContentHTML = str_get_html(html_entity_decode($pID[key($pID)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
                     $findTerm;
@@ -774,9 +776,10 @@ class SearchController extends DooController {
 //                    print (time());
 //                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
 
-            //$tempo = time() - strtotime($creato);
+            $tempo = $this->time - (strtotime($creato)-7200);
             //print ("Differenza di tempo è:$tempo\n\r");
-            $peso = (($matchEsatto + ($matchParziale * 0.5)))/* * 1000) / ($tempo / 3600)*/ * ($findTerm * $findTerm);
+            //$peso = ((($matchEsatto + ($matchParziale * 0.5)) * 3600000) * ($findTerm * $findTerm)) / $tempo;
+            $peso = ((($matchEsatto + ($matchParziale * 0.5)) * 3600000) / $tempo) * ($findTerm * $findTerm);
 //                    print $peso;
 //                    print "Termini trovati $findTerm";
             return round($peso, 5);

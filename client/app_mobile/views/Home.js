@@ -40,6 +40,17 @@ mspam.views.Home=Ext.extend(Ext.Panel,{
 		title:'Spam',
 		items:[
 		{
+			iconCls:'refresh',
+			iconMask:true,
+			ui:'plain',
+			handler:function(){
+				Ext.dispatch({
+					controller:'Home',
+					action:'getSearchResponse'
+				});
+			}
+		},
+		{
 			xtype:'spacer'
 		},
 		{

@@ -55,7 +55,8 @@ Ext.regController('Map',{
 		mark.setPosition(pos);
 		mark.setMap(this.map.down('map').map);
 		this.markers.push(mark);
-	
+//		google.maps.event.addListener(mark,'click',Ext.ControllerManager.get('Map').markerTapHandler(pos,title));
+		google.maps.event.addListener(mark,'click',function(){Ext.ControllerManager.get('Map').markerTapHandler(pos,title);});
 	},
 	
 	centerMap:function(lat,lng){
@@ -103,6 +104,7 @@ Ext.regController('Map',{
 				
 				var tmp=this.markers.shift();
 				tmp.setMap(null);
+				google.maps.event.clearInstanceListeners(tmp);
 				i--
 			}
 //			else{
@@ -134,6 +136,47 @@ Ext.regController('Map',{
 			}
 		
 		},this);
+	
+	},
+	
+	markerTapHandler:function(position,title){
+	
+		var infowin=new google.maps.InfoWindow();
+		infowin.setPosition(position);
+//		infoWin.on('closeclick',infowin.close());
+	
+		if(title=='you'){
+			if(Ext.StoreMgr.get('loginstore').getCount()!=0){
+			
+				infowin.setContent('Hi <b>'+Ext.StoreMgr.get('loginstore').getAt(0).get('username')+'</b>, this is your current position');
+				infowin.open(this.map.down('map').map);
+			
+			}
+			else{
+			
+				infowin.setContent('Hi, this is you current position');
+				infowin.open(this.map.down('map').map);
+			}
+		}
+		else{
+			
+			var index=Ext.StoreMgr.get('poststore').findExact('about',title);
+			if(index!=-1){
+				
+				var rec=Ext.StoreMgr.get('poststore').getAt(index);
+				
+				Ext.dispatch({
+					controller:'Post',
+					action:'showPost',
+					post:rec.get('html'),
+					article:rec.get('article'),
+					user:rec.get('user'),
+					index:index,
+					view:this.map,
+					
+				})
+			}
+		}
 	
 	}
 

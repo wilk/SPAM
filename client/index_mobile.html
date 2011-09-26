@@ -3,26 +3,16 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
 	<title>SPAM</title>
-	 
-<!--	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />-->
-<!--	<meta name="apple-mobile-web-app-capable" content="yes" />-->
-	 
+	 	 
 	<!-- Sencha Touch framework -->
 	<link rel="stylesheet" type="text/css" href="lib_mobile/android.css" />
-<!--		<link rel="stylesheet" type="text/css" href="sencha-touch-1.1.0/resources/sass/android.scss" />-->
 </head>
-<!--<script>-->
-<!--	console.log('appCodeName: '+navigator.appCodeName);-->
-<!--	console.log('appName:'+navigator.appName);-->
-<!--	console.log('appVersione:'+navigator.appVersione);-->
-<!--	console.log('platform:'+navigator.platform);-->
-<!--	console.log('userAgent:'+navigator.userAgent);-->
-<!--	console.log(navigator.userAgent.toLowerCase().search('linux'));-->
-<!--</script>-->
+
 <body>
 
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 	<script type="text/javascript" src="lib_mobile/sencha-touch-debug-w-comments.js"></script>
-<!--	<script type="text/javascript" src="lib_mobile/mvc.js"></script>-->
+	<script type="text/javascript" src="lib_mobile/geoLocationLib.js"></script>
 
 	<div id="sencha-app">
 		<!--THANKYOU!!!-->
@@ -44,6 +34,9 @@
 			<script type="text/javascript" src="app_mobile/views/search/Search.js"></script>
 			<script type="text/javascript" src="app_mobile/views/ServerList.js"></script>
 			<script type="text/javascript" src="app_mobile/views/Thesaurus.js"></script>
+			<script type="text/javascript" src="app_mobile/views/Map.js"></script>
+			<script type="text/javascript" src="app_mobile/views/followers/Followers.js"></script>
+			<script type="text/javascript" src="app_mobile/views/followers/FollowersItemActions.js"></script>
 		</div>
 		
 		<div id="sencha-models">
@@ -52,6 +45,7 @@
 			<script type="text/javascript" src="app_mobile/models/Server.js"></script>
 			<script type="text/javascript" src="app_mobile/models/User.js"></script> 
 			<script type="text/javascript" src="app_mobile/models/Term.js"></script>
+			<script type="text/javascript" src="app_mobile/models/Follower.js"></script>
 		</div>
 		
 		<div id="sencha-controllers">
@@ -64,6 +58,8 @@
 			<script type="text/javascript" src="app_mobile/controllers/menu/Menu.js"></script>
 			<script type="text/javascript" src="app_mobile/controllers/Server.js"></script>
 			<script type="text/javascript" src="app_mobile/controllers/thesaurus/Thesaurus.js"></script>
+			<script type="text/javascript" src="app_mobile/controllers/Map.js"></script>
+			<script type="text/javascript" src="app_mobile/controllers/Followers.js"></script>
 		</div>
 	</div>
 </body>

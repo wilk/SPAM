@@ -14,7 +14,13 @@ init:function(){
 	if(Ext.StoreMgr.get('loginstore').getCount()!=0){
 		this.followersStore.load();
 	}
-	this.followersStore.addListener('datachange',this.followersStore.load())
+	Ext.Ajax.on('requestcomplete',function(conn,res,opt){
+		
+		if(opt.url=='login'&&res.status==200){
+			this.followersStore.load();
+		}
+		
+	},this)
 },
 
 showFollowers:function(options){

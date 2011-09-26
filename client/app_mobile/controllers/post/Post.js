@@ -1,13 +1,14 @@
 Ext.regController('Post',{
 
 	init:function(){
-			var postIndex,postView, userId, serverId, postId, likeChoice, postDate;
+			var postIndex,homeView, userId, serverId, postId, likeChoice, postDate;
 //			genLoaded=false;
 		},
 
 	showPost:function(options){
 	
 		postIndex=options.index;
+		homeView=options.view;
 		
 		this.getPostgenerality();
 		
@@ -45,11 +46,11 @@ Ext.regController('Post',{
 	
 		options.view.destroy();
 //		genLoaded=false;
-		Ext.dispatch({
-			controller:'Home',
-			action:'renderHome'
-		})
-		
+//		Ext.dispatch({
+//			controller:'Home',
+//			action:'renderHome'
+//		})
+		this.application.viewport.setActiveItem(homeView);
 	},
 	
 	getPostIndex:function(){
@@ -73,8 +74,10 @@ Ext.regController('Post',{
 					postID:postId,
 					value:value},
 			
-			success:function(){
-				alert('setlike');
+			success:function(response){
+				Ext.Msg.alert(response.statusText,response.responseText);
+				Ext.StoreMgr.get('poststore').getAt(postIndex).set('setlike',value);
+				likeChoice=value;
 			},
 			
 			failure:function(response){
@@ -110,10 +113,7 @@ Ext.regController('Post',{
 	},
 	
 	respamPost:function(){
-	
-//		if(!genLoaded){
-//			this.getPostgenerality();
-//		}
+
 		Ext.Ajax.request({
 		
 			method:'post',
@@ -123,8 +123,8 @@ Ext.regController('Post',{
 					userID:userId,
 					postID:postId},
 			
-			success:function(){
-				alert('post respammed');
+			success:function(response){
+				Ext.Msg.alert(response.statusText,response.responseText);
 			},
 			
 			failure:function(response){
@@ -162,15 +162,6 @@ Ext.regController('Post',{
 			lat:lat,
 			lng:lng
 		});
-		
-//		Ext.dispatch({
-//		
-//			controller:'Map',
-//			action:'centerMap',
-//			lat:lat,
-//			lng:lng
-//		
-//		});
 	
 	},
 	
@@ -231,10 +222,6 @@ Ext.regController('Post',{
 					scope:this,
 					handler:function(){
 						this.actions.hide();
-//						var value=1;
-//						if(this.actions.down('#followButton').text!='Follow user'){
-//							value=0;
-//						}
 						Ext.dispatch({
 							controller:'followers',
 							action:'setFollow',
@@ -253,10 +240,6 @@ Ext.regController('Post',{
 					scope:this,
 					handler:function(){
 						this.actions.hide();
-//						var value=1;
-//						if(this.actions.down('#followButton').text!='Follow user'){
-//							value=0;
-//						}
 						Ext.dispatch({
 							controller:'followers',
 							action:'setFollow',
@@ -273,11 +256,6 @@ Ext.regController('Post',{
 					scope:this,
 					handler:function(){
 					this.actions.hide();
-//						Ext.dispatch({
-//							controller:'PostAction',
-//							action:'destroySheet',
-//							view:this.up('postAction')
-//						})
 					}
 				}]
 			});
@@ -286,56 +264,31 @@ Ext.regController('Post',{
 		switch(likeChoice){
 		
 			case 0:
-				this.actions.remove('neutral');
+				this.actions.down('#neutral').hide();
+				this.actions.down('#dislike').show();
+				this.actions.down('#like').show();
 				break;
 			case 1:
-				this.actions.remove('like');
+				this.actions.down('#like').hide();
+				this.actions.down('#dislike').show();
+				this.actions.down('#neutral').show();
 				break;
 			case -1:
-				this.actions.remove('dislike');
+				this.actions.down('#dislike').hide();
+				this.actions.down('#like').show();
+				this.actions.down('#neutral').show();
 				break;		
 		}
 		var tmp=serverId+'/'+userId;
 		if(Ext.StoreMgr.get('followersStore').findExact('follower',tmp)!=-1){
 		
-//			this.actions.down('#followButton').addManagedListener(this.actions.down('#followButton'),'tap',function(){
-//			
-//				this.actions.hide();
-//			
-//				Ext.dispatch({
-//					
-//					controller:'followers',
-//					action:'setFollow',
-//					id:tmp,
-//					value:0
-//					
-//				})
-//			},this);
 			this.actions.down('#followButton').hide();
-			this.actions.down('#unfollowButton').show();
-
-//			this.actions.down('#followButton').setText('Unfollow user');
-//			this.actions.down('#followButton').ui='decline';		
+			this.actions.down('#unfollowButton').show();	
 		}
 		else{
-		
-//			this.actions.down('#followButton').addManagedListener(this.actions.down('#followButton'),'tap',function(){
-//			
-//				this.actions.hide();
-//			
-//				Ext.dispatch({
-//					
-//					controller:'followers',
-//					action:'setFollow',
-//					id:serverId+'/'+userId,
-//					value:1
-//					
-//				})
-//			},this);
+
 			this.actions.down('#unfollowButton').hide();
 			this.actions.down('#followButton').show();
-//			this.actions.down('#followButton').setText('Follow user');
-//			this.actions.down('#followButton').ui='confirm';		
 		}
 		
 		this.actions.show();

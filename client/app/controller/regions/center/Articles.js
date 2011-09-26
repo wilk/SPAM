@@ -67,7 +67,7 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 	initFocusWindow: function (win) {
 		try {
 			win.articleStore = this.getRegionsCenterArticlesStore ();
-		
+			
 			// Index of the appropriate model
 			win.indexModel = win.articleStore.find ('about' , win.aboutModel);
 			win.articleModel = win.articleStore.getRange()[win.indexModel];
@@ -361,15 +361,14 @@ Ext.define ('SC.controller.regions.center.Articles' , {
 				postID: win.articleModel.get ('post')
 			} ,
 			success: function (response) {
-				Ext.Msg.show ({
-					title: response.status + ' : success!' ,
-					msg: "Respam was successful! +1!" ,
-					buttons: Ext.Msg.OK,
-					icon: Ext.Msg.INFO
-				});
-				
 				// Unset loading mask
 				win.setLoading (false);
+				
+				// Set appropriate URL with username of the user already logged-in
+				win.articleStore.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ();
+					
+				// Retrieve articles
+				requestSearchArticles (win.articleStore, null, 0);
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({

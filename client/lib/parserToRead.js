@@ -58,6 +58,10 @@ function embedResource (src, res) {
 	switch (res) {
 		// video
 		case 0:
+                        var pattern = /youtube/gi;
+                        if (src.match(pattern))
+                            src = src.replace(new RegExp("watch\\?v=", "i"), 'v/');
+                        
 			retRes = '<iframe width="425" height="349" src="'+ src +'" frameborder="0" allowfullscreen></iframe>';
 			break;
 		// audio

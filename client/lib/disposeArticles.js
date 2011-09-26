@@ -114,16 +114,26 @@ function disposeArticles (store, focus, focusIndex) {
 			
 				degree += radCounter;
 				
+				// Article Body
+				var artBody = parseToRead (record.get ('article'));
+				
+				// Article header (only if it's a respam or reply)
+				var diffUser = '<span style="color: green; font-style: italic;">' + record.get('resourceType').split('/')[2] + '</span> on <span style="color: red; font-style: italic;">' + record.get('resourceType').split('/')[1] + '</span>:<br />';
+				
+				if (record.get ('type') == 'reply') artBody = '<b>Reply to ' + diffUser + '</b>' + artBody;
+				else if (record.get ('type') == 'respam') artBody = '<b>Respam from ' + diffUser + '</b><div style="font-style: italic; padding: 5px;">' + artBody + '</div>';
+				
+				// Article Footer
 				// Get day and hour of the article
 				var day = record.get('time').slice (0, 10);
 				var hour = record.get ('time').slice (11, 19);
 				
-				var artBottom = '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
+				artBody += '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
 				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
 					title: '<span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,
-					html: parseToRead (record.get ('article')) + artBottom ,
+					html: artBody ,
 					id: 'articles' + j ,
 					x: x ,
 					y: y ,
@@ -166,17 +176,27 @@ function disposeArticles (store, focus, focusIndex) {
 		}
 	}
 	
+	// Article Body
+	var artBody = parseToRead (focus.get ('article'));
+	
+	// Article header (only if it's a respam or reply)
+	var diffUser = '<span style="color: green; font-style: italic;">' + focus.get('resourceType').split('/')[2] + '</span> on <span style="color: red; font-style: italic;">' + focus.get('resourceType').split('/')[1] + '</span>:<br />';
+	
+	if (focus.get ('type') == 'reply') artBody = '<b>Reply to ' + diffUser + '</b>' + artBody;
+	else if (focus.get ('type') == 'respam') artBody = '<b>Respam from ' + diffUser + '</b><div style="font-style: italic; padding: 5px;">' + artBody + '</div>';
+	
+	// Article Footer
 	// Get day and hour of the article
 	var day = focus.get('time').slice (0, 10);
 	var hour = focus.get ('time').slice (11, 19);
 	
-	var focusBottom = '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
+	artBody += '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
 	
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {
 		// Author is /serverID/userID, so split and take only userID
 		title: '<span style="color: green; font-style: italic">' + focus.get ('user') + '</span> on <span style="color: red; font-style: italic">' + focus.get ('server') + '</span> said:' ,
-		html: parseToRead (focus.get ('article')) + focusBottom ,
+		html: artBody ,
 		x: focusX ,
 		y: focusY ,
 		id: 'winFocusArticle' ,
@@ -192,6 +212,15 @@ function disposeArticles (store, focus, focusIndex) {
 	// Add win to center region
 	cntRegion.add (win);
 	win.show ();
+	
+	// Attach some powerful and cool events
+	win.getEl().on ({
+		mouseenter: function (event, el) {
+			// Bring on top when mouse enter
+			this.toFront ();
+		} ,
+		scope: win
+	});
 	
 	// Bring up on top
 	if (winNav.isVisible ()) winNav.toFront ();

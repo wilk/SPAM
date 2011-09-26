@@ -106,9 +106,16 @@ Ext.define ('SC.controller.SendResource' , {
 		
 		// Check if text area is filled and if it has at most 140 chars
 		if (this.txtResUrl.isValid () && (this.txtResDes.getValue().length <= this.MAXCHARS)) {
-		
+		        
+                        var risorsa , pattern = /youtube/gi;
+                        if (this.txtResUrl.getValue ().match(pattern))
+                            risorsa = this.txtResUrl.getValue ().split("&", 1);
+
+                        else
+                            risorsa = this.txtResUrl.getValue ();
+                
 			var 	artBody = this.txtResDes.getValue () ,
-				artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + this.txtResUrl.getValue () + '" />';
+				artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + risorsa + '" />';
 			
 			// Escapes every '<'
 			artBody = artBody.replace ('<' , '&lt;');
@@ -153,16 +160,8 @@ Ext.define ('SC.controller.SendResource' , {
 					// On success, close window and display last 5 posts of the user
 					this.win.close ();
 
-					// Get appropriate serverID of the user logged in
-					var sendServerID = Ext.getCmp('tfServerUrl').getValue ();
-					
-					// If it is null, set default value ('Spammers')
-					if (sendServerID == null) {
-						sendServerID = 'Spammers';
-					}
-					
 					// Set appropriate URL with username of the user already logged-in
-					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + sendServerID + '/' + optionSin.getCurrentUser ();
+					store.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ();
 					
 					// Retrieve articles
 					requestSearchArticles (store, null, 0);

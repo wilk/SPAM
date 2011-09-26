@@ -373,15 +373,14 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 				postID: win.focusModel.get ('post')
 			} ,
 			success: function (response) {
-				Ext.Msg.show ({
-					title: response.status + ' : success!' ,
-					msg: "Respam was successful! +1!" ,
-					buttons: Ext.Msg.OK,
-					icon: Ext.Msg.INFO
-				});
-				
 				// Unset loading mask
 				win.setLoading (false);
+				
+				// Set appropriate URL with username of the user already logged-in
+				win.focusStore.getProxy().url = optionSin.getUrlServerLtw () + 'search/' + optionSin.getSearchNumber () + '/author/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ();
+					
+				// Retrieve articles
+				requestSearchArticles (win.focusStore, null, 0);
 			} ,
 			failure: function (error) {
 				Ext.Msg.show ({

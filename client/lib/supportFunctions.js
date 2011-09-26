@@ -33,7 +33,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 				if ($(xml).find('post').length == 0) 
 					throw {
 						name: 'XML Parsing' ,
-						message: 'Something bad happened while reading the XML. Maybe is non well-formed.'
+						message: 'Something bad happened while reading the XML. Maybe is non well-formed or there are no articles to show.'
 					}
 				
 				// Check every posts
@@ -43,6 +43,7 @@ function requestSearchArticles (store, focus, focusIndex) {
 					var geoLat = 0.0;
 					var geoLong = 0.0;
 					var aboutID = $(this).find('article').attr ('about');
+					var articleType, resType;
 					
 					// Find like and dislike counter plus setlike of the user
 					$(this).find('article').find('span').each (function () {
@@ -56,14 +57,6 @@ function requestSearchArticles (store, focus, focusIndex) {
 							numDislike = parseInt ($(this).attr ('content'));
 						}
 					
-						// Find setlike/setdislike of the user
-						if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
-							ifLikeDislike = 1;
-						}
-						else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
-							ifLikeDislike = -1;
-						}
-					
 						// Find geolocation coords
 						if ($(this).attr ('id') == 'geolocationspan') {
 							geoLong = ($(this).attr ('long') != null ? $(this).attr ('long') : 0.0);
@@ -72,6 +65,29 @@ function requestSearchArticles (store, focus, focusIndex) {
 								var mapLatLng = new google.maps.LatLng (geoLat, geoLong);
 								geolocSin.addMarker (mapLatLng, aboutID);
 							}
+						}
+						
+						switch ($(this).attr ('rev')) {
+							// Find setlike of the user
+							case 'tweb:like':
+								if ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ()) 
+									ifLikeDislike = 1;
+								break;
+							// Find setdislike of the user
+							case 'tweb:dislike':
+								if ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ()) 
+									ifLikeDislike = -1;
+								break;
+							// Find type of the article (reply)
+							case 'sioc:reply_of':
+								articleType = 'reply';
+								resType = $(this).attr ('resource');
+								break;
+							// Find type of the article (respam)
+							case 'tweb:respamOf':
+								articleType = 'respam';
+								resType = $(this).attr ('resource');
+								break;
 						}
 					});
 					
@@ -89,7 +105,9 @@ function requestSearchArticles (store, focus, focusIndex) {
 						post: $(this).find('article').attr('about').split('/')[3] ,
 						glLat: geoLat ,
 						glLong: geoLong ,
-						time: $(this).find('article').attr ('content')
+						time: $(this).find('article').attr ('content') ,
+						type: articleType ,
+						resourceType: resType
 					});
 				});
 				
@@ -196,6 +214,8 @@ function retrieveRecentArticles (store) {
 					var geoLat = 0.0;
 					var geoLong = 0.0;
 					var aboutID = $(this).find('article').attr ('about');
+					var articleType;
+					var resType;
 			
 					// Find like and dislike counter plus setlike of the user
 					$(this).find('article').find('span').each (function () {
@@ -209,14 +229,6 @@ function retrieveRecentArticles (store) {
 							numDislike = parseInt ($(this).attr ('content'));
 						}
 				
-						// Find setlike/setdislike of the user
-						if (($(this).attr ('rev') == 'tweb:like') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
-							ifLikeDislike = 1;
-						}
-						else if (($(this).attr ('rev') == 'tweb:dislike') && ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ())) {
-							ifLikeDislike = -1;
-						}
-				
 						// Find geolocation coords
 						if ($(this).attr ('id') == 'geolocationspan') {
 							geoLong = ($(this).attr ('long') != null ? $(this).attr ('long') : 0.0);
@@ -226,7 +238,29 @@ function retrieveRecentArticles (store) {
 								geolocSin.addMarker (mapLatLng, aboutID);
 							}
 						}
-				
+						
+						switch ($(this).attr ('rev')) {
+							// Find setlike of the user
+							case 'tweb:like':
+								if ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ()) 
+									ifLikeDislike = 1;
+								break;
+							// Find setdislike of the user
+							case 'tweb:dislike':
+								if ($(this).attr ('resource') == '/' + optionSin.getServerID () + '/' + optionSin.getCurrentUser ()) 
+									ifLikeDislike = -1;
+								break;
+							// Find type of the article (reply)
+							case 'sioc:reply_of':
+								articleType = 'reply';
+								resType = $(this).attr ('resource');
+								break;
+							// Find type of the article (respam)
+							case 'tweb:respamOf':
+								articleType = 'respam';
+								resType = $(this).attr ('resource');
+								break;
+						}
 					});
 					
 					// Add article to the array
@@ -244,7 +278,9 @@ function retrieveRecentArticles (store) {
 						post: $(this).find('article').attr('about').split('/')[3] ,
 						glLat: geoLat ,
 						glLong: geoLong ,
-						time: $(this).find('article').attr ('content')
+						time: $(this).find('article').attr ('content') ,
+						type: articleType ,
+						resourceType: resType
 					}));
 			
 				}

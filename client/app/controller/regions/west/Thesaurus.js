@@ -47,7 +47,7 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 		// function and constructor from parse.js library
 		myRDF = new RDF ();
 		myRDF.getRDFURL (urlThesaurus, function () {
-			// get root node to append all chileds
+			// get root node to append all children
 			var root = (storeThesaurus.getRootNode ()) ? storeThesaurus.getRootNode () : storeThesaurus.setRootNode ({
 					text: 'Thesaurus' ,
 					expanded: true
@@ -90,11 +90,35 @@ Ext.define ('SC.controller.regions.west.Thesaurus' , {
 				node.data.leaf = true;
 			}
 			
-			// Get namespace of the term
-			var nsOfTerm = myRDF.getSingleObject (null, subject, skosNS + 'inScheme', null);
+			var nsOfTerm;
+			var pathOfTerm;
 			
-			// And then get the tree path of the term (/sport , /sport/calcio , etc.)
-			var pathOfTerm = subject.slice (nsOfTerm.length, subject.length);
+			// Bad work-around for TangoWhiskey
+			if (optionSin.getServerID () == 'TangoWhiskey') {
+				// Find namespace of the term
+				var ns = myRDF.getSingleObject(null, subject, skosNS + 'inScheme', null).split('/');
+				// tweb or ltw
+				ns = ns[ns.length - 1];
+				
+				// tweb:/sport -> /sport
+				var path = subject.split(':')[1];
+				
+				// Extendend
+				// E.g. : http://ltw1106.web.cs.unibo.it/thesaurus
+				if (ns == 'ltw') nsOfTerm = optionSin.getPureUrlServerLtw () + 'thesaurus';
+				// Shared
+				// http://vitali.web.cs.unibo.it/TechWeb11/thesaurus
+				else nsOfTerm = twebNS;
+				
+				// E.g. : http://ltw1106.web.cs.unibo.it/thesaurus/sport/pallavolo/allenatore
+				pathOfTerm = nsOfTerm + path;
+			}
+			else {
+				// Namespace of the term
+				nsOfTerm = myRDF.getSingleObject (null, subject, skosNS + 'inScheme', null);
+				// Path of the term
+				pathOfTerm = subject.slice (nsOfTerm.length, subject.length);
+			}
 			
 			// Fill the ComboThesaurus
 			storeComboThesaurus.add ({

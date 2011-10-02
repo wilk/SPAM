@@ -58,6 +58,13 @@ function embedResource (src, res) {
 	switch (res) {
 		// video
 		case 0:
+			// TODO: problem with FF3.6
+			// Treats youtube videos in a different way
+//			var ytPattern = /youtube/gi;
+//			if (src.match (ytPattern)) {
+//				src = src.replace (new RegExp ("watch\\?v=", "i"), 'v/');
+//			}
+
                         var pattern = /youtube/gi;
                         if (src.match(pattern))
                             src = src.replace(new RegExp("watch\\?v=", "i"), 'v/');

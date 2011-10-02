@@ -15,7 +15,7 @@ function htInjection (text, store) {
 	var	spanHTBase = '<span rel="sioc:topic">' ,
 		spanHTExternal = '<span typeof="ctag:Tag" property="ctag:label">' ,
 		spanClose = '</span>';
-		
+	
 	var extendedNS = optionSin.getPureUrlServerLtw () + 'thesaurus';
 	var sharedNS = 'http://vitali.web.cs.unibo.it/TechWeb11/thesaurus';
 	
@@ -24,7 +24,7 @@ function htInjection (text, store) {
 	for (var i in words) {
 		// If the first char of the word is '#', then it's an hashtag
 		if (words[i][0] == "#") {
-			// To avid punctuation during RDF injection
+			// To avoid punctuation during RDF injection
 			var wordPunctuation = '';
 			var wordToReplace = spanHTBase + '#';
 			

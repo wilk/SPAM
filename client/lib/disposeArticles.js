@@ -91,13 +91,6 @@ function disposeArticles (store, focus, focusIndex) {
 		// Create a window for any articles
 		for (var index=0; index < storeCount; index++) {
 			var record = store.getAt (index);
-//			var winAff = record.get ('affinity');
-//			var strWinAff = winAff.toString ();
-			// TODO: fix this stuff because 1198 is greater then 1099
-			// Check if affinity value is greater then 99. If is it, keep the last two figures (1099 -> 99)
-//			if (strWinAff.length > 2) {
-//				winAff = parseInt (strWinAff.slice (strWinAff.length - 2, strWinAff.length));
-//			}
 			var x, y;
 			
 			// Don't manage the focus article
@@ -126,13 +119,14 @@ function disposeArticles (store, focus, focusIndex) {
 				// Article Footer
 				// Get day and hour of the article
 				var day = record.get('time').slice (0, 10);
-				var hour = record.get ('time').slice (11, 19);
+//				var hour = record.get ('time').slice (11, 16);				
+				var hour = record.get ('time').slice (11, 16);
 				
-				artBody += '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
+//				artBody += '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
 				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
-					title: '<span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,
+					title: '[' + day + ' ' + hour + '] <span style="color: green; font-style: italic">' + record.get ('user') + '</span> on <span style="color: red; font-style: italic">' + record.get ('server') + '</span> said:' ,
 					html: artBody ,
 					id: 'articles' + j ,
 					x: x ,
@@ -188,14 +182,15 @@ function disposeArticles (store, focus, focusIndex) {
 	// Article Footer
 	// Get day and hour of the article
 	var day = focus.get('time').slice (0, 10);
-	var hour = focus.get ('time').slice (11, 19);
+//	var hour = focus.get ('time').slice (11, 19);
+	var hour = focus.get ('time').slice (11, 16);
 	
-	artBody += '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
+//	artBody += '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
 	
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {
 		// Author is /serverID/userID, so split and take only userID
-		title: '<span style="color: green; font-style: italic">' + focus.get ('user') + '</span> on <span style="color: red; font-style: italic">' + focus.get ('server') + '</span> said:' ,
+		title: '[' + day + ' ' + hour + '] <span style="color: green; font-style: italic">' + focus.get ('user') + '</span> on <span style="color: red; font-style: italic">' + focus.get ('server') + '</span> said:' ,
 		html: artBody ,
 		x: focusX ,
 		y: focusY ,

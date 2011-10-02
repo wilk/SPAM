@@ -13,7 +13,7 @@ Ext.define ('SC.view.regions.center.Articles' , {
 	
 	// Configuration
 	height: 200 ,
-	width: 300 ,
+	width: 330 ,
 	autoWidth: true ,
 	autoHeight: true ,
 	bodyPadding: 5 ,

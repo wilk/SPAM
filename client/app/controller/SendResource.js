@@ -106,6 +106,13 @@ Ext.define ('SC.controller.SendResource' , {
 		
 		// Check if text area is filled and if it has at most 140 chars
 		if (this.txtResUrl.isValid () && (this.txtResDes.getValue().length <= this.MAXCHARS)) {
+			var artBody = "";
+			
+			var srcRes = this.txtResUrl.getValue ();
+			// TODO: problem with FF3.6
+//			var ytPattern = /youtube/gi;
+//			
+//			if (srcRes.match (ytPattern)) srcRes = srcRes.split('&', 1);
 		        
                         var risorsa , pattern = /youtube/gi;
                         if (this.txtResUrl.getValue ().match(pattern))
@@ -117,10 +124,21 @@ Ext.define ('SC.controller.SendResource' , {
 			var 	artBody = this.txtResDes.getValue () ,
 				artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + risorsa + '" />';
 			
-			// Escapes every '<'
-			artBody = artBody.replace ('<' , '&lt;');
+			var artResource = '<span resource="' + this.btnGhost.getText () + '" src="' + srcRes + '" />';
 			
-			artBody = htInjection (artBody , this.getComboThesaurusStore ());
+			// If there's any description, add to the article
+			if (this.txtResDes.getValue().length > 0) {
+				artBody = this.txtResDes.getValue ();
+				
+				// Escapes every '<'
+				artBody = artBody.replace ('<' , '&lt;');
+				
+				// Add hashtag tag
+				artBody = htInjection (artBody , this.getComboThesaurusStore ());
+				
+				// Terminate with a break line
+				artBody += '<br />';
+			}
 			
 			// XML Injection
 			var article = this.artHeader + '\n' + artBody + '\n' + artResource + '\n';

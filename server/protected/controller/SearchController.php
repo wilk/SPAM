@@ -16,6 +16,9 @@ class SearchController extends DooController {
     private $request;
     private $SRV;
     private $time;
+    private $respamOf = null;
+    private $replyOf = null;
+    private $listOfReply = array();
 
     public function beforeRun($resource, $action) {
         $role;
@@ -264,7 +267,7 @@ class SearchController extends DooController {
                 //print_r($vocab); die();
                 foreach ($listOfWords as $k => $v) {
                     if (in_array(utf8_decode($v), $vocab))
-                        unset ($listOfWords[$k]);
+                        unset($listOfWords[$k]);
                 }
                 //print_r($listOfWords); die();
                 $post = new PostModel();
@@ -335,7 +338,7 @@ class SearchController extends DooController {
                         $arrayPesi[$key] = $post['peso'];
                     array_multisort($arrayPesi, SORT_DESC, $array);
                     $n = count($array);
-                    if (is_numeric($limite) && $n>$limite){
+                    if (is_numeric($limite) && $n > $limite) {
                         $toRender = array_merge($toRender, array_slice($array, 0, $limite));
                         break;
                     }
@@ -383,12 +386,32 @@ class SearchController extends DooController {
                 $pid = urldecode($this->params['var3']);
                 $content;
                 $timeOfPost;
+                $origLimite = $limite;
                 $post = new PostModel();
                 if ($srv == 'Spammers') {
                     $ID = 'spam:/' . implode('/', array($srv, $usr, $pid));
                     if (!$post->postExist($ID))
                         ErrorController::notFound('Questo post non esiste!!');
                     $art = $post->getPost($ID);
+//                    print_r($art);
+                    if (isset($art[key($art)]['http://vitali.web.cs.unibo.it/vocabulary/respamOf'])) {
+                        $respamOf = explode('spam:', $art[key($art)]['http://vitali.web.cs.unibo.it/vocabulary/respamOf'][0]);
+                        $this->respamOf = $respamOf[1];
+                        $limite--;
+                        //print $respamOf;
+                    } else if (isset($art[key($art)]['http://rdfs.org/sioc/ns#reply_of'])) {
+                        $replyOf = explode('spam:', $art[key($art)]['http://rdfs.org/sioc/ns#reply_of'][0]);
+                        $this->replyOf = $replyOf[1];
+                        $limite--;
+                        //print $replyOf;
+                    }
+                    if (isset($art[key($art)]['http://rdfs.org/sioc/ns#has_reply'])) {
+                        foreach ($art[key($art)]['http://rdfs.org/sioc/ns#has_reply'] as $key => $replyPost) {
+                            $replyPost = explode("spam:", $replyPost);
+                            $this->listOfReply[] = $replyPost[1];
+                            $limite--;
+                        }
+                    }
                     $content = html_entity_decode($art[key($art)]['http://rdfs.org/sioc/ns#content'][0], ENT_COMPAT, 'UTF-8');
                     $timeOfPost = $art[key($art)]["http://purl.org/dc/terms/created"][0];
                 } else {
@@ -405,16 +428,43 @@ class SearchController extends DooController {
                         $content = str_get_html($this->request->result());
                         $timeOfPost = $content->find('article', 0)->content;
                         $content = $content->find('article', 0)->innertext;
+                        $tempContent = str_get_html($content);
+                        if (isset($tempContent->find("span[rel=tweb:respamOf]", 0)->resource)) {
+                            $respamOf = $tempContent->find("span[rel=tweb:respamOf]", 0)->resource;
+                            $limite--;
+                        } else if (isset($tempContent->find("span[rel=sioc:reply_of]", 0)->resource)) {
+                            $replyOf = $tempContent->find("span[rel=sioc:reply_of]", 0)->resource;
+                            $limite--;
+                        }
+                        foreach ($tempContent->find("span[rel=sioc:has_reply]") as $reply) {
+                            $listOfReply[] = $reply->resource;
+                            $limite--;
+                        }
                     }else
                         ErrorController::notFound("il server non esiste");
                 }////l'articolo da affinare!
-                //print ("$content\n\r");
-                $html = str_get_html($content);
+//                print ("$content\n\r");
+                $html = str_get_html(html_entity_decode($content));
                 $arr = array();
                 foreach ($html->find("span[typeof=skos:Concept]") as $tag) {
                     $arr[$tag->about] = 0;
                 }
-                //print_r ($arr);
+//                print "Gli hashtag contenuti nell'articolo";
+//                print_r($arr);
+//                die();
+//               //Se non ci sono hashtag faccio partire una fulltext
+                //TODO: Implementare ricerca fulltext in caso di nessun #hashtag
+//                if (count($arr) == 0) {
+//                    $testoToSearch = urlencode($html->plaintext);
+//                    $this->request->connect_to("http://ltw1102.web.cs.unibo.it/search/$limite/fulltext/$testoToSearch")
+//                            ->accept(DooRestClient::XML)
+//                            ->get();
+//                    //print ($this->request->result());
+//                    $xml=simplexml_load_string($this->request->result());
+//                    print ("prova del cazzo\n\r");
+//                    print ($xml->asXML());
+//                    die();
+//                }
                 //Peso i post del nostro server
                 $allPost = $post->getPostArray(NULL, 'all');
 //                print (key($art));
@@ -474,7 +524,10 @@ class SearchController extends DooController {
                 }
                 //print "uscito dalla richiesta..muoio!\n\r";
                 // print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
-                $this->sortPost($limite);
+                $this->processReleatedPosts($arr, $tempoPostConfronto);
+//                print_r($this->listaPost);
+//                die();
+                $this->sortPost($origLimite);
                 $this->displayPosts();
                 break;
 
@@ -539,7 +592,7 @@ class SearchController extends DooController {
                 $arr[$tag] -= $none;
         }
         //anche qui ho aggiunto sto controllo per le related dall'esterno
-        if (sizeof($arr)){
+        if (sizeof($arr)) {
             arsort($arr, SORT_NUMERIC);
             return current($arr);
         } else
@@ -611,7 +664,7 @@ class SearchController extends DooController {
             curl_setopt($h, CURLOPT_HTTPHEADER, array(
                 "Content-Type: application/xml; charset=utf-8"
             ));
-            curl_setopt($h, CURLOPT_TIMEOUT, 3);
+            curl_setopt($h, CURLOPT_TIMEOUT, 5);
 
             array_push($hArr, $h);
         }
@@ -646,7 +699,7 @@ class SearchController extends DooController {
             if ($pathTerm) {
                 $weight = $this->calcWeight($articolo->innertext, $pathTerm);
                 //faccio sto controllo caso mai il post di cui ho calcolato il peso non c'entra nulla
-                if($weight<0)
+                if ($weight < 0)
                     continue;
                 $node['peso'] += $this->salt * $weight;
             }
@@ -682,7 +735,7 @@ class SearchController extends DooController {
 //        print "Validato";
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
-//            print "L'articolo é:\n\r".$articolo->outertext."\n\r";
+//            print "L'articolo é:\n\r" . $articolo->outertext . "\n\r";
 //            print "blabla bla";
             $tempoPostConfrontato = strtotime($articolo->content);
 //            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
@@ -693,7 +746,7 @@ class SearchController extends DooController {
         }
     }
 
-    private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike) {
+    private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, $bonus= 0) {
 //        print "\n\rL'articolo che considero:\n\r";
 //        print_r($articolo);
 //        print "\n\r";
@@ -707,7 +760,7 @@ class SearchController extends DooController {
 //            print "Il peso per $key è: $arr[$key]\n\r";
         }
 //        print "il peso totale per questo articolo è:" . array_sum($arr) . "\n\r";
-        $sumPeso = array_sum($arr);
+        $sumPeso = array_sum($arr) + $bonus;
         //Se il peso è positivo allora considero l'articolo
         if ($sumPeso > 0 && $tempoPostConfrontato != $tempoPostConfronto) {
             //$tempoPostConfrontato = strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]);
@@ -776,7 +829,7 @@ class SearchController extends DooController {
 //                    print (time());
 //                    print (strtotime($pID[key($pID)]["http://purl.org/dc/terms/created"][0]));
 
-            $tempo = $this->time - (strtotime($creato)-7200);
+            $tempo = $this->time - (strtotime($creato) - 7200);
             //print ("Differenza di tempo è:$tempo\n\r");
             //$peso = ((($matchEsatto + ($matchParziale * 0.5)) * 3600000) * ($findTerm * $findTerm)) / $tempo;
             $peso = ((($matchEsatto + ($matchParziale * 0.5)) * 3600000) / $tempo) * ($findTerm * $findTerm);
@@ -809,9 +862,9 @@ class SearchController extends DooController {
         if ($format == 0) {
             $result = count($result);
         }
-        
-        if (is_array($result)){
-            foreach ($result as $k => $v){
+
+        if (is_array($result)) {
+            foreach ($result as $k => $v) {
                 $result[$k] = strtolower((string) $v);
                 $temp = stristr((string) $v, "'");
                 if ($temp != false)
@@ -829,13 +882,116 @@ class SearchController extends DooController {
         $xdoc = new DomDocument;
         $xmlschema = 'data/archive.xsd';
         $xdoc->loadXML($toParse);
-        if ($xdoc->schemaValidate($xmlschema)){
-//            print "Validato cazzo";
+        if ($xdoc->schemaValidate($xmlschema)) {
             return true;
         }
-//        print "non Valido un cazzo";
         return false;
-            
+    }
+
+    private function processReleatedPosts($arr, $tempoPostConfronto) {
+        if ($this->respamOf != null) {
+            $tempArray = explode('/', $this->respamOf);
+            $srv = $tempArray[1];
+            $usr = $tempArray[2];
+            $pid = $tempArray[3];
+            if ($srv != "Spammers") {
+                $url = $this->SRV->getUrl($srv);
+                if ($url) {
+                    //print "La richiesta è:".$url."postserver/$usr/$pid\n\r";
+                    $this->request->connect_to($url . "postserver/$usr/$pid")
+                            ->accept(DooRestClient::HTML)
+                            ->get();
+                    if ($this->request->isSuccess()) {
+                        $articolo = str_get_html($this->request->result());
+                        $tempoPostConfrontato = strtotime($articolo->content);
+//            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
+//            print "Tempo articolo: $tempoPostConfronto\n\r";
+                        $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
+                        $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
+                        $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 10);
+                    }
+                }
+            } else {
+                $post = new PostModel();
+                $pID = 'spam:/' . implode('/', array($srv, $usr, $pid));
+                if ($post->postExist($pID)) {
+                    $art = $post->getPost($pID);
+                    $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
+                    $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+                    $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+                    $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 10);
+                }
+            }
+        } else if ($this->replyOf != null) {
+            $tempArray = explode('/', $this->replyOf);
+            $srv = $tempArray[1];
+            $usr = $tempArray[2];
+            $pid = $tempArray[3];
+            if ($srv != "Spammers") {
+                $url = $this->SRV->getUrl($srv);
+                if ($url) {
+                    //print "La richiesta è:".$url."postserver/$usr/$pid\n\r";
+                    $this->request->connect_to($url . "postserver/$usr/$pid")
+                            ->accept(DooRestClient::HTML)
+                            ->get();
+                    if ($this->request->isSuccess()) {
+                        $articolo = str_get_html($this->request->result());
+                        $tempoPostConfrontato = strtotime($articolo->content);
+//            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
+//            print "Tempo articolo: $tempoPostConfronto\n\r";
+                        $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
+                        $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
+                        $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 10);
+                    }
+                }
+            } else {
+                $post = new PostModel();
+                $pID = 'spam:/' . implode('/', array($srv, $usr, $pid));
+                if ($post->postExist($pID)) {
+                    $art = $post->getPost($pID);
+                    $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
+                    $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+                    $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+                    $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 10);
+                }
+            }
+        }
+        if (sizeof($this->listOfReply) > 0) {
+            foreach ($this->listOfReply as $artReply) {
+                $tempArray = explode('/', $artReply);
+                $srv = $tempArray[1];
+                $usr = $tempArray[2];
+                $pid = $tempArray[3];
+                if ($srv != "Spammers") {
+                    $url = $this->SRV->getUrl($srv);
+                    if ($url) {
+                        //print "La richiesta è:".$url."postserver/$usr/$pid\n\r";
+                        $this->request->connect_to($url . "postserver/$usr/$pid")
+                                ->accept(DooRestClient::HTML)
+                                ->get();
+                        if ($this->request->isSuccess()) {
+                            $articolo = str_get_html($this->request->result());
+                            $tempoPostConfrontato = strtotime($articolo->content);
+//            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
+//            print "Tempo articolo: $tempoPostConfronto\n\r";
+                            $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
+                            $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
+                            $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5);
+                        }
+                    }
+                } else {
+                    $post = new PostModel();
+                    $pID = 'spam:/' . implode('/', array($srv, $usr, $pid));
+                    if ($post->postExist($pID)) {
+                        $art = $post->getPost($pID);
+                        $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
+                        $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+                        $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+                        $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5);
+                    }
+                }
+            }
+        }
     }
 
 }

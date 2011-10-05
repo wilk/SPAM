@@ -80,7 +80,11 @@ Ext.define ('SC.controller.Send' , {
 	resetFields: function (win) {
 		this.txtSendArea.reset ();
 		this.chkSendBoxGeoLoc.reset ();
-		this.sendComboHashtag.reset ();
+		if (!Ext.isFirefox) this.sendComboHashtag.setVisible (false);
+		else {
+			this.sendComboHashtag.reset ();
+			this.sendComboHashtag.setVisible (true);
+		}
 		
 		this.lblSendCount.setText ('<span style="color:black;">' + this.MAXCHARS + '</span>' , false);
 	} ,
@@ -100,7 +104,7 @@ Ext.define ('SC.controller.Send' , {
 			this.lblSendCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 
 		// Focus on hashtag combobox on '#'
-		if (event.getKey () == '35') {
+		if ((Ext.isFirefox) && (event.getKey () == '35')) {
 			this.sendComboHashtag.focus ();
 		}
 	} ,
@@ -111,14 +115,15 @@ Ext.define ('SC.controller.Send' , {
 		this.txtSendArea.insertAtCursor (combo.getValue ());
 		
 		// Set focus on textarea
-		this.txtSendArea.focus ();
-		
-		var len = this.txtSendArea.getValue().length;
+//		this.txtSendArea.focus ();
+//		
+//		var len = this.txtSendArea.getValue().length;
 		
 		// Position cursor at the end of the textarea
 		var doc = this.txtSendArea.getFocusEl().id;
 		var ta = document.getElementById (doc);
-		ta.setSelectionRange (len, len);
+		ta.focus ();
+//		ta.setSelectionRange (len, len);
 		
 		// Reset combobox
 		combo.setValue ('');

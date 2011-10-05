@@ -76,6 +76,13 @@ Ext.define ('SC.controller.SendResource' , {
 		this.txtResUrl.reset ();
 		this.txtResDes.reset ();
 		this.chkBoxGeoLoc.reset ();
+		
+		if (!Ext.isFirefox) this.sendResourceComboHashtag.setVisible (false);
+		else {
+			this.sendResourceComboHashtag.reset ();
+			this.sendResourceComboHashtag.setVisible (true);
+		}
+		
 		this.lblResCount.setText ('<span style="color:black;">' + this.MAXCHARS + '</span>' , false);
 	} ,
 	
@@ -94,7 +101,7 @@ Ext.define ('SC.controller.SendResource' , {
 			this.lblResCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 		
 		// Focus on hashtag combobox on '#'
-		if (e.getKey () == '35') {
+		if ((Ext.isFirefox) && (e.getKey () == '35')) {
 			this.sendResourceComboHashtag.focus ();
 		}
 	} ,

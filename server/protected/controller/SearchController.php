@@ -692,6 +692,8 @@ class SearchController extends DooController {
     }
 
     private function parseEXTContent($toParse, $pathTerm = NULL) {
+        if (!($this->validateXML($toParse)))
+            return;
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
             $node['articolo'] = $articolo->outertext;
@@ -712,6 +714,8 @@ class SearchController extends DooController {
     private function parseEXTContent2($toParse, $listOfWords) {
         //print ("L'xml che mi arriva:\n\r");
         //print_r($toParse);
+        if (!($this->validateXML($toParse)))
+            return;
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
             $findTerm;

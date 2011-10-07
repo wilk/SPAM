@@ -111,18 +111,15 @@ function disposeArticles (store, focus, focusIndex) {
 				var artBody = parseToRead (record.get ('article'));
 				
 				// Article header (only if it's a respam or reply)
-				var diffUser = '<span style="color: green; font-style: italic;">' + record.get('resourceType').split('/')[2] + '</span> on <span style="color: red; font-style: italic;">' + record.get('resourceType').split('/')[1] + '</span>:<br />';
-				
-				if (record.get ('type') == 'reply') artBody = '<b>Reply to ' + diffUser + '</b>' + artBody;
-				else if (record.get ('type') == 'respam') artBody = '<b>Respam from ' + diffUser + '</b><div style="font-style: italic; padding: 5px;">' + artBody + '</div>';
+				if (record.get ('type') == 'reply') 
+					artBody = '<b>Reply to <span style="color: green; font-style: italic;">' + record.get('resourceType').split('/')[2] + '</span> on <span style="color: red; font-style: italic;">' + record.get('resourceType').split('/')[1] + '</span>:<br /></b>' + artBody;
+				else if (record.get ('type') == 'respam') 
+					artBody = '<b>Respam from <span style="color: green; font-style: italic;">' + record.get('resourceType').split('/')[2] + '</span> on <span style="color: red; font-style: italic;">' + record.get('resourceType').split('/')[1] + '</span>:<br /></b><div style="font-style: italic; padding: 5px;">' + artBody + '</div>';
 				
 				// Article Footer
 				// Get day and hour of the article
 				var day = record.get('time').slice (0, 10);
-//				var hour = record.get ('time').slice (11, 16);				
 				var hour = record.get ('time').slice (11, 16);
-				
-//				artBody += '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
 				
 				// Instances of articles view
 				var win = Ext.widget ('articles' , {
@@ -174,18 +171,15 @@ function disposeArticles (store, focus, focusIndex) {
 	var artBody = parseToRead (focus.get ('article'));
 	
 	// Article header (only if it's a respam or reply)
-	var diffUser = '<span style="color: green; font-style: italic;">' + focus.get('resourceType').split('/')[2] + '</span> on <span style="color: red; font-style: italic;">' + focus.get('resourceType').split('/')[1] + '</span>:<br />';
-	
-	if (focus.get ('type') == 'reply') artBody = '<b>Reply to ' + diffUser + '</b>' + artBody;
-	else if (focus.get ('type') == 'respam') artBody = '<b>Respam from ' + diffUser + '</b><div style="font-style: italic; padding: 5px;">' + artBody + '</div>';
+	if (focus.get ('type') == 'reply') 
+		artBody = '<b>Reply to <span style="color: green; font-style: italic;">' + focus.get('resourceType').split('/')[2] + '</span> on <span style="color: red; font-style: italic;">' + focus.get('resourceType').split('/')[1] + '</span>:<br /></b>' + artBody;
+	else if (focus.get ('type') == 'respam') 
+		artBody = '<b>Respam from <span style="color: green; font-style: italic;">' + focus.get('resourceType').split('/')[2] + '</span> on <span style="color: red; font-style: italic;">' + focus.get('resourceType').split('/')[1] + '</span>:<br /></b><div style="font-style: italic; padding: 5px;">' + artBody + '</div>';
 	
 	// Article Footer
 	// Get day and hour of the article
 	var day = focus.get('time').slice (0, 10);
-//	var hour = focus.get ('time').slice (11, 19);
 	var hour = focus.get ('time').slice (11, 16);
-	
-//	artBody += '<div style="position: absolute; bottom: 3px; left: 3px;"><img src="ext/resources/images/clock.png" style="vertical-align: bottom;"/\> ' + day + ' ' + hour + '</div>';
 	
 	// Add focus window at last
 	var win = Ext.widget ('focusarticle' , {

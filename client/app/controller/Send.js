@@ -80,7 +80,7 @@ Ext.define ('SC.controller.Send' , {
 	resetFields: function (win) {
 		this.txtSendArea.reset ();
 		this.chkSendBoxGeoLoc.reset ();
-		if (!Ext.isFirefox) this.sendComboHashtag.setVisible (false);
+		if (!Ext.isGecko) this.sendComboHashtag.setVisible (false);
 		else {
 			this.sendComboHashtag.reset ();
 			this.sendComboHashtag.setVisible (true);
@@ -104,7 +104,7 @@ Ext.define ('SC.controller.Send' , {
 			this.lblSendCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 
 		// Focus on hashtag combobox on '#'
-		if ((Ext.isFirefox) && (event.getKey () == '35')) {
+		if ((Ext.isGecko) && (event.getKey () == '35')) {
 			this.sendComboHashtag.focus ();
 		}
 	} ,

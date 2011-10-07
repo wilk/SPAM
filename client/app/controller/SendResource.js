@@ -77,7 +77,7 @@ Ext.define ('SC.controller.SendResource' , {
 		this.txtResDes.reset ();
 		this.chkBoxGeoLoc.reset ();
 		
-		if (!Ext.isFirefox) this.sendResourceComboHashtag.setVisible (false);
+		if (!Ext.isGecko) this.sendResourceComboHashtag.setVisible (false);
 		else {
 			this.sendResourceComboHashtag.reset ();
 			this.sendResourceComboHashtag.setVisible (true);
@@ -101,7 +101,7 @@ Ext.define ('SC.controller.SendResource' , {
 			this.lblResCount.setText ('<span style="color:black;">' + diffCount + '</span>' , false);
 		
 		// Focus on hashtag combobox on '#'
-		if ((Ext.isFirefox) && (e.getKey () == '35')) {
+		if ((Ext.isGecko) && (e.getKey () == '35')) {
 			this.sendResourceComboHashtag.focus ();
 		}
 	} ,

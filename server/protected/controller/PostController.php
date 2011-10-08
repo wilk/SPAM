@@ -167,7 +167,8 @@ class PostController extends DooController {
             if ($this->articolo->postExist($pathPost)) {
                 $myPost = $this->articolo->getPost($pathPost);
                 $key = key($myPost);
-                if ($pID = $this->articolo->initNewPost('<article>' . $myPost[$key]['http://rdfs.org/sioc/ns#content'][0] . '</article>')) {
+                //print (htmlspecialchars_decode($myPost[$key]['http://rdfs.org/sioc/ns#content'][0]));die();
+                if ($pID = $this->articolo->initNewPost('<article>' . htmlspecialchars_decode($myPost[$key]['http://rdfs.org/sioc/ns#content'][0]) . '</article>')) {
                     $utente = new UserModel($_SESSION['user']['username']);
                     $utente->addPost2Usr($pID);
                 }

@@ -261,67 +261,7 @@ class SearchController extends DooController {
 //                $mtime = explode(' ', $mtime);
 //                $mtime = $mtime[1] + $mtime[0];
 //                $starttime = $mtime;
-                $listOfWords = $this->utf8_str_word_count($stringToSearch, 1);
-                $listOfWords = array_unique($listOfWords);
-                $vocab = explode(" ", utf8_decode(file_get_contents("data/vocabolario.dat")));
-                //print_r($vocab); die();
-                foreach ($listOfWords as $k => $v) {
-                    if (in_array(utf8_decode($v), $vocab))
-                        unset($listOfWords[$k]);
-                }
-                //print_r($listOfWords); die();
-                $post = new PostModel();
-                $allPost = $post->getPostArray(NULL, 'all');
-//$listPost = array();
-                $this->time = time();
-                foreach ($allPost as $i => $pID) {
-                    $postContentHTML = str_get_html(html_entity_decode($pID[key($pID)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
-                    $findTerm;
-                    $creato = $pID[key($pID)]["http://purl.org/dc/terms/created"][0];
-                    $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato);
-                    if ($findTerm != 0) {
-                        $this->listaPost[$findTerm][] = array(
-                            "articolo" => $pID,
-                            "peso" => $myPeso,
-                        );
-                    }
-                }
-//                $mtime = microtime();
-//                $mtime = explode(" ", $mtime);
-//                $mtime = $mtime[1] + $mtime[0];
-//                $endtime = $mtime;
-//                $totaltime = ($endtime - $starttime);
-                //print "Tempo trascorso $totaltime\n\r";
-                //print_r($this->listaPost);
-                //die();
-//Eseguo richiesta esterna
-                if ($extRequest === FALSE) {
-                    $servers;
-                    $this->initServers($servers);
-
-                    $metodo = '/' . $tipo;
-                    if (isset($this->params['var1']))
-                        $metodo .= '/' . $this->params['var1'];
-
-                    if ($this->rcvFromEXTServers($servers, $limite, $metodo)) {
-
-                        $badServer = array();
-                        foreach ($servers as $value) {
-                            if ($value['code'] === 200)
-                                $this->parseEXTContent2($value['data'], $listOfWords);
-                            else if ($value['code'] === 500)
-                                array_push($badServer, $value['name']);
-
-//$test[] = $value['url'].' => '.$value['data']."\n";
-                        }
-//print_r($test);die();
-//qui fanculizzo i server
-                        /* if (count($badServer))
-                          $this->funcoolizer($badServer);
-                         */
-                    } else
-                        return 500;
-                }
+                $this->fullTextCore($stringToSearch,$extRequest,$limite);
                 //print "numero di elementi in listapost: " . count($this->listaPost) . "\n\r";
                 //$c = count($this->listaPost);
                 //print "listaPost è fatto di: $c elementi";
@@ -330,13 +270,13 @@ class SearchController extends DooController {
                 ksort($this->listaPost, SORT_NUMERIC);
                 $this->listaPost = array_reverse($this->listaPost, TRUE);
                 $toRender = array();
-                foreach ($this->listaPost as $array) {
+                foreach ($this->listaPost as $k=>$array) {
                     if ($limite == 0)
                         break;
                     $arrayPesi = array();
                     foreach ($array as $key => $post)
                         $arrayPesi[$key] = $post['peso'];
-                    array_multisort($arrayPesi, SORT_DESC, $array);
+                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$k]);
                     $n = count($array);
                     if (is_numeric($limite) && $n > $limite) {
                         $toRender = array_merge($toRender, array_slice($array, 0, $limite));
@@ -454,17 +394,32 @@ class SearchController extends DooController {
 //                die();
 //               //Se non ci sono hashtag faccio partire una fulltext
                 //TODO: Implementare ricerca fulltext in caso di nessun #hashtag
-//                if (count($arr) == 0) {
-//                    $testoToSearch = urlencode($html->plaintext);
-//                    $this->request->connect_to("http://ltw1102.web.cs.unibo.it/search/$limite/fulltext/$testoToSearch")
-//                            ->accept(DooRestClient::XML)
-//                            ->get();
-//                    //print ($this->request->result());
-//                    $xml=simplexml_load_string($this->request->result());
-//                    print ("prova del cazzo\n\r");
-//                    print ($xml->asXML());
-//                    die();
-//                }
+                if (count($arr) == 0) {
+                    $stringToSearch = urlencode($html->plaintext);
+                    $this->fullTextCore($stringToSearch, TRUE, $limite);
+                    ksort($this->listaPost, SORT_NUMERIC);
+                $this->listaPost = array_reverse($this->listaPost, TRUE);
+                $toRender = array();
+                foreach ($this->listaPost as $k=>$array) {
+                    if ($limite == 0)
+                        break;
+                    $arrayPesi = array();
+                    foreach ($array as $key => $post)
+                        $arrayPesi[$key] = $post['peso'];
+                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$k]);
+                    $n = count($array);
+                    if (is_numeric($limite) && $n > $limite) {
+                        $toRender = array_merge($toRender, array_slice($array, 0, $limite));
+                        break;
+                    }
+                    $toRender = array_merge($toRender, $array);
+                    $limite -= $n;
+                }
+                $this->listaPost = $toRender;
+                $this->displayPosts();
+//                ErrorController::notImpl();
+                break;
+                }
                 //Peso i post del nostro server
                 $allPost = $post->getPostArray(NULL, 'all');
 //                print (key($art));
@@ -522,9 +477,9 @@ class SearchController extends DooController {
                     } else
                         return 500;
                 }
-                //print "uscito dalla richiesta..muoio!\n\r";
                 // print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
                 $this->processReleatedPosts($arr, $tempoPostConfronto);
+//                print "\n\rEcco la lista degli articoli\n\r";
 //                print_r($this->listaPost);
 //                die();
                 $this->sortPost($origLimite);
@@ -692,8 +647,11 @@ class SearchController extends DooController {
     }
 
     private function parseEXTContent($toParse, $pathTerm = NULL) {
+//        print ("\n\rL'xml che mi arriva:\n\r");
+//        print_r($toParse);
         if (!($this->validateXML($toParse)))
             return;
+//        print "\r\nValidato";
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
             $node['articolo'] = $articolo->outertext;
@@ -712,10 +670,11 @@ class SearchController extends DooController {
 
 //Usata per la fulltext
     private function parseEXTContent2($toParse, $listOfWords) {
-        //print ("L'xml che mi arriva:\n\r");
-        //print_r($toParse);
+//        print ("\n\rL'xml che mi arriva:\n\r");
+//        print_r($toParse);
         if (!($this->validateXML($toParse)))
             return;
+//        print "\r\nValidato";
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
             $findTerm;
@@ -736,7 +695,7 @@ class SearchController extends DooController {
 //        print_r($toParse);
         if (!($this->validateXML($toParse)))
             return;
-//        print "Validato";
+//        print "\r\nValidato";
         $html = str_get_html($toParse);
         foreach ($html->find('article') as $articolo) {
 //            print "L'articolo é:\n\r" . $articolo->outertext . "\n\r";
@@ -750,7 +709,7 @@ class SearchController extends DooController {
         }
     }
 
-    private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, $bonus= 0) {
+    private function pesoAffinity($articolo, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, $bonus= 0, $toCheck=null) {
 //        print "\n\rL'articolo che considero:\n\r";
 //        print_r($articolo);
 //        print "\n\r";
@@ -779,13 +738,45 @@ class SearchController extends DooController {
                 $realPeso = $realPeso / ($numDislike - $numLike);
             else if ($numLike > $numDislike)
                 $realPeso = $realPeso * ($numLike - $numDislike);
-            $this->listaPost[] = array(
-                "articolo" => $articolo,
-                "peso" => round($realPeso, 5),
-            );
-            $this->toMerge[] = array(
-                "peso" => round($realPeso, 5),
-            );
+            if ($toCheck == null) {
+                $this->listaPost[] = array(
+                    "articolo" => $articolo,
+                    "peso" => round($realPeso, 5),
+                );
+                $this->toMerge[] = array(
+                    "peso" => round($realPeso, 5),
+                );
+            } else {
+                foreach ($this->listaPost as $key => $art) {
+//                    print "Stampo per capire che succede\n\r";
+//                    print_r ($art['articolo']);die();
+                    if (is_array($art['articolo'])) {
+//                        print "\n\rSono un array\n\r";
+//                        print "la key è". key($art['articolo'])."\n\r";
+//                        print "L'articolo è $toCheck\n\r";
+                        if (key($art['articolo']) == "spam:$toCheck") {
+//                            print "siamo uguali ovviamente e il mio peso è:" .round($realPeso, 5);
+//                            print "\n\rMentre il peso attuale è ". $art['peso'];
+                            $this->listaPost[$key]['peso'] = round($realPeso, 5);
+                            $this->toMerge[$key]['peso'] = round($realPeso, 5);
+                            return;
+                        }
+                    } else {
+                        if (strstr("about=\"$toCheck\"", $art['articolo'])) {
+                            $this->listaPost[$key]['peso'] = round($realPeso, 5);
+                            $this->toMerge[$key]['peso'] = round($realPeso, 5);
+                            return;
+                        }
+                    }
+                }
+                $this->listaPost[] = array(
+                    "articolo" => $articolo,
+                    "peso" => round($realPeso, 5),
+                );
+                $this->toMerge[] = array(
+                    "peso" => round($realPeso, 5),
+                );
+            }
         }
     }
 
@@ -799,16 +790,16 @@ class SearchController extends DooController {
         foreach ($listOfWords as $indice => $word) {
             $find = false;
             if (strlen((string) $word) > 1) {
-//                if (stristr((string) $word, "'") !== false) {
-//                    $word = explode("'", (string) $word);
-//                    $word = $word[1];
-//                }
+                if (stristr((string) $word, "'") !== false) {
+                    $word = explode("'", (string) $word);
+                    $word = $word[1];
+                }
                 //print "Sto cercando questo termine: $word\n\r";
                 foreach ($wordInContent as $indice => $thisWord) {
-//                    if (stristr((string) $thisWord, "'") !== false) {
-//                        $thisWord = explode("'", (string) $thisWord);
-//                        $thisWord = $thisWord[1];
-//                    }
+                    if (stristr((string) $thisWord, "'") !== false) {
+                        $thisWord = explode("'", (string) $thisWord);
+                        $thisWord = $thisWord[1];
+                    }
                     //print "Sto controllando questo termine: $thisWord\n\r";
                     if ($thisWord == $word) {
                         // print ("trovato il match di $word con $thisWord\n\r");
@@ -889,6 +880,22 @@ class SearchController extends DooController {
         if ($xdoc->schemaValidate($xmlschema)) {
             return true;
         }
+        /* GESTIONE ERRORI SULLA VALIDAZIONE
+         * Decommentare in caso di debug
+         */
+//        $errors = libxml_get_errors();
+//        if (empty($errors)) {
+//            return true;
+//        }
+//        print "lista errori\n\r";
+//        print_r ($errors);
+//        print "\n\r";
+//        $error = $errors[0];
+//
+////        $lines = explode("\r", $toParse);
+////        $line = $lines[($error->line) - 1];
+//
+//        print "\n\r" . $error->message . ' at line ' . $error->line . ':<br />'. "\n\r";
         return false;
     }
 
@@ -912,7 +919,7 @@ class SearchController extends DooController {
 //            print "Tempo articolo: $tempoPostConfronto\n\r";
                         $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
                         $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
-                        $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 10);
+                        $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5, $this->respamOf);
                     }
                 }
             } else {
@@ -923,7 +930,7 @@ class SearchController extends DooController {
                     $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
                     $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
                     $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
-                    $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 10);
+                    $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5, $this->respamOf);
                 }
             }
         } else if ($this->replyOf != null) {
@@ -945,7 +952,7 @@ class SearchController extends DooController {
 //            print "Tempo articolo: $tempoPostConfronto\n\r";
                         $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
                         $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
-                        $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 10);
+                        $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5, $this->replyOf);
                     }
                 }
             } else {
@@ -956,7 +963,7 @@ class SearchController extends DooController {
                     $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
                     $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
                     $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
-                    $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 10);
+                    $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5, $this->replyOf);
                 }
             }
         }
@@ -980,7 +987,7 @@ class SearchController extends DooController {
 //            print "Tempo articolo: $tempoPostConfronto\n\r";
                             $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
                             $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
-                            $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5);
+                            $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 2, $artReply);
                         }
                     }
                 } else {
@@ -991,10 +998,74 @@ class SearchController extends DooController {
                         $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
                         $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
                         $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
-                        $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5);
+                        $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 2, $artReply);
                     }
                 }
             }
+        }
+    }
+
+    private function fullTextCore($stringToSearch,$extRequest,$limite) {
+        $listOfWords = $this->utf8_str_word_count($stringToSearch, 1);
+        $listOfWords = array_unique($listOfWords);
+        $vocab = explode(" ", utf8_decode(file_get_contents("data/vocabolario.dat")));
+        //print_r($vocab); die();
+        foreach ($listOfWords as $k => $v) {
+            if (in_array(utf8_decode($v), $vocab))
+                unset($listOfWords[$k]);
+        }
+        //print_r($listOfWords); die();
+        $post = new PostModel();
+        $allPost = $post->getPostArray(NULL, 'all');
+//$listPost = array();
+        $this->time = time();
+        foreach ($allPost as $i => $pID) {
+            $postContentHTML = str_get_html(html_entity_decode($pID[key($pID)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
+            $findTerm;
+            $creato = $pID[key($pID)]["http://purl.org/dc/terms/created"][0];
+            $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato);
+            if ($findTerm != 0) {
+                $this->listaPost[$findTerm][] = array(
+                    "articolo" => $pID,
+                    "peso" => $myPeso,
+                );
+            }
+        }
+//                $mtime = microtime();
+//                $mtime = explode(" ", $mtime);
+//                $mtime = $mtime[1] + $mtime[0];
+//                $endtime = $mtime;
+//                $totaltime = ($endtime - $starttime);
+        //print "Tempo trascorso $totaltime\n\r";
+        //print_r($this->listaPost);
+        //die();
+//Eseguo richiesta esterna
+        if ($extRequest === FALSE) {
+            $servers;
+            $this->initServers($servers);
+
+            $metodo = '/fulltext';
+            if (isset($this->params['var1']))
+                $metodo .= '/' . $this->params['var1'];
+
+            if ($this->rcvFromEXTServers($servers, $limite, $metodo)) {
+
+                $badServer = array();
+                foreach ($servers as $value) {
+                    if ($value['code'] === 200)
+                        $this->parseEXTContent2($value['data'], $listOfWords);
+                    else if ($value['code'] === 500)
+                        array_push($badServer, $value['name']);
+
+//$test[] = $value['url'].' => '.$value['data']."\n";
+                }
+//print_r($test);die();
+//qui fanculizzo i server
+                /* if (count($badServer))
+                  $this->funcoolizer($badServer);
+                 */
+            } else
+                return 500;
         }
     }
 

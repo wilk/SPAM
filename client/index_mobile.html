@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--hide browser address bar-->
+	<script>
+		if(navigator.userAgent.match(/Android/i)){
+		 window.scrollTo(0,1);
+		 }
+	</script>
 	<title>SPAM</title>
 	 	 
 	<!-- Sencha Touch framework -->
@@ -27,10 +33,10 @@
 	 	<div id="sencha.views">
 			<!--VIEWS -->
 			<script type="text/javascript" src="app_mobile/views/Viewport.js"></script>
+			<script type="text/javascript" src="app_mobile/views/login/LoginIndex.js"></script>
 			<script type="text/javascript" src="app_mobile/views/Home.js"></script>
 			<script type="text/javascript" src="app_mobile/views/post/Post.js"></script>
 			<script type="text/javascript" src="app_mobile/views/post/SendPost.js"></script>
-			<script type="text/javascript" src="app_mobile/views/login/LoginIndex.js"></script>
 			<script type="text/javascript" src="app_mobile/views/search/Search.js"></script>
 			<script type="text/javascript" src="app_mobile/views/ServerList.js"></script>
 			<script type="text/javascript" src="app_mobile/views/Thesaurus.js"></script>
@@ -41,17 +47,17 @@
 		
 		<div id="sencha-models">
 			<!--MODELS -->
+			<script type="text/javascript" src="app_mobile/models/User.js"></script> 
 			<script type="text/javascript" src="app_mobile/models/Post.js"></script>
 			<script type="text/javascript" src="app_mobile/models/Server.js"></script>
-			<script type="text/javascript" src="app_mobile/models/User.js"></script> 
 			<script type="text/javascript" src="app_mobile/models/Term.js"></script>
 			<script type="text/javascript" src="app_mobile/models/Follower.js"></script>
 		</div>
 		
 		<div id="sencha-controllers">
 			<!--CONTROLLERS -->
-			<script type="text/javascript" src="app_mobile/controllers/Home.js"></script>
 			<script type="text/javascript" src="app_mobile/controllers/login/Login.js"></script>
+			<script type="text/javascript" src="app_mobile/controllers/Home.js"></script>
 			<script type="text/javascript" src="app_mobile/controllers/post/Post.js"></script>
 			<script type="text/javascript" src="app_mobile/controllers/post/SendPost.js"></script>
 			<script type="text/javascript" src="app_mobile/controllers/search/Search.js"></script>

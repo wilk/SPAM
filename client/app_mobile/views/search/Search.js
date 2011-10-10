@@ -3,7 +3,9 @@ mspam.views.Search=Ext.extend(Ext.form.FormPanel,{
 //	layout:'card',
 //	pack:'center',
 //	align:'stretch',
-
+	styleHtmlContent:true,
+	scroll:'vertical',
+	
 	dockedItems:[{
 		xtype:'toolbar',
 		itemId:'titleToolbar',

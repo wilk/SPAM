@@ -2,7 +2,7 @@ mspam.views.Post=Ext.extend(Ext.Panel,{
 
 //	fullscreen:true,
 	styleHtmlContent:true,
-	autoDestroy:false,
+//	autoDestroy:false,
 	layout:'card',
 	initComponent:function(){
 	

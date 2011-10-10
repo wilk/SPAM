@@ -3,6 +3,31 @@ Ext.regController('Home',{
 	init:function(){
 	
 		this.store=new Ext.data.Store({model:'Post',storeId:'poststore'});
+		
+		Ext.StoreMgr.get('loginstore').addListener('add',function(){
+		
+			Ext.StoreMgr.get('poststore').each(function(rec){
+			
+				var username=Ext.StoreMgr.get('loginstore').getAt(0).get('username');
+							
+				var article=rec.get('article');
+				
+				$(article).find('span').each(function(){
+				
+					if ($(this).attr ('rev') == 'tweb:like' && $(this).attr('resource').match('/Spammers/'+username+'\s*')) {
+//						ifLikeDislike = 1;
+						rec.set('setlike',1);
+					}
+					else if ($(this).attr ('rev') == 'tweb:dislike' && $(this).attr('resource').match('/Spammers/'+username+'\s*')) {
+//						ifLikeDislike = -1;
+						rec.set('setlike',-1);
+					}
+				
+				});
+			
+			});
+		
+		});
 	
 	},
 	
@@ -12,6 +37,7 @@ Ext.regController('Home',{
 			xtype:'home',
 			items:[{
 				xtype:'list',
+				disableSelection:true,
 				styleHtmlContent:true,
 				fullscreen:true,
 				itemTpl:'{html}',
@@ -33,7 +59,7 @@ Ext.regController('Home',{
 						article:rec.data.article,
 						user:rec.data.user,
 						index:index,
-						view:this.up('Home')
+						view:this.up('home')
 					});
 	//				Ext.ControllerManager.get('Home').showPost(rec.data.html, rec.data.article)
 				}
@@ -99,11 +125,15 @@ Ext.regController('Home',{
 						}
 					
 						// Find setlike/setdislike of the user
-						if ($(this).attr ('rev') == 'tweb:like') {
-							ifLikeDislike = 1;
-						}
-						else if ($(this).attr ('rev') == 'tweb:dislike') {
-							ifLikeDislike = -1;
+						if(Ext.StoreMgr.get('loginstore').getCount()!=0){
+							var username=Ext.StoreMgr.get('loginstore').getAt(0).get('username');
+							
+							if ($(this).attr ('rev') == 'tweb:like' && $(this).attr('resource').match('/Spammers/'+username+'\s*')) {
+								ifLikeDislike = 1;
+							}
+							else if ($(this).attr ('rev') == 'tweb:dislike' && $(this).attr('resource').match('/Spammers/'+username+'\s*')) {
+								ifLikeDislike = -1;
+							}
 						}	
 					});
 
@@ -161,7 +191,8 @@ Ext.regController('Home',{
 
 					});				
 				
-				
+					var userdesc=$(this).find('article').attr ('resource');
+					userdesc=userdesc.split('/');
 					// Add article to the store
 					store.add ({
 						affinity: parseInt ($(this).find('affinity').text ()) ,
@@ -173,7 +204,7 @@ Ext.regController('Home',{
 						dislike: numDislike ,
 						setlike: ifLikeDislike ,
 						user: $(this).find('article').attr('resource').split("/")[2],
-						html:'<p>'+html+'<p>'
+						html:"<p style='text-align:center;font-size:15px'><b>"+html+"</b></p>"+"<p style='color:orange'>"+"Send by "+userdesc[2]+" on "+userdesc[1]+"'s server</p>"
 					});
 					
 //					console.log($(this).find('article').attr ('resource'));

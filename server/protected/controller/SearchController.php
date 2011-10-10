@@ -425,7 +425,7 @@ class SearchController extends DooController {
                             }
                         }
                     }
-                    //$this->processReleatedPostsFullText($listOfWords);
+                    $this->processReleatedPostsFullText($listOfWords);
                     $this->sortPost($origLimite);
                     $this->displayPosts();
 //                ErrorController::notImpl();
@@ -1036,16 +1036,37 @@ class SearchController extends DooController {
                         $articolo = str_get_html($this->request->result());
                         $creato = strtotime($articolo->content);
                         $findTerm;
-//            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
-//            print "Tempo articolo: $tempoPostConfronto\n\r";
                         $myPeso = $this->pesoFullText($articolo->outertext, $listOfWords, $findTerm, $creato) + 100;
-                        $this->listaPost[] = array(
-                            "articolo" => $pID,
-                            "peso" => $myPeso,
-                        );
-                        $this->toMerge[] = array(
-                            "peso" => $myPeso,
-                        );
+                        $update = false;
+                        foreach ($this->listaPost as $key => $art) {
+                            if (is_array($art['articolo'])) {
+//                        print "\n\rSono un array\n\r";
+//                        print "la key è". key($art['articolo'])."\n\r";
+//                        print "L'articolo è $toCheck\n\r";
+                                if (key($art['articolo']) == "spam:$this->replyOf") {
+//                            print "siamo uguali ovviamente e il mio peso è:" .round($realPeso, 5);
+//                            print "\n\rMentre il peso attuale è ". $art['peso'];
+                                    $this->listaPost[$key]['peso'] = $myPeso;
+                                    $this->toMerge[$key]['peso'] = $myPeso;
+                                    $update = true;
+                                }
+                            } else {
+                                if (strstr("about=\"$this->replyOf\"", $art['articolo'])) {
+                                    $this->listaPost[$key]['peso'] = $myPeso;
+                                    $this->toMerge[$key]['peso'] = $myPeso;
+                                    $update = true;
+                                }
+                            }
+                        }
+                        if (!$update) {
+                            $this->listaPost[] = array(
+                                "articolo" => $articolo->outertext,
+                                "peso" => $myPeso,
+                            );
+                            $this->toMerge[] = array(
+                                "peso" => $myPeso,
+                            );
+                        }
                     }
                 }
             } else {
@@ -1053,10 +1074,40 @@ class SearchController extends DooController {
                 $pID = 'spam:/' . implode('/', array($srv, $usr, $pid));
                 if ($post->postExist($pID)) {
                     $art = $post->getPost($pID);
-                    $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
-                    $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
-                    $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
-                    $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5, $this->replyOf);
+                    $postContentHTML = str_get_html(html_entity_decode($art[key($art)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
+                    $findTerm;
+                    $creato = $art[key($art)]["http://purl.org/dc/terms/created"][0];
+                    $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato) + 100;
+                    $update = false;
+                    foreach ($this->listaPost as $key => $art) {
+                        if (is_array($art['articolo'])) {
+//                        print "\n\rSono un array\n\r";
+//                        print "la key è". key($art['articolo'])."\n\r";
+//                        print "L'articolo è $toCheck\n\r";
+                            if (key($art['articolo']) == "spam:$this->replyOf") {
+//                            print "siamo uguali ovviamente e il mio peso è:" .round($realPeso, 5);
+//                            print "\n\rMentre il peso attuale è ". $art['peso'];
+                                $this->listaPost[$key]['peso'] = $myPeso;
+                                $this->toMerge[$key]['peso'] = $myPeso;
+                                $update = true;
+                            }
+                        } else {
+                            if (strstr("about=\"$this->replyOf\"", $art['articolo'])) {
+                                $this->listaPost[$key]['peso'] = $myPeso;
+                                $this->toMerge[$key]['peso'] = $myPeso;
+                                $update = true;
+                            }
+                        }
+                    }
+                    if (!$update) {
+                        $this->listaPost[] = array(
+                            "articolo" => $art,
+                            "peso" => $myPeso,
+                        );
+                        $this->toMerge[] = array(
+                            "peso" => $myPeso,
+                        );
+                    }
                 }
             }
         }
@@ -1075,12 +1126,39 @@ class SearchController extends DooController {
                                 ->get();
                         if ($this->request->isSuccess()) {
                             $articolo = str_get_html($this->request->result());
-                            $tempoPostConfrontato = strtotime($articolo->content);
-//            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
-//            print "Tempo articolo: $tempoPostConfronto\n\r";
-                            $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
-                            $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
-                            $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 2, $artReply);
+                            $creato = strtotime($articolo->content);
+                            $findTerm;
+                            $myPeso = $this->pesoFullText($articolo->outertext, $listOfWords, $findTerm, $creato) + 50;
+                            $update = false;
+                            foreach ($this->listaPost as $key => $art) {
+                                if (is_array($art['articolo'])) {
+//                        print "\n\rSono un array\n\r";
+//                        print "la key è". key($art['articolo'])."\n\r";
+//                        print "L'articolo è $toCheck\n\r";
+                                    if (key($art['articolo']) == "spam:$this->replyOf") {
+//                            print "siamo uguali ovviamente e il mio peso è:" .round($realPeso, 5);
+//                            print "\n\rMentre il peso attuale è ". $art['peso'];
+                                        $this->listaPost[$key]['peso'] = $myPeso;
+                                        $this->toMerge[$key]['peso'] = $myPeso;
+                                        $update = true;
+                                    }
+                                } else {
+                                    if (strstr("about=\"$this->replyOf\"", $art['articolo'])) {
+                                        $this->listaPost[$key]['peso'] = $myPeso;
+                                        $this->toMerge[$key]['peso'] = $myPeso;
+                                        $update = true;
+                                    }
+                                }
+                            }
+                            if (!$update) {
+                                $this->listaPost[] = array(
+                                    "articolo" => $articolo->outertext,
+                                    "peso" => $myPeso,
+                                );
+                                $this->toMerge[] = array(
+                                    "peso" => $myPeso,
+                                );
+                            }
                         }
                     }
                 } else {
@@ -1088,10 +1166,40 @@ class SearchController extends DooController {
                     $pID = 'spam:/' . implode('/', array($srv, $usr, $pid));
                     if ($post->postExist($pID)) {
                         $art = $post->getPost($pID);
-                        $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
-                        $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
-                        $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
-                        $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 2, $artReply);
+                        $postContentHTML = str_get_html(html_entity_decode($art[key($art)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
+                        $findTerm;
+                        $creato = $art[key($art)]["http://purl.org/dc/terms/created"][0];
+                        $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato) + 50;
+                        $update = false;
+                        foreach ($this->listaPost as $key => $art) {
+                            if (is_array($art['articolo'])) {
+//                        print "\n\rSono un array\n\r";
+//                        print "la key è". key($art['articolo'])."\n\r";
+//                        print "L'articolo è $toCheck\n\r";
+                                if (key($art['articolo']) == "spam:$this->replyOf") {
+//                            print "siamo uguali ovviamente e il mio peso è:" .round($realPeso, 5);
+//                            print "\n\rMentre il peso attuale è ". $art['peso'];
+                                    $this->listaPost[$key]['peso'] = $myPeso;
+                                    $this->toMerge[$key]['peso'] = $myPeso;
+                                    $update = true;
+                                }
+                            } else {
+                                if (strstr("about=\"$this->replyOf\"", $art['articolo'])) {
+                                    $this->listaPost[$key]['peso'] = $myPeso;
+                                    $this->toMerge[$key]['peso'] = $myPeso;
+                                    $update = true;
+                                }
+                            }
+                        }
+                        if (!$update) {
+                            $this->listaPost[] = array(
+                                "articolo" => $art,
+                                "peso" => $myPeso,
+                            );
+                            $this->toMerge[] = array(
+                                "peso" => $myPeso,
+                            );
+                        }
                     }
                 }
             }

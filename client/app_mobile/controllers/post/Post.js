@@ -2,6 +2,15 @@ Ext.regController('Post',{
 
 	init:function(){
 			var postIndex,homeView, userId, serverId, postId, likeChoice, postDate;
+			
+			Ext.StoreMgr.get('loginstore').on('add',function(){
+			
+				if(this.post && this.post.down('#postAction')){
+					this.post.down('#postAction').show();
+					this.post.doComponentLayout();
+				}
+				
+			},this);
 //			genLoaded=false;
 		},
 
@@ -22,22 +31,20 @@ Ext.regController('Post',{
 
 		if (Ext.StoreMgr.get('loginstore').getCount()!=0){
 
-			this.post.down('#postAction').setVisible(true);
+			this.post.down('#postAction').show();
 		}
 		else{
-			this.post.down('#postAction').setVisible(false);
+			this.post.down('#postAction').hide();
 		}
 		
 		if($(article).find('span[id=geolocationspan]').length){
 		
 			this.post.down('#locate').show();
-			console.log($(article).find('span[id=geolocationspan]').attr('lat'));
-			console.log($(article).find('span[id=geolocationspan]').attr('long'));
 		
 		}
 		
-		this.post.doComponentLayout();
-		
+//		this.post.doComponentLayout();
+
 		this.application.viewport.setActiveItem(this.post);
 	
 	},

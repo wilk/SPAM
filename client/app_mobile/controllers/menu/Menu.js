@@ -14,6 +14,9 @@ Ext.regController('menu',{
 		}
 		
 		this.settings=new Ext.ActionSheet({
+		
+					scroll:'vertical',
+		
 					items:[{
 					
 						text:buttonText,

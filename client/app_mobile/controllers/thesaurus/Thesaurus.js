@@ -79,7 +79,9 @@ Ext.regController('thesaurus',{
 		if(!children.length){
 		//ADD TERM HERE IS NOT A BAD THING
 //			Ext.Msg.alert('Thesaurus','This is the last term');
-			this.addTerm(prefvalue);
+			if(Ext.StoreMgr.get('loginstore').getCount()!=0){
+				this.addTerm(prefvalue);
+			}
 //			Ext.Msg.prompt('Add definition','Do you want to add a new tag',function(butt, text){
 //				
 //				if(butt!='cancel'){

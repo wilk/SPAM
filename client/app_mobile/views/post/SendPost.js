@@ -2,6 +2,8 @@ mspam.views.SendPost=Ext.extend(Ext.form.FormPanel,{
 //layout:'card',
 //align:'stretch',
 //pack:'center',
+	scroll:'vertical',
+
 	dockedItems:[{
 		xtype:'toolbar',
 		itemId:'titleToolbar',

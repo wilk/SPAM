@@ -100,7 +100,7 @@ class PostModel {
         $conf = array('ns' => $ns);
         $ser = ARC2::getRDFXMLSerializer($conf);
         $rdfxml = $ser->getSerializedIndex($this->index);
-        //print_r($rdfxml);
+//        print_r($rdfxml);die();
         @file_put_contents(self::$pathPost, $rdfxml);
     }
 

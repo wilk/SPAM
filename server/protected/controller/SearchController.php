@@ -261,31 +261,33 @@ class SearchController extends DooController {
 //                $mtime = explode(' ', $mtime);
 //                $mtime = $mtime[1] + $mtime[0];
 //                $starttime = $mtime;
-                $this->fullTextCore($stringToSearch,$extRequest,$limite);
+                $listOfWords = $this->utf8_str_word_count($stringToSearch, 1);
+                $listOfWords = array_unique($listOfWords);
+                $this->fullTextCore($listOfWords, $extRequest, $limite);
                 //print "numero di elementi in listapost: " . count($this->listaPost) . "\n\r";
                 //$c = count($this->listaPost);
                 //print "listaPost è fatto di: $c elementi";
                 //print_r($this->listaPost);die();
                 ////////////////// NEW //////////////////////////
-                ksort($this->listaPost, SORT_NUMERIC);
-                $this->listaPost = array_reverse($this->listaPost, TRUE);
-                $toRender = array();
-                foreach ($this->listaPost as $k=>$array) {
-                    if ($limite == 0)
-                        break;
-                    $arrayPesi = array();
-                    foreach ($array as $key => $post)
-                        $arrayPesi[$key] = $post['peso'];
-                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$k]);
-                    $n = count($array);
-                    if (is_numeric($limite) && $n > $limite) {
-                        $toRender = array_merge($toRender, array_slice($array, 0, $limite));
-                        break;
-                    }
-                    $toRender = array_merge($toRender, $array);
-                    $limite -= $n;
-                }
-                $this->listaPost = $toRender;
+//                ksort($this->listaPost, SORT_NUMERIC);
+//                $this->listaPost = array_reverse($this->listaPost, TRUE);
+//                $toRender = array();
+//                foreach ($this->listaPost as $k => $array) {
+//                    if ($limite == 0)
+//                        break;
+//                    $arrayPesi = array();
+//                    foreach ($array as $key => $post)
+//                        $arrayPesi[$key] = $post['peso'];
+//                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$k]);
+//                    $n = count($array);
+//                    if (is_numeric($limite) && $n > $limite) {
+//                        $toRender = array_merge($toRender, array_slice($array, 0, $limite));
+//                        break;
+//                    }
+//                    $toRender = array_merge($toRender, $array);
+//                    $limite -= $n;
+//                }
+//                $this->listaPost = $toRender;
                 ////////////////////////////////////////////////
                 //print_r($this->listaPost);die();
 //                for ($i = $c; $i > 0; $i--) {
@@ -310,6 +312,7 @@ class SearchController extends DooController {
 //                    }
 //                }
 //                $this->listaPost = $postToRender;
+                $this->sortPost($limite);
                 $this->displayPosts();
 //                ErrorController::notImpl();
                 break;
@@ -396,29 +399,37 @@ class SearchController extends DooController {
                 //TODO: Implementare ricerca fulltext in caso di nessun #hashtag
                 if (count($arr) == 0) {
                     $stringToSearch = urlencode($html->plaintext);
-                    $this->fullTextCore($stringToSearch, TRUE, $limite);
-                    ksort($this->listaPost, SORT_NUMERIC);
-                $this->listaPost = array_reverse($this->listaPost, TRUE);
-                $toRender = array();
-                foreach ($this->listaPost as $k=>$array) {
-                    if ($limite == 0)
-                        break;
-                    $arrayPesi = array();
-                    foreach ($array as $key => $post)
-                        $arrayPesi[$key] = $post['peso'];
-                    array_multisort($arrayPesi, SORT_DESC, $this->listaPost[$k]);
-                    $n = count($array);
-                    if (is_numeric($limite) && $n > $limite) {
-                        $toRender = array_merge($toRender, array_slice($array, 0, $limite));
-                        break;
+                    $listOfWords = $this->utf8_str_word_count($stringToSearch, 1);
+                    $listOfWords = array_unique($listOfWords);
+                    $this->fullTextCore($listOfWords, TRUE, $origLimite);
+//                    print_r ($this->listaPost);die();
+//                    ksort($this->listaPost, SORT_NUMERIC);
+//                    $this->listaPost = array_reverse($this->listaPost, TRUE);
+                    //print_r ($this->listaPost);
+                    //ELIMINO IL POST DI ORIGINE PER EVITARE CLONI
+                    $toCheck = implode('/', array($srv, $usr, $pid));
+                    foreach ($this->listaPost as $key => $art) {
+                        if (is_array($art['articolo'])) {
+                            if (key($art['articolo']) == "spam:/$toCheck") {
+                                unset($this->listaPost[$key]);
+                                unset($this->toMerge[$key]);
+                                array_values($this->listaPost);
+                                array_values($this->toMerge);
+                            }
+                        } else {
+                            if (strstr("about=\"/$toCheck\"", $art['articolo'])) {
+                                unset($this->listaPost[$key]);
+                                unset($this->toMerge[$key]);
+                                array_values($this->listaPost);
+                                array_values($this->toMerge);
+                            }
+                        }
                     }
-                    $toRender = array_merge($toRender, $array);
-                    $limite -= $n;
-                }
-                $this->listaPost = $toRender;
-                $this->displayPosts();
+                    //$this->processReleatedPostsFullText($listOfWords);
+                    $this->sortPost($origLimite);
+                    $this->displayPosts();
 //                ErrorController::notImpl();
-                break;
+                    break;
                 }
                 //Peso i post del nostro server
                 $allPost = $post->getPostArray(NULL, 'all');
@@ -478,7 +489,7 @@ class SearchController extends DooController {
                         return 500;
                 }
                 // print "\n\rEcco gli articoli con rispettivi pesi(solo quelli il cui valore è positivo\n\r";
-                $this->processReleatedPosts($arr, $tempoPostConfronto);
+                $this->processReleatedPostsAffinity($arr, $tempoPostConfronto);
 //                print "\n\rEcco la lista degli articoli\n\r";
 //                print_r($this->listaPost);
 //                die();
@@ -681,8 +692,11 @@ class SearchController extends DooController {
             $creato = $articolo->content;
             $myPeso = $this->pesoFullText($articolo, $listOfWords, $findTerm, $creato);
             if ($findTerm != 0) {
-                $this->listaPost[$findTerm][] = array(
+                $this->listaPost[] = array(
                     "articolo" => $articolo->outertext,
+                    "peso" => $myPeso,
+                );
+                $this->toMerge[] = array(
                     "peso" => $myPeso,
                 );
             }
@@ -899,7 +913,7 @@ class SearchController extends DooController {
         return false;
     }
 
-    private function processReleatedPosts($arr, $tempoPostConfronto) {
+    private function processReleatedPostsAffinity($arr, $tempoPostConfronto) {
         if ($this->respamOf != null) {
             $tempArray = explode('/', $this->respamOf);
             $srv = $tempArray[1];
@@ -1005,16 +1019,93 @@ class SearchController extends DooController {
         }
     }
 
-    private function fullTextCore($stringToSearch,$extRequest,$limite) {
-        $listOfWords = $this->utf8_str_word_count($stringToSearch, 1);
-        $listOfWords = array_unique($listOfWords);
+    private function processReleatedPostsFullText($listOfWords) {
+        if ($this->replyOf != null) {
+            $tempArray = explode('/', $this->replyOf);
+            $srv = $tempArray[1];
+            $usr = $tempArray[2];
+            $pid = $tempArray[3];
+            if ($srv != "Spammers") {
+                $url = $this->SRV->getUrl($srv);
+                if ($url) {
+                    //print "La richiesta è:".$url."postserver/$usr/$pid\n\r";
+                    $this->request->connect_to($url . "postserver/$usr/$pid")
+                            ->accept(DooRestClient::HTML)
+                            ->get();
+                    if ($this->request->isSuccess()) {
+                        $articolo = str_get_html($this->request->result());
+                        $creato = strtotime($articolo->content);
+                        $findTerm;
+//            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
+//            print "Tempo articolo: $tempoPostConfronto\n\r";
+                        $myPeso = $this->pesoFullText($articolo->outertext, $listOfWords, $findTerm, $creato) + 100;
+                        $this->listaPost[] = array(
+                            "articolo" => $pID,
+                            "peso" => $myPeso,
+                        );
+                        $this->toMerge[] = array(
+                            "peso" => $myPeso,
+                        );
+                    }
+                }
+            } else {
+                $post = new PostModel();
+                $pID = 'spam:/' . implode('/', array($srv, $usr, $pid));
+                if ($post->postExist($pID)) {
+                    $art = $post->getPost($pID);
+                    $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
+                    $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+                    $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+                    $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 5, $this->replyOf);
+                }
+            }
+        }
+        if (sizeof($this->listOfReply) > 0) {
+            foreach ($this->listOfReply as $artReply) {
+                $tempArray = explode('/', $artReply);
+                $srv = $tempArray[1];
+                $usr = $tempArray[2];
+                $pid = $tempArray[3];
+                if ($srv != "Spammers") {
+                    $url = $this->SRV->getUrl($srv);
+                    if ($url) {
+                        //print "La richiesta è:".$url."postserver/$usr/$pid\n\r";
+                        $this->request->connect_to($url . "postserver/$usr/$pid")
+                                ->accept(DooRestClient::HTML)
+                                ->get();
+                        if ($this->request->isSuccess()) {
+                            $articolo = str_get_html($this->request->result());
+                            $tempoPostConfrontato = strtotime($articolo->content);
+//            print "Tempo dell'articolo che ricevo: $tempoPostConfrontato\n\r";
+//            print "Tempo articolo: $tempoPostConfronto\n\r";
+                            $numDislike = $articolo->find('span[property=tweb:countDislike]', 0)->content;
+                            $numLike = $articolo->find('span[property=tweb:countLike]', 0)->content;
+                            $this->pesoAffinity($articolo->outertext, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 2, $artReply);
+                        }
+                    }
+                } else {
+                    $post = new PostModel();
+                    $pID = 'spam:/' . implode('/', array($srv, $usr, $pid));
+                    if ($post->postExist($pID)) {
+                        $art = $post->getPost($pID);
+                        $tempoPostConfrontato = strtotime($art[key($art)]["http://purl.org/dc/terms/created"][0]);
+                        $numDislike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countDislike"][0];
+                        $numLike = $art[key($art)]["http://vitali.web.cs.unibo.it/vocabulary/countLike"][0];
+                        $this->pesoAffinity($art, $arr, $tempoPostConfrontato, $tempoPostConfronto, $numDislike, $numLike, 2, $artReply);
+                    }
+                }
+            }
+        }
+    }
+
+    private function fullTextCore($listOfWords, $extRequest, $limite) {
         $vocab = explode(" ", utf8_decode(file_get_contents("data/vocabolario.dat")));
         //print_r($vocab); die();
         foreach ($listOfWords as $k => $v) {
             if (in_array(utf8_decode($v), $vocab))
                 unset($listOfWords[$k]);
         }
-        //print_r($listOfWords); die();
+//        print_r($listOfWords); //die();
         $post = new PostModel();
         $allPost = $post->getPostArray(NULL, 'all');
 //$listPost = array();
@@ -1025,8 +1116,11 @@ class SearchController extends DooController {
             $creato = $pID[key($pID)]["http://purl.org/dc/terms/created"][0];
             $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato);
             if ($findTerm != 0) {
-                $this->listaPost[$findTerm][] = array(
+                $this->listaPost[] = array(
                     "articolo" => $pID,
+                    "peso" => $myPeso,
+                );
+                $this->toMerge[] = array(
                     "peso" => $myPeso,
                 );
             }

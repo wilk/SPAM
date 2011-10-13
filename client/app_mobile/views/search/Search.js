@@ -68,7 +68,7 @@ mspam.views.Search=Ext.extend(Ext.form.FormPanel,{
 				'change':function(field,value){Ext.dispatch({
 					controller:'search',
 					action:'selectchange',
-					value:value
+					type:value
 				});}
 			},
 			options:[{

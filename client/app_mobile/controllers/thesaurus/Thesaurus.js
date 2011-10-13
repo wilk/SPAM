@@ -2,6 +2,8 @@ Ext.regController('thesaurus',{
 
 	init:function(){
 	
+//	this.addEvents('sharedthesaurus','extendedthesaurus');
+	
 		this.thesaurusstore=new Ext.data.Store({
 		
 			model:'term',
@@ -19,7 +21,6 @@ Ext.regController('thesaurus',{
 		
 		this.getThesaurus();
 //		this.getFirstElements();
-		
 
 	},
 	
@@ -29,7 +30,35 @@ Ext.regController('thesaurus',{
 		this.previousView=options.view;
 		
 		this.thesauruslist=this.render({xtype:'thesaurus'});
+		this.thesauruslist.down('textfield').setValue('');
+		
+		if(Ext.StoreMgr.get('loginstore').getCount()!=0){
+			this.thesauruslist.down('textfield').enable(true);
+			this.thesauruslist.down('#submit').enable(true);
+		}
+		else{
+			this.thesauruslist.down('textfield').disable(true);
+			this.thesauruslist.down('#submit').disable(true);
+		}
 		this.application.viewport.setActiveItem(this.thesauruslist);
+		
+		Ext.StoreMgr.get('loginstore').on('add',function(){
+			
+			if(this.thesauruslist){
+				this.thesauruslist.fireEvent('loggedin');
+			}
+			
+		},this);
+		Ext.StoreMgr.get('loginstore').on('remove',function(){
+			
+			if(this.thesauruslist){
+				this.thesauruslist.fireEvent('loggedout');
+			}
+		},this);
+		
+//		if(Ext.StoreMgr.get('loginstore').getCount!=0){
+//			this.thesauruslist.fireEvent('loggedin');
+//		}
 	},
 	
 	getThesaurus:function(){
@@ -80,33 +109,8 @@ Ext.regController('thesaurus',{
 		//ADD TERM HERE IS NOT A BAD THING
 //			Ext.Msg.alert('Thesaurus','This is the last term');
 			if(Ext.StoreMgr.get('loginstore').getCount()!=0){
-				this.addTerm(prefvalue);
+				this.addTermByPrompt(prefvalue);
 			}
-//			Ext.Msg.prompt('Add definition','Do you want to add a new tag',function(butt, text){
-//				
-//				if(butt!='cancel'){
-//					
-//					Ext.Ajax.request({
-//						
-//						url:'addterm',
-//						method:'post',
-//						params:{parentterm:prefvalue,
-//								term:text
-//						},
-//						success:function(){
-//							Ext.dispatch({
-//								
-//								controller:'thesaurus',
-//								action:'getThesaurus',
-//								
-//							});
-//						}
-//						
-//					});
-//					
-//				}
-//			
-//			});
 						
 		}
 		else{
@@ -118,20 +122,24 @@ Ext.regController('thesaurus',{
 		
 				var item=thesaurus.getSingleObject(null,children[i].object,skosNS+'prefLabel',null);
 				this.thesaurusstore.add({preflabel:item});
+				
+				this.thesauruslist.fireEvent('parentterm',subjects[0].subject);
+				this.thesauruslist.suspendEvents(false);
 		
 			}
 			this.thesaurusstore.sync();
+			this.thesauruslist.resumeEvents();
 		}
 		
 //		this.render(this.thesauruslist);
 	
 	},
 	
-	addTerm:function(parent){
+	addTermByPrompt:function(parent){
 	
 //		var prefvalue=options.prefvalue;
 		
-		if(Ext.StoreMgr.get('loginstore').getCount()!=0){
+//		if(Ext.StoreMgr.get('loginstore').getCount()!=0){
 		
 			Ext.Msg.prompt('Add definition','Do you want to add a new tag',function(butt, text){
 				
@@ -148,30 +156,57 @@ Ext.regController('thesaurus',{
 							Ext.dispatch({
 								
 								controller:'thesaurus',
-								action:'getThesaurus',
+								action:'getThesaurus'
 								
 							});
+							
+							this.thesaurusstore.add({preflabel:term});
+							this.thesaurusstore.sync();
+							
 						}
 						
 					});
 					
 				}
 			
-			});
-		
+			});	
+	},
+	
+	addterm:function(options){
+	
+		var parent=options.parent;
+		var term=options.term;
+		if(term==''||parent==''){
+			Ext.Msg.alert('Add term',"You have to tape a new term in this form: \"parent_term/new_term\"");
 		}
 		else{
 		
-			Ext.Msg.prompt('Login','This is the last term of the thesaurus, if you want to add a new term you must to login first',function(butt, text){
-								if(butt!='cancel'){
-									Ext.dispatch({
-										controller:'Login',
-										action:'loginUser',
-										name:text
-									});
-								}
-			},this);		
-		}
+			Ext.Ajax.request({
+						
+						url:'addterm',
+						method:'post',
+						params:{
+								parentterm:parent,
+								term:term
+						},
+						success:function(){
+							Ext.dispatch({
+								
+								controller:'thesaurus',
+								action:'getThesaurus'
+								
+							});
+							
+							this.thesaurusstore.add({preflabel:term});
+							this.thesaurusstore.sync();
+						},
+						failure:function(){
+							Ext.Msg.alert('Add term',"Check the field, maybe the parent term is not correct or it can't be extended");
+						}
+						
+					});
+		
+		}		
 	
 	},
 	
@@ -191,7 +226,8 @@ Ext.regController('thesaurus',{
 			else{
 				Ext.dispatch({
 					controller:'Home',
-					action:'renderHome'
+					action:'renderHome',
+//					historyUrl:'spam/home'
 				})
 			}
 		}

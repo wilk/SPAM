@@ -1,6 +1,7 @@
 mspam.views.Followers=Ext.extend(Ext.Panel,{
 
 	layout:'card',
+	id:'followview',
 
 	dockedItems:[{
 		xtype:'toolbar',

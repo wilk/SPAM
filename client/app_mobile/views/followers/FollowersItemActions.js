@@ -17,18 +17,30 @@ mspam.views.FollowersItemActions=Ext.extend(Ext.Panel,{
 	items:[{
 		
 		xtype:'container',
-		html:"<p align=\"center\"><b>View all user's posts</b></p>",
+		html:"<p align=\"center\"><b>View user's posts</b></p>",
 		items:[{
 			xtype:'button',
 			text:'Search posts',
 			ui:'confirm',
 			handler:function(){
-				this.up('followerItemActions').hide();
-				Ext.StoreMgr.get('poststore').getProxy().url='search/10/author/'+this.up('followerItemActions').down('#titleToolbar').title,
-				Ext.dispatch({
-					controller:'Home',
-					action:'renderHome'
-				})
+//				this.up('followerItemActions').hide();
+//				Ext.StoreMgr.get('poststore').getProxy().url='search/10/author/'+this.up('followerItemActions').down('#titleToolbar').title,
+//				Ext.dispatch({
+//					controller:'Home',
+//					action:'renderHome',
+////					historyUrl:'spam/home'
+//				})
+
+this.up('followerItemActions').hide();
+Ext.dispatch({
+controller:'search',
+action:'showSearchForm',
+view:Ext.getCmp('followview'),
+type:'author',
+term:this.up('followerItemActions').down('#titleToolbar').title
+});
+
+
 			}
 		}]
 	},

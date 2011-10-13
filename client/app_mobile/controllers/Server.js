@@ -39,14 +39,30 @@ Ext.regController('Server',{
 		
 		if(Ext.StoreMgr.get('loginstore').getCount()==0){
 			
-			this.serverstore.load();
-			this.serverstore.each(function(rec){
-			
-				rec.set('enabled',0);
-				this.serverstorecopy.add(rec);
-				this.serverstorecopy.sync();
-			
-			},this);
+			this.serverstore.load(function(records,operation,success){
+				
+				if(success){
+				
+					for(i=0;i<records.length;i++){
+					
+						records[i].set('enabled',0);
+						Ext.StoreMgr.get('serverstorecopy').add(records[i]);
+						Ext.StoreMgr.get('serverstorecopy').sync();
+					}
+				
+				}
+				else{
+				
+					Ext.Msg.show ({
+						title: 'Servers',
+						msg: 'Something goes wrong during servers loading operation' ,
+						buttons: Ext.Msg.OK,
+						icon: Ext.Msg.ERROR
+					});
+				
+				}
+				
+			});
 		
 		}
 		else{
@@ -142,7 +158,8 @@ Ext.regController('Server',{
 		else{
 			Ext.dispatch({
 				controller:'Home',
-				action:'renderHome'
+				action:'renderHome',
+//				historyUrl:'spam/home'
 			});
 		}
 		

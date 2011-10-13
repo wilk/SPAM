@@ -8,6 +8,21 @@ Ext.regController('search',{
 //		console.log(this.application);
 		this.application.viewport.setActiveItem(this.searchform);
 		
+		if(options.term&&options.type){
+		
+			this.searchform.down('#value').setValue(options.term);
+			this.searchform.down('#type').setValue(options.type);
+			this.selectchange(options);
+			
+		}
+		else{
+		
+			this.searchform.down('#value').setValue('');
+			this.searchform.down('#type').setValue('recent');
+			this.selectchange(options);
+		
+		}
+		
 	},
 	
 	submitSearch:function(){
@@ -17,7 +32,8 @@ Ext.regController('search',{
 	this.checkFormFields();
 	Ext.dispatch({
 		controller:'Home',
-		action:'renderHome'
+		action:'renderHome',
+//		historyUrl:'spam/home'
 	})
 //Ext.StoreMgr.get('poststore').load();
 	
@@ -28,7 +44,7 @@ Ext.regController('search',{
 		fieldset=this.searchform.down('fieldset');
 		valuefield=fieldset.getComponent('value');
 		
-		switch(options.value){
+		switch(options.type){
 		
 			case'author':
 				fieldset.setInstructions('To search by author you have to type yours terms in this way: serverID/userID');
@@ -40,12 +56,7 @@ Ext.regController('search',{
 				fieldset.setInstructions('Search recents posts of yours followed users');
 				valuefield.disable();
 				break;
-			case'recent':
-				fieldset.setInstructions('To search recents post you can leave the search field empty or type an argument of your choice');
-				if(valuefield.disabled){
-					valuefield.enable();
-				}
-				break;
+				
 			case'related':
 				fieldset.setInstructions('To search releated post you have to tape an argument, better if you take it from the thesaurus');
 				if(valuefield.disabled){
@@ -64,7 +75,12 @@ Ext.regController('search',{
 					valuefield.enable();
 				}
 				break;
-		
+				
+			default:
+				fieldset.setInstructions('To search recents post you can leave the search field empty or type an argument of your choice');
+				if(valuefield.disabled){
+					valuefield.enable();
+				}		
 		}
 	},
 	
@@ -128,7 +144,8 @@ Ext.regController('search',{
 		else{
 			Ext.dispatch({
 				controller:'Home',
-				action:'renderHome'
+				action:'renderHome',
+//				historyUrl:'spam/home'
 			})
 		}
 		

@@ -85,7 +85,10 @@ this.dockedItems=[{
 				Ext.dispatch({
 					controller:'search',
 					action:'showSearchForm',
-					view:this.up('post')
+					view:this.up('post'),
+					term:serverId+'/'+userId+'/'+postId,
+					type:'affinity'
+//					historyUrl:'spam/search'
 				})
 			}
 		}]

@@ -13,6 +13,6 @@ Ext.regApplication('mspam',{
 		Ext.dispatch({
 			controller:'Login',
 			action:'displayLogin'
-		})
+		});
 	}
 });

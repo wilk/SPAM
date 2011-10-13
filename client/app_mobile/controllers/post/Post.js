@@ -151,7 +151,8 @@ Ext.regController('Post',{
 			serverID:serverId,
 			userID:userId,
 			postID:postId,
-			view:this.post
+			view:this.post,
+//			historyUrl:'spam/newpost'
 		})
 	},
 	
@@ -167,7 +168,8 @@ Ext.regController('Post',{
 			action:'showMap',
 			view:options.view,
 			lat:lat,
-			lng:lng
+			lng:lng,
+//			historyUrl:'spam/map'
 		});
 	
 	},
@@ -233,7 +235,7 @@ Ext.regController('Post',{
 							controller:'followers',
 							action:'setFollow',
 							id:serverId+'/'+userId,
-							value:1				
+							value:1,
 						})
 					
 					}

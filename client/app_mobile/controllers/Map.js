@@ -54,9 +54,11 @@ Ext.regController('Map',{
 		
 		mark.setPosition(pos);
 		mark.setMap(this.map.down('map').map);
+		mark.setDraggable(true);
 		this.markers.push(mark);
 //		google.maps.event.addListener(mark,'click',Ext.ControllerManager.get('Map').markerTapHandler(pos,title));
 		google.maps.event.addListener(mark,'click',function(){Ext.ControllerManager.get('Map').markerTapHandler(pos,title);});
+		google.maps.event.addListener(mark,'drag',function(){mark.setPosition(pos);});
 	},
 	
 	centerMap:function(lat,lng){
@@ -173,6 +175,7 @@ Ext.regController('Map',{
 					user:rec.get('user'),
 					index:index,
 					view:this.map,
+//					historyUrl:'spam/post'
 					
 				})
 			}

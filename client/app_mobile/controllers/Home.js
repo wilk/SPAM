@@ -59,7 +59,8 @@ Ext.regController('Home',{
 						article:rec.data.article,
 						user:rec.data.user,
 						index:index,
-						view:this.up('home')
+						view:this.up('home'),
+//						historyUrl:'spam/post'
 					});
 	//				Ext.ControllerManager.get('Home').showPost(rec.data.html, rec.data.article)
 				}

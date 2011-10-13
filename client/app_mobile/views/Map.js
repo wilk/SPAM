@@ -61,7 +61,8 @@ mspam.views.Map=Ext.extend(Ext.Panel,{
 				Ext.dispatch({
 					controller:'search',
 					action:'showSearchForm',
-					view:this.up('Map')
+					view:this.up('Map'),
+//					historyUrl:'spam/search'
 				})
 			}
 		}]
@@ -70,6 +71,7 @@ mspam.views.Map=Ext.extend(Ext.Panel,{
 	items:[{
 		
 		xtype:'map',
+		id:'mapid',
 		useCurrentLocation:true,
 //		listeners:{
 //			centerchange:function(t,m,c){

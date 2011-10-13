@@ -73,7 +73,8 @@ mspam.views.Home=Ext.extend(Ext.Panel,{
 				Ext.dispatch({
 					controller:'search',
 					action:'showSearchForm',
-					view:this.up('home')
+					view:this.up('home'),
+//					historyUrl:'spam/search'
 				})
 			}
 		}]

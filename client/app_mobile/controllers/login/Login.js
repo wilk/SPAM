@@ -20,7 +20,8 @@ Ext.regController('Login',{
 		
 			Ext.dispatch({
 				controller:'Home',
-				action:'renderHome'
+				action:'renderHome',
+//				historyUrl:'spam/home'
 			})
 		
 		}
@@ -76,7 +77,8 @@ Ext.regController('Login',{
 								Ext.dispatch({
 		
 									controller:'Home',
-									action:'renderHome'
+									action:'renderHome',
+//									historyUrl:'spam/home'
 		
 								})
 							}
@@ -108,7 +110,8 @@ Ext.regController('Login',{
 		Ext.dispatch({
 		
 			controller:'Home',
-			action:'renderHome'
+			action:'renderHome',
+//			historyUrl:'spam/home'
 		
 		})
 	

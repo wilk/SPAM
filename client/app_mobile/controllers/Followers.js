@@ -111,7 +111,8 @@ closeFollowersList:function(){
 		Ext.dispatch({
 		
 			controller:'Home',
-			action:'renderHome'
+			action:'renderHome',
+//			historyUrl:'spam/home'
 		
 		});
 	

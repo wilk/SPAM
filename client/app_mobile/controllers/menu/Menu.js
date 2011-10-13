@@ -58,7 +58,8 @@ Ext.regController('menu',{
 							
 								controller:'sendpost',
 								action:'showNewPost',
-								view:this.prevView
+								view:this.prevView,
+//								historyUrl:'spam/newpost'
 							
 							})
 						}
@@ -74,7 +75,8 @@ Ext.regController('menu',{
 							
 								controller:'followers',
 								action:'showFollowers',
-								view:this.prevView
+								view:this.prevView,
+//								historyUrl:'spam/followers'
 							
 							})
 						}
@@ -88,7 +90,8 @@ Ext.regController('menu',{
 							Ext.dispatch({
 								controller:'Server',
 								action:'renderServerList',
-								view:this.prevView
+								view:this.prevView,
+//								historyUrl:'spam/servers'
 							});
 						}
 					},
@@ -101,7 +104,8 @@ Ext.regController('menu',{
 							Ext.dispatch({
 								controller:'thesaurus',
 								action:'renderme',
-								view:this.prevView
+								view:this.prevView,
+//								historyUrl:'spam/thesaurus'
 							});
 						}
 					},
@@ -117,7 +121,8 @@ Ext.regController('menu',{
 								
 								controller:'Map',
 								action:'showMap',
-								view:this.prevView
+								view:this.prevView,
+//								historyUrl:'spam/map'
 								
 							});
 							

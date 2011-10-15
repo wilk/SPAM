@@ -1135,7 +1135,7 @@ class SearchController extends DooController {
 //                        print "\n\rSono un array\n\r";
 //                        print "la key è". key($art['articolo'])."\n\r";
 //                        print "L'articolo è $toCheck\n\r";
-                                    if (key($art['articolo']) == "spam:$this->replyOf") {
+                                    if (key($art['articolo']) == "spam:$artReply") {
 //                            print "siamo uguali ovviamente e il mio peso è:" .round($realPeso, 5);
 //                            print "\n\rMentre il peso attuale è ". $art['peso'];
                                         $this->listaPost[$key]['peso'] = $myPeso;
@@ -1143,7 +1143,7 @@ class SearchController extends DooController {
                                         $update = true;
                                     }
                                 } else {
-                                    if (strstr("about=\"$this->replyOf\"", $art['articolo'])) {
+                                    if (strstr("about=\"$artReply\"", $art['articolo'])) {
                                         $this->listaPost[$key]['peso'] = $myPeso;
                                         $this->toMerge[$key]['peso'] = $myPeso;
                                         $update = true;
@@ -1176,7 +1176,7 @@ class SearchController extends DooController {
 //                        print "\n\rSono un array\n\r";
 //                        print "la key è". key($art['articolo'])."\n\r";
 //                        print "L'articolo è $toCheck\n\r";
-                                if (key($art['articolo']) == "spam:$this->replyOf") {
+                                if (key($art['articolo']) == "spam:$artReply") {
 //                            print "siamo uguali ovviamente e il mio peso è:" .round($realPeso, 5);
 //                            print "\n\rMentre il peso attuale è ". $art['peso'];
                                     $this->listaPost[$key]['peso'] = $myPeso;
@@ -1184,7 +1184,7 @@ class SearchController extends DooController {
                                     $update = true;
                                 }
                             } else {
-                                if (strstr("about=\"$this->replyOf\"", $art['articolo'])) {
+                                if (strstr("about=\"$artReply\"", $art['articolo'])) {
                                     $this->listaPost[$key]['peso'] = $myPeso;
                                     $this->toMerge[$key]['peso'] = $myPeso;
                                     $update = true;

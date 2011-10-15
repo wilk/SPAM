@@ -1073,10 +1073,10 @@ class SearchController extends DooController {
                 $post = new PostModel();
                 $pID = 'spam:/' . implode('/', array($srv, $usr, $pid));
                 if ($post->postExist($pID)) {
-                    $art = $post->getPost($pID);
-                    $postContentHTML = str_get_html(html_entity_decode($art[key($art)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
+                    $articolo = $post->getPost($pID);
+                    $postContentHTML = str_get_html(html_entity_decode($articolo[key($articolo)]["http://rdfs.org/sioc/ns#content"][0], ENT_COMPAT, 'UTF-8'));
                     $findTerm;
-                    $creato = $art[key($art)]["http://purl.org/dc/terms/created"][0];
+                    $creato = $articolo[key($articolo)]["http://purl.org/dc/terms/created"][0];
                     $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato) + 100;
                     $update = false;
                     foreach ($this->listaPost as $key => $art) {
@@ -1101,7 +1101,7 @@ class SearchController extends DooController {
                     }
                     if (!$update) {
                         $this->listaPost[] = array(
-                            "articolo" => $art,
+                            "articolo" => $articolo,
                             "peso" => $myPeso,
                         );
                         $this->toMerge[] = array(
@@ -1171,12 +1171,12 @@ class SearchController extends DooController {
                         $creato = $art[key($art)]["http://purl.org/dc/terms/created"][0];
                         $myPeso = $this->pesoFullText($postContentHTML, $listOfWords, $findTerm, $creato) + 50;
                         $update = false;
-                        foreach ($this->listaPost as $key => $art) {
-                            if (is_array($art['articolo'])) {
+                        foreach ($this->listaPost as $key => $article) {
+                            if (is_array($article['articolo'])) {
 //                        print "\n\rSono un array\n\r";
 //                        print "la key è". key($art['articolo'])."\n\r";
 //                        print "L'articolo è $toCheck\n\r";
-                                if (key($art['articolo']) == "spam:$artReply") {
+                                if (key($article['articolo']) == "spam:$artReply") {
 //                            print "siamo uguali ovviamente e il mio peso è:" .round($realPeso, 5);
 //                            print "\n\rMentre il peso attuale è ". $art['peso'];
                                     $this->listaPost[$key]['peso'] = $myPeso;

@@ -61,7 +61,7 @@ function disposeArticles (store, focus, focusIndex) {
 	var allRecord = store.getRange ();
 	
 	// Check if there are two articles at least
-	if (storeCount > 1) {
+	if ((storeCount > 1) || ((storeCount == 1) && (focus != null))) {
 		// If focus wasn't passed by argument, find it!
 		if (focus == null) {
 			var artBestAffinity = allRecord[0].get ('affinity');
@@ -160,6 +160,7 @@ function disposeArticles (store, focus, focusIndex) {
 	}
 	// Check if there's only an article
 	else if (store.count () == 1) {
+		// TODO: problem: if there's only an article and a focus, check it!
 		if (focus == null) {
 			// Set the first of store
 			focusIndex = 0;

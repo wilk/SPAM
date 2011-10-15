@@ -65,108 +65,98 @@ Ext.define ('SC.controller.regions.center.FocusArticle' , {
 	
 	// @brief Initialize vars and window layout, even geolocation
 	initFocusWindow: function (win) {
-		try {
-			// Index of the appropriate model
-			win.focusStore = this.getRegionsCenterArticlesStore();
-			win.indexModel = win.focusStore.find ('about' , win.aboutModel);
-			win.focusModel = win.focusStore.getRange()[win.indexModel];
-			win.followersStore = this.getRegionsWestFollowersStore ();
+		// Index of the appropriate model
+		win.focusStore = this.getRegionsCenterArticlesStore ();
+		win.indexModel = win.focusStore.find ('about' , win.aboutModel);
+		win.focusModel = win.focusStore.getRange()[win.indexModel];
+		win.followersStore = this.getRegionsWestFollowersStore ();
 		
-			// Retrieve the owner of the post
-			win.focusUser = win.focusModel.get ('user');
+		// Retrieve the owner of the post
+		win.focusUser = win.focusModel.get ('user');
+	
+		// Retrieve user setlike value
+		win.likeOrDislike = win.focusModel.get ('setlike');
+	
+		// Like and Dislike counters
+		win.counterLike = win.focusModel.get ('like');
+		win.counterDislike = win.focusModel.get ('dislike');
+	
+		// Check if counter like/dislike span tag exists
+		if ((win.counterLike != -1) && (win.counterDislike != -1)) {
+			// Percent of progress bar
+			win.pBarValue = win.counterLike / (win.counterLike + win.counterDislike);
 		
-			// Retrieve user setlike value
-			win.likeOrDislike = win.focusModel.get ('setlike');
-		
-			// Like and Dislike counters
-			win.counterLike = win.focusModel.get ('like');
-			win.counterDislike = win.focusModel.get ('dislike');
-		
-			// Check if counter like/dislike span tag exists
-			if ((win.counterLike != -1) && (win.counterDislike != -1)) {
-				// Percent of progress bar
-				win.pBarValue = win.counterLike / (win.counterLike + win.counterDislike);
-			
-				// Update like/dislike progress bar
-				win.down('progressbar').updateProgress (win.pBarValue, win.counterLike + ' like - ' + win.counterDislike + ' dislike');
-			}
-		
-			// Check if browser can support geolocation to prevent useless operations
-			if (geolocSin.isSupported ()) {
-				// If location is (0.0 , 0.0), do not zoom
-				if (!((win.focusModel.get ('glLat') == 0) && (win.focusModel.get ('glLong') == 0))) {
-					// Set new coords
-					var latlng = new google.maps.LatLng (win.focusModel.get ('glLat'), win.focusModel.get ('glLong'));
-					var gMap = geolocSin.getMap ();
-					gMap.setCenter (latlng);
-					gMap.setZoom (5);
-				}
-			}
-		
-			// If user set like, change the icon of 'I like' button
-			if (win.likeOrDislike == 1) {
-				win.down('button[tooltip="I Like"]').setIcon ('ext/resources/images/btn-icons/already-like.png');
-			}
-			// If user set dislike, change the icon of 'I Dislike' button
-			else if (win.likeOrDislike == -1) {
-				win.down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/already-dislike.png');
-			}
-		
-			// Check if user is already logged-in: if he is, show every buttons
-			// If there is server cookie
-			if (checkIfUserLogged ()) {
-				// Hide setlike buttons because user can't set like/dislike on his own post
-				if (win.focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
-					win.down('button[tooltip="I Like"]').setVisible (true);
-					win.down('button[tooltip="I Dislike"]').setVisible (true);
-				}
-				
-				win.down('button[tooltip="Respam"]').setVisible (true);
-				win.down('button[tooltip="Reply"]').setVisible (true);
-			
-				// If there are followers
-				if (win.followersStore.getCount () != 0) {
-					// Find if user of the focus article is already followed
-					win.followersStore.each (function (record) {
-						// TODO: check if this check is correct
-						if ('/' + record.get ('follower') == win.focusModel.get ('resource')) {
-							win.isFollowed = true;
-						}
-					}, win);
-				}
-			
-				// Hide setfollow buttons because user can't set follow/unfollow himself
-				if (win.focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
-					// If user is already followed, shows the unfollow button
-					if (win.isFollowed) {
-						win.down('button[tooltip="Unfollow"]').setVisible (true);
-						win.down('button[tooltip="Follow"]').setVisible (false);
-					}
-					// Otherwise shows the follow button
-					else {
-						win.down('button[tooltip="Follow"]').setVisible (true);
-						win.down('button[tooltip="Unfollow"]').setVisible (false);
-					}
-				}
-			}
-			// Otherwise, hide buttons
-			// This option is for refresh by login/logout
-			else {
-				win.down('button[tooltip="I Like"]').setVisible (false);
-				win.down('button[tooltip="I Dislike"]').setVisible (false);
-				win.down('button[tooltip="Follow"]').setVisible (false);
-				win.down('button[tooltip="Unfollow"]').setVisible (false);
-				win.down('button[tooltip="Reply"]').setVisible (false);
-				win.down('button[tooltip="Respam"]').setVisible (false);
+			// Update like/dislike progress bar
+			win.down('progressbar').updateProgress (win.pBarValue, win.counterLike + ' like - ' + win.counterDislike + ' dislike');
+		}
+	
+		// Check if browser can support geolocation to prevent useless operations
+		if (geolocSin.isSupported ()) {
+			// If location is (0.0 , 0.0), do not zoom
+			if (!((win.focusModel.get ('glLat') == 0) && (win.focusModel.get ('glLong') == 0))) {
+				// Set new coords
+				var latlng = new google.maps.LatLng (win.focusModel.get ('glLat'), win.focusModel.get ('glLong'));
+				var gMap = geolocSin.getMap ();
+				gMap.setCenter (latlng);
+				gMap.setZoom (5);
 			}
 		}
-		catch (err) {
-			Ext.Msg.show ({
-				title: err.name ,
-				msg: err.message ,
-				buttons: Ext.Msg.OK,
-				icon: Ext.Msg.ERROR
-			});
+	
+		// If user set like, change the icon of 'I like' button
+		if (win.likeOrDislike == 1) {
+			win.down('button[tooltip="I Like"]').setIcon ('ext/resources/images/btn-icons/already-like.png');
+		}
+		// If user set dislike, change the icon of 'I Dislike' button
+		else if (win.likeOrDislike == -1) {
+			win.down('button[tooltip="I Dislike"]').setIcon ('ext/resources/images/btn-icons/already-dislike.png');
+		}
+	
+		// Check if user is already logged-in: if he is, show every buttons
+		// If there is server cookie
+		if (checkIfUserLogged ()) {
+			// Hide setlike buttons because user can't set like/dislike on his own post
+			if (win.focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
+				win.down('button[tooltip="I Like"]').setVisible (true);
+				win.down('button[tooltip="I Dislike"]').setVisible (true);
+			}
+			
+			win.down('button[tooltip="Respam"]').setVisible (true);
+			win.down('button[tooltip="Reply"]').setVisible (true);
+		
+			// If there are followers
+			if (win.followersStore.getCount () != 0) {
+				// Find if user of the focus article is already followed
+				win.followersStore.each (function (record) {
+					// TODO: check if this check is correct
+					if ('/' + record.get ('follower') == win.focusModel.get ('resource')) {
+						win.isFollowed = true;
+					}
+				}, win);
+			}
+		
+			// Hide setfollow buttons because user can't set follow/unfollow himself
+			if (win.focusUser != Ext.util.Cookies.get ('SPAMlogin')) {
+				// If user is already followed, shows the unfollow button
+				if (win.isFollowed) {
+					win.down('button[tooltip="Unfollow"]').setVisible (true);
+					win.down('button[tooltip="Follow"]').setVisible (false);
+				}
+				// Otherwise shows the follow button
+				else {
+					win.down('button[tooltip="Follow"]').setVisible (true);
+					win.down('button[tooltip="Unfollow"]').setVisible (false);
+				}
+			}
+		}
+		// Otherwise, hide buttons
+		// This option is for refresh by login/logout
+		else {
+			win.down('button[tooltip="I Like"]').setVisible (false);
+			win.down('button[tooltip="I Dislike"]').setVisible (false);
+			win.down('button[tooltip="Follow"]').setVisible (false);
+			win.down('button[tooltip="Unfollow"]').setVisible (false);
+			win.down('button[tooltip="Reply"]').setVisible (false);
+			win.down('button[tooltip="Respam"]').setVisible (false);
 		}
 	} ,
 	

@@ -12,8 +12,6 @@ mspam.views.FollowersItemActions=Ext.extend(Ext.Panel,{
 		xtype:'toolbar',
 	}],
 	
-//	html:'tap outside this message box to do nothing',
-	
 	items:[{
 		
 		xtype:'container',
@@ -23,23 +21,15 @@ mspam.views.FollowersItemActions=Ext.extend(Ext.Panel,{
 			text:'Search posts',
 			ui:'confirm',
 			handler:function(){
-//				this.up('followerItemActions').hide();
-//				Ext.StoreMgr.get('poststore').getProxy().url='search/10/author/'+this.up('followerItemActions').down('#titleToolbar').title,
-//				Ext.dispatch({
-//					controller:'Home',
-//					action:'renderHome',
-////					historyUrl:'spam/home'
-//				})
 
-this.up('followerItemActions').hide();
-Ext.dispatch({
-controller:'search',
-action:'showSearchForm',
-view:Ext.getCmp('followview'),
-type:'author',
-term:this.up('followerItemActions').down('#titleToolbar').title
-});
-
+				this.up('followerItemActions').hide();
+				Ext.dispatch({
+				controller:'search',
+				action:'showSearchForm',
+				view:Ext.getCmp('followview'),
+				type:'author',
+				term:this.up('followerItemActions').down('#titleToolbar').title
+				});
 
 			}
 		}]
@@ -51,9 +41,7 @@ term:this.up('followerItemActions').down('#titleToolbar').title
 			xtype:'button',
 			text:'Unfollow user',
 			ui:'decline',
-//			scope:this,
 			handler:function(){
-//			console.log(this);
 				this.up('followerItemActions').hide();
 				Ext.dispatch({
 				

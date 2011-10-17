@@ -1,7 +1,5 @@
 mspam.views.SendPost=Ext.extend(Ext.form.FormPanel,{
-//layout:'card',
-//align:'stretch',
-//pack:'center',
+
 	scroll:'vertical',
 
 	dockedItems:[{
@@ -28,11 +26,11 @@ mspam.views.SendPost=Ext.extend(Ext.form.FormPanel,{
 		xtype:'fieldset',
 		title:'Write a new post',
 		itemId:'fieldset',
-//		fullscreen:true,
 		items:[{
 			xtype:'textareafield',
 			name:'newpost',
 			itemId:'newpost',
+		//show the android auto complete	
 			autoComplete:true
 		}]
 	},{
@@ -44,7 +42,6 @@ mspam.views.SendPost=Ext.extend(Ext.form.FormPanel,{
 				Ext.dispatch({
 					controller:'sendpost',
 					action:'getTextAreaContent'
-//					text:this.up('sendpost').down('fieldset').down('newpost')
 				});
 			}
 		

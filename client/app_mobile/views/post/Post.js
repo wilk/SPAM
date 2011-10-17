@@ -1,20 +1,14 @@
 mspam.views.Post=Ext.extend(Ext.Panel,{
 
-//	fullscreen:true,
 	styleHtmlContent:true,
-//	autoDestroy:false,
 	layout:'card',
-	initComponent:function(){
 	
-//	this.on('deactivate',function(){this.destroy();});
-	
-this.dockedItems=[{
+	dockedItems:[{
 
 		itemId:'toolbarTitle',
 		xtype:'toolbar',
 		dock:'top',
 		ui:'light',
-//		title:'Mspam',
 		items:[
 		{
 			text:'Back',
@@ -88,7 +82,6 @@ this.dockedItems=[{
 					view:this.up('post'),
 					term:serverId+'/'+userId+'/'+postId,
 					type:'affinity'
-//					historyUrl:'spam/search'
 				})
 			}
 		}]
@@ -112,11 +105,7 @@ this.dockedItems=[{
 			}
 		}]
 	
-	}];
-	
-		
-		mspam.views.Post.superclass.initComponent.apply(this,arguments);
-	}
+	}]
 
 });
 Ext.reg('post',mspam.views.Post);

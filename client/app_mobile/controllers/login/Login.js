@@ -1,5 +1,6 @@
 Ext.regController('Login',{
 
+//initialize and register localstorage to record a user (cookie)
 	init:function(){
 	
 		this.store=new Ext.data.Store({
@@ -8,20 +9,22 @@ Ext.regController('Login',{
 		
 		Ext.regStore('loginstore',this.store);
 		
+		//check cookie to restore the user session after page refresh
 		if(document.cookie.search('ltwlogin')!=-1){
 
 			this.store.load();
 		}
 	},
 
+//render and activate login/logout page
 	displayLogin:function(){
 		
+		//if user is already logged in (after refresh)
 		if(this.store.getCount()){
 		
 			Ext.dispatch({
 				controller:'Home',
 				action:'renderHome',
-//				historyUrl:'spam/home'
 			})
 		
 		}
@@ -35,14 +38,15 @@ Ext.regController('Login',{
 		}
 	},
 	
+//login function called from login view and login popup
 	loginUser:function(options){
 	
+	//set loading mask
 		var view=this.application.viewport;
 
 		view.setLoading(true);
-		
-//		var store=Ext.StoreMgr.get('loginstore');
-		
+
+	//check if the function was called from a view or a popup
 		if(options.loginView){
 			uname=options.loginView.down('#loginTextField').getValue();
 		}
@@ -50,9 +54,7 @@ Ext.regController('Login',{
 		{
 			uname=options.name;
 		}
-//		console.log(store);
 		
-//		store.each(function(rec){store.remove(rec);});
 		if (uname!=''){
 			
 			Ext.Ajax.request({
@@ -67,18 +69,16 @@ Ext.regController('Login',{
 			
 				success:function(response, opts){
 			
+			//if user was successfully logged in, add his name to the localstorage,
+			//render the home page if he has used the login view and remove the loading mask
 							this.store.add({username:uname});
 							this.store.sync();
-//console.log(document.cookie);
-//var user=Ext.ModelMgr.create({username:uname},'User');
-//user.save();
 
 							if(options.loginView){
 								Ext.dispatch({
 		
 									controller:'Home',
 									action:'renderHome',
-//									historyUrl:'spam/home'
 		
 								})
 							}
@@ -98,25 +98,20 @@ Ext.regController('Login',{
 			alert('user name is required');
 		}
 	},
-	
+
+//user without name (read only)	
 	anonimousUser:function(options){
-	
-//		store=options.loginView.store;
-//		uname=options.loginView.down('#loginTextField').getValue();
-//		console.log(store);
-		
-//		store.each(function(rec){store.remove(rec);});
 		
 		Ext.dispatch({
 		
 			controller:'Home',
 			action:'renderHome',
-//			historyUrl:'spam/home'
 		
 		})
 	
 	},
 	
+//logout user
 	logoutUser:function(){
 	
 		this.application.viewport.setLoading(true);
@@ -128,9 +123,9 @@ Ext.regController('Login',{
 			scope:this,
 			
 			success:function(){
-								
-//				var store=Ext.StoreMgr.get('loginstore');
-				
+		
+		//if the user was succefully logged out remove his name frome the localstorage,
+		//the loading mask and reset the cookie
 				this.store.getProxy().clear();
 				this.store.load();
 				

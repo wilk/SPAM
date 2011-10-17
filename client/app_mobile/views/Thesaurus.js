@@ -15,7 +15,7 @@ mspam.views.Thesaurus=Ext.extend(Ext.Panel,{
 								},
 								
 		loggedin:function(){
-					console.log('loggedin');
+
 						if(this.down('textfield').getValue()!=''){
 						
 							var parent=this.down('textfield').getValue()
@@ -27,7 +27,7 @@ mspam.views.Thesaurus=Ext.extend(Ext.Panel,{
 					},
 		
 		loggedout:function(){
-					console.log('loggedout');
+
 					this.down('textfield').disable(true);
 					this.down('#submit').disable(true);
 					

@@ -1,7 +1,10 @@
 mspam.views.LoginIndex=Ext.extend(Ext.form.FormPanel,{
 
+//vertical box layout
 	layout: 'vbox',
+//component take all the container's' width
 	align:'stretch',
+//set components position
 	pack:'center',
 	styleHtmlContent:true,
 	
@@ -13,7 +16,7 @@ mspam.views.LoginIndex=Ext.extend(Ext.form.FormPanel,{
 		this.dockedItems=[{
 			xtype:'toolbar',
 			dock:'top',
-			title:'Mspam'			
+			title:'Spam'			
 		}];
 		
 		this.items=[
@@ -31,7 +34,6 @@ mspam.views.LoginIndex=Ext.extend(Ext.form.FormPanel,{
 				Ext.dispatch({
 					controller:'Login',
 					action:'anonimousUser'
-//					loginView:view
 				})
 			}
 		},

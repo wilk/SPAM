@@ -1,7 +1,4 @@
 mspam.views.Map=Ext.extend(Ext.Panel,{
-
-//	fullscreen:true,
-//	layout:'fit',
 	
 	dockedItems:[{
 		itemId:'titleToolbar',
@@ -61,8 +58,7 @@ mspam.views.Map=Ext.extend(Ext.Panel,{
 				Ext.dispatch({
 					controller:'search',
 					action:'showSearchForm',
-					view:this.up('Map'),
-//					historyUrl:'spam/search'
+					view:this.up('Map')
 				})
 			}
 		}]
@@ -72,16 +68,7 @@ mspam.views.Map=Ext.extend(Ext.Panel,{
 		
 		xtype:'map',
 		id:'mapid',
-		useCurrentLocation:true,
-//		listeners:{
-//			centerchange:function(t,m,c){
-//				console.log(m+'----------'+c);
-//			},
-//			zoomchange:function(t,m,z){
-//				console.log(m+'----------'+z);
-//			}
-//		}
-//		fullscreen:true
+		useCurrentLocation:true
 		
 	}]
 

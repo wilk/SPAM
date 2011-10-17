@@ -1,8 +1,5 @@
 mspam.views.Search=Ext.extend(Ext.form.FormPanel,{
 
-//	layout:'card',
-//	pack:'center',
-//	align:'stretch',
 	styleHtmlContent:true,
 	scroll:'vertical',
 	
@@ -10,7 +7,7 @@ mspam.views.Search=Ext.extend(Ext.form.FormPanel,{
 		xtype:'toolbar',
 		itemId:'titleToolbar',
 		dock:'top',
-		title:'Mspam search',
+		title:'Search',
 		ui:'light',
 		items:[{
 			
@@ -25,27 +22,6 @@ mspam.views.Search=Ext.extend(Ext.form.FormPanel,{
 			
 		}]
 	},
-//	{
-//	
-//		itemId:'submitsearchtoolbar',
-//		xtype:'toolbar',
-//		dock:'bottom',
-//		height:'35',
-//		layout:{type:'vbox',align:'stretch'},
-
-//		items:[{
-
-//			text:'submit',
-//			ui:'confirm',
-//			handler:function(){
-//				Ext.dispatch({
-//					controller:'search',
-//					action:'submitSearch'
-//				});
-//			}
-//		}]
-//	
-//	}
 	],
 
 	items:[{

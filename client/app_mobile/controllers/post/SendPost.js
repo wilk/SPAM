@@ -6,10 +6,13 @@ Ext.regController('sendpost',{
 	
 	},
 
+//method to show the new post view
 	showNewPost:function(options){
 	
+	//save previous view to go back using back button
 		this.prevView=options.view;
-		
+	
+	//check if this method was called to write a replay to a post and save the original post's information	
 		if(options.serverID){
 		
 			this.serverID=options.serverID;
@@ -19,10 +22,13 @@ Ext.regController('sendpost',{
 	
 		this.newpost=this.render({xtype:'sendpost'});
 		this.application.viewport.setActiveItem(this.newpost);
+	
+	//get the location coordinate
 		this.getGeoLocation();
 	
 	},
 	
+//method to parse the text area and add medias,links and hashtags tags
 	getTextAreaContent:function(){
 
 		var post=this.newpost.down('fieldset').getComponent('newpost').getValue();
@@ -33,8 +39,11 @@ Ext.regController('sendpost',{
 		}
 		else{
 		
+		//call a method to scan and add hashtags elements
 			post=this.addHashtagElement(post);
+		//call a method to scan and add media elements
 			post=this.addMediaElement(post);
+		//if location coordinate was successfully retrived add the geolocation tag	
 			if(lat){
 			
 			post+='<span id="geolocationspan" long="'+lng+'" lat="'+lat+'"/>';
@@ -42,10 +51,12 @@ Ext.regController('sendpost',{
 			}
 		}
 		
+		//call a method to send this new post to the server
 			this.sendPost(post);
 	
 	},
 	
+//scan a string to find hashtags
 	addHashtagElement:function(post){
 	
 		var preabout='<span rel="sioc:topic">#<span typeof="skos:Concept" about="';
@@ -55,6 +66,7 @@ Ext.regController('sendpost',{
 		
 		var pregentag='<span rel="sioc:topic">#<span typeof="ctag:Tag" property="ctag:label">';
 		
+		//find all hashtags	
 			var hashtags=post.match(/#[a-zA-Z0-9]+/gim);
 		
 			if(hashtags!=null){
@@ -63,14 +75,16 @@ Ext.regController('sendpost',{
 		
 				for(i=0;i<hashtags.length;i++){
 			
+				//search this hashtag in the thesaurus	
 					var resource=controllerThesaurus.getResource(hashtags[i]);
 				
 					if(resource!=null){
 					
+					//get namespace	
 						var inscheme=resource[0];
 					
 						var indexofabout=inscheme.length;
-					
+					//from hashtag url get tag's name
 						var about=resource[1].substr(indexofabout);
 					
 						var replace=preabout+about+postabout+inscheme+postinscheme+hashtags[i].substr(1)+closespans;
@@ -97,12 +111,13 @@ Ext.regController('sendpost',{
 	
 	},
 	
+//scan a string to serach media element
 	addMediaElement:function(post){
 	
 		var openSpan='<span resource="';
 		var closeSpan='/>';
 
-		
+		//search for url
 			var links=post.match(/\(?\bhttp:\/\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]/gim);
 			
 			if(links!=null){
@@ -112,10 +127,12 @@ Ext.regController('sendpost',{
 					var indexOfMedia=post.indexOf(links[i]);
 					var first=post.substring(0,indexOfMedia);
 					var next=post.substring(indexOfMedia+links[i].length);
-					
+				
+				//call a method to retrive resurce mime type	
 					var mime=this.getMediaMimeType(links[i]);
 					var type=mime.substring(0,mime.indexOf('/'));
-					
+				
+				//add media tag
 					if(type.search("image|video|audio")!=-1){
 						
 						post=first+openSpan+type+'" src="'+links[i]+'"'+closeSpan+next;
@@ -128,7 +145,8 @@ Ext.regController('sendpost',{
 		return post;
 	
 	},
-	
+
+//method to get mime type of a url	
 	getMediaMimeType:function(url){
 	
 		var mime=null;
@@ -152,7 +170,8 @@ Ext.regController('sendpost',{
 		return mime;
 	
 	},
-	
+
+//method to get location coordinates	
 	getGeoLocation:function(){
 
 		var geo=new Ext.util.GeoLocation({
@@ -176,9 +195,10 @@ Ext.regController('sendpost',{
 			geo.updateLocation();
 	},
 		
+//send the parsed post to the server
 	sendPost:function(post){
 
-	
+	//if this post is a replay, add original post's information
 		if(this.serverID){
 		
 			Ext.Ajax.request({
@@ -195,8 +215,7 @@ Ext.regController('sendpost',{
 				success:function(){
 					Ext.dispatch({
 						controller:'Home',
-						action:'renderHome',
-//						historyUrl:'spam/home'
+						action:'renderHome'
 					});
 				},
 			
@@ -207,6 +226,8 @@ Ext.regController('sendpost',{
 			});
 			
 		}
+		
+	//this is a new post and not a replay
 		else{
 		
 			Ext.Ajax.request({
@@ -218,8 +239,7 @@ Ext.regController('sendpost',{
 				success:function(){
 					Ext.dispatch({
 						controller:'Home',
-						action:'renderHome',
-//						historyUrl:'spam/home'
+						action:'renderHome'
 					});
 				},
 			
@@ -234,17 +254,18 @@ Ext.regController('sendpost',{
 		
 	
 	},
-	
+
+//go back to the previous view usign back button	
 	previousView:function(){
 	
+	//if before to render this view i'm not in the home, render that view else render the home view
 		if(this.prevView){
 			this.application.viewport.setActiveItem(this.prevView);
 		}
 		else
 		Ext.dispatch({
 			controller:'Home',
-			action:'renderHome',
-//			historyUrl:'spam/home'
+			action:'renderHome'
 		});
 	
 	}

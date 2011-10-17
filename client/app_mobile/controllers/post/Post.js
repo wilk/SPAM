@@ -1,8 +1,10 @@
 Ext.regController('Post',{
 
 	init:function(){
+		//variables used to share post's informations and filled by getPostgenerality method
 			var postIndex,homeView, userId, serverId, postId, likeChoice, postDate;
-			
+		
+		//listen on user login and if the post view is active show the action button	
 			Ext.StoreMgr.get('loginstore').on('add',function(){
 			
 				if(this.post && this.post.down('#postAction')){
@@ -11,24 +13,28 @@ Ext.regController('Post',{
 				}
 				
 			},this);
-//			genLoaded=false;
 		},
 
+//method to render and activate post view
 	showPost:function(options){
 	
+	//index of the post in the poststore passed by onItemdisclosure event handler in the home view
 		postIndex=options.index;
+	//previous view to go beck by pressing back button
 		homeView=options.view;
-		
+	
+	//retrive various post's information	
 		this.getPostgenerality();
-		
+	
+	//parsed post	
 		var record=options.post;
+	//raw post
 		var article=options.article;
 	
-//	console.log(record);
+	//render and activate post view
 		this.post=this.render({xtype:'post',html:record});
-		
-//		this.post.down('#toolbarTitle').setTitle(options.user+' said');
 
+	//check if the user is logged in and show the action button
 		if (Ext.StoreMgr.get('loginstore').getCount()!=0){
 
 			this.post.down('#postAction').show();
@@ -36,27 +42,22 @@ Ext.regController('Post',{
 		else{
 			this.post.down('#postAction').hide();
 		}
-		
+	
+	//if this post has geolocation coordinates show a button in the toolbar to center a map to his position	
 		if($(article).find('span[id=geolocationspan]').length){
 		
 			this.post.down('#locate').show();
 		
 		}
-		
-//		this.post.doComponentLayout();
 
 		this.application.viewport.setActiveItem(this.post);
 	
 	},
-	
+
+//destroy this panel and show the previousView	
 	destroyView:function(options){
 	
 		options.view.destroy();
-//		genLoaded=false;
-//		Ext.dispatch({
-//			controller:'Home',
-//			action:'renderHome'
-//		})
 		this.application.viewport.setActiveItem(homeView);
 	},
 	
@@ -64,13 +65,9 @@ Ext.regController('Post',{
 		return postIndex;
 	},
 	
+//send the user like choice to the server
+//on success display a message to inform the user and set the setlike model field
 	setLike:function(value){
-	
-//		var value=options.value;
-
-//		if(!genLoaded){
-//			this.getPostgenerality();
-//		}
 		Ext.Ajax.request({
 		
 			method:'post',
@@ -95,10 +92,9 @@ Ext.regController('Post',{
 	
 	},
 	
+//retrive general post's informations using post's index in the poststore
 	getPostgenerality:function(){
 	
-//		if(!genLoaded){
-//			var index=Ext.ControllerManager.get('Post').getPostIndex();
 			var poststore=Ext.StoreMgr.get('poststore');
 			var post=poststore.getAt(postIndex);
 			
@@ -108,17 +104,17 @@ Ext.regController('Post',{
 			postId=tmp[3];
 			likeChoice=post.get('setlike');
 			postDate=post.get('date');
-//			console.log(serverId, userId,postId,tmp,post.get('about'));
-//		}
 	
 	},
 	
+//display a message showing general informations like user id, server id, post id and date
 	showPostGenerality:function(){
 	
 		Ext.Msg.alert('Post info','<p align="left"><b>serverId: </b>'+serverId+'<br/>'+'<b>userId: </b>'+userId+'<br />'+'<b>postId: </b>'+postId+'<br />'+'<b>date: </b>'+Date.parseDate(postDate,'c').format('d-m-Y H:i')+'</p>');
 	
 	},
 	
+//respam this post sending server id, user id and post id to the server
 	respamPost:function(){
 
 		Ext.Ajax.request({
@@ -142,7 +138,9 @@ Ext.regController('Post',{
 		});
 	
 	},
-	
+
+//show the new post view to write a replay to this post
+//post's informations and a reference to this view are passed to allow the replay and/or return to this view 	
 	replayToPost:function(){
 		
 		Ext.dispatch({
@@ -151,11 +149,11 @@ Ext.regController('Post',{
 			serverID:serverId,
 			userID:userId,
 			postID:postId,
-			view:this.post,
-//			historyUrl:'spam/newpost'
+			view:this.post
 		})
 	},
 	
+//scan the raw post to retrive geolocation coordinates and call a method to render a centered map to this coordinates
 	showOnMap:function(options){
 	
 		var article=Ext.StoreMgr.get('poststore').getAt(postIndex).get('article');
@@ -168,12 +166,12 @@ Ext.regController('Post',{
 			action:'showMap',
 			view:options.view,
 			lat:lat,
-			lng:lng,
-//			historyUrl:'spam/map'
+			lng:lng
 		});
 	
 	},
 	
+//show a series of buttons to call methods to interact with this post
 	showActionSheet:function(){
 		if (!this.actions){
 			this.actions=new Ext.ActionSheet({
@@ -270,6 +268,7 @@ Ext.regController('Post',{
 			});
 		}
 		
+	//look the user like choice to hide/show like, dislike and neutral buttons
 		switch(likeChoice){
 		
 			case 0:
@@ -288,6 +287,8 @@ Ext.regController('Post',{
 				this.actions.down('#neutral').show();
 				break;		
 		}
+		
+	//check if this post's author is already in the followers list and show or hide the follow and unfollow buttons	
 		var tmp=serverId+'/'+userId;
 		if(Ext.StoreMgr.get('followersStore').findExact('follower',tmp)!=-1){
 		
